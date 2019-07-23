@@ -1,0 +1,15 @@
+<?php $extend = json_decode($item['detail'], true); ?>
+<li class="item">
+    <div class="left_wrap">
+        <p class="desc">
+            龙钻:<?php echo $extend['coin'] ?>
+            ,用户ID:<?php echo $extend['to_uid'] ?><?php echo $extend['donate'] ? ',赠送:<label class="donate">' . $extend['donate'] . '</label>' : '' ?>
+        </p>
+        <p class="time"><?php echo date('Y-m-d H:i', $item['created']) ?></p>
+    </div>
+    <div class="right_wrap">
+        <?php if ($extend['money']) { ?>
+            -<?php echo '￥' . sprintf("%.2f", $extend['money'] / 100) ?>
+        <?php } ?>
+    </div>
+</li>

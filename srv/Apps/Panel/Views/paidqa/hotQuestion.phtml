@@ -1,0 +1,131 @@
+<style>
+    .modal-open{
+        margin-right:0 !important;
+    }
+</style>
+<div class="col-xs-10">
+<table id="article-list" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style="width: 70px" class="center">ID</th>
+        <th style='' class="center">内容</th>
+        <th style='width:70px' class="center">权重</th>
+        <th style='width:220px' class="center">添加时间</th>
+        <th style="width: 200px" class="center">操作</th>
+    </tr>
+    </thead>
+    <form action="">
+        <input type="hidden" id="data-id" value="<?php echo $data_id?>">
+    <?php
+    if ($list) {
+    ?>
+
+        <tbody class="listData">
+        <?php
+        $i = 0;
+        foreach ($list as $k => $item) {
+            $i++;
+            ?>
+            <tr class="item" data-key="<?php echo $k?>">
+
+
+                <td class="center">
+                    <?php echo $i; ?>
+                </td>
+                <td >
+                    <span><?php echo $item['question']; ?></span>
+                </td>
+                <td class="center">
+                    <span><?php echo $item['weight']; ?></span>
+                </td>
+                <td class="center">
+                    <span><?php echo date("Y/m/d H:i:s",$item['created']); ?></span>
+                </td>
+
+                <td class="center">
+                    <a href="javascript:;" class="btn btn-xs  btn-primary editBtn">
+                        <i class="fa fa-pencil"></i> 编辑
+                    </a>
+                    <a href="javascript:;" class="btn btn-xs  btn-danger delBtn">
+                        <i class="fa fa-trash-o"></i> 删除
+                    </a>
+
+                </td>
+            </tr>
+            <?php
+        }
+        } else {
+            ?>
+            <tr>
+                <td colspan="9">
+                    <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+                </td>
+            </tr>
+        <?php } ?>
+
+        </tbody>
+    </form>
+    <tr class="showpage">
+        <th class="name">操作</th>
+        <td colspan="13">
+                <span>
+                    <a class="addTpl btn-inverse btn btn-xs" href="javascript:;"><i class="fa fa-plus"></i> 添加问题</a>
+                </span>
+        </td>
+    </tr>
+</table>
+
+</div>
+<div class="modal fade" id="msgModal" style="overflow:hidden">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content" style="border-radius:5px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="font-size:28px">
+                    <i class="fa fa-times-circle-o" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title">添加热门问题</h4>
+            </div>
+            <input type="hidden" value="" id="item-key">
+            <div class="modal-body" style="overflow:hidden;">
+                <div>
+                <label for="">权重：</label>
+                    <select id="weight">
+                        <option value ="1">1</option>
+                        <option value ="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div style="margin-top: 20px;">
+                <textarea id="content" placeholder="请在此输入热门问题" class=" form-control" spellcheck="false"
+                          style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 150px;"></textarea>
+                </div>
+            </div>
+            <div style="padding: 0 20px;">
+                <span class="hide red" id="error-tips">最多输入50个字符</span>
+                <span style="float:right"><span class="red" id="cur_num" style="line-height:19px">0</span><span class="red" id="total_num"> / 50</span></span>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer" style="border-radius:5px">
+                <input type="hidden" value="0" id="message_id"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-original="" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script>
+    seajs.use('app/app.message.js?v=1.0.21',function (api) {
+        api.addHotQuestion()
+    })
+
+
+</script>

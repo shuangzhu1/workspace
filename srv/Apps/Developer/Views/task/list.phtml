@@ -1,0 +1,730 @@
+<style>
+
+    .form-group {
+        line-height: 20px;
+
+    }
+
+    .trigger_detail {
+        border: 1px solid #e4e4e4;
+        width: 100%;
+    }
+
+    .trigger_detail th {
+        background-color: #f5f5f5;
+    }
+
+    .trigger_detail th, .trigger_detail td {
+        border: 1px solid #e4e4e4;
+        padding: 2px;
+    }
+</style>
+<div class="page-header">
+    <h1>
+        <i class="fa fa-gear"></i> 定时计划任务
+        <small>
+            <span class="btn btn-primary btn-sm btnAdd right"><i class="fa fa-plus"></i> 添加任务</span>
+            <span class="btn btn-purple btn-sm btnRule right" style="margin-right: 5px"><i
+                    class="fa fa-eye"></i> 查看规则</span>
+        </small>
+    </h1>
+</div>
+<div class="tabs">
+    <a data-key="port" data-val="http://127.0.0.1:4343/"
+       href="<?php echo $this->uri->setUrl(['port' => '4343'], ['p']); ?>"
+       class="tab <?php echo $port == '4343' ? 'active' : '' ?>">系统任务[4343]</a>
+    <a data-key="port" data-val="http://127.0.0.1:4346/"
+       href="<?php echo $this->uri->setUrl(['port' => '4346'], ['p']); ?>"
+       class="tab <?php echo $port == '4346' ? 'active' : '' ?>">一般任务[4346]</a>
+
+</div>
+<table class="list ">
+    <thead>
+    <tr class="head">
+        <th style="width: 120px;">任务id</th>
+        <!--        <th>批量</th>
+        -->
+        <th style="width: 200px;">任务名称</th>
+        <th style="width: 200px;">下次执行时间</th>
+        <!--  <th style="width: 100px;">完整地址</th>-->
+        <th>任务类型</th>
+        <th>时间点</th>
+        <!--   <th>回调地址</th>
+           <th>回调参数</th>
+           <th>运行命令</th>-->
+        <th>任务添加时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody class="listData">
+
+    </tbody>
+
+</table>
+<script type="text/javascript" src="/static/panel/js/tools/jsonView/google-analytics-urchin.js"></script>
+<script type="text/javascript" src="/static/panel/js/tools/jsonView/c.js"></script>
+<script type="text/javascript" src="/static/panel/js/tools/jsonView/m.js"></script>
+<script type="text/javascript" src="/static/panel/js/jquery/jquery.base64.js"></script>
+<select id="TabSize" style="display: none;">
+    <option value="2" selected="true">2</option>
+</select>
+
+<style>
+    #ruleModal table {
+        border: 1px solid #e4e4e4;
+        width: 100%;
+        padding: 5px;
+    }
+
+    #ruleModal table tr:first-child {
+        background: #f4f4f4;
+        line-height: 30px;
+
+    }
+
+    #ruleModal table tr:first-child th {
+        padding: 5px;
+        border: 1px solid #e4e4e4;
+    }
+
+    #ruleModal table td {
+        border: 1px solid #e4e4e4;
+        padding: 5px;
+    }
+
+    #ruleModal table td:first-child {
+        font-weight: bold
+    }
+
+    #addModal table, #editModal table {
+        border: 1px solid #e4e4e4;
+    }
+
+    #addModal table th, #editModal table th {
+        background: #f4f4f4;
+    }
+
+    #addModal table th, #addModal table td, #editModal table th, #editModal table td {
+        padding: 5px;
+        border: 1px solid #e4e4e4;
+    }
+
+    #addModal table input, #editModal table input {
+        width: 50px;
+    }
+
+    #addModal table input.date_type, #editModal table input.date_type {
+        width: 150px;
+    }
+
+    #addModal table.task_callback_params input, #editModal table.task_callback_params input {
+        width: 200px;
+    }
+
+    #addModal table.task_callback_params input.keys, #editModal table.task_callback_params input.keys {
+        width: 100px;
+    }
+
+    .minus_btn {
+        box-sizing: content-box;
+        width: 20px;
+        height: 20px;
+        float: left;
+        text-align: center;
+        overflow: hidden;
+        display: inline-block;
+        border: 1px solid #e4e4e4;
+        border-radius: 100%;
+        margin-right: 5px;
+        margin-top: 5px;
+        cursor: pointer;
+    }
+
+</style>
+<div class="modal fade" id="ruleModal">
+    <div class="modal-dialog" style="width: 800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">时间规则</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">cron:</label>
+                        <div class="col-sm-9">
+                            <table class="">
+                                <tr>
+                                    <th>参数</th>
+                                    <th>类型</th>
+                                    <th>说明</th>
+                                </tr>
+                                <tr>
+                                    <td>year</td>
+                                    <td>int|str</td>
+                                    <td>四位数的年份，如2008年</td>
+                                </tr>
+                                <tr>
+                                    <td>month</td>
+                                    <td>int|str</td>
+                                    <td>取值范围为1-12月</td>
+                                </tr>
+                                <tr>
+                                    <td>day</td>
+                                    <td>int|str</td>
+                                    <td>取值范围为1-31日</td>
+                                </tr>
+                                <tr>
+                                    <td>week</td>
+                                    <td>int|str</td>
+                                    <td> ISO week (1-53) -（格里历2006年12月31日可以写成2006年-W52-7（扩展形式）或2006W527（紧凑形式））</td>
+                                </tr>
+                                <tr>
+                                    <td>day_of_week</td>
+                                    <td>int|str</td>
+                                    <td>number or name of weekday (0-6 or mon,tue,wed,thu,fri,sat,sun) -
+                                        （表示一周中的第几天，既可以用0-6表示也可以用其英语缩写表示）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>hour</td>
+                                    <td>int|str</td>
+                                    <td>取值范围为0-23时</td>
+                                </tr>
+                                <tr>
+                                    <td>minute</td>
+                                    <td>int|str</td>
+                                    <td>取值范围为0-59分</td>
+                                </tr>
+                                <tr>
+                                    <td>second</td>
+                                    <td>int|str</td>
+                                    <td>取值范围为0-59秒</td>
+                                </tr>
+                                <tr>
+                                    <td>start_date</td>
+                                    <td>datetime|str</td>
+                                    <td>开始时间</td>
+                                </tr>
+                                <tr>
+                                    <td>end_date</td>
+                                    <td>datetime|str</td>
+                                    <td>结束时间</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">周期性【intval】:</label>
+                        <div class="col-sm-9">
+                            <table class="">
+                                <tr>
+                                    <th>参数</th>
+                                    <th>类型</th>
+                                    <th>说明</th>
+                                </tr>
+                                <tr>
+                                    <td>weeks</td>
+                                    <td>int</td>
+                                    <td>number of weeks to wait</td>
+                                </tr>
+                                <tr>
+                                    <td>days</td>
+                                    <td>int</td>
+                                    <td> number of days to wait</td>
+                                </tr>
+                                <tr>
+                                    <td>hours</td>
+                                    <td>int</td>
+                                    <td>number of hours to wait</td>
+                                </tr>
+                                <tr>
+                                    <td>minutes</td>
+                                    <td>int</td>
+                                    <td> number of minutes to wait</td>
+                                </tr>
+                                <tr>
+                                    <td>seconds</td>
+                                    <td>int</td>
+                                    <td>number of seconds to wait
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>start_date</td>
+                                    <td>datetime|str</td>
+                                    <td>开始时间</td>
+                                </tr>
+                                <tr>
+                                    <td>end_date</td>
+                                    <td>datetime|str</td>
+                                    <td>结束时间</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">一次性【date】:</label>
+                        <div class="col-sm-9">
+                            <table class="">
+                                <tr>
+                                    <th>参数</th>
+                                    <th>类型</th>
+                                    <th>说明</th>
+                                </tr>
+                                <tr>
+                                    <td>run_date</td>
+                                    <td>datetime|str</td>
+                                    <td>执行时间【如2017-11-11 23:03:12】</td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+<div class="modal fade" id="detailModal">
+    <div class="modal-dialog" style="width: 800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">任务详情</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">任务ID:</label>
+                        <div class="col-sm-9 task_id">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">任务名称:</label>
+                        <div class="col-sm-9 task_name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">任务添加时间:</label>
+                        <div class="col-sm-9 task_time">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">下次执行时间:</label>
+                        <div class="col-sm-9 task_next_time">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">任务类型:</label>
+                        <div class="col-sm-9 task_trigger">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">时间点:</label>
+                        <div class="col-sm-9 task_trigger_args">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">回调地址:</label>
+                        <div class="col-sm-9 task_callback">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">回调参数:</label>
+                        <div class="col-sm-9 task_params">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">系统命令:</label>
+                        <div class="col-sm-9 task_cmd">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!--            <div class="modal-footer">-->
+            <!--                <input type="hidden" value="0" id="gift_id"/>-->
+            <!--                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>-->
+            <!--                <button type="button" class="btn btn-primary" data-original="" id="sureBtn">确定</button>-->
+            <!--            </div>-->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="addModal">
+    <div class="modal-dialog" style="width: 1100px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">添加任务</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">任务ID:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="task_id"
+                                   placeholder="任务ID/不填则默认">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">任务名称:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="task_name"
+                                   placeholder="任务名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">回调地址:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="task_callback"
+                                   placeholder="回调地址">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">回调所带参数:</label>
+                        <div class="col-sm-10">
+                            <table class="task_callback_params">
+                                <tr>
+                                    <th>key</th>
+                                    <th>value</th>
+                                </tr>
+                                <tr class="params_item">
+                                    <td><input type="text" name="key[]" class="keys"/></td>
+                                    <td>
+                                        <input type="text" name="value[]" class="values"/>
+                                        <!-- <span class="plus_btn" style=""><i class="fa fa-plus"></i></span>
+                                         <span class="minus_btn" style=""><i class="fa fa-minus"></i></span>-->
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">执行系统命令:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="task_cmd"
+                                   placeholder="执行系统命令">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">任务类型:</label>
+                        <div class="col-sm-10">
+                            <label>
+                                <input type="radio" name="trigger" class="ace trigger " checked value="cron">
+                                <span class="lbl"><b>cron</b></span>
+                            </label>
+                            <label>
+                                <input type="radio" name="trigger" class="ace trigger " value="interval">
+                                <span class="lbl"><b>周期性任务</b></span>
+                            </label>
+                            <label>
+                                <input type="radio" name="trigger" class="ace trigger " value="date">
+                                <span class="lbl"><b>一次性任务</b></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group trigger_arg_cron trigger_arg">
+                        <label for="ruleName" class="col-sm-2 control-label">时间参数:</label>
+                        <div class="col-sm-10">
+                            <table>
+                                <tr>
+                                    <th>second</th>
+                                    <th>minute</th>
+                                    <th>hour</th>
+                                    <th>day_of_week</th>
+                                    <th>week</th>
+                                    <th>day</th>
+                                    <th>month</th>
+                                    <th>year</th>
+                                    <th>start_date</th>
+                                    <th>end_date</th>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="second" id="second"/></td>
+                                    <td><input type="text" name="minute" id="minute"/></td>
+                                    <td><input type="text" name="hour" id="hour"/></td>
+                                    <td><input type="text" name="day_of_week" id="day_of_week"/></td>
+                                    <td><input type="text" name="week" id="week"/></td>
+                                    <td><input type="text" name="day" id="day"/></td>
+                                    <td><input type="text" name="month" id="month"/></td>
+                                    <td><input type="text" name="year" id="year"/></td>
+                                    <td><input type="text" name="start_date" id="start_date"
+                                               data-date-format="yyyy-mm-dd" class="date_type"/></td>
+                                    <td><input type="text" name="end_date" id="end_date" class="date_type"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group trigger_arg_interval trigger_arg" style="display: none">
+                        <label for="ruleName" class="col-sm-2 control-label">时间参数:</label>
+                        <div class="col-sm-10">
+                            <table>
+                                <tr>
+                                    <th>seconds</th>
+                                    <th>minutes</th>
+                                    <th>hours</th>
+                                    <th>days</th>
+                                    <th>weeks</th>
+                                    <th>start_date</th>
+                                    <th>end_date</th>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="seconds" id="seconds"/></td>
+                                    <td><input type="text" name="minutes" id="minutes"/></td>
+                                    <td><input type="text" name="hours" id="hours"/></td>
+                                    <td><input type="text" name="days" id="days"/></td>
+                                    <td><input type="text" name="weeks" id="weeks"/></td>
+                                    <td><input type="text" name="start_date" id="start_date" class="date_type"/></td>
+                                    <td><input type="text" name="end_date" id="end_date" class="date_type"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group trigger_arg_date trigger_arg" style="display: none;">
+                        <label for="ruleName" class="col-sm-2 control-label">时间参数:</label>
+                        <div class="col-sm-10">
+                            <table>
+                                <tr>
+                                    <th>run_date【执行时间】</th>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="run_date" id="run_date" class="date_type" style=""/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" value="0" id="gift_id"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-original="" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+<div class="modal fade" id="editModal">
+    <div class="modal-dialog" style="width: 1100px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">编辑任务</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">任务ID:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="task_id"
+                                   placeholder="任务ID/不填则默认">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">任务名称:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="task_name"
+                                   placeholder="任务名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">回调地址:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="task_callback"
+                                   placeholder="回调地址">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">回调所带参数:</label>
+                        <div class="col-sm-10">
+                            <table class="task_callback_params">
+                                <tr>
+                                    <th>key</th>
+                                    <th>value</th>
+                                </tr>
+                                <tr class="params_item" style="display: none">
+                                    <td><input type="text" name="key[]" class="keys"/></td>
+                                    <td>
+                                        <input type="text" name="value[]" class="values"/>
+                                        <!-- <span class="plus_btn" style=""><i class="fa fa-plus"></i></span>
+                                         <span class="minus_btn" style=""><i class="fa fa-minus"></i></span>-->
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">执行系统命令:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="task_cmd"
+                                   placeholder="执行系统命令">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">任务类型:</label>
+                        <div class="col-sm-10">
+                            <label>
+                                <input type="radio" name="trigger" class="ace trigger " checked value="cron">
+                                <span class="lbl"><b>cron</b></span>
+                            </label>
+                            <label>
+                                <input type="radio" name="trigger" class="ace trigger " value="interval">
+                                <span class="lbl"><b>周期性任务</b></span>
+                            </label>
+                            <label>
+                                <input type="radio" name="trigger" class="ace trigger " value="date">
+                                <span class="lbl"><b>一次性任务</b></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group trigger_arg_cron trigger_arg">
+                        <label for="ruleName" class="col-sm-2 control-label">时间参数:</label>
+                        <div class="col-sm-10">
+                            <table>
+                                <tr>
+                                    <th>second</th>
+                                    <th>minute</th>
+                                    <th>hour</th>
+                                    <th>day_of_week</th>
+                                    <th>week</th>
+                                    <th>day</th>
+                                    <th>month</th>
+                                    <th>year</th>
+                                    <th>start_date</th>
+                                    <th>end_date</th>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="second" id="second"/></td>
+                                    <td><input type="text" name="minute" id="minute"/></td>
+                                    <td><input type="text" name="hour" id="hour"/></td>
+                                    <td><input type="text" name="day_of_week" id="day_of_week"/></td>
+                                    <td><input type="text" name="week" id="week"/></td>
+                                    <td><input type="text" name="day" id="day"/></td>
+                                    <td><input type="text" name="month" id="month"/></td>
+                                    <td><input type="text" name="year" id="year"/></td>
+                                    <td><input type="text" name="start_date" id="start_date"
+                                               data-date-format="yyyy-mm-dd" class="date_type"/></td>
+                                    <td><input type="text" name="end_date" id="end_date" class="date_type"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group trigger_arg_interval trigger_arg" style="display: none">
+                        <label for="ruleName" class="col-sm-2 control-label">时间参数:</label>
+                        <div class="col-sm-10">
+                            <table>
+                                <tr>
+                                    <th>seconds</th>
+                                    <th>minutes</th>
+                                    <th>hours</th>
+                                    <th>days</th>
+                                    <th>weeks</th>
+                                    <th>start_date</th>
+                                    <th>end_date</th>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="seconds" id="seconds"/></td>
+                                    <td><input type="text" name="minutes" id="minutes"/></td>
+                                    <td><input type="text" name="hours" id="hours"/></td>
+                                    <td><input type="text" name="days" id="days"/></td>
+                                    <td><input type="text" name="weeks" id="weeks"/></td>
+                                    <td><input type="text" name="start_date" id="start_date" class="date_type"/></td>
+                                    <td><input type="text" name="end_date" id="end_date" class="date_type"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group trigger_arg_date trigger_arg" style="display: none;">
+                        <label for="ruleName" class="col-sm-2 control-label">时间参数:</label>
+                        <div class="col-sm-10">
+                            <table>
+                                <tr>
+                                    <th>run_date【执行时间】</th>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="run_date" id="run_date" class="date_type" style=""/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" value="0" id="gift_id"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-original="" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script>
+    $('.trigger_arg_cron #start_date').datetimepicker({
+        lang: "ch",
+        step: 6,
+        format: "Y-m-d H:i:s",
+        timepicker: true,
+        allowBlank: true,
+        minTime: 0,
+        minDate: 0,
+        onChangeDateTime: function () {
+        }
+    });
+    $('.trigger_arg_cron #end_date').datetimepicker({
+        lang: "ch",
+        step: 6,
+        format: "Y-m-d H:i:s",
+        timepicker: true,
+        allowBlank: true,
+        minTime: 0,
+        minDate: 0,
+        onChangeDateTime: function () {
+        }
+    });
+    $('.trigger_arg_interval #start_date').datetimepicker({
+        lang: "ch",
+        step: 6,
+        format: "Y-m-d H:i:s",
+        timepicker: true,
+        allowBlank: true,
+        minTime: 0,
+        minDate: 0,
+        onChangeDateTime: function () {
+        }
+    });
+    $('.trigger_arg_interval #end_date').datetimepicker({
+        lang: "ch",
+        step: 6,
+        format: "Y-m-d H:i:s",
+        timepicker: true,
+        allowBlank: true,
+        minTime: 0,
+        minDate: 0,
+        onChangeDateTime: function () {
+        }
+    });
+    $('.trigger_arg_date #run_date').datetimepicker({
+        lang: "ch",
+        step: 6,
+        format: "Y-m-d H:i:s",
+        timepicker: true,
+        allowBlank: true,
+        minTime: 0,
+        minDate: 0,
+        onChangeDateTime: function () {
+        }
+    });
+    seajs.use('app/developer/task.js?v=1.2.0', function (api) {
+        api.task();
+    })
+</script>
+

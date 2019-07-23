@@ -1,0 +1,144 @@
+<div class="page-header">
+    <h1><i class="fa fa-table"></i> 举报原因
+        <span class="pull-right">
+          <!--  <span class="btn-group">-->
+               <span class="btn btn-primary btn-sm btnAdd"><i class="fa fa-plus"></i> 添加</span>
+            <!--            </span>
+            -->        </span>
+    </h1>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="tabs">
+    <a data-key="type" href="<?php echo $this->uri->actionUrl('?type=1'); ?>" data-type="1"
+       class="tab <?php echo $type == 1 ? 'active' : ''; ?>">动态</a>
+    <a data-key="type" href="<?php echo $this->uri->actionUrl('?type=2'); ?>" data-type="2"
+       class="tab <?php echo $type == 2 ? 'active' : ''; ?>">群聊</a>
+</div>
+<table id="article-list" style="width: 60%" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style='width:36px'>ID</th>
+        <th style='width:300px'>原因</th>
+        <th style='width:150px'>是否可用</th>
+        <th style='width:100px'>排序大小  <a href="javascript:;" class="fa fa-question-circle blue tooltip-info" data-rel="tooltip"
+                                        data-placement="top" data-original-title="越小越靠前"></a></th>
+        <!--    <th style='width:300px'>审核</th>-->
+
+        <th>操作</th>
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <th class='name'><?php echo $item['id']; ?></th>
+            <td><?php echo $item['content']; ?></td>
+            <td>
+                <input type="checkbox"
+                       data-id="<?php echo $item['id'] ?>" <?php echo $item['enable'] == 1 ? 'checked' : '' ?>
+                       class="ace ace-switch ace-switch-5 enableBtn"/>
+                <span class="lbl"></span>
+            </td>
+            <td><?php echo $item['sort'] ?></td>
+            <td>
+                <a href="javascript:;" class="btn btn-primary btn-xs editBtn"
+                   data-id="<?php echo $item['id']; ?>"
+                   data-content="<?php echo $item['content']; ?>"
+                   data-type="<?php echo $item['type'] ?>"
+                   data-sort="<?php echo $item['sort'] ?>"
+                   data-enable="<?php echo $item['enable'] ?>">
+                    <i class="fa fa-edit"></i> 编辑
+                </a>
+
+            </td>
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="17">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <tr class="showpage">
+        <th class="name">操作</th>
+        <td colspan="17">
+                <span>
+                     <span class="btn btn-inverse btn-xs btnAdd"><i class="fa fa-plus"></i> 添加</span>
+                    <!-- <a class="btn-light delAllSelected" href="javascript:;">批量屏蔽</a>-->
+                </span>
+        </td>
+    </tr>
+</table>
+<div class="modal fade" id="reportModal">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">添加原因</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">原因:</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="content"
+                                   placeholder="原因">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">排序大小:</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="sort"
+                                   placeholder="排序大小">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">是否可用:</label>
+
+                        <div class="col-sm-10">
+                            <input type="checkbox"
+                                   id="enable"
+                                   checked
+                                   class="ace ace-switch ace-switch-5 enableBtn"/>
+                            <span class="lbl"></span>
+                        </div>
+                    </div>
+                    <p class="alert alert-danger error-widget" style="display: none"><i class="fa fa-warning"></i>
+                        <span class="error_msg"></span>
+                    </p>
+                    <p class="alert alert-success success-widget" style="display: none"><i class="fa fa-check"></i>
+                        <span class="success_msg"></span>
+                    </p>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <input type="hidden" value="0" id="reason_id"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-original="" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script>
+    seajs.use('app/panel/site/report.js?v=1.4', function (api) {
+        api.edit();
+    });
+    $('[data-rel=tooltip]').tooltip();
+
+</script>

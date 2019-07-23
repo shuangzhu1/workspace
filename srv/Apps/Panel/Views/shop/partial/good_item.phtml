@@ -1,0 +1,41 @@
+<div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;"><i class="fa fa-sitemap"></i>
+        商品列表<span
+            class="total_count total"><?php echo $count ?></span></b></div>
+<ul class="good_list">
+    <?php if ($list) { ?>
+        <?php foreach ($list as $item) {
+            $images = explode(',', $item['images']);
+            ?>
+            <li>
+                <img class="left"
+                     src="<?php echo $images[0] ?>?x-oss-process=image/resize,m_fill,h_160,w_160"
+                     style=""/>
+                <div class="right">
+                    <h4><?php echo $item['name'] ?></h4>
+                    <p class="price"><?php echo sprintf("%.2f", $item['price']) ?>元/<?php echo $item['unit'] ?></p>
+                    <p><?php echo $item['brief'] ?></p>
+                    <p> <?php if ($item['status'] == 1) { ?>
+                            <span class="badge badge-success"><i class="fa fa-map-pin"></i> 展示中</span>&nbsp;<span
+                                class="badge badge-success"><i
+                                    class="fa fa-clock-o"></i> <?php echo date('Y-m-d H:i', $item['created']) ?></span>
+                        <?php } else { ?>
+                            <span class="badge badge-error"><i class="fa fa-map-pin"></i> 仓库中</span>&nbsp;<span
+                                class="badge badge-error"><i
+                                    class="fa fa-clock-o"></i> <?php echo date('Y-m-d H:i', $item['created']) ?></span>
+                        <?php } ?>
+                    </p>
+                </div>
+            </li>
+        <?php } ?>
+        <li class="bar">
+            <?php echo $bar ?>
+        </li>
+    <?php } else { ?>
+        <li style="height: 80px;border-bottom: none">
+            <img src="/static/panel/images/admin/no_data.png" style="background-color: #fff;"/>&nbsp;暂无数据
+        </li>
+    <?php } ?>
+
+</ul>
+
+

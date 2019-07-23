@@ -1,0 +1,276 @@
+<style>
+
+
+    .inner-nav {
+        background-color: #efeef0;
+    }
+
+    .page-content {
+        padding: 4px;
+    }
+
+    .main-container:after, .page-content {
+        background-color: #efeef0;
+    }
+
+    .widget_box {
+        font-size: 15px;
+        /*border: 1px solid #eee;*/
+        padding: 2rem;
+        padding-top: 0;
+        color: #59676b;
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: 0 5px 25px 0 hsla(0, 0%, 48%, .15);
+    }
+
+    .widget_box.clear {
+        clear: both;
+    }
+
+    .widget_box.left {
+        float: left;
+    }
+
+    .widget_box.right {
+        float: right;
+    }
+
+    .widget_box.clear_left {
+        clear: left;
+    }
+
+    .widget_box.clear_right {
+        clear: right;
+    }
+
+    .widget_box .header {
+        border-bottom: none;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 1rem;
+    }
+
+    .widget_box .body .w_row {
+        /*line-height: 3rem;*/
+        vertical-align: middle;
+        border-top: 1px solid rgba(0, 0, 0, .045);
+        padding: 0.75rem;
+    }
+
+    .widget_box .body .w_row:nth-of-type(odd) {
+        background-color: hsla(0, 0%, 64%, .06);
+    }
+
+    .widget_box .name {
+        width: 8rem;
+        display: inline-block;
+        text-align: left;
+        font-weight: bold;
+
+    }
+
+    .widget_box .content {
+
+    }
+
+    .list th {
+        font-size: 15px;
+    }
+
+    .anchorBL {
+        display: none
+    }
+
+    .gallerys {
+        clear: both;
+        height: auto;
+        overflow: hidden;
+    }
+
+    .gallerys li {
+        float: left;
+        margin-right: 1px;
+    }
+
+    .gallerys li img {
+        border-radius: 5px;
+    }
+</style>
+
+<!--<p style="background-image:linear-gradient(135deg,#673ab7,#2196f3);padding: 2.2rem 1.2rem 4.5rem 1.2rem;position: relative;z-index: 1;">-->
+<!---->
+<!--</p>-->
+<?php ?>
+<div class="row" style="position: relative;z-index: 2;overflow: hidden;margin-left: 1rem;margin-top: 1rem">
+
+    <div class="col-sm-6 widget_box left ">
+        <p class="header"><i class="fa fa-camera"></i> 广告内容</p>
+        <div class="body">
+            <p class="w_row">
+                <label class="name">广告类型:</label>
+                <?php if ($item['type'] == \Services\User\SquareManager::TYPE_GOODS) { ?>
+                    <span
+                        class="content"><a href="javascript:;" class="newTarget"
+                                           data-href="/good/list?good_id=<?php echo $item['item_id'] ?>"
+                                           data-title="商品列表-<?php echo $item['user_id'] ?>">商品红包【<?php echo $item['item_id'] ?>
+                            】</a></span>
+                <?php } else { ?>
+                    <span class="content">普通红包</span>
+                <?php } ?>
+
+            </p>
+            <p class="w_row">
+                <label class="name">广告标题:</label>
+                <span class="content"><?php echo $item['content'] ?></span>
+            </p>
+            <div class="w_row">
+                <label class="name">广告图片:</label>
+                <div class="content">
+                    <!--纯文本-->
+                    <?php if ($item['media_type'] == 1) { ?>
+
+                    <?php } else if ($item['media_type'] == 3) {
+                        $imgs = explode(",", $item['media']);
+                        ?>
+                        <ul class="gallerys">
+
+                            <?php foreach ($imgs as $m) { ?>
+                                <li style="width: 100px;height: 120px">
+                                    <img style="width: 100%;height: auto"
+                                         data-src="<?php echo $m; ?>"
+                                         src="<?php echo $m . '?x-oss-process=image/resize,m_fill,h_240,w_200'; ?>"
+                                         class="gallery-pic" onclick="$.openPhotoGallery(this)"/>
+                                </li>
+
+                            <?php } ?>
+                        </ul>
+                    <?php } ?>
+                </div>
+            </div>
+            <div class="w_row">
+                <label class="name">广告位置:</label>
+                <div class="content">
+                    <p><input type="text" readonly value="<?php echo $item['lng'] ?>">-<input type="text" readonly
+                                                                                              value="<?php echo $item['lat'] ?>">
+                    </p>
+                    <div class="map" id="map"
+                         style="width: 100%;height: 300px;border-radius: 5px;margin-top: 10px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-5 widget_box left">
+        <p class="header"><i class="fa fa-braille"></i> 红包基本信息</p>
+        <div class="body">
+            <p class="w_row">
+                <label class="name">红包ID:</label>
+                <span class="content"><?php echo $item['package_id'] ?></span>
+            </p>
+            <p class="w_row">
+                <label class="name">发布人:</label>
+                <span class="content"><a href="javascript:;"
+                                         data-href="/users/detail?user_id=<?php echo $item['user_id'] ?>"
+                                         data-title="用户详情-<?php echo $item['user_id'] ?>"><?php echo $item['package_info']['username'] ?>
+                        【<?php echo $item['user_id'] ?>】</a></span>
+            </p>
+            <p class="w_row">
+                <label class="name">红包金额:</label>
+                <span class="content"><?php echo "￥" . sprintf('%.2f', $item['package_info']['money'] / 100) ?></span>
+            </p>
+            <p class="w_row">
+                <label class="name">发布时间:</label>
+                <span class="content"><?php echo date('Y-m-d H:i:i', $item['package_info']['created']) ?></span>
+            </p>
+            <p class="w_row">
+                <label class="name">过期时间:</label>
+                <span class="content"><?php echo date('Y-m-d H:i:i', $item['package_info']['deadline']) ?></span>
+            </p>
+            <p class="w_row">
+                <label class="name">红包个数:</label>
+                <span class="content"><?php echo $item['package_info']['num'] ?></span>
+            </p>
+            <p class="w_row">
+                <label class="name">已经领取个数:</label>
+                <span class="content"><?php echo $item['package_info']['grabnum'] ?></span>
+            </p>
+        </div>
+    </div>
+    <div class="col-sm-5 widget_box left ">
+        <p class="header"><i class="fa fa-area-chart"></i> 领取记录【<?php echo count($list) ?>
+            /<?php echo $item['package_info']['num'] ?>】</p>
+        <div class="body">
+            <table id="article-list" class='list'>
+                <thead>
+                <tr class="head">
+                    <th style='width:100px'>领取人</th>
+                    <!-- <th style='width:60px'>批量</th>-->
+
+                    <th style='width:160px'>
+                        领取金额
+                    </th>
+                    <th style='width:150px'>领取时间</th>
+                </tr>
+                </thead>
+                <?php
+                if ($list) {
+                ?>
+
+                <tbody class="listData">
+                <?php
+                foreach ($list as $l) {
+                    ?>
+                    <tr class="item" data-id="<?php echo $l['id']; ?>">
+                        <td>
+                            <img style="width: 50px;height: 50px;border-radius: 100%"
+                                 src="<?php echo $l['avatar'] . '?x-oss-process=image/resize,m_fill,h_100,w_100' ?>"/>
+                            <?php echo $l['username'] ?>
+                        </td>
+
+                        <td>
+                            <?php echo sprintf('%.2f', $l['money'] / 100) . "元" ?>
+                            <?php if ($l['best'] == 1) { ?>
+                                <span class="badge badge-primary">手气最佳</span>
+                            <?php } ?>
+                        </td>
+                        <td><?php echo date('Y-m-d H:i:s', $l['created']); ?></td>
+                    </tr>
+                    <?php
+                }
+                } else {
+                    ?>
+                    <tr>
+                        <td colspan="17">
+                            <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+                        </td>
+                    </tr>
+                <?php } ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="/srv/static/panel/js/jquery/gallery/photoGallery.css"/>
+<script src="/srv/static/panel/js/jquery/gallery/jquery.photo.gallery.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=MWkGH8HcEfA5nbdkiYXp67VmxbgL4iGe"></script>
+<script>
+    $(function () {
+        // 百度地图API功能
+        var map = new BMap.Map("map");
+        map.enableScrollWheelZoom();
+        var point = new BMap.Point(<?php echo $item['lng']?>, <?php echo $item['lat']?>);
+        var marker = new BMap.Marker(point);
+        marker.enableDragging();
+        map.addOverlay(marker);
+        map.centerAndZoom(point, 16);
+        //   map.panBy(500, 250);
+    })
+</script>
+<script>
+    seajs.use(['/app/panel/panel.bas.js', 'app/more'], function (base, load_more) {
+        load_more.more('/api/diamond/history', {}, function () {
+        }, "#history_wrap", ".item", {amount: 8})
+    })
+</script>

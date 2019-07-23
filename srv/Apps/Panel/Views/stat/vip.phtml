@@ -1,0 +1,76 @@
+<link rel="stylesheet" href="/srv/static/panel/css/stat.css">
+<link rel="stylesheet" href="/srv/static/panel/css/stat2.css">
+<link rel="stylesheet" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script src="/srv/static/ace/js/date-time/moment.min.js"></script>
+<script src="/srv/static/panel/js/echarts/echart-all.2.2.7.min.js"></script>
+
+<div class="col-xs-12 " style="margin-top:10px;margin-bottom:10px">
+    <label for="ac_type" style="font-weight:bold;">请选择统计时段：</label>
+    <input type="text" class="start" value="{{begin}}" > - <input type="text" class="end" value="{{end}}" >
+    <input type="button" class="btn btn-xs btn-primary" value="查询" style="margin-left:10px" id="query">
+</div>
+
+<div class="stat_component" >
+
+    <div class="content_wrap left">
+        <div class="page-header" style="margin-bottom: 2px">
+            <b style="padding-left: 10px;">付费率：</b>.
+            <b style="float:right;padding-right: 200px;">平均值:</b>
+        </div>
+        <div class="main_wrap">
+            <div class="loading" style="display: none;"><img src="/srv/static/panel/images/admin/loading2.gif">&nbsp;&nbsp;数据加载中...</div>
+            <div class="main" id="purchase-rate" style="width:100%;height:320px" ></div>
+        </div>
+    </div>
+    <div class="content_wrap right">
+        <div class="page-header" style="margin-bottom: 2px">
+            <b style="padding-left: 10px;">点击转化率:</b>
+            <b style="float:right;padding-right: 200px;">平均值:</b>
+        </div>
+        <div class="main_wrap">
+            <div class="loading" style="display: none;"><img src="/srv/static/panel/images/admin/loading2.gif">&nbsp;&nbsp;数据加载中...</div>
+            <div class="main" id="click-rate" style="width:100%;height:320px"></div>
+        </div>
+    </div>
+    <div class="content_wrap left">
+        <div class="page-header" style="margin-bottom: 2px">
+            <b style="padding-left: 10px;">购买时长(详情):</b>
+        </div>
+        <div class="main_wrap">
+            <div class="loading" style="display: none;"><img src="/srv/static/panel/images/admin/loading2.gif">&nbsp;&nbsp;数据加载中...</div>
+            <div class="main" id="purchase-length-detail" style="width:100%;height:320px"></div>
+        </div>
+    </div>
+    <div class="content_wrap right">
+        <div class="page-header" style="margin-bottom: 2px">
+            <b style="padding-left: 10px;">购买时长(汇总)：</b>
+        </div>
+        <div class="main_wrap">
+            <div class="loading" style="display: none;"><img src="/srv/static/panel/images/admin/loading2.gif">&nbsp;&nbsp;数据加载中...</div>
+            <div class="main" id="purchase-length-sum" style="width:100%;height:320px" ></div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+<script>
+    $('.start,.end').datetimepicker({
+        format:'Y/m/d',
+        lang:'ch',
+        minDate:'2018/04/11',
+        maxDate:"<?php echo date('Y/m/d',strtotime('-1 day'))?>",
+        timepicker:false,
+        allowBlank:true
+    });
+
+    seajs.use('app/panel/stat/panel.vip.js?0.0.1',function (api) {
+        api.reload()
+    })
+</script>
+
+
+

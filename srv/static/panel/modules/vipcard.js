@@ -1,0 +1,1 @@
+$('#discount').ace_spinner({value: $('#discount').val() ? parseInt($('#discount').val()) : 0, min: 0, max: 100, step: 1, on_sides: true, icon_up: 'icon-plus smaller-75', icon_down: 'icon-minus smaller-75', btn_up_class: 'btn-success', btn_down_class: 'btn-danger'});

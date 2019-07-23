@@ -1,0 +1,75 @@
+
+<div class="space-10"></div>
+<div class="width-80">
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th style="width:6%" class="center">用户ID</th>
+            <th style="width:18%" class="center">昵称</th>
+            <th style="width:18%" class="center">收益</th>
+            <th style="width:18%" class="center">手机</th>
+            <th style="width:18%" class="center">设备</th>
+            <th class="center">注册时间</th>
+            <th class="center">激活时间</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <?php if($list) {?>
+                <?php foreach ($list as $item) : ?>
+                    <tr>
+                        <td class="center" style="vertical-align:middle">
+                            <a href="javascript:;" data-href="/panel/users/detail/?user_id={{item['uid']}}" data-id="user_detail_{{item['uid']}}" data-title="用户详情" class="newTarget" target="_blank" title="查看用户详情">{{item['uid']}}</a>
+                        </td>
+
+                        <td style="vertical-align: middle;">
+                            <img class="pull-left" alt="" src="{{item['avatar']}}?x-oss-process=image/resize,m_fill,h_200,w_200" style="border: 2px solid #c9d6e5;border-radius: 100%;max-width: 40px;margin-right: 10px;margin-left: 0;box-shadow: none;">
+                            <span style="height:41px;line-height:41px;">
+                                <a href="javascript:;" data-href="/panel/users/detail/?user_id={{item['uid']}}" data-id="user_detail_{{item['uid']}}" data-title="用户详情" class="newTarget" target="_blank" title="查看用户详情" style="color:deeppink">{{item['username']}}</a>
+                            </span>
+                        </td>
+                        <td style="vertical-align: middle;text-align: center" > <span class="green" style="font-weight:bold">{{ item['income'] / 100}} </span> <span style="float:right; ">元</span> </td>
+                        <td class="center" style="vertical-align: middle;">
+
+                            {{ item['phone'] }}
+
+                        </td>
+                        <td class="center" style="vertical-align: middle;padding:0 70px">
+                            <span style="float:left">{{ item['last_login_device'] }}</span>
+                            <i style="float:right;">
+                                <?php if( $item['last_login_device'] == 'ios' ) {?>
+                                    <i class="fa fa-apple" aria-hidden="true" ></i>
+                                <?php }elseif($item['last_login_device'] == 'android') {?>
+                                    <i class="fa fa-android" aria-hidden="true" ></i>
+                                <?php }?>
+
+                            </i>
+                        </td>
+                        <td class="center" style="vertical-align:middle">
+                            <span class="badge badge-info"><?php echo date('Y-m-d H:i:s',$item['created'])?></span>
+                        </td>
+
+                        <td class="center" style="vertical-align:middle">
+                            <?php
+                                if( $item['activate'] === 0 )
+                                    echo "<span class=\"badge badge-warning\"> 未激活 </span>";
+                                else
+                                    echo "<span class=\"badge badge-success\">" .  date('Y-m-d H:i:s',$item['ac_time']) . "</span>";;
+                            ?>
+                        </td>
+                    </tr>
+                <?php endforeach;?>
+        <?php }else{?>
+            <tr>
+                <td colspan="4" class="center red">暂无数据</td>
+
+            </tr>
+        <?php }?>
+        </tbody>
+    </table>
+    <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+</div>
+<script>
+    seajs.use('app/panel/panel.base.js?v=1.0.1');
+</script>

@@ -1,0 +1,16 @@
+<?php
+$images = $item['images'];
+$images = explode(',', $images);
+?>
+<li class="goods_item">
+    <a href="/goods/detail/<?php echo $item['good_id'] ?>" target="_blank">
+        <img class="left thumb"
+             src="<?php echo $images[0] ?>?x-oss-process=image/resize,m_fill,h_600,w_600"
+             style=""/>
+        <div class="left detail">
+            <p class="name"><?php echo $item['name'] ?></p>
+            <p class="price"><?php echo sprintf("%.2f", $item['price']/100) ?>元/<?php echo $item['unit'] ?></p>
+            <p class="brief"><?php echo $item['brief'] ?></p>
+        </div>
+    </a>
+</li>

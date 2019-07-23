@@ -1,0 +1,112 @@
+<!doctype html>
+<html><head>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>网页分享测试</title>
+    <style type='text/css'>
+        html { font-family:Helvetica; color:#222; }
+        h1 { color:steelblue; font-size:24px; margin-top:24px; }
+        button { margin:0 3px 10px; font-size:12px; }
+        .logLine { border-bottom:1px solid #ccc; padding:4px 2px; font-family:courier; font-size:11px; }
+    </style>
+    <script src="http://code.jquery.com/jquery-1.12.1.min.js"></script>
+</head><body>
+<h1>恐龙谷网页分享测试</h1>
+<pre>
+当前网页分享数据:
+{
+    "title":"龙鸟游戏",
+    "link" : "http://www.klgwl.cn",
+    "desc" : "龙鸟游戏简介",
+    "imgUrl" : "http://avatorimg.klgwl.com/13/13486_s_192x192.png?x-oss-process=image/resize,m_fill,h_60,w_60",
+    "appName" : "龙鸟游戏"
+}
+</pre>
+
+<script>
+    window.onerror = function(err) {
+        log('window.onerror: ' + err)
+    };
+    var agent = navigator.userAgent.toLowerCase();
+    /*android*/
+    if( -1 !== agent.indexOf('android') )
+    {
+        function connectWebViewJavascriptBridge(callback) {
+            if (window.WebViewJavascriptBridge) {
+                callback(WebViewJavascriptBridge)
+            } else {
+                document.addEventListener(
+                    "WebViewJavascriptBridgeReady"
+                    , function() {
+                        callback(WebViewJavascriptBridge)
+                    },
+                    false
+                );
+            }
+        }
+
+        connectWebViewJavascriptBridge(function(bridge) {
+            bridge.init(function(message, responseCallback) {
+                if (responseCallback) {
+                    responseCallback(data);
+                }
+            });
+
+            bridge.registerHandler("functionInJs", function(data, responseCallback) {
+                if (responseCallback) {
+                    var responseData = "Javascript Says Right back aka!";
+                    responseCallback(responseData);
+                }
+            });
+
+            bridge.registerHandler("onMenuShareAppMessage", function(data, responseCallback) {
+                bridge.callHandler("setShareAppMessage", {
+                    "title":"龙鸟游戏",
+                    "link" : "http://www.klgwl.cn",
+                    "desc" : "龙鸟游戏简介",
+                    "imgUrl" : "http://avatorimg.klgwl.com/13/13486_s_192x192.png?x-oss-process=image/resize,m_fill,h_60,w_60",
+                    "appName" : "龙鸟游戏"
+                }, function(response) {
+
+                })
+            });
+        });
+    }
+
+    if( -1 !== agent.indexOf("iphone") || -1 !== agent.indexOf("ipad") )
+    {
+        function setupWebViewJavascriptBridge(callback) {
+            if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
+            if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
+            window.WVJBCallbacks = [callback];
+            var WVJBIframe = document.createElement('iframe');
+            WVJBIframe.style.display = 'none';
+            WVJBIframe.src = 'https://__bridge_loaded__';
+            document.documentElement.appendChild(WVJBIframe);
+            setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
+        }
+
+        setupWebViewJavascriptBridge(function(bridge) {
+
+            bridge.registerHandler('onMenuShareAppMessage', function(data, responseCallback) {
+                bridge.callHandler('setShareAppMessage', {
+                    'title':'龙鸟游戏',
+                    'link' : 'http://www.klgwl.cn',
+                    'desc' : '龙鸟游戏简介',
+                    'imgUrl' : 'http://avatorimg.klgwl.com/13/13486_s_192x192.png?x-oss-process=image/resize,m_fill,h_60,w_60',
+                    'appName' : '龙鸟游戏'
+                }, function(response) {
+
+                })
+            })
+
+
+
+        })
+    }
+
+
+
+
+</script>
+<div id='buttons'></div> <div id='log'></div>
+</body></html>

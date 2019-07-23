@@ -1,0 +1,205 @@
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/echarts/echart-all.2.2.7.min.js"></script>
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="/srv/static/panel/js/tools/Url.js"></script>
+<style>
+    .stat_component .time {
+        width: 80px;
+        height: 24px;
+        line-height: 24px;
+        margin: 0 0 0 7px;
+        padding: 0 0 0 6px;
+        border: 1px solid #e1e3e4;
+        border-right: none;
+        text-indent: 0;
+        color: #323437;
+        cursor: pointer;
+        float: left;
+        border-top-left-radius: 2px !important;
+        border-bottom-left-radius: 2px !important;
+    }
+
+    .stat_component .time_picker {
+        width: 24px;
+        height: 24px;
+        display: inline-block;
+        float: left;
+        border: 1px solid #e4e4e4;
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+        text-align: center;
+        color: #666;
+        cursor: pointer;
+    }
+
+
+</style>
+
+<div class="stat_component">
+    <div class="content_wrap left " style="height: 850px;width:99%;max-width:99%">
+
+        <div id="filters" class="filters" style="padding-top:10px">
+            <div class="control-bar-wrapper clearfix" id="control-bar-wrapper">
+                <div class="control-bar bg-iframe l" id="control-bar">
+
+                    <div class="select-bar-item l time_filter" style="display: ">
+                        <span style="float:left;vertical-align: middle;font-weight:bold" class="blue">统计截止日期：</span>
+                        <input type="text" class="time start" id="start" data-id="start" value="<?php echo substr($d,0,4) . '-' . substr($d,4,2) . '-' . substr($d,6,2)?>" style="border-radius: 10px;">
+                        <span class="time_picker" data-id="start"><i class="fa fa-calendar-check-o"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="hr-10">
+        <h4  style="color:lightseagreen">挂单时间统计</h4>
+        <hr class="hr-10">
+        <div id="intent_time_bar" style="width:50%;height:500px;float:left;border-right:1px dotted #ccc;"></div>
+        <div id="intent_time_pie" style="width:50%;height:500px;float:right;"></div>
+        <div class="clearfix"></div>
+        <hr class="hr-10">
+        <h4 style="color:lightseagreen">挂单技能统计</h4>
+        <hr class="hr-10">
+        <div id="skill_pie_num" style="width:50%;height:800px;float:left;border-right:1px dotted #ccc;"></div>
+        <div id="skill_pie_price" style="width:50%;height:800px;float:right"></div>
+        <div class="clearfix"></div>
+        <hr class="hr-10">
+        <div id="skill_bar" style="width:100%;height:600px"></div>
+    </div>
+</div>
+
+<script>
+    var option_bar = {
+        title : {
+            text: '',
+            subtext: ''
+        },
+        tooltip : {
+            trigger: 'axis'
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                magicType: {show: true, type: ['line', 'bar']},
+                saveAsImage: {show: true}
+            }
+        },
+        calculable : true,
+        legend:{
+          data:[]
+        },
+        xAxis : [
+            {
+                type : 'category',
+                axisLabel:{
+                    interval:0
+                },
+                data : ['星期一','星期二','星期三','星期四','星期五','星期六','星期日']
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                name:'挂单数',
+                type:'bar',
+                data:<?php echo json_encode($data['intent_time']['data'],true)?>,
+                markPoint : {
+                    data : [
+                        {type : 'max', name: '最大值'},
+                        {type : 'min', name: '最小值'}
+                    ]
+                },
+                markLine : {
+                    data : [
+                        {type : 'average', name: '平均值'}
+                    ]
+                }
+            }
+        ]
+    };
+    var option_pie = {
+        title : {
+            text: '',
+            subtext: '',
+            x:'center'
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient : 'horizontal',
+            y : 'top',
+            data:['星期一','星期二','星期三','星期四','星期五','星期六','星期日']
+        },
+        toolbox: {
+            show : true,
+            feature : {
+
+                saveAsImage : {show: true}
+            }
+        },
+        calculable : true,
+        series : [
+            {
+                name:'挂单数',
+                type:'pie',
+                radius : '55%',
+                center: ['50%', '50%'],
+                data:[
+                    {value:<?php echo $data['intent_time']['data'][0]?>, name:'星期一'},
+                    {value:<?php echo $data['intent_time']['data'][1]?>, name:'星期二'},
+                    {value:<?php echo $data['intent_time']['data'][2]?>, name:'星期三'},
+                    {value:<?php echo $data['intent_time']['data'][3]?>, name:'星期四'},
+                    {value:<?php echo $data['intent_time']['data'][4]?>, name:'星期五'},
+                    {value:<?php echo $data['intent_time']['data'][5]?>, name:'星期六'},
+                    {value:<?php echo $data['intent_time']['data'][6]?>, name:'星期日'}
+                ]
+            }
+        ]
+    };
+    echarts.init(document.getElementById('intent_time_bar'),'macarons').setOption(option_bar);//挂单时间柱图
+    echarts.init(document.getElementById('intent_time_pie'),'macarons').setOption(option_pie);//挂单时间饼图
+    //技能统计柱图
+    option_bar.legend.data =  ['某技能卖家个数','某技能出售总额'];
+    option_bar.legend.selected =  {'某技能卖家个数':false};
+    option_bar.xAxis[0].axisLabel.rotate = -45;
+    option_bar.xAxis[0].data = <?php echo json_encode($data['skill_dtb']['xAxis'],256)?>;
+    option_bar.series[0].name = '某技能卖家个数';
+    option_bar.series[0].data = <?php echo json_encode($data['skill_dtb']['num'],256)?>;
+    option_bar.series[1] = JSON.parse(JSON.stringify(option_bar.series[0]));
+    option_bar.series[1].name = '某技能出售总额';
+    option_bar.series[1].data = <?php echo json_encode($data['skill_dtb']['price'],256)?>;
+    echarts.init(document.getElementById('skill_bar'),'macarons').setOption(option_bar,true);
+    //技能统计饼图--某技能卖家个数
+    option_pie.title.text = '某技能卖家个数';
+    option_pie.legend.y = 'bottom';
+    option_pie.legend.data = <?php echo json_encode($data['skill_dtb']['xAxis'],256)?>;
+    option_pie.series[0].name = '';
+    option_pie.series[0].data = <?php echo json_encode($data['skill_dtb']['num'],256)?>;
+    echarts.init(document.getElementById('skill_pie_num'),'macarons').setOption(option_pie,true);
+    //技能统计饼图--某技能销售总额
+    option_pie.title.text = '某技能销售总额';
+    option_pie.legend.y = 'bottom';
+    option_pie.legend.data = <?php echo json_encode($data['skill_dtb']['xAxis'],256)?>;
+    option_pie.series[0].name = '';
+    option_pie.series[0].data = <?php echo json_encode($data['skill_dtb']['price'],256)?>;
+    echarts.init(document.getElementById('skill_pie_price'),'macarons').setOption(option_pie,true);
+    $('#start').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        onChangeDateTime: function (e) {
+            var url = new Url();
+            url.setArgs({d:$('#start').val().replace(/-/g,'')});
+            window.location.href = url.getUrl();
+        }
+    });
+
+
+</script>

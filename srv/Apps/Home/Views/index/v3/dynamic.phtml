@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><?php  if(!$isList) echo $list[0]['title'] . ' - ' ?>恐龙谷动态</title>
+    <meta name="keywords" content="<?php if($isList) echo "恐龙谷,恐龙谷app,美女交友app,娱乐自媒体平台,聊天交友,知识问答软件,社交聊天软件,交友软件,视频红包,同城交友,手机交友,视频社交,android,iphone";else echo $list[0]['html_kw'] ?>" />
+    <meta name="description" content="<?php if($isList) echo "恐龙谷社交软件app开启附近圈子社交新时代，红包广场全面开启，精彩就在附近，全民开店，视频红包依旧惊喜不断，更有千万人一起红包游戏、知识问答竞赛开战，奖金多多拿到你手软！年轻人都喜欢的娱乐自媒体社交应用平台！";else echo $list[0]['html_desc'] ?>" />
+    <link rel="shortcut icon" href="/static/home/images/favicon.ico"/>
+    <link rel="stylesheet" href="/static/home/css/animate.css">
+    <link rel="stylesheet" href="/static/home/css/base.css?v=1.02">
+    <link rel="stylesheet" href="/static/home/css/media.css">
+    <script src="/static/home/js/jquery-2.1.4.min.js"></script>
+    <script>
+        if ( !!navigator.userAgent.match(/AppleWebKit.*Mobile.*/) ) {
+            window.location.href = "http://wap.klgwl.com/Downloads/share"
+        }
+    </script>
+    <style>
+        .dynamics{
+            padding-top:80px;
+        }
+        .dynamics .dynamics-date{
+            border-left:4px solid #FFA800;
+            padding-left:56px;
+            padding-right:182px;
+        }
+        .dynamics .dynamics-date .year{
+            color:#FFA800;
+            font-size:40px;
+        }
+        .dynamics .dynamics-date .month{
+            color:#333;
+            font-size:30px;
+        }
+        .dynamics-content{
+            width:60%;
+        }
+        .dynamics-content .title{
+            font-size:30px;
+            color:#666;
+            padding-bottom:42px;
+        }
+        .dynamics-content > div:nth-child(2){
+            font-size:16px;
+            color:#666;
+            line-height:2em;
+            padding-bottom:103px;
+        }
+        .dynamics-content div.line{
+            border-bottom:2px dashed #ccc;
+            /*padding-bottom:40px;*/
+        }
+        .dynamics-content b span{
+            font-weight:bold
+        }
+        .pagination_wrap{
+            padding-bottom:30px;
+            margin-left:40%;
+        }
+        .pagination_wrap > span ,.pagination_wrap > a{
+            border:1px solid #eee;
+            padding:5px 10px;
+            margin-left:10px;
+            color:#666;
+        }
+        .pagination_wrap > span:hover ,.pagination_wrap > a:hover{
+            background:#ffa800;
+            color:white;
+        }
+        .pagination_wrap .disabled{
+            border:none;
+        }
+        .pagination_wrap .disabled:hover,.pagination_wrap .disabled a:hover{
+            background-color:transparent;
+            color:#666;
+
+        }
+    </style>
+</head>
+<body>
+
+<!-- 头部导航 -->
+<div class="nav" style="background-color: #FFA800">
+    <div class="container clearfix">
+        <div class="logo fl">
+            <img src="/static/home/images/logo.png" alt="">
+            <span>恐龙谷</span>
+        </div>
+        <div class="nav-list fr">
+            <ul>
+                <li >
+                    <a href="index" class="active">
+                        首页
+                    </a>
+                    <span class=""></span>
+                    <b></b>
+                </li>
+
+                <li class="line-two">
+                    <a href="/dynamic" class="active ">恐龙谷动态</a>
+                    <span class="active navin"></span>
+                    <b></b>
+                </li>
+                <li class="line-two">
+                    <a href="/about" class="active">关于我们</a>
+                    <span class=""></span>
+                    <b></b>
+                </li>
+                <li class="line-two">
+                    <a href="/service" class="active">特色服务</a>
+                    <span class=""></span>
+                    <b></b>
+                </li>
+                <li class="line-two">
+                    <a href="/guide" class="active">用户帮助</a>
+                    <span class=""></span>
+                    <b></b>
+                </li>
+                <li class="line-two">
+                    <a href="/agreement" class="active">用户协议</a>
+                    <span class=""></span>
+                    <b></b>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+
+</script>
+<div class="container" style="margin-top:64px;min-height:100%;padding-bottom:20px">
+    <div style="background-color:white">
+        <?php if( $list ) {?>
+        <?php foreach( $list as $key => $item) {?>
+        <div class="dynamics">
+            <div class="dynamics-date" style="float:left">
+                <div class="year">
+                    <?php echo date('Y',$item['created']) ?>
+                </div>
+                <div class="month">
+                    <?php echo date('m月d日',$item['created']) ?>
+                </div>
+            </div>
+            <div class="dynamics-content" style="float:left">
+                <a href="/dynamic/<?php echo $item['id']?>.html"><div class="title"><?php echo $item['title'] ?></div></a>
+                <div>
+                    <?php if( $isList ) {?>
+                        <?php echo $item['biref']; ?>
+                        <a style="color:black;font-weight:bold" href="/dynamic/<?php echo $item['id'] ?>.html">阅读全文</a>
+                        <?php }else{ ?>
+                            <?php echo $item['content'] ?>
+                            <!--分享-->
+                            <div style="margin-top:50px;width:80%;margin-left:10%">
+                                <div style="float:left;">
+                                    <div style="height:30px;line-height:30px;">
+                                        <span style="font-size:15px;color:black;font-weight:bold">上一篇：</span>
+                                        <?php if( $prev ) {?>
+                                            <a style="" href="/dynamic/<?php echo $prev['id'] ?>.html"><?php echo $prev['title'] ?></a>
+                                        <?php }else{ ?>
+                                            没有啦
+                                        <?php } ?>
+
+                                    </div>
+                                    <div style="height:30px;line-height:30px;">
+                                        <span style="font-size:15px;color:black;font-weight:bold">下一篇：</span>
+                                        <?php if( $next ) {?>
+                                            <a style="" href="/dynamic/<?php echo $next['id'] ?>.html"><?php echo $next['title'] ?></a>
+                                        <?php }else{ ?>
+                                            没有啦
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <div style="float:right;">
+                                    <div class="bdsharebuttonbox">
+                                        <a href="#" class="bds_more" data-cmd="more"></a>
+                                        <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+                                        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+                                        <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+                                        <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+                                        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                                    </div>
+                                </div>
+                                <div style="clear:both"></div>
+                            </div>
+                    <?php } ?>
+                </div>
+
+                <?php if( isset($list[$key+1])) {?>
+                    <div class="line"></div>
+                <?php } ?>
+                <!--分页-->
+
+
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+        <?php } ?>
+            <?php
+            \Util\Pagination::instance($this->view)->display($this->view);
+            ?>
+        <?php }else {?>
+            <div style="padding:300px 10px;font-size:20px;color:#aaa;text-align: center;">
+                Error(-1)
+            </div>
+        <?php } ?>
+    </div>
+</div>
+<?php $this->partial("index/v3/partial/footer") ?>
+<div style="display:none">
+    <ul>
+        <li>
+            <a href="http://www.klgwl.cn/">恐龙谷</a>
+        </li>
+        <li>
+            <a href="http://www.klgwl.cn/">美女交友APP</a>
+        </li>
+        <li>
+            <a href="http://www.klgwl.cn/">娱乐自媒体平台</a>
+        </li>
+        <li>
+            <a href="http://www.klgwl.cn/">知识问答软件</a>
+        </li>
+        <li>
+            <a href="http://www.klgwl.cn/">社交聊天软件</a>
+        </li>
+    </ul>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];$('.pagination_wrap > span.desc').remove()</script>
+</body>
+</html>

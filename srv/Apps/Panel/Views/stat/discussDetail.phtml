@@ -1,0 +1,317 @@
+<link rel="stylesheet" href="/srv/static/panel/css/stat.css"/>
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+
+<style>
+    .stat_component .header_bar {
+        margin: -1px;
+        max-width: 110%;
+        margin-top: -5px;
+        min-height: 40px;
+        padding-bottom: 0;
+        margin-bottom: 10px;
+        position: fixed;
+        width: 100%;
+        top: 48px;
+        background-color: #fff;
+        z-index: 100;
+    }
+
+    .inner-nav {
+        box-shadow: none;
+    }
+
+    .page-content {
+        padding: 0;
+    }
+
+    .sidebar {
+        margin-top: -125px;
+    }
+
+    .stat_component .filters {
+        padding-bottom: 10px;
+    }
+
+    .stat_component .filter {
+        margin-left: 15px;
+        display: inline-block;
+        overflow: hidden;
+    }
+
+    .stat_component .control-bar-wrapper {
+        position: relative;
+        padding-top: 20px;
+        padding-bottom: 15px;
+        color: #323437;
+        padding-left: 20px;
+    }
+
+    .stat_component .stat_label {
+        display: inline-block;
+        height: 26px;
+        padding-right: 5px;
+        line-height: 26px;
+        color: #787a7d;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar {
+        border: 1px solid #e1e3e4;
+        border-radius: 2px;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar a {
+        display: inline-block;
+        float: left;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 10px;
+        color: #323437;
+        background-color: #fff;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar a {
+        display: inline-block;
+        float: left;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 10px;
+        color: #323437;
+        background-color: #fff;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar a:last-child.cur {
+        border-radius: 0 2px 2px 0;
+        right: -1px;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar .cur {
+        position: relative;
+        bottom: -1px;
+        margin-top: -2px;
+        padding-top: 1px;
+        height: 25px;
+        background-color: #438eb9;
+        color: #fff;
+    }
+
+    .stat_component .filter .group {
+        float: left;
+        background-color: #fff;
+        border-radius: 2px;
+        margin: 0;
+    }
+
+    .stat_component .filter .group li:first-child {
+        margin-left: 0;
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+    }
+
+    .stat_component .filter .group .cur {
+        position: relative;
+        z-index: 1;
+        border: 1px solid #438eb9;
+        color: #fff;
+    }
+
+    .stat_component .filter .group li:hover {
+        background-color: #f3f4f4;
+    }
+
+    .stat_component .filter .group .cur, .filter .group li.cur:hover {
+        background-color: #438eb9;
+    }
+
+    .stat_component .filter .group li {
+        cursor: pointer;
+        padding: 0 12px;
+        border: 1px solid #e1e3e4;
+        margin-left: -1px;
+    }
+
+    .stat_component .filter .group li, .filter label {
+        height: 24px;
+        line-height: 24px;
+        float: left;
+    }
+
+    .stat_component .time {
+        width: 80px;
+        height: 24px;
+        line-height: 24px;
+        margin: 0 0 0 7px;
+        padding: 0 0 0 6px;
+        border: 1px solid #e1e3e4;
+        border-right: none;
+        text-indent: 0;
+        color: #323437;
+        cursor: pointer;
+        float: left;
+        border-top-left-radius: 2px !important;
+        border-bottom-left-radius: 2px !important;
+    }
+
+    .stat_component .time_picker {
+        width: 24px;
+        height: 24px;
+        display: inline-block;
+        float: left;
+        border: 1px solid #e4e4e4;
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+        text-align: center;
+        color: #666;
+        cursor: pointer;
+    }
+
+    .stat_component .split_line {
+        display: inline-block;
+        float: left;
+        margin-left: 7px;
+        font-size: 16px;
+        color: #666
+    }
+
+    .stat_component .control-bar-wrapper .select-bar-item {
+        position: relative;
+        margin-left: 5px;
+        height: 24px;
+        line-height: 24px;
+    }
+
+    .stat_component .filter .group li:last-child {
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+    }
+    .main_wrap {
+        width: 100%;
+        height: 320px;
+    }
+
+    .main {
+        width: 100%;
+        height: 320px;
+        display: none
+    }
+</style>
+<div class="stat_component">
+    <div class="header_bar">
+        <div id="filters" class="filters">
+            <div class="control-bar-wrapper clearfix" id="control-bar-wrapper">
+                <div class="control-bar bg-iframe l" id="control-bar">
+                    <span class="l stat_label">时间：</span>
+                    <div class="l date-select-bar" id="date-select-bar">
+                        <a href="javascript:;" data-id="today" class="trackable date-bar-single-day cur">今天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="yesterday" class="trackable date-bar-single-day">昨天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="7" class="trackable">最近7天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="30" class="trackable">最近30天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="custom" class="trackable">自定义</a>
+                    </div>
+                    <div class="select-bar-item l time_filter" style="display: none"><input type="text"
+                                                                                            class="time start"
+                                                                                            id="start" data-id="start"
+                                                                                            readonly
+                                                                                            style="border-radius: 10px;">
+                        <span class="time_picker" data-id="start"><i class="fa fa-calendar-check-o"></i></span>
+                        <span class="split_line">-</span>
+                        <input type="text" data-id="end" class="time end" id="end" readonly>
+                        <span class="time_picker" data-id="end"> <i class="fa fa-calendar-check-o"></i></span>
+
+                    </div>
+                </div>
+                <div id="ClientDevices" class="filter"><label class="stat_label">类型：</label>
+                    <ul class="group">
+                        <li data-id="all" title="全部" data-type="all"
+                            class="<?php echo $type == '0' ? 'cur' : '' ?> first type">全部
+                        </li>
+                        <li data-id="3" title="图文" data-type="3" class="type <?php echo $type == '3' ? 'cur' : '' ?>">
+                            图文
+                        </li>
+                        <li data-id="2" title="视频" data-type="2" class="type <?php echo $type == '2' ? 'cur' : '' ?>">
+                            视频
+                        </li>
+                        <li data-id="1" title="纯文本" data-type="1 " class="type <?php echo $type == '1' ? 'cur' : '' ?>">
+                            纯文本
+                        </li>
+                        <li data-id="4" title="音频" data-type="4 " class="type <?php echo $type == '4' ? 'cur' : '' ?>">
+                            音频
+                        </li>
+                        <li data-id="5" title="红包" data-type="5 "
+                            class="type last <?php echo $type == '5' ? 'cur' : '' ?>">红包
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="margin-top: 90px;"></div>
+    <style>
+        table.summary {
+            border-collapse: separate;
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        table.summary tr td {
+            text-align: left;
+            /* border-right: 1px solid #f0f0f0;*/
+            padding: 0 20px;
+        }
+
+        table.summary tr td:first-child {
+            border-left: none;
+        }
+
+        table.summary tr td span.text {
+            color: #323437;
+        }
+
+        table.summary tr td div.summary-ellipsis {
+            white-space: nowrap;
+        }
+
+        table.summary tr td div.value {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #121315;
+        }
+    </style>
+    <div class="full_wrap"
+         style="width: 99%;margin: 0.5%;height:80px;padding-bottom: 10px; border: 1px solid #dedede;background: #fff;padding-top: 10px;font-size: 12px;">
+        <div id="summary" class="section ">
+
+        </div>
+    </div>
+    <div class="content_wrap left">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">总动态统计<span
+                    class="total_count total"></span> </b></div>
+        <div class="main_wrap">
+            <div class='loading'><img src='/srv/static/panel/images/admin/loading2.gif'/>&nbsp;&nbsp;数据加载中...</div>
+            <div class="main" id="total"></div>
+        </div>
+    </div>
+    <div class="content_wrap right">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">标签统计</b></div>
+        <div class="main_wrap">
+            <div class="main" id="tags"></div>
+        </div>
+    </div>
+    <div class="content_wrap left">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">类型统计</b></div>
+        <div class="main_wrap">
+            <div class="main" id="mediaType"></div>
+        </div>
+    </div>
+</div>
+<!--<script type="text/javascript" src="/static/panel/js/tools/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+-->
+<script type="text/javascript" src="/srv/static/panel/js/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+    seajs.use('/srv/static/panel/js/app/panel/stat/panel.discuss.js?v=1.0', function (api) {
+        api.complex(<?php echo $type?>);
+    })
+</script>

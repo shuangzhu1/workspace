@@ -1,0 +1,69 @@
+<?php
+use Components\Product\ProductManager;
+
+$cat = ProductManager::instance()->getCategories(CUR_APP_ID);
+
+?>
+<div class="panel" id="panel_s" style="display: none;">
+    <div id="quick_search">
+        <div class=" quick_header">emoi 基本生活</div>
+        <div class="quick_search_main">
+            <form action="/shop/all" method="get" class="quick_search_form">
+                <span class="input_lf"></span>
+                <input type="text" name="keywords" class="input_rg" placeholder="搜索"
+                       style=""/>
+                <input type="submit" style="display:none;">
+            </form>
+            <ul class="panel-list">
+                <?php foreach ($cat as $item) { ?>
+                    <li class="item"><a
+                            href="/shop/all?cat_id=<?php echo \Util\EasyEncrypt::encode($item['id']) ?>"><?php echo $item['name']; ?></a>
+                    </li>
+                    <?php if ($item['subs']) {
+                        foreach ($item['subs'] as $subs) {
+                            ?>
+                            <li class="item sub-item"><a
+                                    href="/shop/all?cat_id=<?php echo \Util\EasyEncrypt::encode($subs['id']) ?>"><?php echo $subs['name'] ?></a>
+                            </li>
+                        <?php
+                        }
+                    } ?>
+                <?php } ?>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--panel end-->
+
+<script>
+    seajs.use(['/static/wap/gmu/widget/panel.js'], function () {
+        $(".panel").css('display', 'block');
+        $(".header").css('display', 'block');
+        $(".footer").css('display', 'block');
+        //  初始化panel，panel是iscroll
+        $('.panel').css({
+            'height': window.innerHeight,
+            'padding-top': 0,
+            'padding-bottom': 0
+        }).iScroll().panel({
+            contentWrap: $('#mm'),
+            scrollMode: 'fixed',
+            display: 'push',
+            position: 'left',
+            dismissible: true,
+            swipeClose: true
+        }).on('open', function () {
+            $('.panel').iScroll('refresh');
+        });
+        function resetHeight() {
+            $('.panel').css('height', window.innerHeight).iScroll('refresh');
+        }
+
+        $(window).on('scrollStop ortchange resize', resetHeight);
+
+        $('.menu_button').on('click', function () {
+            $('.panel').panel('toggle', 'push', 'left');
+        });
+    })
+</script>
+

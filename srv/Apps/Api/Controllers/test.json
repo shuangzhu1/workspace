@@ -1,0 +1,25 @@
+{
+  "result": 1,
+  "data": {
+    "user_id": "50000",
+    "username": "nihao",
+    "truename": "nihao",
+    "phone": "18770090773",
+    "avatar": "",
+    "points": "0",
+    "coins": "11",
+    "sex": "0",
+    "company": "",
+    "province_id": "0",
+    "city_id": "0",
+    "county_id": "0",
+    "province_name": "",
+    "city_name": "",
+    "county_name": "",
+    "is_auth": "0",
+    "auth_type": "0",
+    "introduce": null,
+    "job": "",
+    "industry": ""
+  }
+}

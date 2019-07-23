@@ -1,0 +1,132 @@
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/js/tools/datetimepicker/bootstrap-datetimepicker.min.css">
+<div class="page-header">
+    <h1><i class="fa fa-th-list"></i> 文档列表
+        <span class="pull-right">
+            <a class="btn btn-primary btn-sm" href="/srv/panel/article/add"><i class="fa fa-plus"></i>添加文档</a>
+            <!--  <span class="btn-group">-->
+
+            <!--            </span>
+            -->        </span>
+    </h1>
+    <!-- /.col-lg-12 -->
+</div>
+<table id="article-list" class=' list' style="width: 80%">
+    <thead>
+    <tr class="head">
+
+        <th style='width:36px'>ID</th>
+        <!--  <th style='width:50px'>批量</th>-->
+        <th style='width:150px'>发布时间</th>
+        <th style='width:150px'>网址</th>
+        <th>文章标题</th>
+        <th>浏览次数</th>
+        <th style='width:50px'>是否可用</th>
+
+        <th>操作</th>
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <th class='name'><?php echo $item['id']; ?></th>
+            <!--   <td class="center"><input type="checkbox" class="chk" data-id="<?php /*echo $item['id']; */ ?>"/></td>-->
+            <td><?php echo date('Y-m-d H:i', $item['created']); ?></td>
+            <td>
+                <span class="miBtn copyBtn"
+                      data-clipboard-text="<?php echo $this->uri->appUrl() . 'article/detail/' . $item['param']; ?>"><i
+                        class="fa fa-link"></i> 复制链接地址</span>
+            </td>
+            <td><?php echo $item['title']; ?></td>
+            <td>
+                <span class="badge badge-yellow"><?php echo $item['view_cnt']; ?></span>
+            </td>
+            <td>
+                <input id="id-pills-stacked"
+                    <?php echo $item['enable'] == 1 ? 'checked="checked"' : '' ?> type="checkbox"
+                       data-id="<?php echo $item['id'] ?>"
+                       class="ace ace-switch ace-switch-5 enable"/>
+                <span class="lbl"></span>
+            </td>
+            <td>
+                <a class="miBtn newTarget" href="javascript:;" data-title="编辑文章【<?php echo $item['title'] ?>】" data-href="/panel/article/add/<?php echo $item['id'] ?>"><i
+                        class="fa fa-pencil"></i> 编辑</a>
+                <a class="miBtn btnScan" href="javascript:;"
+                   data-url="<?php echo $this->uri->appUrl() . 'article/detail/' . $item['param']; ?>"><i
+                        class="fa fa-eye"></i> 预览</a>
+            </td>
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="17">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <!-- <tr class="showpage">
+         <th class="name">操作</th>
+         <td colspan="17">
+                 <span>
+                     [ <a href="javascript:;" class="selectAll">全选</a> ]
+                     [ <a href="javascript:;" class="selectNone">全不选</a> ]
+                     [ <a href="javascript:;" class="selectInvert">反选</a> ]
+                     <a class="btn-light delAllSelected" href="javascript:;">批量屏蔽</a>
+                 </span>
+         </td>
+     </tr>-->
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+        </td>
+    </tr>
+</table>
+<script>
+    seajs.use('app/app.copyboard', function (copy) {
+        copy.copyBoard('.copyBtn');
+    });
+    seajs.use(['app/panel/panel.base'], function (api) {
+        $(".enable").on('change', function () {
+            var enable = ($(this).is(":checked")) ? 1 : 0;
+            api.requestApi("/api/article/enable", {enable: enable, id: $(this).data('id')}, function (res) {
+                if (res.result == 1) {
+                    tip.showTip("ok", '编辑成功', 1000);
+                }
+            })
+        });
+        $(".btnScan").on('click', function () {
+            var url = $(this).attr('data-url');
+            $('#appFrame').attr('src', url);
+            $('#app-frame').show();
+        })
+        $("#app-frame .close-app").click(function () {
+            $('#app-frame').hide();
+        });
+
+        $("#app-frame .refresh-app").click(function () {
+            $('#appFrame').attr('src', $('#appFrame').attr('src'));
+        });
+
+
+    })
+</script>
+
+<div class="" id="app-frame" style=" background-color:white; position: fixed;right: 0;z-index: 99999;top:0;
+       /* box-shadow:0 0 5px rgba(0,0,0,0.3);*/
+        display: none;">
+    <p style="background: #fff;height: 36px;line-height: 36px;padding: 0 8px;">
+        <a href="javascript:;" class="close-app">关闭预览</a> | <a href="javascript:;" class="refresh-app">重新预览</a>
+    </p>
+    <iframe name="appFrame" id="appFrame"
+            src=""
+            style="width: 400px;height: 600px;margin: 0;padding: 0;border: 2px solid #e4e4e4;border-top: 1px solid #e4e4e4;border-radius:0 0 10px 10px;"></iframe>
+</div>

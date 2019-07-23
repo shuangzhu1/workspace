@@ -1,0 +1,357 @@
+<link rel="stylesheet" type="text/css" href="/static/panel/js/tools/datetimepicker/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" type="text/css" href="/static/panel/ali_iconfont/iconfont.css?v=1.0">
+<script src="/static/panel/ali_iconfont/iconfont.js?v=1.0"></script>
+<style>
+    .icon {
+        width: 1em;
+        height: 1em;
+        vertical-align: -0.15em;
+        fill: currentColor;
+        overflow: hidden;
+        display: inline-block;
+    }
+
+</style>
+<form action="" method="get"
+      style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px; line-height: 50px;">
+    <label for="name">关键字</label>
+    <input name="key" type="text" id="key" placeholder="用户昵称/手机/用户ID" value="<?php echo $key; ?>">
+    &nbsp;
+    <label for="name">社区ID</label>
+    <input name="comm_id" type="text" id="comm_id" placeholder="社区ID" value="<?php echo $comm_id ? $comm_id : ''; ?>">
+    &nbsp;
+    <label for="name">状态</label>
+    <select name="status">
+        <option value="-1" <?php echo $status == -1 ? 'selected' : ''; ?>>全部</option>
+        <option value="0" <?php echo $status == 0 ? 'selected' : ''; ?>>被系统屏蔽</option>
+        <option value="1" <?php echo $status == 1 ? 'selected' : ''; ?>>正常</option>
+        <option value="2" <?php echo $status == 2 ? 'selected' : ''; ?>>被用户删除</option>
+    </select>
+    &nbsp;<label for="name">分类</label>
+    <select name="media_type">
+        <option value="0" <?php echo $media_type == 0 ? 'selected' : ''; ?>>全部</option>
+        <option value="1" <?php echo $media_type == 1 ? 'selected' : ''; ?>>纯文本</option>
+        <option value="2" <?php echo $media_type == 2 ? 'selected' : ''; ?>>小视频</option>
+        <option value="3" <?php echo $media_type == 3 ? 'selected' : ''; ?>>图片</option>
+        <option value="4" <?php echo $media_type == 4 ? 'selected' : ''; ?>>音频</option>
+    </select>
+    &nbsp;<label for="name">时间:</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd"/>
+    - <input type="text" id="end" value="<?php echo $end; ?>" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd"/>
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+</form>
+<table id="article-list" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style='width:36px'>ID</th>
+        <th style='width:150px'>社区ID</th>
+        <!-- <th style='width:60px'>批量</th>-->
+        <th style='width:150px'>发布人</th>
+        <th style='width:160px' class="arrow" data-sort="" data-order="created">
+            <span class="text">发布时间</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span>
+            <!--
+            <?php /*if ($sort && $sort == 'created') { */ ?>
+                <a href="<?php /*echo $this->uri->setUrl(['order' => $sort_order == 'desc' ? 'asc' : 'desc']); */ ?>"
+                   class="order active">
+                    <i class="fa fa-long-arrow-<?php /*echo $sort_order == 'desc' ? 'down' : 'up'; */ ?>"></i> 发布时间</a>
+            <?php /*} else { */ ?>
+                <a href="<?php /*echo $this->uri->setUrl(['order' => 'desc', 'sort' => 'created']); */ ?>" class="order">
+                    <i class="fa fa-arrows-v"></i> 发布时间</a>
+            --><?php /*} */ ?>
+        </th>
+        <th style='width:200px'>文本内容</th>
+        <!--    <th style='width:300px'>审核</th>-->
+        <th style='width:60px'>类型</th>
+        <th style='width:60px' class="arrow" data-sort="" data-order="package">
+            <span class="text">红包</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span></th>
+        <th style='width:50px'>状态</th>
+        <th style='width:70px' class="arrow" data-sort="" data-order="like">
+            <span class="text">点赞</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span>
+            <!-- <?php /*if ($sort && $sort == 'like') { */ ?>
+                <a href="<?php /*echo $this->uri->setUrl(['order' => $sort_order == 'desc' ? 'asc' : 'desc']); */ ?>"
+                   class="order active">
+                    <i class="fa fa-long-arrow-<?php /*echo $sort_order == 'desc' ? 'down' : 'up'; */ ?>"></i> 点赞</a>
+            <?php /*} else { */ ?>
+                <a href="<?php /*echo $this->uri->setUrl(['order' => 'desc', 'sort' => 'like']); */ ?>" class="order">
+                    <i class="fa fa-arrows-v"></i> 点赞</a>
+            --><?php /*} */ ?>
+
+        </th>
+        <th style='width:70px' class="arrow" data-sort="" data-order="fav">
+            <span class="text">收藏</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span>
+            <!-- <?php /*if ($sort && $sort == 'fav') { */ ?>
+                <a href="<?php /*echo $this->uri->setUrl(['order' => $sort_order == 'desc' ? 'asc' : 'desc']); */ ?>"
+                   class="order active">
+                    <i class="fa fa-long-arrow-<?php /*echo $sort_order == 'desc' ? 'down' : 'up'; */ ?>"></i> 收藏</a>
+            <?php /*} else { */ ?>
+                <a href="<?php /*echo $this->uri->setUrl(['order' => 'desc', 'sort' => 'fav']); */ ?>" class="order">
+                    <i class="fa fa-arrows-v"></i> 收藏</a>
+            --><?php /*} */ ?>
+
+        </th>
+        <th style='width:70px' class="arrow" data-sort="" data-order="comment">
+            <span class="text">评论</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span>
+            <!--  <?php /*if ($sort && $sort == 'comment') { */ ?>
+                <a href="<?php /*echo $this->uri->setUrl(['order' => $sort_order == 'desc' ? 'asc' : 'desc']); */ ?>"
+                   class="order active">
+                    <i class="fa fa-long-arrow-<?php /*echo $sort_order == 'desc' ? 'down' : 'up'; */ ?>"></i> 评论</a>
+            <?php /*} else { */ ?>
+                <a href="<?php /*echo $this->uri->setUrl(['order' => 'desc', 'sort' => 'comment']); */ ?>" class="order">
+                    <i class="fa fa-arrows-v"></i> 评论</a>
+            --><?php /*} */ ?>
+
+        </th>
+        <th style='width:70px' class="arrow" data-sort="" data-order="forward">
+            <span class="text">转发</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span>
+            <!-- <?php /*if ($sort && $sort == 'forward') { */ ?>
+                <a href="<?php /*echo $this->uri->setUrl(['order' => $sort_order == 'desc' ? 'asc' : 'desc']); */ ?>"
+                   class="order active">
+                    <i class="fa fa-long-arrow-<?php /*echo $sort_order == 'desc' ? 'down' : 'up'; */ ?>"></i> 转发</a>
+            <?php /*} else { */ ?>
+                <a href="<?php /*echo $this->uri->setUrl(['order' => 'desc', 'sort' => 'forward']); */ ?>" class="order">
+                    <i class="fa fa-arrows-v"></i> 转发</a>
+            --><?php /*} */ ?>
+
+        </th>
+        <th style='width:70px' class="arrow" data-sort="" data-order="view">
+            <span class="text">阅读</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span>
+            <!-- <?php /*if ($sort && $sort == 'view') { */ ?>
+                <a href="<?php /*echo $this->uri->setUrl(['order' => $sort_order == 'desc' ? 'asc' : 'desc']); */ ?>"
+                   class="order active">
+                    <i class="fa fa-long-arrow-<?php /*echo $sort_order == 'desc' ? 'down' : 'up'; */ ?>"></i> 阅读</a>
+            <?php /*} else { */ ?>
+                <a href="<?php /*echo $this->uri->setUrl(['order' => 'desc', 'sort' => 'view']); */ ?>" class="order">
+                    <i class="fa fa-arrows-v"></i> 阅读</a>
+            --><?php /*} */ ?>
+
+        </th>
+        <th style='width:70px' class="arrow" data-sort="" data-order="report">
+            <span class="text">举报</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span>
+            <!--   <?php /*if ($sort && $sort == 'report') { */ ?>
+                <a href="<?php /*echo $this->uri->setUrl(['order' => $sort_order == 'desc' ? 'asc' : 'desc']); */ ?>"
+                   class="order active">
+                    <i class="fa fa-long-arrow-<?php /*echo $sort_order == 'desc' ? 'down' : 'up'; */ ?>"></i> 举报</a>
+            <?php /*} else { */ ?>
+                <a href="<?php /*echo $this->uri->setUrl(['order' => 'desc', 'sort' => 'report']); */ ?>" class="order">
+                    <i class="fa fa-arrows-v"></i> 举报</a>
+            --><?php /*} */ ?>
+
+        </th>
+        <th style='width:60px'>置顶</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        $content = \Util\FilterUtil::unPackageContentTag($item['content'], 0, "/panel/users/detail?user_id=");
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <th class='name'><?php echo $item['id']; ?></th>
+            <th class='name'><?php echo $item['comm_id']; ?></th>
+            <!--   <td class="center"><label>
+                    <input type="checkbox" class="chk ace" data-id="<?php /*echo $item['id']; */ ?>"/>
+                    <span class="lbl"></span>
+                </label>
+            </td>-->
+            <td><?php echo $item['user_id'] . '【' . $users[$item['user_id']]['username'] . '】'; ?></td>
+            <td><?php echo date('Y-m-d H:i:s', $item['created']); ?></td>
+            <td style="width: 200px;word-break: break-all;">
+                <?php echo $item['content'] ?>
+
+            </td>
+            <td>
+
+                <?php if ($item['media_type'] == 1) {
+                    echo '<label class="badge badge-inverse">纯文本</label>';
+                } else if ($item['media_type'] == 2) {
+                    echo '<label class="badge badge-pink">小视频</label>';
+                } else if ($item['media_type'] == 3) {
+                    echo '<label class="badge badge-info">图片</label>';
+                } else if ($item['media_type'] == 4) {
+                    echo '<label class="badge badge-purple">音频</label>';
+                };
+
+                ?>
+            </td>
+            <td>
+                <?php if ($item['package_id']) { ?>
+                    <svg class="icon" style="font-size: 25px;" aria-hidden="true">
+                        <use xlink:href="#icon-hongbao"></use>
+                    </svg>
+                <?php } ?>
+            </td>
+            <td>
+
+                <?php if ($item['status'] == 0) {
+                    echo "<label class='badge badge-danger'>已被系统屏蔽</label>";
+                } else if ($item['status'] == 1) {
+                    echo "<label class='badge badge-success'>正常</label>";
+                } else if ($item['status'] == 2) {
+                    echo "<label class='badge badge-gray'><i class='fa fa-trash'></i> 用户已删除</label>";
+                }; ?>
+            </td>
+            <td>
+                <?php echo $item['like_cnt']; ?>
+            </td>
+            <td>
+                <?php echo $item['fav_cnt']; ?>
+            </td>
+            <td>
+                <?php echo $item['comment_cnt'] > 0 ? "<a  href='javascript:;' class='newTarget' data-title='评论列表' data-id='comment_list_" . $item['id'] . "' data-href='/panel/discuss/comment/" . $item['id'] . "' target='_blank'>" . $item['comment_cnt'] . "</a>" : 0; ?>
+            </td>
+            <td>
+                <?php echo $item['forward_cnt']; ?>
+            </td>
+            <td>
+                <?php echo $item['view_cnt']; ?>
+            </td>
+            <td>
+                <?php echo $item['report_cnt']; ?>
+            </td>
+            <td>
+                <?php echo $item['is_top'] == 1 ? "是" : '否'; ?>
+            </td>
+
+            <td>
+                <!--                --><?php //if ($item['status'] == 1) { ?>
+                <!--                    <a href="JavaScript:;" data-id="--><?php //echo $item['id']; ?><!--"-->
+                <!--                       class="btn btn-danger btn-minier delBtn">屏蔽</a>-->
+                <!--                --><?php //} else if ($item['status'] == 0) { ?>
+                <!--                    <a href="JavaScript:;" data-id="--><?php //echo $item['id']; ?><!--"-->
+                <!--                       class="btn btn-danger btn-minier recoveryBtn">恢复</a>-->
+                <!--                --><?php //} ?>
+
+            </td>
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="17">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <!--  <tr class="showpage">
+          <th class="name">操作</th>
+          <td colspan="17">
+                  <span>
+                      [ <a href="javascript:;" class="selectAll">全选</a> ]
+                      [ <a href="javascript:;" class="selectNone">全不选</a> ]
+                      [ <a href="javascript:;" class="selectInvert">反选</a> ]
+                      <a class="btn-light delAllSelected" href="javascript:;">批量屏蔽</a>
+                  </span>
+          </td>
+      </tr>-->
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+        </td>
+    </tr>
+</table>
+
+
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script src="/srv/static/panel/js/tools/Url.js"></script>
+<script>
+    $('[data-rel=tooltip]').tooltip();
+    //  var receive_start_val;
+    $('#start').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+    $('#end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+    var order = '<?php echo $sort ?>'
+    var sort_order = '<?php echo $sort_order ?>'
+    if (order != '' && sort_order != '') {
+        var current = $(".arrow[data-order='" + order + "']");
+        current.addClass("active");
+        current.attr('data-sort', sort_order);
+        if (sort_order == 'desc') {
+            current.find('.arrow-down').addClass('active');
+            current.find('.arrow-up').addClass('disabled');
+        } else {
+            current.find('.arrow-down').addClass('disabled');
+            current.find('.arrow-up').addClass('active');
+        }
+    }
+    var url = new Url();
+    $(".arrow").on('click', function () {
+        var order = $(this).attr('data-order');
+        var sort = $(this).attr('data-sort');
+        sort = sort == 'desc' ? 'asc' : 'desc';
+        url.setArgs({order: sort, sort: order, p: 1});
+        window.location.href = url.getUrl();
+    });
+</script>
+<script type="text/javascript" src="/static/panel/js/tools/clipboard/clipboard.min.js"></script>
+
+<script>
+    var clipboard = new Clipboard('.copy-link', {});
+    clipboard.on('success', function (e) {
+        alert("复制成功");
+        /* var sel = "#" + e.text;
+         $(sel).tooltip('show');
+         setTimeout(function () {
+         // $(sel).tooltip('hide');
+         }, 1500);*/
+    });
+</script>

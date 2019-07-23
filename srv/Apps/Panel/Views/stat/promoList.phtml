@@ -1,0 +1,168 @@
+<style>
+    .sort-nav {
+        border-top: 1px solid #DEEFFB;
+        padding: 10px 0 0 0;
+        margin-top: 10px;;
+        /*   border: 1px solid #DEEFFB*/
+    }
+
+    .sort-nav span {
+        padding: 8px;
+        border: 1px solid #d0dbe7;
+        color: #428bca;
+        background-color: #f0f0f0;
+        cursor: pointer;
+    }
+
+    .sort-nav span.active {
+        background: #4cb329;
+        border-color: #4cb329;
+        color: #fff;
+    }
+
+    .font13 {
+        font-size: 13px;
+    }
+</style>
+<form action="" method="get" style="border: 1px solid #DEEFFB;padding: 8px;margin: 0 0 8px;">
+    <label for="name">标题关键字</label>
+    <input name="key" type="text" id="key" value="<?php echo $this->request->get('key'); ?>">
+    <label for="name">用户id</label>
+    <input name="user_id" type="text" id="user_id" value="<?php echo $this->request->get('user_id'); ?>">
+    <label for="name">用户名</label>
+    <input name="username" type="text" id="username" value="<?php echo $this->request->get('username'); ?>">
+
+    <label for="name">推广日期(<?php echo date('Y-m-d') ?>):</label>
+    <input name="start_time" type="text" id="start_time" value="<?php echo $this->request->get('start_time'); ?>"> -
+    <input name="end_time" type="text" id="end_time" value="<?php echo $this->request->get('end_time'); ?>">
+
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+
+    <div class="sort-nav" style="margin-bottom: 12px;">
+        <label>排序:</label>
+    <span class="sort-visit <?php if ($order == 'visit') { ?>active<?php } ?>"
+          data-order="visit"
+          data-id="<?php echo isset($sort) && ($sort == 'up' || $sort == 'down') ? $sort : 'up' ?>">回链数 <label
+            class=" <?php echo isset($sort) && ($sort == 'up' || $sort == 'down') && $order == 'visit' ? 'icon-arrow-' . $sort . " active" : 'icon-sort' ?>"></label></span>
+    <span class="sort-total-order <?php if ($order == 'total_order') { ?>active<?php } ?>"
+          data-order="total_order"
+          data-id="<?php echo isset($sort) && ($sort == 'up' || $sort == 'down') ? $sort : 'up' ?>">总订单数 <label
+            class=" <?php echo isset($sort) && ($sort == 'up' || $sort == 'down') && $order == 'total_order' ? 'icon-arrow-' . $sort . " active" : 'icon-sort' ?>"></label></span>
+
+    <span class="sort-finish-order <?php if ($order == 'finish_order') { ?>active<?php } ?>"
+          data-order="finish_order"
+          data-id="<?php echo isset($sort) && ($sort == 'up' || $sort == 'down') ? $sort : 'up' ?>">成交订单数 <label
+            class=" <?php echo isset($sort) && ($sort == 'up' || $sort == 'down') && $order == 'finish_order' ? 'icon-arrow-' . $sort . " active" : 'icon-sort' ?>"></label></span>
+       <span class="sort-cash <?php if ($order == 'cash') { ?>active<?php } ?>"
+             data-order="cash"
+             data-id="<?php echo isset($sort) && ($sort == 'up' || $sort == 'down') ? $sort : 'up' ?>">返现金额<label
+               class=" <?php echo isset($sort) && ($sort == 'up' || $sort == 'down') && $order == 'cash' ? 'icon-arrow-' . $sort . " active" : 'icon-sort' ?>"></label></span>
+    </div>
+</form>
+
+<!--<div class="inner-nav cat_arr" style="margin-bottom: 12px;">
+    <?php /*foreach ($share_type as $k => $cat) { */ ?>
+        <span class="<?php /*echo $type && $type == $k ? 'active' : ''; */ ?>" data-val="<?php /*echo $k */ ?>">
+        <a href="<?php /*echo $this->uri->actionUrl("/type/" . $k); */ ?>"
+           style=""><?php /*echo $cat */ ?></a>
+    </span>
+    <?php /*} */ ?>
+</div>-->
+<table id="article-list" class=' list'>
+    <tr class="head">
+        <th style='width:36px'>ID</th>
+        <th style='width:36px'>批量</th>
+        <th style='width:100px'>推广用户</th>
+        <th style='width: 150px;'>推广商品</th>
+        <th style='width:80px'>推广链接</th>
+        <th style='width:50px'>回链数</th>
+        <th style='width:80px'>推广产生总订单</th>
+        <th style='width:80px'>推广成交订单</th>
+        <th style='width:80px'>推广返现金额</th>
+        <th style='width:120px'>推广时间</th>
+        <!--  <th style='width:60px'>推广平台</th>-->
+        <th style='width:50px'>操作</th>
+    </tr>
+    <?php
+    if ($list) {
+    ?>
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <th class='name'><?php echo $item['id']; ?></th>
+            <td class="center"><input type="checkbox" class="chk" data-id="<?php echo $item['id']; ?>"/></td>
+            <td class="center">
+                <?php echo isset($item['username']) ? ($item['username'] != "" ? $item['username'] : '还未设置') : '路人' ?>
+            </td>
+            <td class="center">
+                <a href="/panel/product/edit?iid=<?php echo $item['pid'] ?>"><img
+                        src="<?php echo $item['thumb'] ?>" width="50" height="50"/> <?php echo $item['name'] ?></a>
+            </td>
+            <td class="center">
+                <a href=" <?php echo $item['url'] ?>" target="_blank" class="btn btn-sm btn-primary">查看链接 </a>
+            </td>
+            <td class="center green bold">
+                <?php echo $item['visit_count'] ?>
+            </td>
+            <td class="center green bold">
+                <?php echo $item['total_order_count'] ?>
+            </td>
+            <td class="center green bold">
+                <?php echo $item['finish_order_count'] ?>
+            </td>
+            <td class="center green bold">
+                <lanel class="red font13">  &yen; <?php echo $item['cash'] > 0 ? $item['cash'] : 0 ?></lanel>
+            </td>
+
+            <td class="center">
+                <?php echo date('Y年m月d日 H:i', $item['created']) ?>
+            </td>
+
+            <!--    <td class="center">
+                <?php /*echo $item['site'] */ ?>
+            </td>-->
+
+
+            <td class="center">
+                <a href="/panel/stat/promoDetail/<?php echo $item['id'] ?>" class=' btn btn-sm btn-success'
+                   >查看订单详情</a>
+                <a href="javascript:;" class='delBtn btn btn-sm btn-success' data-id="<?php echo $item['id']; ?>">删除</a>
+            </td>
+        </tr>
+    <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="11">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <tr class="showpage">
+        <th class="name">操作</th>
+        <td colspan="10">
+                <span>
+                    [ <a href="javascript:;" class="selectAll">全选</a> ]
+                    [ <a href="javascript:;" class="selectNone">全不选</a> ]
+                    [ <a href="javascript:;" class="selectInvert">反选</a> ]
+                    <a class="btn-light delAllSelected" href="javascript:;">批量删除</a>
+                </span>
+        </td>
+    </tr>
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="11">
+            <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+        </td>
+    </tr>
+</table>
+<script>
+    seajs.use('app/panel/stat/panel.share', function (api) {
+        api.promotionDel();
+        api.promotionSearch();
+    });
+</script>

@@ -1,0 +1,450 @@
+<script type="text/javascript"  src="/static/panel/js/tools/Url.js" ></script>
+<label for="bank">请选择题库：</label><select name="" id="bank">
+    <?php foreach ($classify as $item) :?>
+        <option value="{{item['id']}}" <?php if($type == $item['id']) echo 'selected' ?>>{{item['type_name']}}</option>
+    <?php endforeach; ?>
+</select>
+
+<label for="keyword" style="margin-left:10px;">搜索：</label>
+<input type="text" id="keyword" placeholder="请输入关键词" value="<?php echo $this->request->get('keyword');?>">
+<a href="javascript:;" class="btn btn-xs btn-primary" id="search">搜索</a>
+<a href="javascript:;" class="btn btn-xs btn-primary" id="reset">重置</a>
+<style>
+    body{
+        font-family:"Microsoft YaHei";
+    }
+    #options ul li{
+        width:175px;
+        padding:10px 10px 20px 10px;
+        border:1px solid #fff;
+        cursor:pointer;
+
+    }
+    #options ul li:hover{
+        /*background:#eee;*/
+        border:1px solid #eee;
+        border-radius: 3px;
+    }
+    #options ul li input{
+        width:155px;
+
+
+    }
+    .mark-answer{
+        width:180px;
+        padding:10px 10px 20px 10px;
+        background:#eee;
+        border-radius: 3px;
+        border:1px solid #eee;
+    }
+    .gray{
+        color:lightgray;
+    }
+</style>
+<span class="badge badge-gray" style="width:503px;margin-bottom:0;margin-left:200px;line-height:24px;height:27px">
+    该类目所有题目添加或编辑完成后，请点击《立即发布》按钮，以使APP端获取最新数据
+</span>
+
+<a id="reload" href="javascript:;" class="btn btn-sm btn-success pull-right" style="">立即发布</a>
+<a id="addBtn" href="javascript:;" class="btn btn-sm btn-success pull-right" style=";margin-right:10px">添加问题</a>
+<a id="selectExcel" href="javascript:;" class="btn btn-sm btn-success pull-right" style="margin-right:10px">导入Excel</a>
+<input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="excel-file" style="display:none"/>
+<br>
+<br>
+<table  class="table table-striped table-bordered table-hover">
+    <thead>
+    <tr ">
+        <th class="center">ID</th>
+        <th class="center">问题</th>
+        <th class="center">选项</th>
+        <th class="center">答案</th>
+        <th class="center">难度等级</th>
+        <th class="center">单选/多选</th>
+        <th class="center">操作</th>
+
+    </tr>
+    </thead>
+
+    <tbody>
+    <?php if(!empty($list)) :?>
+        <?php foreach($list as $item ) : ?>
+            <tr data-answer="{{item['answer']}}" data-answer-type="{{item['answer_type']}}" data-type="{{item['type']}}">
+                <td class="center" style="vertical-align: middle">{{item['id']}}</td>
+                <td style="vertical-align: middle;font-weight:bold;color:lightslategray">{{item['description']}}</td>
+                <td style="vertical-align: middle">
+                    <?php
+                        if($item['answer_type'] == 0)
+                            $arr = ['A', 'B', 'C','D'];
+                        else
+                            $arr = [1 => 'A', 'B', 'AB','C','AC','BC','ABC','D','AD','BD','ABD','CD','ACD','BCD','ABCD'];
+                        foreach(json_decode(urldecode($item['options']),true) as $k => $v) :
+                            ?>
+                        <span  class="<?php if(strpos($arr[$item['answer'] ],$v['tag']) !== false) echo "green"; else echo "gray"; ?>" style="font-weight:600">
+                            <span style="">{{v['tag']}}</span> <span class="">=></span>
+                            <span style="" class="option" data-tag="{{v['tag']}}">{{v['desc']}}</span>；
+                        </span>
+                    <?php endforeach; ?>
+                </td>
+                <td class="center" style="width:90px;vertical-align: middle;" >
+                    <?php
+
+                        if( $item['answer_type'] == 0)
+                        {
+                            $tmp = ["A","B","C","D"];
+                            echo $tmp[$item['answer']];
+                        }else
+                        {
+                            //abcd所有组合
+                            $arr = ['A', 'B', 'AB','C','AC','BC','ABC','D','AD','BD','ABD','CD','ACD','BCD','ABCD'];
+                            echo $arr[$item['answer']-1];
+
+                        }
+                    ?>
+                </td>
+                <td class="center" style="width:90px;vertical-align: middle">
+                    {{item['level']}}
+                </td>
+                <td class="center" style="width:90px;vertical-align: middle">
+                    <?php echo $item['answer_type'] == 0 ? '单选' : '多选' ?>
+                </td>
+                <td class="center" style="width:200px;vertical-align: middle">
+                    <a href="javascript:;" class="btn btn-xs btn-primary editBtn" >编辑</a>
+                    <a href="javascript:;" class="btn btn-xs btn-danger delBtn">删除</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="7" class="red center" > 暂无数据</td>
+        </tr>
+    <?php endif; ?>
+
+    </tbody>
+</table>
+<?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border-radius: 5px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="font-size:20px">&times;</button>
+                <h4 class="modal-title" ></h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" id="id" value="">
+                    <input type="hidden" id="operate" value="">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right" style="text-align:right" > 题目： </label>
+                        <div class="col-sm-10">
+                            <textarea id="desc"  style="width:400px;height:40px" placeholder="请输入问题40字以内"></textarea>
+                        </div>
+                    </div>
+                    <div class="space-4"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right" style="text-align:right" > 选项： </label>
+                        <span style="margin-left:12px;color:orange;">点击选项，标记为答案</span>
+                        <br>
+
+                        <div id="options" class="col-sm-9" style="border:1px dotted #ccc;padding:10px;margin-left:12px;width:400px;height:185px">
+
+                            <ul style="margin-left:5px">
+
+                                <li style="float:left;position:relative;" class="col-xs-5" data-tag="A">
+                                    A:<input type="text" value="" data-tag="A">
+                                    <span class="green"  style="position:absolute;top:5px;right:30px;display: none">答案</span>
+                                </li>
+                                <li style="float:left;margin-left:10px" class="col-xs-5" data-tag="B">
+                                    B:<input type="text" value="" data-tag="B">
+                                    <span class="green"  style="position:absolute;top:5px;right:30px;display: none">答案</span>
+                                </li>
+                                <li style="float:left;margin-top:10px" class="col-xs-5" data-tag="C">
+                                    C:<input type="text" value="" data-tag="C">
+                                    <span class="green"  style="position:absolute;top:5px;right:30px;display: none">答案</span>
+                                </li>
+                                <li style="float:left;margin-left:10px;margin-top:10px" class="col-xs-5" data-tag="D">
+                                    D:<input type="text" value="" data-tag="D">
+                                    <span class="green"  style="position:absolute;top:5px;right:30px;display: none">答案</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right" style="text-align:right" > 难度等级： </label>
+                        <div class="col-sm-10">
+                            <select  id="level" style="width:60px">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right" style="text-align:right" >单选/多选： </label>
+                        <div class="col-sm-10">
+                            <select  id="answer_type" style="width:60px">
+                                <option value="0" >单选</option>
+                                <option value="1" >多选</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="save">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script>
+    seajs.use("app/panel/panel.base.js",function (api) {
+        //导入excel
+        $('#excel-file').on('change',function(){
+            var formData = new FormData();
+            formData.append("excel",this.files[0]);
+            formData.append("type",$('#bank').val());
+            tip.showTip('wait', '正在导入...');
+            $.ajax({
+                url : "/panel/activity/questionBank",
+                type : 'POST',
+                data : formData,
+                processData : false,
+                contentType : false,
+                beforeSend:function(){
+                    console.log("正在进行，请稍候");
+                },
+                success : function(responseStr) {
+                    if(JSON.parse(responseStr).result === 1){
+                        tip.showTip('ok','导入成功',1000,function () {
+                            window.location.reload();
+                        })
+                    }else{
+                        tip.showTip('err','导入失败',2000)
+                    }
+                },
+                error : function(responseStr) {
+                    console.log(responseStr);
+                }
+            });
+        });
+        $('#selectExcel').on('click',function () {
+            $('#excel-file').get(0).click();
+        });
+        //选择题库
+        $("#bank").on('change',function () {
+            var url = new Url();
+            url.rmArgs(['p']);
+            url.setArgs({type:$(this).val()})
+            window.location.href = url.getUrl();
+        });
+        //关键词搜索
+        $('#search').on('click',function () {
+            var keyword = $.trim($('#keyword').val());
+            var url = new Url();
+            url.rmArgs(['p']);
+            url.setArgs({keyword:keyword});
+            window.location.href = url.getUrl();
+        });
+        //重置
+        $('#reset').on('click',function () {
+            var loca = window.location;
+            window.location.href = loca.origin + loca.pathname;
+        });
+        //立即发布
+        $('#reload').on('click',function () {
+            var qid = $('#bank').val();
+            api.requestApi('/panel/activity/reload',{id:qid},function (res) {
+                if( res.result === 1)
+                {
+                    tip.showTip('ok','操作成功',1000)
+                }
+            })
+        });
+        //点击选项，选择答案
+        $('#options ul li').on('click',function () {
+            if($('#answer_type').val() == 0 )//单选
+            {
+                $('#options ul li').each(function () {
+                    if($(this).hasClass('mark-answer'))
+                    {
+                        $(this).removeClass('mark-answer');
+                        $(this).find('span').toggle();
+                    }
+                });
+                $(this).find('span').toggle();
+                $(this).toggleClass('mark-answer');
+            }else
+            {
+                $(this).find('span').toggle();
+                $(this).toggleClass('mark-answer');
+            }
+
+        });
+        $('#options ul li input').on('click',function (event) {
+            event.stopPropagation();
+        });
+
+        //添加新问题
+        $('#addBtn').on('click',function () {
+            var $modal = $('#modal1') ;
+            $modal.find('.modal-title').html('添加问题');
+            $('#options ul li').each(function () {
+                $(this).removeClass('mark-answer');
+                $(this).find('span').hide();
+            });
+            $('#id').val('');
+            $('#desc').val('');
+            $('#answer').val(0);
+            $('#options').find('input').each(function () {
+                $(this).val('');
+            });
+            $('#operate').val(1);
+            $('#level').val(0);
+            $('#answer_type').val(0);
+            $modal.modal('show');
+        });
+        //编辑问题
+        $('.editBtn').on('click',function () {
+            var _this = this;
+            var id = $.trim($(_this).closest('tr').find('td:eq(0)').html()),
+                desc = $.trim($(_this).closest('tr').find('td:eq(1)').text()),
+                level =$.trim($(_this).closest('tr').find('td:eq(4)').html()),
+                answer_type =$(_this).closest('tr').data('answer-type'),
+                answer =$.trim($(_this).closest('tr').find("td:eq(3)").html());
+            $(_this).closest('tr').find('.option').each(function () {
+                $('#options').find('input[data-tag=' + $(this).data('tag') + ']').val($(this).html());
+            });
+            $('#operate').val(2);
+            var $modal = $('#modal1');
+            $modal.find('#options ul li').each(function () {
+                $(this).removeClass('mark-answer');
+                $(this).find('span').hide();
+            });
+            var len = answer.length;
+            for(var i = 0;i<len;i++)
+            {
+                var $li = $modal.find('#options ul li[data-tag="'+ answer[i] +'"]')
+                $li.addClass('mark-answer');
+                $li.find('span').show();
+            }
+            $modal.find('.modal-title').html('编辑问题');
+            $modal.find('#desc').val(desc);
+            $modal.find('#answer').val(answer);
+            $modal.find('#id').val(id);
+            $modal.find('#level').val(level);
+            $modal.find('#answer_type').val(answer_type);
+            $modal.modal('show');
+        });
+        //删除问题
+        $('.delBtn').on('click',function () {
+            var type = $('#bank').val();
+            var $tr = $(this).closest('tr');
+            var id = $tr.find('td:eq(0)').html();
+            api.requestApi('/panel/activity/questionBank',{type:type,id:id,operate:3},function (res) {
+                if( res.result === 1 )
+                {
+
+                    tip.showTip('ok','操作成功',1000,function () {
+                      $tr.remove();
+                    })
+                }
+            },true)
+
+        });
+
+        //添加或编辑问题时保存按钮
+        $('#save').on('click',function () {
+            var type = $('#bank').val(),
+                id = $('#id').val(),
+                desc = $('#desc').val(),
+                answer_type =parseInt($('#answer_type').val()),
+                level = $('#level').val(),
+                operate = $('#operate').val(),
+                canSave = true;
+            if($.trim(desc) == '')//
+            {
+                tip.showTip('err','请输入问题',2000);
+                canSave =false;
+            }
+            var answer_str = '';
+            var answer = 0;//初始为10000，提交前-10000
+            var obj = {};
+            if( answer_type === 1)//多选
+            {
+                $('#options ul li').each(function () {
+                    if($(this).hasClass('mark-answer'))
+                    {
+                        answer_str += $(this).data('tag');
+                    }
+                });
+                obj = {
+                    A:1,
+                    B:2,
+                    C:4,
+                    D:8
+                };
+
+                for(var i = 0;i<answer_str.length;i++)
+                {
+                    answer += parseInt(obj[answer_str[i]]);
+                }
+            }else//单选
+            {
+                $('#options ul li').each(function () {
+                    if($(this).hasClass('mark-answer'))
+                    {
+                        answer_str = $(this).data('tag');
+                        return false;
+                    }
+                });
+                obj = {
+                    A:0,
+                    B:1,
+                    C:2,
+                    D:3
+                }
+                answer = obj[answer_str]
+            }
+            var options = [];
+            $('#options').find('input').each(function (i) {
+                if( $.trim($(this).val()) == '')
+                    return false;
+                options[i] = {};
+                options[i].tag = $(this).data('tag');
+                options[i].desc = $(this).val();
+            });
+            /*if(answer === 0 || answer === undefined)
+            {
+                canSave = false;
+                tip.showTip('err','请选择答案',2000);
+            }*/
+            if( canSave )
+            {
+                api.requestApi('/panel/activity/questionBank',{type:type,id:id,desc:desc,answer:answer,answer_type:answer_type,options:options,operate:operate,level:level},function (res) {
+                    if(res.result === 1)
+                    {
+                        tip.showTip('ok','操作成功',1000,function () {
+                            window.location.reload();
+                        });
+                        $('#modal1').modal('hide');
+                    }
+
+                });
+            }
+
+        });
+    })
+
+    
+</script>

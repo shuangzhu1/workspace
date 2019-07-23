@@ -1,0 +1,522 @@
+.person {
+  position: relative;
+  width: 100%; }
+
+.person .perosn_top {
+  position: relative;
+  width: 100%;
+  /*height: 7.45rem;*/
+  height:14.9rem;}
+
+.person .perosn_top img {
+  width: 100%;
+  height: 100%; }
+
+.person .perosn_top .person_share_style {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 100%;
+  z-index: 9; }
+
+.person .perosn_top .person_share_style ul {
+  font-size: 0;
+  text-align: right;
+  padding: 0.5rem 0; }
+
+.person .perosn_top .person_share_style ul li {
+  width: 1rem;
+  height: 1rem;
+  display: inline-block;
+  margin-right: 0.5rem; }
+
+.person .perosn_top .person_share_style ul .collect_icon {
+  background: url(../images/person/start.png) no-repeat;
+  background-size: 86% !important; }
+
+.person .perosn_top .person_share_style ul .no_person {
+  background: url(../images/person/bugeitakan_icon_yonghuxiangqing.png) no-repeat;
+  background-size: 100% !important; }
+
+.person .perosn_top .person_share_style ul .no_his {
+  background: url(../images/person/bukantade_icon_yonghuxiangqing.png) no-repeat;
+  background-size: 100% !important; }
+
+.person .person_datum {
+  position: relative;
+  background-color: #fff;
+  /*padding-bottom: 0.5rem;*/ }
+
+.person .person_datum .person_datum_head {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -2rem;
+  width: 3.7rem;
+  height: 3.7rem;
+  margin: 0 auto;
+  z-index: 10; }
+
+.person .person_datum .person_datum_head .person_head {
+  width: 3.7rem;
+  height: 3.7rem;
+  border: 2px solid #fff;
+  overflow: hidden;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  margin: 0 auto; }
+
+.person .person_datum .person_datum_head .person_head img {
+  width: 100%;
+  height: 100%; }
+
+.person .person_datum .person_datum_head .approve_icon {
+  position: absolute;
+  width: 0.95rem;
+  height: 0.95rem;
+  display: inline-block;
+  background: url(../images/person/renzheng_icon.png) no-repeat center;
+  background-size: cover;
+  bottom: 0;
+  left: 66%; }
+
+.person .person_datum .person_voice {
+  width: 3.85rem;
+  height: 1.95rem;
+  background: url(../images/person/gray_bg.png) no-repeat center;
+  background-size: cover;
+  /*float: right;*/
+  margin-top: 0.5rem;
+  position: absolute;
+  right:0;
+}
+
+.person .person_datum .person_voice h1 {
+  padding: 0.3rem 0.375rem; }
+
+.person .person_datum .person_voice h1 em {
+  display: inline-block;
+  width: 1.35rem;
+  height: 1.35rem;
+  background: url(../images/person/voice_playing.png) no-repeat center;
+  vertical-align: middle;
+  margin-right: 0.25rem;
+  background-size: 100% !important; }
+
+.person .person_datum .person_voice h1 span {
+  font-size: 0.7rem;
+  color: #0bd1a0;
+  vertical-align: middle; }
+
+.person .person_datum .person_show_fans {
+  text-align: center;
+  height: 1rem;
+  font-size: 0;
+  padding-top: 2.3rem;
+  /*width: 10.85rem;*/
+  margin: 0 auto; }
+
+.person .person_datum .person_show_fans li {
+  width: 5.0rem;
+  display: inline-block;
+  color: #333;
+  font-size: 0.75rem;
+  text-align: center; }
+
+.person .person_datum .person_show_fans li a {
+  display: inline-block;
+  width: 100%;
+  color: #333;
+  font-size: 0.75rem;
+  text-align: center; }
+
+.person .person_datum .person_show_fans li a span {
+  color: #333;
+  font-size: 0.75rem; }
+
+.person .person_datum .person_show_fans li:nth-child(1) {
+  border-right: 1px solid #333; }
+.person .person_datum .person_show_fans li:nth-child(2) {
+  border-right: 1px solid #333; }
+.person .person_datum .person_introduct {
+  margin: 0.65rem 0; }
+
+.person .person_datum .person_introduct p {
+  width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.6rem;
+  color: #999;
+  text-align: center;
+  margin: 0 auto; }
+
+.person .person_datum .person_introduct p span.auth_faild {
+  display: inline-block;
+  font-size: 0.45rem;
+  color: #fff;
+  background-color: #c0c0c0;
+  width: 2rem;
+  height: 0.75rem;
+  line-height: 0.75rem;
+  text-align: center;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px; }
+
+.person .person_datum .person_show_list {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  -webkit-align-items: center;
+  flex-flow: row nowrap;
+  -webkit-flex-flow: row nowrap;
+  padding: 0.25rem 0 0.5rem 0;
+  padding: 0.5rem 0;
+  border-top: 1px solid #e0e0e0; }
+
+.person .person_datum .person_show_list li {
+  width: 33%;
+  border-right: 1px solid #e0e0e0;
+  text-align: center;
+  padding-bottom: 0.25rem; }
+
+.person .person_datum .person_show_list li a {
+  font-size: 0.75rem;
+  padding-bottom: 0.25rem; }
+
+.person .person_datum .person_show_list li:last-child {
+  border-right: 0; }
+
+.person .person_datum .person_show_list li.on a {
+  /*border-bottom: 2px solid #0bd1a0;*/
+  color: #0bd1a0; }
+
+.dymaic_base {
+  margin-top: 0.25rem; }
+
+.dynamic_stick {
+  background: url(../images/person/zhiding.png) no-repeat top right 2rem #FFFFFF;
+  background-size: 20%; }
+
+.album {
+  background-color: #fff; }
+
+.album .album_list {
+  margin-top: 0.25rem;
+  padding-top:0.75rem; }
+
+.album .album_list .album_list_item {
+  padding-top: 1.6rem; }
+
+.album .album_list .album_list_item .album_date {
+  text-align: center; }
+
+.album .album_list .album_list_item .album_date h1 {
+  font-size: 0.75rem;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  padding: 0 0.5rem; }
+
+.album .album_list .album_list_item .album_date h1 span {
+  color: #333; }
+
+.album .album_list .album_list_item .album_date h1 .album_month {
+  font-size: 1.2rem; }
+
+.album .album_list .album_list_item .album_date h1 .album_year {
+  font-size: 0.7rem; }
+
+.album .album_list .album_list_item .album_date h1 i {
+  color: #666;
+  font-style: normal; }
+
+.album .album_list .album_list_item .album_date:after, .album .album_list .album_list_item .album_date:before {
+  content: '';
+  display: inline-block;
+  width: 1rem;
+  height: 2px;
+  background-color: #e2e2e2;
+  vertical-align: middle; }
+
+.album .album_list .album_list_item ul {
+  margin-top: 0.75rem;
+  display: flex;
+  display: -webkit-flex;
+  flex-flow: row wrap;
+  -webkit-flex-flow: row wrap;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start; }
+
+.album .album_list .album_list_item ul li {
+  width: 32%;
+  height: 5.7rem;
+  margin: 0.075rem; }
+
+.album .album_list .album_list_item ul li video {
+  width: 100%;
+  height: 100%; }
+
+.album .album_list .album_list_item ul li img {
+  width: 100%;
+  height: 100%; }
+
+.datum .datum_friend {
+  padding: 0.5rem 0; }
+
+.datum .datum_friend h1, .datum_person h1, .datum_person .more_con, .datum_intro_con h1 {
+  width: 92%;
+  margin: 0 auto;
+  font-size: 0.75rem;
+  padding: 0.75rem 0;
+  color: #333;
+  font-weight: 700; }
+.datum .datum_friend h1 em{
+  font-style: normal;
+}
+.datum .datum_friend h1::before, .datum_person h1::before, .datum_intro_con h1::before {
+  content: "";
+  width: 0.1rem;
+  height: 0.75rem;
+  background-color: #0bd1a0;
+  display: inline-block;
+  margin-right: 0.5rem;
+  vertical-align: middle; }
+
+.datum .datum_friend .datum_friend_list {
+  margin-left: 0.25rem;
+  /*display: flex;*/
+  /*display: -webkit-flex;*/
+  /*flex-flow: row nowrap;*/
+}
+
+.datum .datum_friend .datum_friend_list li {
+  margin-left: 0.5rem !important;
+  width: 3.1rem !important;
+  height: 3.75rem;
+  margin-right: 0 !important;
+}
+.datum .datum_friend .datum_friend_list li img {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: block;
+}
+.datum .datum_friend .datum_friend_list li p{
+  width: 3.1rem;
+  text-align: center;
+  padding-top: 0.5rem;
+}
+.datum .datum_friend .datum_friend_list li p span{
+  display: inline-block;
+  width: 1.2rem;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  vertical-align: top;
+}
+.datum .datum_friend .datum_friend_list li p em{
+  vertical-align: top;
+}
+.datum .datum_person .datum_person_list {
+  font-size: 0;
+  padding-bottom: 0.65rem;
+  height: 6.65rem;
+  overflow: hidden; }
+
+.datum .datum_person .datum_person_list li {
+  border-top: 1px solid #e0e0e0; }
+
+.datum .datum_person .datum_person_list li .list_l {
+  text-align: left;
+  color: #333;
+  width: 36%; }
+
+.datum .datum_person .datum_person_list li .list_r {
+  text-align: left;
+  color: #999; }
+
+.datum .datum_person .datum_person_list li .list_l, .datum .datum_person .datum_person_list li .list_r {
+  display: inline-block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 0.7rem;
+  padding: 0.75rem 0; }
+
+.datum .datum_person .datum_person_list li .list_r {
+  width: 62%; }
+
+.datum_friend, .datum_person, .datum_intro {
+  background-color: #fff;
+  margin-top: 0.25rem; }
+
+.life .life_list {
+  width: 100%; }
+
+.datum_person .more_con, .datum_figue {
+  border-top: 1px solid #e0e0e0;
+  font-weight: normal;
+  text-align: center;
+  color: #999;
+  font-size: 0.6rem; }
+
+.life .life_list ul {
+  width: 100%; }
+
+.life .life_list ul li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e0e0e0; }
+
+.life .life_list ul li dl {
+  display: -webkit-box;
+  display: box;
+  width: 100%;
+  overflow: hidden; }
+
+.life .life_list ul li dl dt {
+  position: relative;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  margin-right: 0.25rem; }
+
+.life .life_list ul li dl dt img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  -webkit-border-radius: 50%; }
+
+.life .life_list ul li dl dt span {
+  position: absolute;
+  width: 0.75rem;
+  height: 0.75rem;
+  display: inline-block;
+  background: url(../images/person/renzheng_icon.png) no-repeat center;
+  background-size: cover;
+  bottom: 0;
+  right: 0; }
+
+.life .life_list ul li dl dd {
+  display: inline-block;
+  width: 80%; }
+
+.life .life_list ul li dl dd h1 {
+  width: 100%; }
+
+.life .life_list ul li dl dd h1 .attention_name {
+  font-size: 0.75rem;
+  max-width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: bottom; }
+
+.life .life_list ul li dl dd p {
+  font-size: 0.6rem;
+  color: #999;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  width: 75%; }
+
+.swiper-container {
+  width: 100%; }
+
+.swiper-slide {
+  text-align: center;
+  background: #fff!important;
+  /*display: -webkit-box;*/
+  /*display: -ms-flexbox;*/
+  /*display: -webkit-flex;*/
+  /*display: flex;*/
+  /*-webkit-box-pack: center;*/
+  /*-ms-flex-pack: center;*/
+  /*-webkit-justify-content: center;*/
+  /*justify-content: center;*/
+  /*-webkit-box-align: center;*/
+  /*-ms-flex-align: center;*/
+  /*-webkit-align-items: center;*/
+  /*align-items: center;*/
+}
+
+.album, .dymaic_base {
+  /*display: none*/ }
+
+.person_attention {
+  width: 100%;
+  height: 2.25rem;
+  line-height: 2.25rem;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0; }
+
+.person_attention a {
+  display: block;
+  width: 100%;
+  height: 2.25rem;
+  line-height: 2.25rem;
+  text-align: center;
+  background-color: #0bd1a0;
+  font-size: 0.75rem;
+  color: #fff; }
+
+.datum_info {
+  padding: 0.5rem 0;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  margin: 0 auto;
+  width: 92%; }
+
+.datum_info p {
+  font-size: 0.7rem;
+  color: #666;
+  text-align: justify;
+  line-height: 1rem; }
+
+.datum_figue {
+  width: 92%;
+  margin: 0 auto;
+  border: 0;
+  padding: 0.75rem 0; }
+
+.datum_friend .datum_friend_list li input.uploadImg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  border: 0;
+  opacity: 0; }
+.show_bar{
+  background-color: #f7f7f7;
+  font-size:28px;
+  color:#666666;
+  padding-left:25px;
+  height:80px;
+  line-height:80px;
+  vertical-align: middle;
+}
+.show_bar .content{
+  color:#999999;
+  font-size:24px;
+}
+.show_bar .content .num{
+  color:#ffaa3c;
+}
+.no_show{
+  color:#666666;
+  font-size:30px;
+  height:600px;
+  text-align: center;
+  padding-top:100px;
+}
+
+/*# sourceMappingURL=person.css.map */

@@ -1,0 +1,46 @@
+<!--<style>
+    p{
+        font-size: 0.85rem;
+        font-weight: bold;
+        width: 100%;
+        text-align: center;
+        line-height: 1.5rem;
+    }
+
+</style>
+<div style="margin-top: 50%">
+    <p>活动正在拼命赶来，</p>
+    <p>敬请期待....</p>
+</div>-->
+
+<style>
+    ul {
+        display: block;
+        padding: 0.4rem 0.2rem 0 0.2rem;
+    }
+
+    ul li {
+        width: 100%;
+        position: relative;
+    }
+
+    ul li img {
+        width: 100%;
+    }
+
+    body {
+        background: #f0f0f0;
+    }
+</style>
+<ul>
+    <li><img src="/static/wap/images/activity/a1.png"/></li>
+    <li><img src="/static/wap/images/activity/a2.png"/></li>
+    <li><img src="/static/wap/images/activity/a3.png"/></li>
+    <li><img src="/static/wap/images/activity/a4.png"/></li>
+</ul>
+
+<p style="font-size: 0.85rem;padding-left: 0.6rem;color: #939393;margin-top: 0.2rem;margin-bottom: 2rem">
+    <?php if(strpos($this->request->getUserAgent(), 'iOS') > 0) { ?>
+        <span style="font-weight:bold">注：</span>本活动与苹果公司无关
+    <?php }?>
+</p>

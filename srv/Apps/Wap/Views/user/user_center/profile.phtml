@@ -1,0 +1,217 @@
+<div class="datum tab_content" data-id="1">
+    <?php if (!empty($user_info['shops'])) { ?>
+        <div class="datum_friend  ">
+            <h1>Ta的店铺</h1>
+            <ul class="  ">
+                <?php foreach ($user_info['shops'] as $item) {?>
+                    <a href="http://wap.klgwl.com/shop/detail/<?php echo $item['id']?>" target="_blank">
+                        <li style="font-size: 0.75rem;border-top: 1px solid #e0e0e0;border-bottom: 1px solid #e0e0e0;width:92%;margin:0 auto;height:2.25rem;line-height:2.25rem">
+
+                            <span><?php echo $item['name']?></span>
+                            <span  style="margin-right:1rem;float:right;color:#999"> > </span>
+                        </li>
+                    </a>
+                <?php }?>
+            </ul>
+        </div>
+    <?php } ?>
+    <?php if (!empty($user_info['tags'])) { ?>
+        <div class="datum_friend swiper-container ">
+            <h1>个人标签</h1>
+            <div style="width:92%;margin:0 auto">
+            <?php
+                $tags = explode(',',$user_info['tags']['tags_name']);
+                foreach( $tags as $tag):
+            ?>
+
+                    <span style="margin-right:0.2rem;border-radius:3px;padding:0.1rem 0.3rem;font-size:0.6rem;background-color:#feee96">
+                        <?php echo $tag ?>
+                    </span>
+
+            <?php endforeach; ?>
+                <div style="font-size:0.6rem;margin:0.25rem 0;color:#666">
+                    <?php echo $user_info['tags']['brief'] ?>
+                </div>
+                <div>
+                    <ul class="gallery">
+                    <?php
+                    if(!empty($user_info['tags']['images'])) {
+                        $imgs = explode(',',$user_info['tags']['images']);
+
+
+                            foreach ($imgs as $img):
+                                ?>
+
+
+                                <li style="float:left;margin-right:0.25rem;" data-src="<?php echo $img; ?>"
+                                    data-size="<?php echo \Util\ImgSize::getSizeFromUrl($img) ?>"
+                                    data-med-src="<?php echo $img; ?>"
+                                    data-med-size="<?php echo \Util\ImgSize::getSizeFromUrl($img) ?>">
+                                    <img src="<?php echo $img ?>?x-oss-process=image/resize,m_fill,h_200,w_200" alt=""
+                                         style="width:3.75rem;height:3.75rem">
+                                </li>
+
+
+                                <?php
+                            endforeach;
+                        }
+                        ?>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+    <?php } ?>
+    <?php if ($user_info['newest_discuss_pic']) { ?>
+        <div id='discuss-container' class="datum_friend swiper-container ">
+            <h1>TA的动态(<em><?php echo $user_info['discuss_count']?></em>)</h1>
+            <ul class="datum_friend_list swiper-wrapper ">
+                <?php
+                    $i = 0;
+                    foreach ($user_info['newest_discuss_pic'] as $item) {
+
+                ?>
+                    <a href="http://wap.klgwl.com/discuss/detail?item_id=<?php echo $item['id']; ?>" >
+                        <li class="swiper-slide">
+                            <?php if($item['media_type'] == 3){ ?><!--图片-->
+                            <img src="<?php echo $item['url']?>?x-oss-process=image/resize,m_fill,h_200,w_200" alt="" style="width:3.1rem;height:3.1rem" >
+                            <?php }elseif($item['media_type'] == 2){
+                                $item['url'] = explode('?',$item['url'])[0]
+                                ?>
+                                <img src="<?php echo $item['url']?>?x-oss-process=image/resize,m_fill,h_200,w_200" alt="" style="width:3.1rem;height:3.1rem" >
+                            <?php } ?>
+                        </li>
+                    </a>
+
+                <?php
+                    $i++;
+                    if($i >= 4)
+                        break;
+                    }
+                ?>
+                <a href="javascript:;" id="more-discuss" >
+                    <li class="swiper-slide" style="width:100px" >
+                        <div  style="width:2.5rem;height:2.5rem;line-height: 2.5rem;font-size:0.7rem">
+                           更多 >>
+                        </div>
+                    </li>
+                </a>
+            </ul>
+        </div>
+    <?php } ?>
+
+    <?php if ($user_info['gift']) { ?>
+        <div id="gift-container" class="datum_friend swiper-container ">
+            <h1>TA的礼物(<em><?php echo $user_info['gift']['count']?></em>)</h1>
+            <ul class="datum_friend_list swiper-wrapper ">
+                <?php foreach ($user_info['gift']['list'] as $item) {?>
+                    <li class="swiper-slide" >
+                        <img src="<?php echo $item['thumb']?>" alt="" >
+                        <p style="font-size:0.6rem">
+                            <span><?php echo $item['name']?></span>
+                            (<?php if( $item['own_count'] > 999 ) echo "1k+";else echo $item['own_count']?>)
+                        </p>
+                    </li>
+                <?php }?>
+            </ul>
+        </div>
+    <?php } ?>
+
+
+
+    <div class="datum_person">
+        <h1>基本资料</h1>
+        <div class="container">
+            <ul class="datum_person_list">
+                <li>
+                    <span class="list_l">昵称</span>
+                    <span class="list_r"><?php echo $user_info['username']; ?></span>
+                </li>
+                <li>
+                    <span class="list_l">ID</span>
+                    <span class="list_r"><?php echo $user_info['uid']; ?></span>
+                </li>
+                <li>
+                    <span class="list_l">等级</span>
+                    <span class="list_r">LV.<?php echo $user_info['grade']; ?></span>
+                </li>
+                <li>
+                    <span class="list_l">性别</span>
+                    <span class="list_r"><?php echo $user_info['sex'] == 1 ? '男' : '女'; ?></span>
+                </li>
+                <li>
+                    <span class="list_l">年龄</span>
+                        <span
+                            class="list_r"><?php echo $user_info['birthday'] ? \Multiple\Wap\Helper\UserStatus::getAge($user_info['birthday']) : '保密'; ?></span>
+                </li>
+                <li>
+                    <span class="list_l">星座</span>
+                    <span
+                            class="list_r"><?php echo $user_info['constellation'] ? $user_info['constellation'] : '保密'; ?></span>
+                </li>
+                <li>
+                    <span class="list_l">地区</span>
+                        <span
+                            class="list_r"><?php echo (empty($user_info['province_name']) && empty($user_info['city_name'])) ? '暂无地址信息' : $user_info['province_name'] . ' ' . $user_info['city_name']; ?></span>
+                </li>
+                <li>
+                    <span class="list_l">个人签名</span>
+                        <span
+                            class="list_r"><?php echo $user_info['signature'] ? $user_info['signature'] : '此人很懒什么也没留下'; ?></span>
+                </li>
+                <li>
+                    <span class="list_l">注册时间</span>
+                    <span class="list_r"><?php echo date('Y-m-d',$user_info['created']) ?></span>
+                </li>
+            </ul>
+        </div>
+        <div class="more_con">更多基本资料</div>
+    </div>
+
+    <!--新增的  认证成功以后显示人物的简介-->
+    <?php if(!empty($user_info['introduce'])) {?>
+    <div class="datum_intro">
+        <div class="datum_intro_con">
+            <h1>人物介绍</h1>
+            <div class="datum_info">
+                <p><?php echo $user_info['introduce']?></p>
+            </div>
+            <div class="datum_figue"><a href="<?php echo $user_info['website']?>">查看TA的个人链接</a></div>
+        </div>
+    </div>
+    <?php }?>
+</div>
+<script>
+    seajs.use('tools/swiper.min.js', function () {
+        var swiper_gift = new Swiper('#gift-container', {
+            slidesPerView: 5,
+            spaceBetween: 50,
+            freeMode: true
+        });
+        var swiper_discuss = new Swiper('#discuss-container', {
+            slidesPerView: 5,
+            freeMode: true
+        });
+    });
+    /*seajs.use('app/ps.init.js?v=1.0.1',function (api) {
+        $(function(){
+            api.init();
+        });
+
+    });*/
+    seajs.use('/static/wap/js/app/user/app.user.js',function (api) {
+        api.user_center(<?php echo $user_info['uid']?>);
+        $('#more-discuss').on('click',function () {
+            $('.tab_list li[data-id="2"]').click();
+        });
+
+    });
+    $('.more_con').on('click',function(){
+        $(this).remove();
+        $('.datum_person_list').css('height','auto');
+    });
+    $('#more-discuss').on('click',function () {
+        $(".tab_list li[data-id='1']").click();
+    });
+</script>

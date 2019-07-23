@@ -1,0 +1,138 @@
+<?php use Components\User\UserManager; ?>
+<style>
+    .current {
+        color: #ff0000;
+    }
+
+    .txt.err {
+        border-color: #ff0000;
+    }
+
+    .txt.txtdiscount {
+        width: 36px;
+    }
+</style>
+<script>
+    seajs.use('app/users/user.diamond.wechat.js?v=1.1.1', function (api) {
+        api.init();
+    });
+</script>
+<section>
+    <form action="javascript:;" class="setGradeForm">
+        <table class='list' id="menuCats">
+            <thead>
+            <tr class="head">
+                <!--  <th style='width:60px;'></th>-->
+                <th style='width:80px;'>龙钻数</th>
+                <th style='width:120px;'>金额【元】</th>
+                <th style='width:90px;'>赠送龙钻数</th>
+                <!--   <th style='width:200px;'>头衔图标</th>-->
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody class="listData">
+            <?php
+            if ($data) {
+                foreach ($data as $k => $item) {
+                    ?>
+                    <tr class="item"
+                        data-id="<?php echo $k; ?>"
+                        data-coin="<?php echo $item['coin'] ?>"
+                        data-money="<?php echo $item['money']; ?>"
+                        data-donate="<?php echo $item['donate']; ?>">
+                        <td>
+                            <input class="txt coin" type="text" data-id="<?php echo $k; ?>"
+                                   data-old="<?php echo $item['coin']; ?>"
+                                   value="<?php echo $item['coin']; ?>" maxlength="20"/>
+                        </td>
+                        <td class="center">
+                            <b class="orange">￥</b> <input class="txt money" type="text" style="width: 80px;"
+                                                           maxlength="10"
+                                                           data-id="<?php echo $k; ?>"
+                                                           data-old="<?php echo $item['money']; ?>"
+                                                           value="<?php echo $item['money']; ?>"/>
+                        </td>
+                        <td>
+                            <input class="txt donate" type="text" style="width: 80px;" maxlength="10"
+                                   data-id="<?php echo $k; ?>"
+                                   data-old="<?php echo $item['donate']; ?>"
+                                   value="<?php echo $item['donate']; ?>"/>
+                        </td>
+
+                        <td>
+                            <a href="javascript:;" data-id="<?php echo $item['money']; ?>"
+                               class="del-rule btn btn-danger btn-xs"><i class="fa fa-remove"></i> 删除</a>
+                        </td>
+                    </tr>
+                <?php }
+            } else { ?>
+                <tr>
+                    <td colspan="9" class="noData">
+                        <p style="margin: 20px;color:#f00;">
+                            规则尚未添加，请添加～！
+                        </p>
+                    </td>
+                </tr>
+            <?php } ?>
+            </tbody>
+            <tr class="showpage">
+                <th class="name">操作</th>
+                <td colspan="7">
+                    <input type="submit" class="btn btn-success btn-sm"
+                           value="更新设置" id="setRuleBtn"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</section>
+
+<section>
+    <form action="javascript:;" class="addRuleForm">
+        <table class='list'>
+            <tr class="head">
+                <!--   <th style='width:60px;'></th>-->
+                <th style='width:120px;'>龙钻个数</th>
+                <th style='width:120px;'>金额</th>
+                <th style='width:120px;'>赠送龙钻数</th>
+                <th></th>
+                <!-- <th style='width:200px;'>头衔图标</th>-->
+            </tr>
+            <tbody class="listData">
+            <tr class="addRow">
+                <!--  <th class="name"></th>-->
+                <td>
+                    <input class="txt addCoin" type="text" maxlength="10"/>
+                </td>
+                <td class="center">
+                    <b class="orange">￥</b><input class="txt addMoney" type="text" maxlength="10"
+                                                  placeholder="金额"/>
+                </td>
+                <td>
+                    <input class="txt addDonate" type="text" maxlength="10" value="0"
+                           placeholder="赠送龙豆"/>
+                </td>
+                <!-- <td>
+                     <input type="hidden" name="icon"
+                            value=""
+                            class="txt badgeField"/>
+                     <img src="" alt=""
+                          class="badge-img-previewer"
+                          style="height: 32px;"/>
+                     <a class="btn btn-sm btn-success upload-badge" href="javascript:;">更改图标</a>
+                 </td>-->
+
+                <td></td>
+            </tr>
+            </tbody>
+            <tr class="showpage">
+                <th class="name">操作</th>
+                <td colspan="8"><input type="submit" class="btn btn-sm btn-primary"
+                                       value="添加规则" id="addRuleBtn"/></td>
+            </tr>
+        </table>
+    </form>
+</section>
+<section>
+
+
+</section>

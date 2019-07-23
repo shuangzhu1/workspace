@@ -1,0 +1,16 @@
+<!--<script type="text/javascript" src="/static/panel/js/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="/static/panel/js/echarts/echarts.js"></script>
+<script type="text/javascript" src="/static/panel/js/echarts/themes/roma.js"></script>-->
+<div class="tabs">
+    <a href="<?php echo $this->uri->setUrl(['type' => 0], ['p']); ?>"
+       class="tab <?php echo $type == 0 ? 'active' : ''; ?>">当前</a>
+    <a href="<?php echo $this->uri->setUrl(['type' => 1], ['p']); ?>"
+       class="tab <?php echo $type == 1 ? 'active' : ''; ?>">历史</a>
+</div>
+<?php if ($type == 0) {
+    $this->partial('stat/online/current')
+    ?>
+<?php } else if ($type == 1) {
+    $this->partial('stat/online/history')
+    ?>
+<?php } ?>

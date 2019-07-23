@@ -1,0 +1,49 @@
+<tr class="item" data-id="<?php echo $item['id']; ?>">
+    <th class='name'><?php echo $item['id']; ?></th>
+    <th class='name'><?php echo $item['name']; ?></th>
+    <td><?php if ($item['thumb']) { ?><a data-lightbox="roadtrip" href="<?php echo $item['thumb'] ?>"><img
+                src="<?php echo $item['thumb'] ?>?x-oss-process=image/resize,m_fill,h_40,w_40"/>
+            </a><?php } ?>
+    </td>
+    <td>
+        <?php echo $item['animation'] != '' ? '<span class="badge badge-primary">是</span>' : '否'; ?>
+    </td>
+    <!-- <td>
+        <?php /*echo $item['sort_num'] */ ?>
+    </td>-->
+    <td><?php echo $item['coins'] == 0 ? '免费' : '<span class="badge badge-purple">' . $item['coins'] . '</span>' ?></td>
+    <td><?php echo $item['is_vip'] == 1 ? '是' : '否' ?></td>
+
+    <td><?php echo $item['enable'] == 1 ? '正常' : '禁用' ?></td>
+    <td><?php echo $item['use_count'] ?></td>
+    <td>
+        <input type="checkbox"
+               data-id="<?php echo $item['id'] ?>" <?php echo $item['is_recommend'] == 1 ? 'checked' : '' ?>
+               class="ace ace-switch ace-switch-5 recommendBtn"/>
+        <span class="lbl"></span>
+    </td>
+    <td><?php echo $item['charm'] ?></td>
+    <td>
+        <a href="JavaScript:;"
+           data-id="<?php echo $item['id']; ?>"
+           data-name="<?php echo $item['name']; ?>"
+           data-enable="<?php echo $item['enable']; ?>"
+           data-sort_num="<?php echo $item['sort_num']; ?>"
+           data-thumb="<?php echo $item['thumb']; ?>"
+           data-coins="<?php echo $item['coins']; ?>"
+           data-animation="<?php echo $item['animation']; ?>"
+           data-vip="<?php echo $item['is_vip']; ?>"
+           data-recommend="<?php echo $item['is_recommend']; ?>"
+           data-charm="<?php echo $item['charm']; ?>"
+           class="btn btn-primary btn-sm editBtn"><i class="fa fa-edit"></i> 编辑</a>
+        <?php if ($item['enable'] == 1) { ?>
+            <a href="JavaScript:;" data-id="<?php echo $item['id']; ?>"
+               class="btn btn-danger btn-sm lockBtn"><i class="fa fa-remove"></i> 禁用</a>
+        <?php } else { ?>
+            <a href="JavaScript:;" data-id="<?php echo $item['id']; ?>"
+               class="btn btn-purple btn-sm unLockBtn"><i class="fa fa-check"></i> 取消禁用</a>
+        <?php } ?>
+        <a href="JavaScript:;" data-id="<?php echo $item['id']; ?>"
+           class="btn btn-danger btn-sm delBtn"><i class="fa fa-trash"></i> 删除</a>
+    </td>
+</tr>

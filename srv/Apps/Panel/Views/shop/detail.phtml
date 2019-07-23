@@ -1,0 +1,236 @@
+<link rel="stylesheet" href="/static/panel/js/swiper/swiper-3.4.2.min.css">
+<style>
+    .swiper-container {
+        width: 50%;
+        height: auto;
+        max-height: 400px;
+        float: left;
+    }
+
+    .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+
+        /* Center slide text vertically */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+    }
+
+    .swiper-pagination-bullet {
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        line-height: 20px;
+        font-size: 12px;
+        color: #000;
+        opacity: 1;
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    .swiper-pagination-bullet-active {
+        color: #fff;
+        background: #2c6aa0;
+    }
+
+    .anchorBL {
+        display: none
+    }
+
+    .inner-nav {
+        background: #fff;
+    }
+
+    .page-content {
+        padding: 20px;
+    }
+
+    .main-container:after, .page-content {
+        background: #ececec
+    }
+
+    .shop_content {
+        position: relative;
+        left: 0;
+        right: 0;
+        height: auto;
+        border: 1px solid #e4e4e4;
+        padding: 20px;
+        box-sizing: content-box;
+        clear: both;;
+        background-color: #fff;
+        border-radius: 5px;
+    }
+
+    .shop_content p {
+        line-height: 40px;
+        color: #666;
+    }
+
+    .shop_content p .lab {
+        color: #444;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .good_list {
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .good_list li {
+        width: 100%;
+        height: 160px;
+        margin-bottom: 5px;
+        border-bottom: 1px solid #e4e4e4;
+        padding: 10px 0;
+        box-sizing: content-box;
+    }
+
+    .good_list li.bar {
+        height: 40px;
+
+    }
+
+    .good_list li .left {
+        width: 160px;
+        float: left;
+    }
+
+    .good_list li .right {
+        float: left;
+        margin-left: 10px
+    }
+
+    .good_list li .right .price {
+        color: #FC7749;
+        font-size: 16px;
+        font-weight: bold
+    }
+</style>
+<script src="/static/panel/js/swiper/swiper-3.4.2.jquery.min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=MWkGH8HcEfA5nbdkiYXp67VmxbgL4iGe"></script>
+<div style="height: 10px;width: 100%"></div>
+<!-- Swiper -->
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+        <?php
+        $imgs = explode(',', $shop['images']);
+        foreach ($imgs as $item) {
+            ?>
+            <div class="swiper-slide">
+                <img src="<?php echo $item ?>" style="width: 100%;">
+
+            </div>
+        <?php } ?>
+    </div>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+</div>
+<div class="map" id="map"
+     style="width: 49%;height: 400px;float: right;box-sizing: content-box;border: 1px solid #e4e4e4;border-radius: 2px;margin-bottom: 10px">
+
+</div>
+<div class="shop_content"
+     style="padding-top: 10px">
+    <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;"><i class="fa fa-tags"></i>
+            基本信息<span
+                class="total_count total"></span></b></div>
+    <p><label class="lab">店主：</label><a href="javascript:;" class="newTarget"
+                                        data-href="/panel/users/detail/?user_id=<?php echo $shop['user_id'] ?>"
+                                        data-title="用户详情【<?php echo $shop['user_id'] ?>】"><img
+                style="width:40px;height: 40px;border-radius: 100%"
+                src="<?php echo $user['avatar'] ?>?x-oss-process=image/resize,m_fill,h_250,w_250"/>
+            【<?php echo $user['username'] ?>】【<?php echo $shop['user_id'] ?>】</a></p>
+    <p><label class="lab">店名：</label><?php echo $shop['name'] ?></p>
+    <p><label class="lab">地址：</label><?php echo $shop['address'] ?>【<?php echo $shop['address_detail'] ?>】</p>
+    <p><label class="lab">联系方式：</label><?php echo $shop['contact_number'] ?></p>
+    <p><label class="lab">店铺描述：</label><?php echo $shop['brief'] ?></p>
+    <p><label class="lab">外部链接地址：</label><?php echo $shop['url'] ? $shop['url'] : '暂无' ?></p>
+    <p><label class="lab">开店时间：</label><?php echo date('Y-m-d H:i', $shop['created']) ?></p>
+    <p><label class="lab">店铺状态：</label>
+        <?php if ($shop['status'] == \Services\Shop\ShopManager::status_normal) { ?>
+            <label class="badge badge-success">正常</label>
+            <span class="btn btn-xs btn-danger delBtn"  data-id="<?php echo $shop['id'] ?>"><i class="fa fa-remove"></i> 封杀</span>
+        <?php } elseif ($shop['status'] == \Services\Shop\ShopManager::status_system_deleted) { ?>
+            <label class="badge badge-error">系统封杀</label>
+            <span class="btn btn-xs btn-success recoveryBtn" data-id="<?php echo $shop['id'] ?>"> 恢复正常</span>
+        <?php } ?>
+    </p>
+
+</div>
+<div class="shop_content good_wrap"
+     style="margin-top: 10px;padding-top: 10px">
+
+</div>
+<div class="modal fade" id="checkModal">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">封杀原因</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <div>
+                    <div class="form-group">
+                        <label for="form-field-11">审核失败原因:</label>
+                        <select name="reason_list" class="reason_list">
+                            <option value="0">无</option>
+                            <option value="1">信誉炒作</option>
+                            <option value="2">虚假代理</option>
+                            <option value="3">卖高仿品牌货或品牌假货</option>
+                            <option value="4">重复开店</option>
+                            <option value="5">商品名有禁用的词或字</option>
+                            <option value="6">出售禁售品</option>
+                            <option value="7">盗用他店图片被投诉</option>
+                            <option value="8">商品和宝贝描述不符</option>
+
+                        </select>
+                    </div>
+                    <textarea id="reason" placeholder="请填写具体原因" class=" form-control"
+                              style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 100px;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" value="0" id="shop_id"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-type="user" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        paginationBulletRender: function (swiper, index, className) {
+            return '<span class="' + className + '">' + (index + 1) + '</span>';
+        }
+    });
+</script>
+<script type="text/javascript">
+    seajs.use('app/panel/shop/shop.js?v=1.1', function (api) {
+        api.Map("<?php echo $shop['lng']?>", "<?php echo $shop['lat']?>", 'map');
+        api.getGood("<?php echo $shop['id']?>", "/api/shop/good",'.good_wrap');
+        api.shopHandle();
+        $(".reason_list").on('change', function () {
+            var r_value = $(this).val();
+            if (r_value != '0') {
+                $("#reason").val($(".reason_list option[value='" + r_value + "']").html());
+            }
+        })
+    });
+</script>

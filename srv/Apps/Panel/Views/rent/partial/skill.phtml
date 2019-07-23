@@ -1,0 +1,239 @@
+
+<style>
+    .idle{
+        border:1px solid #eee;
+        border-radius:2px;
+        background-color:#e1e3e4;
+        font-size:12px;
+        padding:2px 5px;
+    }
+</style>
+<table id="article-list" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style='width:36px' class="center">ID</th>
+
+        <th style='width:150px' class="center">技能</th>
+        <th style='width:200px' class="center">技能描述</th>
+        <th style='width:100px' class="center">线下服务</th>
+        <th style='width:150px' class="center">金额（元）</th>
+        <th style='width:150px' class="center">服务费率</th>
+        <th style='width:150px' class="center">图片</th>
+        <th style='width:80px' class="center">视频</th>
+        <th style='width:180px' class="center">在线时间</th>
+        <th style='width:80px' class="center">音频</th>
+        <th style="width:100px" class="center">操作</th>
+    </tr>
+    </thead>
+    <?php
+    if ($item) {
+    ?>
+
+    <tbody class="listData">
+    <?php
+    $index=1;
+
+    foreach ($item as $v) {
+
+        ?>
+        <tr class="item" data-prepare="<?php echo $user['id'] . '-' . $v['type'] . '-' . $v['subtype']?>">
+            <th class='name'><?php echo $index; ?></th>
+
+            <td>
+                <?php echo $v['title'] ; ?>
+            </td>
+            <td>
+                <a href="javascript:;" class="skill_desc" data-placement="right" title="<?php echo $v['desc']; ?>" >
+                    <?php echo mb_substr($v['desc'],0,7)?> ...
+                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                </a>
+
+            </td>
+            <td class="center">
+                <?php echo $v['offine'] ? '是' : '否';?>
+            </td>
+
+
+            <td style="text-align:right;">
+                <span style="color:red">
+                    <?php echo sprintf('%.2f',$v['money'] / 100)   ?>
+                </span>
+            </td>
+            <td class="align-right blue"><?php echo $v['service_rate']?></td>
+            <td>
+                <?php if ($v['pictures']) { ?>
+                    <?php $images = explode(',', $v['pictures']);
+                    foreach ($images as $i) {
+                        ?>
+                        <a href="<?php echo $i; ?>" data-lightbox="roadtrip<?php echo $v['id']; ?>"><img
+                                src="<?php echo $i; ?>?x-oss-process=image/resize,m_fill,h_160,w_160"
+                                style="width: 40px; height: 40px;"/></a>
+                    <?php } ?>
+                <?php } ?>
+            </td>
+            <td class="center">
+                <?php if( !empty( $v['video']) ) {?>
+                    <a href="javascript:;" class=".video" data-video-src="<?php echo $v['video'] ?>">播放</a>
+                <?php }else{ ?>
+                    无
+                <?php }?>
+            </td>
+            <td>
+                <?php if ($v['idle']) { ?>
+                    <?php foreach ($v['idle'] as $idle) { ?>
+                        <span class="idle"><?php
+                            $time_arr = \Multiple\Panel\Controllers\RentController::getWeek($idle['f'], $idle['t']);
+                            echo $time_arr['name']
+                            ?></span>
+                    <?php } ?>
+                <?php } ?>
+                <?php ?>
+            </td>
+            <td>
+                <?php if ($v['audio'] && strrpos($v['audio'], 'audio')) {
+                    $time = explode('_t_', $v['audio'])[1];
+                    $time = explode('.', $time)[0];
+                    ?>
+                    <span
+                            class="dur"><?php echo $time . 's' ?></span>
+                    <span class="voice" data-id="<?php echo $v['id'] ?>"
+                          data-src="<?php echo $v['audio'] ?>"
+                          style="width: 16px;height: 16px;display:inline-block;background: url(/static/panel/images/admin/voice-left.png) no-repeat;"></span>
+                <?php } ?>
+            </td>
+
+            <td class="center">
+                <a href="JavaScript:;" data-id="<?php echo $v['id']; ?>" class="btn btn-success btn-xs delSkill" >删除</a>
+            </td>
+        </tr>
+        <?php
+        $index++;
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="17">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+
+
+</table>
+<audio src="" id="voice_box">
+
+
+
+<script>
+    //弹窗页面显示用户信息
+    $('#userInfo').html("<?php echo $user['username'] . '【' . $user['id'] . '】'?>");
+    //语音开始
+
+    var voice_timer = false;
+    var voice_play = 0;
+    var voice_box = document.getElementById("voice_box");
+    var voice_this = '';
+    //播放结束
+    voice_box.addEventListener('ended', function () {
+        $(".voice.active").css({'width': '16px'}).removeClass("active");
+        voice_timer && clearInterval(voice_timer);
+    }, false);
+    voice_box.addEventListener('playing', function () {
+        var i = 1;
+        voice_timer = setInterval(function () {
+            if (i == 1) {
+                voice_this.css({'width': '6px'});
+            } else if (i == 2) {
+                voice_this.css({'width': '9px'});
+            } else {
+                voice_this.css({'width': '16px'});
+                i = 0;
+            }
+            i++;
+        }, 300)
+    }, false);
+    voice_box.onerror = function (e) {
+        console.log(voice_box.src);
+        //1.用户终止 2.网络错误 3.解码错误 4.URL无效
+        if (voice_box.src != window.location.href) {
+            if (voice_box.error.code == 4) {
+                alert("资源不存在【" + voice_box.src + '】');
+            }
+        }
+        //alert("Error! 出错了");
+    };
+    $(".listData").on('click', '.voice', function () {
+        if ($(this).hasClass("active")) {
+            $(this).removeClass("active");
+            voice_play = 0;
+            $(this).css({'width': '16px'});
+            voice_timer && clearInterval(voice_timer);
+            voice_box.pause();
+        } else {
+            var __this = $(this);
+            voice_this = $(this);
+            $(".voice.active").css({'width': '16px'}).removeClass("active");
+            $(this).addClass('active');
+            voice_timer && clearInterval(voice_timer);
+
+            voice_play = $(this).data('id');
+
+            voice_box.src = __this.data('src');
+            voice_box.play();
+        }
+    });
+    //语音结束
+
+    //视频
+    $('.video').on('click', function(){
+        var _this = this;
+        var video_src = $(_this).data('video-src');
+        var loadStr='<video ' +
+            'width="100%" ' +
+            'height="100%"  ' +
+            'controls="controls" ' +
+            'autobuffer="autobuffer"  ' +
+            'autoplay="autoplay" ' +
+            'loop="loop" ' +
+            'style="max-height:70%">' +
+            '<source src="' + video_src + '" type="video/mp4">' +
+            '</source></video>'
+        layer.open({
+            type:2,
+            title: false,
+            area: ['630px', '360px'],
+            shade: 0.8,
+            closeBtn: 0,
+            content: loadStr,
+            success:function(){
+                $('.layui-m-layercont').find('i').remove();
+            }
+        });
+    });
+    $('.skill_desc').tooltip();
+
+    seajs.use('app/panel/panel.base',function(api){
+        $(".delSkill").on('click',function(){
+            var _this = this;
+            $('#reason').focus();
+            swal({
+                title: "下架理由",
+                text: "<textarea id='reason'  placeholder='注意：您所填写内容即为推送给用户的消息内容' style='height:150px;width:430px'></textarea>",
+                html: true,
+                showCancelButton: true,
+                confirmButtonText: "提交",
+                cancelButtonText: "取消"
+        },function(){
+                var reason = $('#reason').val(),
+                    data = $(_this).closest('tr').data('prepare');
+                    api.requestApi("/api/rent/delSkill",{reason:reason,data:data},function(res){
+                        if( res.result == 1)
+                        {
+                            tip.showTip('ok','操作成功',1000);
+                        }
+                    })
+            });
+        });
+    });
+</script>

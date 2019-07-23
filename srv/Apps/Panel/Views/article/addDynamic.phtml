@@ -1,0 +1,143 @@
+<script src="/srv/static/ace/js/bootstrap-wysiwyg.min.js"></script>
+<script src="/srv/static/ace/js/jquery.hotkeys.min.js"></script>
+
+
+<div class="modal fade" id="myModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog" style="width:60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">添加/编辑问题</h4>
+            </div>
+            <div class="modal-body">
+                <div id="box" >
+                    <div style="width:80%;margin:0 auto">
+                        <div style="margin-top:10px">
+                            <input type="hidden" id="id" value="0">
+                            <label for="ques" class="col-xs-2">标&nbsp;&nbsp;&nbsp;&nbsp;题：</label>
+                            <input type="text" id="ques" class="col-xs-10" >
+                            <div class="clearfix"></div>
+                        </div>
+                        <div style="margin-top:10px">
+                            <input type="hidden" id="id" value="0">
+                            <label for="ques" class="col-xs-2">网页关键词：</label>
+                            <input type="text" id="html-kw" class="col-xs-10" >
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div style="margin-top:10px">
+                            <input type="hidden" id="id" value="0">
+                            <label for="ques" class="col-xs-2">网页描述：</label>
+                            <textarea id="html-desc" class="col-xs-10" style="height:60px" ></textarea>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div style="margin-top:10px">
+                            <input type="hidden" id="id" value="0">
+                            <label for="ques" class="col-xs-10" style="font-weight:bold">概要：（动态列表页显示的概要信息）</label>
+                            <div class="clearfix"></div>
+                            <div id="editor-brief" style="min-height:200px;border:1px solid #E5E5E5" ></div>
+                        </div>
+
+                        <div style="margin-top:10px">
+                            <input type="hidden" id="id" value="0">
+                            <label for="ques" class="col-xs-10" style="font-weight:bold">动态详情：</label>
+                            <div class="clearfix"></div>
+                            <div id="editor" style="min-height:500px;border:1px solid #E5E5E5"  ></div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="save">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+<script>
+    $(function () {
+        $('#editor,#editor-brief').ace_wysiwyg({
+            toolbar:
+                [
+                    'font',
+                    null,
+                    'fontSize',
+                    null,
+                    {name:'bold', className:'btn-info'},
+                    {name:'italic', className:'btn-info'},
+                    {name:'strikethrough', className:'btn-info'},
+                    {name:'underline', className:'btn-info'},
+                    null,
+                    {name:'insertunorderedlist', className:'btn-success'},
+                    {name:'insertorderedlist', className:'btn-success'},
+                    {name:'outdent', className:'btn-purple'},
+                    {name:'indent', className:'btn-purple'},
+                    null,
+                    {name:'justifyleft', className:'btn-primary'},
+                    {name:'justifycenter', className:'btn-primary'},
+                    {name:'justifyright', className:'btn-primary'},
+                    {name:'justifyfull', className:'btn-inverse'},
+                    null,
+                    {name:'createLink', className:'btn-pink'},
+                    {name:'unlink', className:'btn-pink'},
+                    null,
+                    /*{name:'insertImage', className:'btn-success'},*/
+                    null,
+                    'foreColor',
+                    null,
+                    {name:'undo', className:'btn-grey'},
+                    {name:'redo', className:'btn-grey'}
+                ]
+        }).prev().addClass('wysiwyg-style2').append('<div class="btn-group">  <div class="inline position-relative"> <a class="btn btn-sm btn-success wysiwyg-choose-file"  title="" ><i class="fa fa-picture-o"></i></a>   </div> </div>');
+    });
+    //添加图片
+    seajs.use('app/panel/panel.storage',function(storage){
+        storage.getImg('.wysiwyg-choose-file',function (data) {
+            document.execCommand("insertimage", false, data.url);
+        });
+    });
+    seajs.use('app/panel/panel.base',function(api){
+        //保存编辑内容
+        $('#save').on('click',function(){
+            var brief = $('#editor-brief').html();
+            var html_kw = $('#html-kw').val();
+            var html_desc = $('#html-desc').val();
+            var content = $('#editor').html();
+            var title = $.trim($('#ques').val());
+            var id = $('#id').val();
+            var isOk = true;
+            if( title === '' )
+            {
+                isOk = false;
+                tip.showTip('err','请输入问题',1000);
+                return;
+            }
+            if( brief === '' )
+            {
+                isOk = false;
+                tip.showTip('err','请输入动态概要',1000);
+                return;
+            }
+            if( isOk )
+            {
+                api.requestApi('/api/article/saveDynamic',{id:id,content:content,title:title,brief:brief,html_kw:html_kw,html_desc:html_desc},function (res) {
+                    if( res.result === 1 )
+                    {
+                        tip.showTip('ok','操作成功',800,function () {
+                            $('#myModal').modal('hide');
+                            location.reload();
+                        });
+
+                    }else
+                    {
+                        tip.showTip('err','操作失败',1000)
+                    }
+                });
+            }
+        });
+    });
+
+</script>

@@ -1,0 +1,187 @@
+<link rel="stylesheet" type="text/css" href="/static/panel/js/tools/datetimepicker/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" type="text/css" href="/static/panel/ali_iconfont/iconfont.css?v=1.0">
+<script src="/static/panel/ali_iconfont/iconfont.js?v=1.0"></script>
+<style>
+    .icon {
+        width: 1em;
+        height: 1em;
+        vertical-align: -0.15em;
+        fill: currentColor;
+        overflow: hidden;
+        display: inline-block;
+    }
+
+</style>
+<form action="" method="get"
+      style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px; line-height: 50px;">
+    <label for="name">用户ID</label>
+    <input name="uid" type="text" id="uid" placeholder="用户ID" value="<?php echo $uid ? $uid : ''; ?>">
+    &nbsp;<label for="name">购买时长:</label>
+    <select name="month">
+        <option value="0" <?php echo $month == 0 ? 'selected' : '' ?>>所有</option>
+        <option value="1" <?php echo $month == 1 ? 'selected' : '' ?>>1个月</option>
+        <option value="3" <?php echo $month == 3 ? 'selected' : '' ?>>3个月</option>
+        <option value="6" <?php echo $month == 6 ? 'selected' : '' ?>>6个月</option>
+    </select>
+    &nbsp;<label for="name">付费时间:</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd"/>
+    - <input type="text" id="end" value="<?php echo $end; ?>" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd"/>
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+</form>
+
+<table id="article-list" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style='width:80px'>用户ID</th>
+        <th style='width:150px'>用户名</th>
+        <th style='width:80px'>用户头像</th>
+        <th style="width: 100px">购买时长</th>
+        <th style="width: 100px">支付金额</th>
+        <th style='width:200px'>付费时间</th>
+        <th style='width:200px'>到期时间</th>
+        <th style='width:100px'>操作</th>
+        <th style='width:100px'>状态</th>
+        <th style='width:100px'>剩余时长</th>
+
+        <!--        <th style='width:500px'>权限</th>-->
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+
+    <tbody class="listData">
+    <?php
+    $now = strtotime(date('Ymd'));
+    foreach ($list as $item) {
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <th class='name'><?php echo $item['user_id']; ?></th>
+            <td><?php echo $users[$item['user_id']]['username']; ?></td>
+            <td><img src="<?php echo $users[$item['user_id']]['avatar'] ?>" style="width: 50px;height: 50px"/></td>
+            <td><?php echo $item['month']; ?>个月</td>
+            <td>￥ <?php echo sprintf("%.2f", $item['money'] / 100); ?></td>
+            <td>
+                <?php echo date('Y-m-d H:i:s', $item['created']); ?>
+            </td>
+            <td>
+                <?php echo date('Y-m-d H:i:s', $item['deadline']); ?>
+            </td>
+            <td>
+                <?php if ($item['is_renew'] == 1) { ?>
+                    <span class="label label-lg label-purple arrowed-right">续费</span>
+                <?php } else { ?>
+                    <span class="label label-lg label-success arrowed-right">购买</span>
+                <?php } ?>
+            <td>
+                <?php if ($item['status'] == 1) { ?>
+                    <span class="badge badge-success">正常</span>
+                <?php } else if ($item['status'] == 0) { ?>
+                    <span class="badge badge-grey"> 已过期</span>
+                <?php } else if ($item['status'] == 2) { ?>
+                    <span class="badge badge-info">已过度到新的订单</span>
+                <?php } ?>
+            </td>
+            <td>
+                <?php echo $item['deadline'] > time() ? (($item['deadline'] - $now) / 86400) . "天" : "已过期" ?>
+            </td>
+            <!--            <td>-->
+            <!--                <span class="badge badge-primary ">红包领取上限:-->
+            <?php //echo $item['package_pick_count'] ?><!--</span>-->
+            <!--                <span class="badge badge-primary ">创建群聊上限:-->
+            <?php //echo $item['add_group_count'] ?><!--</span>-->
+            <!--                <span class="badge badge-primary ">群聊人数上限:-->
+            <?php //echo $item['group_member_count'] ?><!--</span>-->
+            <!--                <span-->
+            <!--                    class="badge badge-primary ">店铺访客:-->
+            <?php //echo $item['shop_visitor'] == -1 ? '全部' : $item['shop_visitor'] ?><!--</span>-->
+            <!--                  <span-->
+            <!--                      class="badge badge-primary ">用户访客:-->
+            <?php //echo $item['user_visitor'] == -1 ? '全部' : $item['shop_visitor'] ?><!--</span>-->
+            <!---->
+            <!--            </td>-->
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="17">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <!--  <tr class="showpage">
+          <th class="name">操作</th>
+          <td colspan="17">
+                  <span>
+                      [ <a href="javascript:;" class="selectAll">全选</a> ]
+                      [ <a href="javascript:;" class="selectNone">全不选</a> ]
+                      [ <a href="javascript:;" class="selectInvert">反选</a> ]
+                      <a class="btn-light delAllSelected" href="javascript:;">批量屏蔽</a>
+                  </span>
+          </td>
+      </tr>-->
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+        </td>
+    </tr>
+</table>
+
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script src="/srv/static/panel/js/tools/Url.js"></script>
+
+<script>
+    $('[data-rel=tooltip]').tooltip();
+    //  var receive_start_val;
+    $('#start').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+    $('#end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+    var order = '<?php echo $sort ?>'
+    var sort_order = '<?php echo $sort_order ?>'
+    if (order != '' && sort_order != '') {
+        var current = $(".arrow[data-order='" + order + "']");
+        current.addClass("active");
+        current.attr('data-sort', sort_order);
+        if (sort_order == 'desc') {
+            current.find('.arrow-down').addClass('active');
+            current.find('.arrow-up').addClass('disabled');
+        } else {
+            current.find('.arrow-down').addClass('disabled');
+            current.find('.arrow-up').addClass('active');
+        }
+    }
+    var url = new Url();
+    $(".arrow").on('click', function () {
+        var order = $(this).attr('data-order');
+        var sort = $(this).attr('data-sort');
+        sort = sort == 'desc' ? 'asc' : 'desc';
+        url.setArgs({order: sort, sort: order, p: 1});
+        window.location.href = url.getUrl();
+    });
+</script>
+
+

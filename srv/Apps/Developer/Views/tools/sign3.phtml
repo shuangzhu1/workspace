@@ -1,0 +1,25 @@
+<form action="JavaScript:;" method="get"
+      style="border: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px;border-radius: 5px;line-height: 50px;">
+    <h3>签名内容</h3>
+    <textarea name="sign" style="width: 100%;height: 100px" id="sign"></textarea>
+    <input type="submit" class="btn btn-primary btn-sm btnSubmit" value="立即解析">
+</form>
+<div>
+    <h3>结果</h3>
+    <textarea id="result" style="width: 100%;height: 200px"></textarea>
+</div>
+<script>
+    seajs.use('app/panel/panel.base', function (api) {
+        $(".btnSubmit").on('click', function () {
+            var sign = $.trim($("#sign").val());
+            if (sign == '') {
+                api.showTip("err", '请输入签名', 1000);
+                return false;
+            }
+            api.requestApi('/api/tools/signVerify', {type: 3, sign: sign}, function (res) {
+                    $("#result").val(res.data);
+                }
+            )
+        });
+    })
+</script>

@@ -1,0 +1,52 @@
+<tr class="item music_item music_<?php echo $item['song_id'] ?>" data-id="<?php echo $item['song_id']; ?>"
+    data-mid="<?php echo $item['song_mid'] ?>">
+    <th class='name'><?php echo $item['song_id'] ?></th>
+    <td>
+        <a href="<?php echo $item['thumb']; ?>" data-lightbox="roadtrip"><img
+                src="<?php echo $item['thumb']; ?>"
+                style="width: 40px; height: 40px;border-radius: 100%"/></a>
+    </td>
+    <td><?php echo $item['name'] ?></td>
+    <td><?php echo $item['singer']; ?></td>
+    <td>
+        <?php echo $item['album']; ?>
+    </td>
+    <td>
+        <?php
+        $time = $item['time'];
+        if ($time > 60) {
+            $m = ceil($time / 60);
+            $s = $time % 60;
+        } else {
+            $m = 0;
+            $s = $time % 60;
+        }
+        $res = $m . ':' . ($s > 10 ? $s : '0' . $s);
+        echo $res;
+        ?>
+    </td>
+    <td>
+        <div class="music_handle">
+                        <span class="handle_item btnPlay" data-src="<?php echo $item['mp3'] ?>"
+                              data-song="<?php echo $item['song_id'] ?>"
+                              data-song-mid="<?php $item['song_mid'] ?>"
+                              data-name="<?php echo $item['name'] ?>"
+                              data-thumb="<?php echo $item['thumb'] ?>"
+                              title="试听"><i
+                                class="fa fa-play-circle-o"></i></span>
+                      <span class="handle_item btnPause" style="display: none" title="暂停"><i
+                              class="fa fa-pause-circle-o"></i></span>
+                     <span class="handle_item btnDownload"> <a href="<?php echo $item['mp3'] ?>" download="下载"
+                                                               title="下载">
+                             <i class="fa fa-download"></i></a>
+                     </span>
+            <span class="time_percent"></span>
+
+        </div>
+    </td>
+    <td>
+        <a class="btn btn-sm btn-primary newTarget" data-title="音乐裁剪" href="javascript:;"
+           data-href="/panel/music/cut?item=<?php echo base64_encode(json_encode($item)) ?>"><i
+                class="fa fa-cut"></i> 音乐剪辑</a>
+    </td>
+</tr>

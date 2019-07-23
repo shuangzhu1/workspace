@@ -1,0 +1,170 @@
+<style>
+    .sort-nav {
+        padding: 10px;
+        border: 1px solid #DEEFFB
+    }
+
+    .sort-nav span {
+        padding: 8px;
+        border: 1px solid #d0dbe7;
+        color: #428bca;
+        background-color: #f0f0f0;
+        cursor: pointer;
+    }
+
+    .sort-nav span.active {
+        background: #4cb329;
+        border-color: #4cb329;
+        color: #fff;
+    }
+
+</style>
+<form action="" method="get" style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px;">
+    <label for="name">用户id</label>
+    <input name="user_id" type="text" id="user_id" value="<?php echo $this->request->get('user_id'); ?>">
+    <label for="name">用户名</label>
+    <input name="username" type="text" id="username" value="<?php echo $this->request->get('username'); ?>">
+    <label for="name">操作类型</label>
+    <select name="action" id="action">
+        <option value="0">--请选择动作类型--</option>
+        <?php foreach (\Services\User\DragonCoin::$type_desc as $k => $item1) { ?>
+            <option value="<?php echo $k ?>"
+                    <?php if ($act && $act == $k){ ?>selected="selected" <?php } ?> ><?php echo $item1 ?></option>
+        <?php } ?>
+
+    </select>
+    <label for="name">操作时间(<?php echo date('Y-m-d') ?>)</label>
+    <input name="start_time" type="text" id="start_time" value="<?php echo $this->request->get('start_time'); ?>"> -
+    <input name="end_time" type="text" id="end_time" value="<?php echo $this->request->get('end_time'); ?>">
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+</form>
+
+<table id="article-list" class=' list' style="width:1200px">
+    <thead>
+    <tr class="head">
+        <th style='width:36px'>ID</th>
+        <!--      <th style='width:36px'>批量</th>-->
+        <th style='width: 50px;'>用户id</th>
+        <th style='width: 100px;'>用户昵称</th>
+        <th style='width:100px'>获取途径</th>
+        <th style='width:120px'>记录日期</th>
+        <th style='width:80px'>龙币</th>
+        <th style='width:100px'>备注</th>
+        <!-- <th style='width:50px'>操作</th>-->
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <th class='name'><?php echo $item['id']; ?></th>
+            <!--  <td><label>
+                    <input type="checkbox" class="chk ace" data-id="<?php /*echo $item['id']; */ ?>"/>
+                    <span class="lbl"></span>
+                </label></td>-->
+            <td>
+                <?php echo $item['user_id']; ?>
+            </td>
+            <td>
+                <?php echo $item['username'] != '' ? $item['username'] : '还未设置' ?>
+            </td>
+
+            <td class="green bold">
+                <?php echo $item['brief'] ?>
+            </td>
+            <td class="">
+                <?php echo date('Y年m月d日 H:i:s', $item['created']) ?>
+            </td>
+            <td class="">
+                <?php if ($item['in_out'] == \Services\User\DragonCoin::IN_OUT_IN) { ?>
+                    <b class="green bold">+ <?php echo $item['coins'] ?></b>
+                <?php } else { ?>
+                    <b class="red bold">- <?php echo $item['coins'] ?></b>
+                <?php } ?>
+
+            </td>
+            <td class="">
+                <?php if ($item['type'] == \Services\User\DragonCoin::TYPE_RECEIVE_GIFT) {
+                    $extra = json_decode($item['extra'], true);
+                    ?>
+                    <label class="badge badge-purple"> <span>赠送人：<?php echo $extra['uid'] ?></span>；
+                        <span>礼物价值：<b><?php echo $extra['beans'] ?></b> 龙豆</span>；
+                        <span>礼物id：<b><?php echo $extra['gift_id'] ?></b></span></label>
+
+                <?php } elseif ($item['type'] == \Services\User\DragonCoin::TYPE_CHANGE_CASH) {
+                    $extra = json_decode($item['extra'], true);
+                    ?>
+                    <label class="badge badge-primary">
+                        <span>金额：￥ <b><?php echo sprintf('%.2f', $extra['export'] / 100) ?></b></span></label>
+                <?php } elseif ($item['type'] == \Services\User\DragonCoin::TYPE_CHANGE_DIAMOND) {
+                    $extra = json_decode($item['extra'], true);
+                    ?>
+                    <label class="badge badge-success"><span>龙钻数：<b><?php echo $extra['export'] ?></b></span></label>
+
+                <?php } ?>
+
+
+            </td>
+            <!--  <td class="">
+                <a href="javascript:;" class='delBtn btn btn-sm btn-danger' data-id="<?php /*echo $item['id']; */ ?>"><i
+                        class="fa fa-trash"></i> 删除</a>
+            </td>-->
+        </tr>
+        <?php
+    }
+    }
+    else {
+        ?>
+        <tr>
+            <td colspan="11">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <!--   <tr class="showpage">
+           <th class="name">操作</th>
+           <td colspan="10">
+                   <span>
+                       [ <a href="javascript:;" class="selectAll">全选</a> ]
+                       [ <a href="javascript:;" class="selectNone">全不选</a> ]
+                       [ <a href="javascript:;" class="selectInvert">反选</a> ]
+                       <a class="btn-light delAllSelected" href="javascript:;">批量删除</a>
+                   </span>
+           </td>
+       </tr>-->
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="<?php if (isset($curCid) && $curCid > 0): ?>11<?php else: ?>10<?php endif; ?>">
+            <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+        </td>
+    </tr>
+</table>
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script>
+    $('#start_time').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+    $('#end_time').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+</script>

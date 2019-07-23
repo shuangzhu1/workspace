@@ -1,0 +1,12 @@
+ $ids = $this->db->query("select id from users where id not in (select user_id from user_count_stat)")->fetchAll(\PDO::FETCH_ASSOC);
+        if ($ids) {
+            foreach ($ids as $item) {
+                $fans_cnt = UserAttention::dataCount('user_id=' . $item['id']);
+                $attention_cnt = UserAttention::dataCount('owner_id=' . $item['id']);
+                $discuss_cnt = SocialDiscuss::dataCount('user_id=' . $item['id']);
+                $data = ['user_id' => $item['id'], 'fans_cnt' => $fans_cnt, 'attention_cnt' => $attention_cnt, 'discuss_cnt' => $discuss_cnt, 'created' => time()];
+                UserCountStat::insertOne($data);
+
+            }
+        }
+        echo "完成";

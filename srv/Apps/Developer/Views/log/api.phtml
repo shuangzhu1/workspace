@@ -1,0 +1,235 @@
+<style>
+    /*
+        .item_0 {
+            background-color: #e4e4e4
+        }
+    */
+
+
+</style>
+<script type="text/javascript" src="/static/panel/js/tools/jsonView/google-analytics-urchin.js"></script>
+<script type="text/javascript" src="/static/panel/js/tools/jsonView/c.js"></script>
+<script type="text/javascript" src="/static/panel/js/tools/jsonView/m.js"></script>
+
+
+<form action="" method="get"
+      style="border: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px;border-radius: 5px;line-height: 50px;">
+    <label for="name">用户ID或昵称:</label>
+    <input name="key" type="text" style="width: 100px" id="key" value="<?php echo $key; ?>">
+    <label for="name">app版本号:</label>
+    <input name="app_version" type="text" id="app_version" style="width: 100px" value="<?php echo $app_version; ?>">
+    <label for="name">客户端:</label>
+    <select name="client_type">
+        <option value="0">全部</option>
+        <option value="android" <?php echo($client_type == 'android' ? 'selected' : '') ?>>android</option>
+        <option value="ios" <?php echo($client_type == 'ios' ? 'selected' : '') ?>>ios</option>
+    </select>
+    <label for="name">状态:</label>
+    <select name="status">
+        <option value="-1" <?php echo $status == -1 ? 'selected' : ''; ?>>全部</option>
+        <option value="0" <?php echo $status == '0' ? 'selected' : ''; ?>>失败</option>
+        <option value="1" <?php echo $status == '1' ? 'selected' : ''; ?>>成功</option>
+    </select>
+    <label for="name">api接口:</label>
+    <input name="api" type="text" id="api" value="<?php echo $api; ?>">
+    <label for="name">错误码:</label>
+    <input name="code" type="text" id="code" value="<?php echo $code; ?>">
+    <label for="name">ip地址:</label>
+    <input name="ip" type="text" id="ip" value="<?php echo $ip; ?>">
+    &nbsp;<label for="name">调用时间:</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd"/>
+    - <input type="text" id="end" value="<?php echo $end; ?>" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd"/>
+    <!-- &nbsp;<label for="name">用时:</label>
+    <input type="text" id="time_start" style="width: 100px;" value="<?php /*echo $time_start; */ ?>" placeholder="毫秒"
+           name="time_start"
+           data-date-format="yyyy-mm-dd"/>
+
+    - <input type="text" id="time_end" style="width: 100px;" value="<?php /*echo $time_end; */ ?>" placeholder="毫秒"
+             name="time_end"
+    />-->
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+</form>
+
+<table class="list ">
+    <thead>
+    <tr class="head">
+        <th style="width: 80px;">用户ID</th>
+        <!--        <th>批量</th>
+        -->
+        <th style="width: 100px;">昵称</th>
+        <th style="width: 36px;">api接口</th>
+        <th style="width: 100px;">参数</th>
+        <!--  <th style="width: 100px;">完整地址</th>-->
+        <th>app版本</th>
+        <th>客户端</th>
+        <th>ip地址</th>
+        <!--        <th>ip</th>
+        -->
+        <th>状态</th>
+        <th>时间</th>
+        <!-- <th style="width: 120px;"> <?php /*if ($sort && $sort == 'time') { */ ?>
+                <a href="<?php /*echo $this->uri->setUrl(['order' => $sort_order == 'desc' ? 'asc' : 'desc']); */ ?>"
+                   class="order active">
+                    <i class="fa fa-long-arrow-<?php /*echo $sort_order == 'desc' ? 'down' : 'up'; */ ?>"></i> 用时</a>
+            <?php /*} else { */ ?>
+                <a href="<?php /*echo $this->uri->setUrl(['order' => 'desc', 'sort' => 'time']); */ ?>" class="order">
+                    <i class="fa fa-arrows-v"></i> 用时</a>
+            <?php /*} */ ?></th>-->
+
+        <th>错误提示</th>
+    </tr>
+    </thead>
+    <tbody class="listData">
+    <?php
+    if ($list) {
+        foreach ($list as $k => $item) {
+            ?>
+            <tr class="item item_<?php echo $item['status'] ?>" data-id="<?php echo $item['id']; ?>">
+                <!--   <td class="center"><input type="checkbox" class="chk" data-id="<?php /*echo $item['id'];
+                    */ ?>"/></td>-->
+                <th class="name"><?php echo $item['user_id']; ?></th>
+
+
+                <td><?php echo $users[$item['user_id']]['username']; ?></td>
+                <td><?php echo $item['api'] ?></td>
+                <td style="min-width: 400px;"><a href="javascript:;" class="show_json">点击查看</a><span
+                        class="json_content"
+                        style="display: none"
+                        data-content="<?php echo base64_encode($item['params']); ?>"></span>
+
+                </td>
+                <!--   <td style="max-width:400px;word-break: break-all;min-width: 300px;">
+                    <span style="display: none"><?php /*echo urldecode($item['full_url']) */ ?></span></td>-->
+
+                <td><?php echo $item['app_version']; ?></td>
+                <td><?php echo $item['client_type'] ?></td>
+                <td><?php echo $item['ip'] ?></td>
+                <!--                <td><?php /*echo $item['ip'] */ ?></td>
+-->
+                <td><?php echo $item['status'] == 1 ? "<label class='green'>成功</label>" : "<label class='red'>失败</label>" ?></td>
+                <td><?php echo date('Y-m-d H:i:s', $item['created']) ?></td>
+
+                <!--                <td><?php /*echo $item['time'] > 1000 ? ($item['time'] / 1000) . 's' : $item['time'] . 'ms' */ ?></td>
+-->
+                <td>
+                    <?php if (in_array($item['code'], [\Util\Ajax::INVALID_PARAM, \Util\Ajax::ERROR_SIGN, \Util\Ajax::INVALID_SIGN])) { ?>
+                    <span class="badge badge-danger">
+                        <i class="fa fa-warning"></i>
+                        <?php } else { ?>
+                        <span class="badge badge-grey">
+                            <i class="fa fa-bolt"></i>
+                            <?php } ?>
+                            <?php echo $item['msg'] ?>【<?php echo $item['code'] ?>】
+                    </span></td>
+            </tr>
+        <?php } ?>
+        <!-- <tr class="">
+             <th class="name">操作</th>
+             <td colspan="13">
+                       <span>
+                           [ <a href="javascript:;" class="selectAll">全选</a> ]
+                           [ <a href="javascript:;" class="selectNone">全不选</a> ]
+                           [ <a href="javascript:;" class="selectInvert">反选</a> ]
+                           <a class="btn-light delAllSelected" href="javascript:;">批量删除</a>
+                       </span>
+             </td>
+         </tr>-->
+        <tr class="showpage" style="padding: 10px;height: 60px;">
+            <th class="name">分页</th>
+            <td colspan="14" id="dataTables-example_paginate">
+
+                <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+            </td>
+        </tr>
+        <?php
+    } else {
+        ?>
+        <tr class="even gradeC">
+            <td colspan="14">
+                <p class="noData">没有用户数据</p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+
+</table>
+<select id="TabSize" style="display: none;">
+    <option value="2" selected="true">2</option>
+</select>
+
+
+<link rel="stylesheet" href="/srv/static/panel/css/lightbox/lightbox.css"/>
+
+<script src="/srv/static/panel/js/jquery/lightbox/lightbox.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        lightbox.option({
+            albumLabel: '%1/%2',
+            'resizeDuration': 200,
+            "fadeDuration": 0,
+            "imageFadeDuration": 0
+        });
+    })
+
+</script>
+
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.base64.js"></script>
+<script>
+    seajs.use('app/panel/log/panel.log', function (e) {
+        e.logApi();
+    });
+    $('#start').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d H:i",
+        maxDate: 0,
+        /*    timepicker: false,*/
+        allowBlank: true,
+        onChangeDateTime: function () {
+        },
+
+    });
+    $('#end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d H:i",
+        maxDate: 0,
+        allowBlank: true,
+        /*  timepicker: false,*/
+        onChangeDateTime: function () {
+        }
+    });
+    seajs.use('app/panel/panel.base', function (api) {
+        $(function () {
+            $(".json_content").each(function () {
+                SetTab();
+
+                var data = $(this).attr('data-content');
+                data = (JSON.parse(base64.decode(data)));
+
+                html = ProcessObject(data, 0, false, false, false);
+                $(this).html("<PRE class='CodeContainer'>" + html + "</PRE>");
+            });
+            $(".show_json").on('click', function () {
+                if ($(this).siblings(".json_content").is(":visible")) {
+                    $(this).siblings(".json_content").hide();
+                    $(this).html("点击查看")
+                } else {
+                    $(this).siblings(".json_content").show();
+                    $(this).html("点击收起")
+                }
+
+
+            })
+        })
+    })
+
+
+</script>
+
+
+

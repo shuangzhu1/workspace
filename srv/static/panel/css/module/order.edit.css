@@ -1,0 +1,67 @@
+@charset "UTF-8";
+
+.login-layout .widget-box {
+    visibility: visible;
+    position: relative;
+    overflow: hidden;
+    width: 1000px;
+    border-bottom: 0;
+    box-shadow: none;
+    padding: 6px;
+    margin: 0 auto;
+    background-color: #394557;
+    -moz-transform: none;
+    -webkit-transform: none;
+    -o-transform: none;
+    -ms-transform: none;
+    transform: none;
+}
+
+.module-item {
+    display: block;
+    height: 160px;
+    margin-bottom: 20px;
+}
+
+.module-item img {
+    display: block;
+    width: 150px;
+    height: 150px;
+}
+
+.module-item .check-item:hover {
+    border: 1px solid #0096e8;
+}
+
+.check-item {
+    display: block;
+    padding: 4px;
+    height: 160px;
+    border: 1px solid #dddddd;
+}
+
+.item-content {
+    width: 200px;
+}
+
+.item-title {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.check-item.checked {
+    background: #5293c4;
+}
+
+#total_cash {
+    color: red;
+    font-size: 14px;
+}
+
+#step4 dl {
+    width: 400px;
+    margin: 20px auto;
+    display: block;
+    text-align: left;
+}

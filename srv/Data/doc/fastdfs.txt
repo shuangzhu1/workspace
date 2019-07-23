@@ -1,0 +1,459 @@
+install fastdfs 4.06
+
+
+## 配置说明（单台，两个group[pic,media]）
+ip 192.168.1.115
+fdfs_trackerd	22121
+fdfs_storaged	23001
+fdhtd	11411
+
+wget -c http://download.oracle.com/otn/berkeley-db/5.2.28.tar.gz
+wget https://fastdfs.googlecode.com/files/FastDFS_v4.06.tar.gz
+wget http://fastdht.googlecode.com/files/FastDHT_v1.23.tar.gz
+## 一. 安装
+# 安装FastDFS
+cd /usr/local/src
+tar -zxf FastDFS_v5.01.tar.gz
+cd FastDFS
+./make.sh
+./make.sh install
+cd ..
+
+# FastDHT 文件排重
+1.安装hash数据库FastDHT的依赖库
+tar -zxf db-5.2.28.tar.gz
+cd db-5.2.28/build_unix/
+../dist/configure --prefix=/usr
+make -j16
+make install
+ldconfig
+cd ../..
+
+# 安装FastDHT
+tar -zxf FastDHT_v1.23.tar.gz
+cd FastDHT
+./make.sh
+./make.sh install
+cd ..
+
+## 二. 配置
+------ 设置默认组为pic便于扩展 -----
+1. 创建目录（tracker及stroage及fastdht数据存储）：
+# tracker目录pic
+mkdir /opt/fastdfs/pic/tracker -p
+# storage数据存储
+mkdir /opt/fastdfs/pic/store0/data -p
+# fastdht数据存储
+mkdir /opt/fastdht/pic -p
+
+2. 配置文件
+
+# 1). FastDFS配置
+# 备份原有数据
+cd /etc/fdfs
+mkdir bak
+mv * bak
+cp bak/http.conf bak/mime.types .
+
+2.1 配置tracker
+pic 组：
+# pic 组：
+vi tracker_pic.conf
+port=22121
+base_path=/opt/fastdfs/pic/tracker
+store_lookup=2
+store_group=pic
+# media 组：
+vi tracker_media.conf
+port=22122
+base_path=/opt/fastdfs/media/tracker
+store_lookup=1
+store_group=media
+
+2.2 配置storage
+# pic 组：
+vi storage_pic.conf
+group_name=pic
+port=23001
+base_path=/opt/fastdfs/pic
+store_path_count=1
+store_path0=/opt/fastdfs/pic/store0
+tracker_server=10.144.4.128:22121
+#tracker_server=10.144.4.129:22121
+log_level=info
+check_file_duplicate=1
+keep_alive=1
+key_namespace=FastDFS_PIC
+
+# media 组：
+vi storage_media.conf
+group_name=media
+port=23002
+base_path=/opt/fastdfs/media
+store_path_count=1
+store_path0=/opt/fastdfs/media/store0
+tracker_server=10.144.4.128:22124
+#tracker_server=10.144.4.129:22124
+log_level=info
+check_file_duplicate=1
+keep_alive=1
+key_namespace=FastDFS_MEDIA
+#include /etc/fdht/server_media.conf
+
+2.3 配置client
+参见client.conf修改对应base_path, tracker_server等如下
+pic组配置client_pic.conf如下，其他组类似改动相应地方即可
+connect_timeout=30
+network_timeout=60
+base_path=/opt/fastdfs/pic/
+# tracker_server
+tracker_server=192.168.1.115:22121
+log_level=info
+use_connection_pool = false
+connection_pool_max_idle_time = 3600
+load_fdfs_parameters_from_tracker=false
+use_storage_id = false
+storage_ids_filename = storage_ids.conf
+http.tracker_server_port=80
+##include http.conf
+
+2.4 nginx fastdfs模块配置
+mod_fdfs.conf
+# connect timeout in seconds
+# default value is 30s
+connect_timeout=2
+
+# network recv and send timeout in seconds
+# default value is 30s
+network_timeout=30
+
+# the base path to store log files
+base_path=/opt/fastdfs/storage
+
+# if load FastDFS parameters from tracker server
+# since V1.12
+# default value is false
+load_fdfs_parameters_from_tracker=true
+
+# storage sync file max delay seconds
+# same as tracker.conf
+# valid only when load_fdfs_parameters_from_tracker is false
+# since V1.12
+# default value is 86400 seconds (one day)
+storage_sync_file_max_delay = 86400
+
+# if use storage ID instead of IP address
+# same as tracker.conf
+# valid only when load_fdfs_parameters_from_tracker is false
+# default value is false
+# since V1.13
+use_storage_id = false
+
+# specify storage ids filename, can use relative or absolute path
+# same as tracker.conf
+# valid only when load_fdfs_parameters_from_tracker is false
+# since V1.13
+storage_ids_filename = storage_ids.conf
+
+# FastDFS tracker_server can ocur more than once, and tracker_server format is
+#  "host:port", host can be hostname or ip address
+# valid only when load_fdfs_parameters_from_tracker is true
+tracker_server=10.144.4.128:22121
+tracker_server=10.144.4.128:22122
+
+# the port of the local storage server
+# the default value is 23000
+#storage_server_port=23000
+
+# the group name of the local storage server
+group_name=group1
+group_name=group2
+
+# if the url / uri including the group name
+# set to false when uri like /M00/00/00/xxx
+# set to true when uri like ${group_name}/M00/00/00/xxx, such as group1/M00/xxx
+# default value is false
+url_have_group_name = true
+
+# path(disk or mount point) count, default value is 1
+# must same as storage.conf
+store_path_count=1
+
+# store_path#, based 0, if store_path0 not exists, it's value is base_path
+# the paths must be exist
+# must same as storage.conf
+#store_path0=/opt/fastdfs/storage0
+#store_path1=/opt/fastdfs/storage1
+
+# standard log level as syslog, case insensitive, value list:
+### emerg for emergency
+### alert
+### crit for critical
+### error
+### warn for warning
+### notice
+### info
+### debug
+log_level=info
+
+# set the log filename, such as /usr/local/apache2/logs/mod_fastdfs.log
+# empty for output to stderr (apache and nginx error_log file)
+log_filename=
+
+# response mode when the file not exist in the local file system
+## proxy: get the content from other storage server, then send to client
+## redirect: redirect to the original storage server (HTTP Header is Location)
+response_mode=proxy
+
+# the NIC alias prefix, such as eth in Linux, you can see it by ifconfig -a
+# multi aliases split by comma. empty value means auto set by OS type
+# this paramter used to get all ip address of the local host
+# default values is empty
+if_alias_prefix=
+
+# if need find content type from file extension name
+# should set to false in apache server because it done by apache
+# should set to true in nginx server
+http.need_find_content_type=false
+
+# use "#include" directive to include HTTP config file
+# NOTE: #include is an include directive, do NOT remove the # before include
+#include http.conf
+
+
+# if support flv
+# default value is false
+# since v1.15
+flv_support = true
+
+# flv file extension name
+# default value is flv
+# since v1.15
+flv_extension = flv
+
+
+# set the group count
+# set to none zero to support multi-group
+# set to 0  for single group only
+# groups settings section as [group1], [group2], ..., [groupN]
+# default value is 0
+# since v1.14
+group_count = 5
+
+# group settings for group #1
+# since v1.14
+# when support multi-group, uncomment following section
+[group1]
+group_name=pic
+storage_server_port=23001
+store_path_count=1
+store_path0=/opt/fastdfs/pic/store0
+
+[group2]
+group_name=media
+storage_server_port=23002
+store_path_count=1
+store_path0=/opt/fastdfs/media/store0
+
+
+# 2). FastDHT配置：
+# 备份原有数据
+cd /etc/fdht
+mkdir bak
+mv * bak
+
+(1) server conf
+server_pic.conf
+group_count = 1
+group0 = 10.144.4.128:11411
+#group0 = 10.144.4.129:11411
+
+server_media.conf
+group_count = 1
+group0 = 10.144.4.128:11412
+#group0 = 10.144.4.129:11412
+
+(2) fdhtd conf
+fdht_pic.conf
+port=11411
+base_path=/opt/fastdht/pic
+db_prefix = pic
+#include server_pic.conf
+
+fdht_media.conf
+port=11412
+base_path=/opt/fastdht/media
+db_prefix = media
+#include server_media.conf
+
+(3) fdht client conf
+client_pic.conf
+base_path=/opt/fastdht/pic
+log_level=info
+#include server_pic.conf
+
+client_media.conf
+base_path=/opt/fastdht/media
+log_level=info
+#include server_media.conf
+
+(4) 　　 fdht_servers.conf
+group_count = 5
+group1 = 10.144.4.128:11411
+group2 = 10.144.4.128:11412
+
+# 创建所需目录
+mkdir /opt/fastdfs/pic/tracker -p
+mkdir /opt/fastdfs/media/tracker -p
+
+mkdir /opt/fastdfs/pic/store0/data -p
+mkdir /opt/fastdfs/media/store0/data -p
+
+mkdir /opt/fastdht/pic -p
+mkdir /opt/fastdht/media -p
+
+# 启动服务
+pkill fdfs_trackerd
+pkill fdfs_storaged
+pkill fdhtd
+
+/usr/local/bin/fdfs_trackerd /etc/fdfs/tracker_pic.conf
+/usr/local/bin/fdfs_trackerd /etc/fdfs/tracker_media.conf
+
+/usr/local/bin/fdfs_storaged /etc/fdfs/storage_pic.conf
+/usr/local/bin/fdfs_storaged /etc/fdfs/storage_media.conf
+
+/usr/local/bin/fdhtd /etc/fdht/fdht_pic.conf
+/usr/local/bin/fdhtd /etc/fdht/fdht_media.conf
+
+// test
+fdfs_test /etc/fdfs/client_pic.conf upload xx.file
+/usr/local/bin/fdht_test /etc/fdht/fdht_pic.conf
+
+ sed -i 's/192.168.1.115/192.168.1.105/g' `grep 192.168.1.115 -rl /etc/fdfs`
+
+
+三. php扩展安装
+# 1. fastdht_client
+cd /usr/local/src/FastDHT/php_client
+phpize
+./configue
+make && make install
+
+vi /etc/php.ini
+[fastdht_client]
+extension = fastdht_client.so
+fastdht_client.connect_timeout=5
+fastdht_client.network_timeout=60
+fastdht_client.base_path=/opt/fastdht
+fastdht_client.log_level=info
+fastdht_client.config_count = 1
+fastdht_client.config_file0 = /etc/fdht/client_pic.conf
+
+
+# 2. fastdht_client
+cd /usr/local/src/FastDFS/php_client
+phpize
+./configue
+make && make install
+
+vi /etc/php.ini
+[fastdfs_client]
+extension = fastdfs_client.so
+fastdfs_client.base_path = /opt/fastdfs
+fastdfs_client.connect_timeout = 2
+fastdfs_client.network_timeout = 60
+fastdfs_client.log_level = info
+fastdfs_client.tracker_group_count = 1
+fastdfs_client.tracker_group0 = /etc/fdfs/client_pic.conf
+fastdfs_client.use_connection_pool = false
+fastdfs_client.connection_pool_max_idle_time = 3600
+
+service php-fpm restart
+
+三. Nginx模块安装
+cd /usr/local/src/
+1. 创建用户
+groupadd www
+useradd -g www www -s /bin/false
+2. 所需软件
+/usr/local/src
+wget http://nginx.org/download/nginx-1.4.4.tar.gz
+wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.32.tar.gz
+wget http://www.zlib.net/zlib-1.2.8.tar.gz
+wget https://fastdfs.googlecode.com/files/fastdfs-nginx-module_v1.15.tar.gz
+wget http://luajit.org/download/LuaJIT-2.0.3.tar.gz
+wget https://github.com/alibaba/nginx-http-concat/archive/master.zip
+mv master nginx-http-concat-master.zip
+git clone https://github.com/chaoslawful/lua-nginx-module.git
+git clone https://github.com/simpl/ngx_devel_kit.git
+git clone https://github.com/openresty/echo-nginx-module.git
+git clone https://github.com/alibaba/nginx-http-concat.git
+
+# 解压安装
+tar -zxf zlib-1.2.8.tar.gz
+tar -zxf pcre-8.32.tar.gz
+tar -zxf fastdfs-nginx-module_v1.15.tar.gz
+tar -zxf nginx-1.4.4.tar.gz
+tar -zxf LuaJIT-2.0.3.tar.gz
+
+# 安装lua
+cd LuaJIT-2.0.3
+make
+make install PREFIX=/usr/local/luajit
+cd ..
+
+# 加入环境变量
+export LUAJIT_LIB=/usr/local/luajit/lib
+export LUAJIT_INC=/usr/local/luajit/include/luajit-2.0
+
+cd nginx-1.4.4
+./configure --prefix=/usr/local/nginx \
+--user=www \
+--group=www \
+--pid-path=/opt/logs/nginx/nginx.pid  \
+--lock-path=/opt/logs/nginx/nginx.lock \
+--error-log-path=/opt/logs/nginx/error.log \
+--http-log-path=/opt/logs/nginx/access.log \
+--with-http_ssl_module \
+--with-http_realip_module \
+--with-http_sub_module \
+--with-http_flv_module \
+--with-http_dav_module \
+--with-http_gzip_static_module \
+--with-http_stub_status_module \
+--with-http_addition_module \
+--with-zlib=../zlib-1.2.8 \
+--with-pcre=../pcre-8.32 \
+--add-module=../ngx_devel_kit \
+--add-module=../echo-nginx-module \
+--add-module=../lua-nginx-module \
+--add-module=../nginx-http-concat \
+--add-module=../fastdfs-nginx-module/src \
+
+// nginx: error while loading shared libraries: libluajit-5.1.so.2: cannot open shared object file: No such file or directory
+ln -sf /usr/local/luajit/lib/libluajit-5.1.so.2 /usr/lib64/
+ln -sf /usr/local/luajit/lib/libluajit-5.1.so.2 /usr/lib/
+
+# nginx fastdfs vhost
+server{
+        listen      80;
+        server_name server_domain;
+
+        location /pic/M00 {
+                alias /opt/fastdfs/pic/store0/data;
+                ngx_fastdfs_module;
+        }
+
+        location /media/M00 {
+                alias /opt/fastdfs/media/store0/data;
+                ngx_fastdfs_module;
+        }
+
+        location = /favicon.ico {
+                log_not_found off;
+                access_log off;
+        }
+}
+~
+~

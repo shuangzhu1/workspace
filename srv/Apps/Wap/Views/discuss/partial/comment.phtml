@@ -1,0 +1,55 @@
+<div class="comment_detail">
+    <div class="container">
+        <div class="comment_list">
+            <dl class="clearfix">
+                <dt>
+                    <a href="<?php echo $this->uri->baseUrl('user?to=' . $comment['uid']); ?>"> <img
+                            src="<?php echo $comment['avatar']; ?>?x-oss-process=image/resize,m_fill,h_100,w_100"/></a>
+                </dt>
+                <dd>
+                    <p>
+                        <span class="comment_name"><?php echo $comment['username']; ?></span>
+                        <span class="dynamic_level <?php echo $comment['sex'] == 1 ? 'boy' : 'girl'; ?>">
+                            <i>v<?php echo $comment['grade'] ?></i>
+                            <em class="<?php echo $comment['sex'] == 1 ? 'man' : 'woman'; ?>"></em>
+                        </span>
+                        <?php if ($is_hot) { ?>
+                            <span class="comment_hot"></span>
+                        <?php } ?>
+                    </p>
+                    <p>
+                        <span class="dy_time"><?php echo $comment['show_time']; ?></span>
+
+                    </p>
+                    <a href="javascript:;" class="comment_like" data-type="comment"
+                       data-item-id="<?php echo $comment['comment_id']; ?>"><em
+                            class="<?php echo $comment['is_like'] == 1 ? 'vLike' : ''; ?>"></em><label
+                            class="reply_cnt"><?php echo $comment['like_cnt']; ?></label>
+
+                </dd>
+            </dl>
+            <div class="comment_list_about">
+                <?php if( !empty($comment['content']) ) {?>
+                    <p><?php echo  $comment['content'];?></p>
+                <?php }elseif( !empty($comment['images'])){?>
+                    <img src="<?php echo $comment['images'] ?>" alt="">
+                <?php }?>
+                <?php if ($comment['parent']) { ?>
+                    <div class="comment_all_reply">
+                        <div class="item">
+                                <p>
+                                   <span class="item_sy"><span><?php echo $comment['parent']['username']; ?>：</span></span>
+                                    <?php if( !empty($comment['parent']['content'])) {?>
+                                        <span><?php echo $comment['parent']['content']; ?></span>
+                                    <?php }elseif( !empty($comment['parent']['images'])){?>
+                                        <a href="<?php echo $comment['parent']['images']?>" alt="" style="color:#0bd1a0">查看图片</a>
+                                    <?php }?>
+                                </p>
+                            <?php } ?>
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+</div>

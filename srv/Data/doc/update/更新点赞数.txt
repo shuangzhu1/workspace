@@ -1,0 +1,12 @@
+  set_time_limit(0);
+        $i = 1;
+        while ($res = SocialDiscuss::findList(['status=1', 'offset' => ($i - 1) * 50, 'limit' => 50])) {
+            foreach ($res as $item) {
+                $count = SocialLike::dataCount("type='discuss' and item_id=" . $item['id'] . ' and enable=1');
+                SocialDiscuss::updateOne(['like_cnt' => $count], ['id' => $item['id']]);
+                Debug::log($item['id'] . ":" . $count, 'debug');
+            }
+            $i++;
+        }
+        echo "更新完成";
+        exit;

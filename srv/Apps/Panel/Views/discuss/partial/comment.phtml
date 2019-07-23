@@ -1,0 +1,53 @@
+<li class="comment_item" data-id="<?php echo $item['comment_id'] ?>">
+    <div class="info">
+        <img
+            src="<?php echo $item['avatar'] ?>?x-oss-process=image/resize,m_fill,h_100,w_100"
+            style="" class="avatar">
+
+        <div style="" class="user">
+            <p><?php echo $item['username'] ?>
+                <?php if ($item['sex'] == 1) { ?>
+                    <span class="male sex"><i
+                            class="fa fa-mars"></i>  V<?php echo $item['grade'] ?></span>
+
+                <?php } else { ?>
+                    <span class="female sex"><i
+                            class="fa fa-venus"> V<?php echo $item['grade'] ?></i></span>
+                <?php } ?>
+            </p>
+            <p><?php echo $item['show_time'] ?></p>
+            <p><span class="item_content" data-type="comment"
+                     data-id="<?php echo $item['comment_id'] ?>"><?php if ($item['images']) {
+                        $images = explode(',', $item['images']);
+                        ?>
+                        <?php foreach ($images as $img) { ?>
+                            <a href="<?php echo $img ?>" data-lightbox="roadtrip"> <img class="content_img"
+                                                                                        src="<?php echo $img ?>?x-oss-process=image/resize,m_fill,h_100,w_100"/></a>
+                        <?php } ?>
+                    <?php } ?><?php echo $item['content'] ?></span></p>
+        </div>
+    </div>
+    <?php if ($item['parent']) { ?>
+        <div class="reply_list">
+            <div class="reply_item_list" data-id="<?php echo $item['comment_id'] ?>">
+                <p class="reply_item" data-id="<?php echo $item['parent']['id'] ?>"><span
+                        class="item_sy">
+                            <span
+                                class="blue"><?php echo $item['parent']['username']; ?></span>:</span>
+                    <span class="item_content" data-type="comment"
+                          data-id="<?php echo $item['parent']['id'] ?>">
+                        <?php if ($item['parent']['images']) {
+                            $images = explode(',', $item['parent']['images']);
+                            ?>
+                            <?php foreach ($images as $img) { ?>
+                                <a href="<?php echo $img ?>" data-lightbox="roadtrip"> <img class="content_img"
+                                                                                            src="<?php echo $img ?>?x-oss-process=image/resize,m_fill,h_100,w_100"/></a>
+                            <?php } ?>
+                        <?php } ?>
+                        <?php echo $item['parent']['content']; ?></span>
+
+            </div>
+        </div>
+    <?php } ?>
+
+</li>

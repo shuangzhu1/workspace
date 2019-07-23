@@ -1,0 +1,351 @@
+<link rel="stylesheet" href="/static/ace/css/jquery-ui-1.10.3.full.min.css">
+<script src="/static/ace/js/jquery-ui-1.10.3.full.min.js"></script>
+<style>
+    .ui-slider-horizontal .ui-slider-handle{
+        top:12px
+    }
+
+</style>
+<div class="width-60">
+    <div class="widget-box">
+        <div class="widget-header widget-header-small ">
+            <h4 class="smaller">机器人工作状态：</h4>
+
+            <div class="widget-toolbar no-border">
+                <label>
+                    <input name="switch-field-1" class="ace ace-switch ace-switch-6" type="checkbox"
+                           id="switch" <?php if ($state == 1) echo "checked" ?> >
+                    <span class="lbl"></span>
+                </label>
+            </div>
+
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="alert alert-<?php echo $state == 1 ? 'success' : 'warning' ?>" id="status">
+                    <?php echo $state == 1 ? '机器人正在工作！！' : '机器人已停止工作！！' ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="hr hr-24"></div>
+
+<div class="width-60">
+
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4>机器人参数配置：</h4>
+            <div style="float:right;;margin-right: 10px">
+                <label style="height:40px;line-height:40px">
+
+                    <input id="isrestart" type="checkbox" class="ace" checked>
+                    <span class="lbl" style="color:red"> 立即生效</span>
+                </label>
+            </div>
+
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+                <form id="config">
+                    <!-- <legend>Form</legend> -->
+                    <input type="hidden" name="restart" id="restart" value=1>
+                    <fieldset>
+                        <table class="table table-striped table-bordered" style="border:1px solid #eee">
+                            <thead>
+                            <tr>
+                                <th width="7%" class="center">ID</th>
+                                <th width="17%" class="center">参数</th>
+                                <th width="13%" class="center"
+                                ">值</th>
+                                <th class="center"
+                                ">参数说明</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="4" class="center"><span
+                                            style="font-size: 18px;font-weight: bold">基础配置</span></td>
+                            </tr>
+                            <tr>
+                                <td class="center">1</td>
+                                <td class="center">
+
+                                    并发数量
+                                </td>
+                                <td class="center">
+                                    <input type="text" name="thread_num" id="thread_num" value="{{rconfig['thread_num']}}" size="5"
+                                           style="height:20px">
+                                </td>
+                                <td>机器人运行时所开得线程数</td>
+                            </tr>
+                            <tr>
+                                <td class="center">2</td>
+                                <td class="center">
+                                    操作间隔
+                                </td>
+                                <td class="center">
+                                    <input type="text" name="operate_interval" id="operate_interval" value="{{rconfig['operate_interval']}}"
+                                           size="5" style="height:20px">
+                                </td>
+                                <td>单位为秒，每隔这个时间，就会并发thread_num数目的机器人操作</td>
+                            </tr>
+                            <tr>
+                                <td class="center">3</td>
+                                <td class="center">
+                                    数据更新间隔
+                                </td>
+                                <td class="center">
+                                    <input type="text" name="update_interval" id="update_interval" value="{{rconfig['update_interval']}}"
+                                           size="5" style="height:20px">
+                                </td>
+                                <td>每隔该时间，机器人将会更新一批数据源，类似我们的刷新操作</td>
+                            </tr>
+                            <tr>
+                                <td class="center">4</td>
+                                <td class="center">
+                                    每次更新数据的量
+                                </td>
+                                <td class="center">
+                                    <input type="text" name="data_limit" id="data_limit" value="{{rconfig['data_limit']}}" size="5"
+                                           style="height:20px">
+                                </td>
+                                <td>每次更新数据的量</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="center"><span style="font-size: 18px;font-weight: bold">朋友圈和推荐列表权重比</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="center">5</td>
+                                <td class="center">
+                                    朋友圈操作权重 X
+                                </td>
+                                <td class="center">
+                                    <input type="text" name="discuss_weight" id="discuss_weight" value="{{rconfig['discuss_weight']}}"
+                                           size="5" style="height:20px">
+                                </td>
+                                <td>此时机器人执行朋友圈操作的概率为 X/(X+Y)</td>
+                            </tr>
+                            <tr>
+                                <td class="center">6</td>
+                                <td class="center">
+                                    推荐列表的操作权重 Y
+                                </td>
+                                <td class="center">
+                                    <input type="text" name="recommend_weight" id="recommend_weight" value="{{rconfig['recommend_weight']}}"
+                                           size="5" style="height:20px">
+                                </td>
+                                <td>此时机器人执行推荐列表的操作的概率为 Y/(X+Y)</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="center"><span style="font-size: 18px;font-weight: bold">点赞、阅读和关注的权重比</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="center">7</td>
+                                <td class="center">
+                                    点赞权重 A
+                                </td>
+                                <td class="center" id="dz">
+                                    <?php /*echo $rconfig['like_weight'] / 10*/?>
+                                    <input type="text"  value="{{rconfig['like_weight'] / 10}}" size="5"
+                                           style="height:20px" >%
+                                    <input type="hidden" name="like_weight" value="{{rconfig['like_weight']}} ">
+                                </td>
+                                <td>此时机器人执行点赞操作的概率为 A/(A+B+C)</td>
+                            </tr>
+                            <tr>
+                                <td class="center">8</td>
+                                <td class="center">
+                                    阅读权重 B
+                                </td>
+                                <td class="center" id="yd">
+                                    <?php /*echo $rconfig['view_weight'] / 10*/?>
+                                    <input type="text"  value="{{rconfig['view_weight'] / 10}}" size="5"
+                                           style="height:20px" readonly>%
+                                    <input type="hidden" name="view_weight" value="{{rconfig['view_weight']}}">
+                                </td>
+                                <td> 此时机器人执行阅读操作的概率为 B/(A+B+C)</td>
+                            </tr>
+                            <tr>
+                                <td class="center">9</td>
+                                <td class="center">
+                                    关注权重 C
+                                </td>
+                                <td class="center" id="gz">
+                                    <?php /*echo $rconfig['attention_weight'] / 10*/?>
+                                    <input type="text"  value="{{rconfig['attention_weight'] / 10}}"
+                                           size="5" style="height:20px">%
+                                    <input type="hidden" name="attention_weight" value="{{rconfig['attention_weight']}}">
+                                </td>
+                                <td> 此时机器人执行关注操作的概率为 C/(A+B+C)</td>
+                            </tr>
+                            <tr style="height:100px;">
+                                <td colspan="4" class="center" style="vertical-align: middle;">
+                                    <div class="col-xs-10 center">
+                                        <div style="padding-bottom: 20px;text-align: center">
+                                            <span class="btn-colorpicker" style="background-color:#d36e6e;width:30px;height:12px;margin:0 5px 0 0"></span>点赞
+                                            <span class="btn-colorpicker" style="background-color:#4aa4ce;width:30px;height:12px;margin:0 5px 0 20px"></span>阅读
+                                            <span class="btn-colorpicker" style="background-color:#8bbc67;width:30px;height:12px;margin:0 5px 0 20px"></span>关注
+                                        </div>
+                                        <div id="slider"></div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="4" class="center"><span
+                                            style="font-size: 18px;font-weight: bold">机器人工作时间</span></td>
+                            </tr>
+                            <tr>
+                                <td class="center">13</td>
+                                <td class="center">
+                                    开始工作时间
+                                </td>
+                                <td class="center">
+                                    <input type="text" name="work_begin" id="work_begin" value="{{rconfig['work_begin']}}" size="5"
+                                           style="height:20px">
+                                </td>
+                                <td rowspan="2" style="vertical-align:middle"> 24小时制，取值范围0-23</td>
+                            </tr>
+                            <tr>
+                                <td class="center">14</td>
+                                <td class="center">
+                                    停止工作时间
+                                </td>
+                                <td class="center">
+                                    <input type="text" name="work_end" id="work_end" value="{{rconfig['work_end']}}" size="5"
+                                           style="height:20px">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+
+                    <div class="form-actions center">
+                        <button type="button" class="btn btn-sm btn-success" id="save">
+                            保存
+                            <i class="icon-arrow-right icon-on-right bigger-110"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    $(function () {
+        seajs.use('app/panel/panel.base', function (api) {
+            $("#save").on('click', function () {
+                api.requestApi("<?php echo $this->url->get('panel/robot/index')?>", $('#config').serialize(), function (res) {
+                    if (res.result == 1) {
+                        tip.showTip('ok', "保存成功", 2000);
+                    }
+                })
+            })
+
+            $('#switch').on('click', function () {
+                api.requestApi("<?php echo $this->url->get('panel/robot/switch')?>", {switch: $(this).is(':checked') ? 1 : 0,type:0}, function (res) {
+                    if (res.result == 1) {
+                        var ele = $('#status');
+                        if (res.data == 'start') {
+                            ele.removeClass('alert-warning');
+                            ele.addClass('alert-success');
+                            ele.text("机器人正在工作！！");
+                            tip.showTip('ok', "机器人已开始工作", 2000);
+                        } else {
+                            ele.removeClass('alert-success');
+                            ele.addClass('alert-warning');
+                            ele.text('机器人已停止工作！！');
+                            tip.showTip('ok', "机器人已停止工作", 2000);
+                        }
+                    } else {
+                        tip.showTip('err', '操作失败', 2000);
+                    }
+                })
+            })
+
+        })
+        //是否立即生效
+        $("#isrestart").on('click', function () {
+            $('#restart').val($(this).is(':checked') ? 1 : 0);
+
+        })
+
+        //slider
+        $( "#slider" ).slider({
+            range: true,
+            min: 0,
+            max: 1000,
+            values: [ {{rconfig['like_weight']}}, ({{rconfig['view_weight']}} + {{rconfig['like_weight']}}) ],
+            slide: function( event, ui ) {
+                var btn_num = $(ui.handle).index()-3,
+                    val = ui.values[$(ui.handle).index()-3],
+                    val0 = ui.values[0],
+                    val1 = ui.values[1];
+                console.log(val,val0,val1);
+                $('#dz input:hidden').val(val0);
+                $('#yd input:hidden').val(val1-val0);
+                $('#gz input:hidden').val(1000-val1);
+                //动态改变表格数字
+                if( btn_num == 0 )//第一个滑块
+                {
+                    //$('#dz').text(val0 / 10 + '%')
+                    $('#dz input:eq(0)').val((val0 / 10).toFixed(1))
+                    //$('#yd').text((val1-val0) / 10 + '%')
+                    $('#yd input:eq(0)').val(((val1-val0) / 10).toFixed(1))
+                }else//第二个滑块
+                {
+                    //$('#yd').text((val1-val0) / 10 + '%')
+                    $('#yd input:eq(0)').val(((val1-val0) / 10).toFixed(1))
+                    //$('#gz').text((1000-val1) / 10 + '%')
+                    $('#gz input:eq(0)').val(((1000-val1) / 10).toFixed(1))
+                }
+                //按钮动态提示滑块位置
+                /*if(! ui.handle.firstChild ) {
+                    $(ui.handle).append("<div class='tooltip right in' style='display:none;left:16px;top:-6px;'><div class='tooltip-arrow'></div><div class='tooltip-inner'></div></div>");
+                }
+                $(ui.handle.firstChild).show().children().eq(1).text(val/10 + '%');*/
+                //动态改变滑块大小
+                $('#slider > div:eq(0)').css({width:val0/10+'%'})//点赞
+                $('#slider > div:eq(1)').css({width:(val1-val0)/10+'%',left:val0/10+'%'})//阅读
+                $('#slider > div:eq(2)').css({width:(1000-val1)/10+'%',left:val1/10+'%'})//关注
+
+            }
+        }).find('a').on('blur', function(){
+            $(this.firstChild).hide();
+        });
+        //初始化滑块上点赞，阅读，关注颜色化区间
+        $('#slider > div').before('<div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 0; width: <?php echo $rconfig['like_weight'] / 10 ?>%;background-color:#d36e6e"></div>')
+        $('#slider > div:eq(1)').after('<div class="ui-slider-range ui-widget-header ui-corner-all" style="left: <?php echo ($rconfig['like_weight'] + $rconfig['view_weight']) /10 ?>%; width: <?php echo $rconfig['attention_weight'] / 10?>%;background-color:#8bbc67"></div>')
+        //手动输入权重时
+        $('#dz input,#gz input').change(function(){
+            var dz = $('#dz input:eq(0)').val() ,
+                gz = $('#gz input:eq(0)').val() ;
+            $('#yd input').val(100 - dz -gz);
+            var yd = $('#yd input:eq(0)').val();
+            //颜色条位置变化
+            $('#slider').slider('values',[dz*10,dz*10+$('#yd input').val()*10]);
+            var val = $('#slider').slider('values');
+            $('#slider > div:eq(0)').css({width:val[0]/10+'%'})//点赞
+            $('#slider > div:eq(1)').css({width:(val[1]-val[0])/10+'%',left:val[0]/10+'%'})//阅读
+            $('#slider > div:eq(2)').css({width:(1000-val[1])/10+'%',left:val[1]/10+'%'})//关注
+            //隐藏域值变化
+            $('#dz input:hidden').val(dz*10);
+            $('#yd input:hidden').val(yd*10);
+            $('#gz input:hidden').val(gz*10);
+            console.log(00);
+            //console.log($('#dz input:hidden').val(),$('#yd input:hidden').val(),$('#gz input:hidden').val());
+        });
+        //计算打赏一天所耗资金
+
+    })
+
+</script>

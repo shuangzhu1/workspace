@@ -1,0 +1,160 @@
+<form action="" method="get" style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px;">
+    &nbsp;<label for="name">用户id:</label>
+    <input type="text" id="user_id" value="<?php echo $user_id ? $user_id : ''; ?>" placeholder="用户id" name="user_id"
+    />
+    &nbsp;<label for="name">奖励时间:</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd"/>
+    - <input type="text" id="end" value="<?php echo $end; ?>" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd"/>
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+    <div class="right"><span class="badge badge-purple" style="line-height: 20px">总金额:<b class="bolder"><?php echo '￥'.sprintf('%.2f',($total/100)) ?></b></span></div>
+
+</form>
+<table id="article-list" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style='width:80px'>用户id</th>
+        <th style='width:120px'>用户名称</th>
+        <th style='width:80px'>用户头像</th>
+
+        <th style='width:120px' class="arrow" data-sort="" data-order="money">
+            <span class="text">奖励金额</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span></th>
+        <!--    <th style='width:300px'>审核</th>-->
+        <th style='width:200px'>奖励时间</th>
+        <th>奖励来源</th>
+        <th>数据详情</th>
+        <!--  <th>操作</th>-->
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <td class="center"><?php echo $item['user_id']; ?></td>
+            <td class="center"><?php echo $item['user_info']['username']; ?></td>
+
+            <td><a href="<?php echo $item['user_info']['avatar']; ?>" data-lightbox="roadtrip"><img
+                        src="<?php echo $item['user_info']['avatar']; ?>?x-oss-process=image/resize,m_fill,h_160,w_160"
+                        style="width: 40px; height: 40px;"/></a></td>
+            <td>
+                <span class="green bolder"><?php echo '￥' . (sprintf('%.2f',($item['money']/100))) ?></span>
+            </td>
+            <td>
+                <?php echo date("Y-m-d H:i:s", $item['created']); ?>
+            </td>
+            <td>
+                <?php echo \Services\Site\CashRewardManager::$reward_name[$item['type']] ?>
+            </td>
+            <td>
+                <?php if ($item['type'] == \Services\Site\CashRewardManager::TYPE_DISCUSS) { ?>
+                    <a href="javascript:;" data-href="/srv/panel/discuss/detail/<?php echo $item['item_id'] ?>"
+                       data-title="动态详情" class="newTarget btn btn-purple btn-sm"><i class="fa fa-link"></i> 动态详情</a>
+                <?php } ?>
+            </td>
+            <!--   <td>
+                <span class="btn btn-success btn-sm editBtn"
+                      data-id="<?php /*echo $item['id'] */ ?>"
+                      data-version="<?php /*echo $item['version'] */ ?>"
+                      data-os="<?php /*echo $item['os'] */ ?>"
+                      data-limit_version="<?php /*echo $item['limit_version'] */ ?>"
+                      data-detail="<?php /*echo $item['detail'] */ ?>"
+                ><i class="fa fa-edit"></i> 编辑</span>
+                <span class="btn btn-danger btn-sm removeBtn" data-id="<?php /*echo $item['id'] */ ?>"><i
+                        class="fa fa-remove"></i> 删除</span>
+            </td>-->
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="17">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+        </td>
+    </tr>
+</table>
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script src="/srv/static/panel/js/tools/Url.js"></script>
+
+<script>
+    seajs.use('app/panel/panel.base', function (api) {
+
+    });
+    $('#start').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        },
+
+    });
+    $('#end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        allowBlank: true,
+        timepicker: false,
+        onChangeDateTime: function () {
+        }
+    });
+    var order = '<?php echo $sort ?>'
+    var sort_order = '<?php echo $sort_order ?>'
+    if (order != '' && sort_order != '') {
+        var current = $(".arrow[data-order='" + order + "']");
+        current.addClass("active");
+        current.attr('data-sort', sort_order);
+        if (sort_order == 'desc') {
+            current.find('.arrow-down').addClass('active');
+            current.find('.arrow-up').addClass('disabled');
+        } else {
+            current.find('.arrow-down').addClass('disabled');
+            current.find('.arrow-up').addClass('active');
+        }
+    }
+    var url = new Url();
+    $(".arrow").on('click', function () {
+        var order = $(this).attr('data-order');
+        var sort = $(this).attr('data-sort');
+        sort = sort == 'desc' ? 'asc' : 'desc';
+        url.setArgs({order: sort, sort: order, p: 1});
+        window.location.href = url.getUrl();
+    });
+
+</script>
+<link rel="stylesheet" href="/srv/static/panel/css/lightbox/lightbox.css"/>
+
+<script src="/srv/static/panel/js/jquery/lightbox/lightbox.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        lightbox.option({
+            albumLabel: '%1/%2',
+            'resizeDuration': 200,
+            "fadeDuration":0,
+            "imageFadeDuration":0
+        });
+    })
+
+</script>

@@ -1,0 +1,143 @@
+body{
+    margin: 0; padding: 0;
+}
+.indexbody{
+    background: url(../images/indexback.png) no-repeat; background-position: top center; width: 100%; height: 100%; margin: 0; padding: 0;
+}
+.main{
+    width: 1200px; margin: 0 auto;
+}
+.head{
+    height: 80px; margin-top: 10px;
+}
+.head .logo{
+    float: left
+}
+.head .nav{
+    float: right
+}
+.head .nav ul{
+    list-style: none; color: #fff;
+}
+.head .nav ul a{
+    text-decoration: none; color: #fff;
+}
+.head .nav ul li{
+    width: 100px;  line-height: 40px; margin: 0 20px 0 20px; text-align: center; float: left;
+}
+.navli{
+    width: 100px; background-color: #fdd209; border-radius: 30px; line-height: 40px; margin: 0 20px 0 20px; text-align: center; float: left;
+}
+
+.indexmiddle{
+    clear: both; margin-top: 200px;
+}
+.indexp1{
+    text-align: center; font-family: SimHei; font-size: 170px; font-weight: bolder; color: white;
+}
+.indexp2{
+    text-align: center; font-family: SimHei; font-size: 70px; font-weight:lighter; color: white; margin-top: 80px;
+}
+.copy{
+    text-align: center;color: #fff; margin-top: 150px;"
+}
+
+
+
+.downbody{
+    background: url(../images/downback.png) no-repeat; background-position: top center; width: 100%; height: 100%; margin: 0; padding: 0;
+}
+.downmain{
+    clear: both; margin-top: 20px;
+}
+.downmain .left{
+    float: left;
+}
+.downmain .right{
+    float: right;
+}
+.downmain .name{
+    margin: 100px 0 0 70px;
+}
+.codediv{
+     margin-top: 50px; height: 200px;
+}
+.codediv ul{
+    list-style: none;
+}
+.codediv ul li{
+    float: left; margin: 0 20px 0 20px;
+}
+.downdiv{
+    clear: both; margin-top: 50px;
+}
+.downdiv ul{
+     list-style: none;
+}
+.downdiv ul li{
+    float: left;
+}
+.downdiv ul li a{
+    text-decoration: none; color: #fff; display: block; width: 150px; line-height: 60px; border: 1px solid #fff; border-radius: 30px; text-align: center;
+}
+.downdiv ul li .a1{
+    margin: 20px 0 0 60px;
+}
+.downdiv ul li .a2{
+    margin: 20px 0 0 130px;
+}
+
+.casebody{
+    background: url(../images/caseback.png) no-repeat; background-position: top center; width: 100%; height: 100%; margin: 0; padding: 0;
+}
+.casetitle{
+    clear: both; margin-top: 80px;
+}
+.casetitle .p1{
+    text-align: center; font-family:SimSun ; font-size: 120px; line-height: 150px; font-weight: lighter; color: white;
+}
+.casetitle .p2{
+    text-align: center; font-family:SimSun ; font-size: 100px; line-height: 150px; font-weight: lighter; color: white;
+}
+.casebody .content{
+     margin-top: 100px;
+}
+.casebody .content .ul1{
+    list-style: none; margin: 0; padding: 0;
+}
+.casebody .content .ul1 .li1{
+    border: 1px solid silver; padding: 30px; height: 130px; margin: 10px 0 20px 0;
+}
+.casebody .content .ul1 .li1 ul{
+    list-style: none;margin: 0; padding: 0;
+}
+ul .li2{
+    float: left; width: 125px; height: 125px;
+}
+ul .li3{
+    float: left; width: 750px; padding: 0px 15px 0 15px;
+}
+ul .li3 .p1{
+    font-size: 20px; font-weight: bolder;
+}
+ul .li3 .p1 .span1{
+    color: green;
+}
+ul .li3 .p1 .span2{
+    color: #fdd209;
+}
+ul .li3 .p1 .span3{
+    color: red;
+}
+ul .li3 .p2{
+    font-size: 14px; font-family:宋体; color: #8d8d8d;
+}
+ul .li4{
+    float: left;width: 190px;margin-top: 30px; cursor: pointer;
+}
+.btndown{
+    position: relative; display: block; width: 190px; height: 60px;font-family:宋体;font-weight: bolder; border-radius: 30px; background-color: #fdd209; line-height: 60px; text-align: center;
+}
+.btndown .code{
+    position: absolute; top: 60px; left: -55px; width: 250px; height: 250px; z-index: 9999; display: none;
+}

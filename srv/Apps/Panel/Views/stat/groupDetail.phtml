@@ -1,0 +1,276 @@
+<link rel="stylesheet" href="/srv/static/panel/css/stat.css"/>
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+
+<style>.inner-nav {
+        box-shadow: none;
+    }
+
+    .page-content {
+        padding: 0;
+    }
+
+    .sidebar {
+        margin-top: -55px;
+    }
+
+    .stat_component .filters {
+        padding-bottom: 10px;
+    }
+
+    .stat_component .filter {
+        margin-left: 15px;
+        display: inline-block;
+        overflow: hidden;
+    }
+
+    .stat_component .control-bar-wrapper {
+        position: relative;
+        padding-top: 20px;
+        padding-bottom: 15px;
+        color: #323437;
+        padding-left: 20px;
+    }
+
+    .stat_component .stat_label {
+        display: inline-block;
+        height: 26px;
+        padding-right: 5px;
+        line-height: 26px;
+        color: #787a7d;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar {
+        border: 1px solid #e1e3e4;
+        border-radius: 2px;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar a {
+        display: inline-block;
+        float: left;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 10px;
+        color: #323437;
+        background-color: #fff;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar a {
+        display: inline-block;
+        float: left;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 10px;
+        color: #323437;
+        background-color: #fff;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar a:last-child.cur {
+        border-radius: 0 2px 2px 0;
+        right: -1px;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar .cur {
+        position: relative;
+        bottom: -1px;
+        margin-top: -2px;
+        padding-top: 1px;
+        height: 25px;
+        background-color: #438eb9;
+        color: #fff;
+    }
+
+    .stat_component .filter .group {
+        float: left;
+        background-color: #fff;
+        border-radius: 2px;
+        margin: 0;
+    }
+
+    .stat_component .filter .group li:first-child {
+        margin-left: 0;
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+    }
+
+    .stat_component .filter .group .cur {
+        position: relative;
+        z-index: 1;
+        border: 1px solid #438eb9;
+        color: #fff;
+    }
+
+    .stat_component .filter .group li:hover {
+        background-color: #f3f4f4;
+    }
+
+    .stat_component .filter .group .cur, .filter .group li.cur:hover {
+        background-color: #438eb9;
+    }
+
+    .stat_component .filter .group li {
+        cursor: pointer;
+        padding: 0 12px;
+        border: 1px solid #e1e3e4;
+        margin-left: -1px;
+    }
+
+    .stat_component .filter .group li, .filter label {
+        height: 24px;
+        line-height: 24px;
+        float: left;
+    }
+
+    .stat_component .time {
+        width: 80px;
+        height: 24px;
+        line-height: 24px;
+        margin: 0 0 0 7px;
+        padding: 0 0 0 6px;
+        border: 1px solid #e1e3e4;
+        border-right: none;
+        text-indent: 0;
+        color: #323437;
+        cursor: pointer;
+        float: left;
+        border-top-left-radius: 2px !important;
+        border-bottom-left-radius: 2px !important;
+    }
+
+    .stat_component .time_picker {
+        width: 24px;
+        height: 24px;
+        display: inline-block;
+        float: left;
+        border: 1px solid #e4e4e4;
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+        text-align: center;
+        color: #666;
+        cursor: pointer;
+    }
+
+    .stat_component .split_line {
+        display: inline-block;
+        float: left;
+        margin-left: 7px;
+        font-size: 16px;
+        color: #666
+    }
+
+    .stat_component .control-bar-wrapper .select-bar-item {
+        position: relative;
+        margin-left: 5px;
+        height: 24px;
+        line-height: 24px;
+    }
+
+    .stat_component .filter .group li:last-child {
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+    }
+
+    .main_wrap {
+        width: 100%;
+        height: 320px;
+    }
+
+    .main {
+        width: 100%;
+        height: 320px;
+        display: none
+    }
+</style>
+<div class="stat_component">
+    <div style="margin-top: 10px;"></div>
+
+
+    <div class="content_wrap left" style="min-height: 450px;height: auto">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;"><i
+                    class="fa fa-bar-chart"></i> 总群聊统计<span class="total_count total"></span> </b></div>
+        <div id="filters" class="filters">
+            <div class="control-bar-wrapper clearfix" id="control-bar-wrapper">
+                <div class="control-bar bg-iframe l" id="control-bar">
+                    <span class="l stat_label">时间：</span>
+                    <div class="l date-select-bar" id="date-select-bar">
+                        <a href="javascript:;" data-id="today" data-type="total"
+                           class="trackable date-bar-single-day cur">今天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="yesterday" data-type="total"
+                           class="trackable date-bar-single-day">昨天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="7" data-type="total" class="trackable ">最近7天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="30" data-type="total" class="trackable">最近30天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="custom" data-type="total" class="trackable">自定义</a>
+                    </div>
+                    <div class="select-bar-item l time_filter" style="display: none"><input type="text"
+                                                                                            class="time start"
+                                                                                            id="start" data-id="start"
+                                                                                            readonly
+                                                                                            style="border-radius: 10px;">
+                        <span class="time_picker" data-id="start"><i class="fa fa-calendar-check-o"></i></span>
+                        <span class="split_line">-</span>
+                        <input type="text" data-id="end" class="time end" id="end" readonly>
+                        <span class="time_picker" data-id="end"> <i class="fa fa-calendar-check-o"></i></span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main_wrap">
+            <div class='loading'><img src='/srv/static/panel/images/admin/loading2.gif'/>&nbsp;&nbsp;数据加载中...</div>
+            <div class="main" id="total"></div>
+        </div>
+        <div class="hr"></div>
+        <div style="min-height:200px;width: 100%" class="total_data">
+
+        </div>
+    </div>
+    <div class="content_wrap right" style="min-height: 450px;height: auto">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;"><i
+                    class="fa fa-bar-chart"></i> 活跃群聊统计 <span class="active_count total"></span></b></div>
+        <div id="filters" class="filters">
+            <div class="control-bar-wrapper clearfix" id="control-bar-wrapper">
+                <div class="control-bar bg-iframe l" id="control-bar">
+                    <span class="l stat_label">时间：</span>
+                    <div class="l date-select-bar" id="date-select-bar">
+                        <a href="javascript:;" data-id="7" data-type="active_group" class="trackable cur">最近7天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="30" data-type="active_group" class="trackable">最近30天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="custom" data-type="active_group" class="trackable">自定义</a>
+                    </div>
+                    <div class="select-bar-item l time_filter" style="display: none"><input type="text"
+                                                                                            class="time start"
+                                                                                            id="start1" data-id="start1"
+                                                                                            readonly
+                                                                                            style="border-radius: 10px;">
+                        <span class="time_picker" data-id="start1"><i class="fa fa-calendar-check-o"></i></span>
+                        <span class="split_line">-</span>
+                        <input type="text" data-id="end1" class="time end" id="end1" readonly>
+                        <span class="time_picker" data-id="end1"> <i class="fa fa-calendar-check-o"></i></span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main_wrap">
+            <div class='loading'><img src='/srv/static/panel/images/admin/loading2.gif'/>&nbsp;&nbsp;数据加载中...</div>
+            <div class="main" id="active_group"></div>
+        </div>
+        <div class="hr"></div>
+        <div style="min-height:200px;width: 100%" class="active_data">
+
+        </div>
+    </div>
+
+</div>
+<!--<script type="text/javascript" src="/static/panel/js/tools/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+-->
+<script type="text/javascript" src="/static/panel/js/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+    seajs.use('app/panel/stat/panel.group.js?v=1.1', function (api) {
+        api.complex();
+    })
+</script>

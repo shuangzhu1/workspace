@@ -1,0 +1,53 @@
+<tr class="item" data-id="<?php echo $item['id']; ?>">
+    <!--  <th class='name'><?php /*echo $item['id']; */ ?></th>-->
+    <td><?php echo $item['name']; ?></td>
+    <td><?php echo $item['customer_info']['name']; ?></td>
+    <td><?php if ($item['thumb']) { ?><a data-lightbox="roadtrip<?php echo $item['id'] ?>"
+                                         href="<?php echo $item['thumb'] ?>"><img style="border-radius: 100%"
+                                                                                  src="<?php echo $item['thumb'] ?>?x-oss-process=image/resize,m_fill,h_60,w_60"/>
+            </a><?php } ?>
+    </td>
+    <td><span
+            title="<?php echo $item['app_id'] ?>"><?php echo$item['app_id']; ?></span>
+    </td>
+    <td><span
+            title="<?php echo $item['app_key'] ?>"><?php echo $item['app_key']; ?></span>
+    </td>
+
+
+    <!-- <td><?php /*echo $item['url']; */ ?></td>-->
+
+    <!--   <td>
+        <?php /*echo $item['sort_num'] */ ?>
+    </td>-->
+
+    <td><?php echo $item['status'] == 1 ? '正常' : '禁用' ?></td>
+    <!-- <td><?php /*echo $item['support_login'] == 1 ? '是' : '不是' */ ?></td>-->
+    <td>
+        <a href="JavaScript:;"
+           data-id="<?php echo $item['id']; ?>"
+           data-name="<?php echo $item['name']; ?>"
+           data-status="<?php echo $item['status']; ?>"
+           data-sort_num="<?php echo $item['sort_num']; ?>"
+           data-thumb="<?php echo $item['thumb']; ?>"
+           data-customer="<?php echo $item['customer_id']; ?>"
+           data-url="<?php echo $item['url'] ?>"
+           data-apk_sign="<?php echo $item['apk_sign'] ?>"
+           data-package_id="<?php echo $item['package_id'] ?>"
+           data-bundle_id="<?php echo $item['bundle_id'] ?>"
+           data-dev_bundle_id="<?php echo $item['dev_bundle_id'] ?>"
+           data-support_login="<?php echo $item['support_login'] ?>"
+           class="btn btn-primary btn-sm editBtn"><i class="fa fa-edit"></i> 编辑</a>
+        <!--  <?php /*if ($item['status'] == 1) { */ ?>
+            <a href="JavaScript:;" data-id="<?php /*echo $item['id']; */ ?>"
+               class="btn btn-danger btn-sm lockBtn"><i class="fa fa-remove"></i> 禁用</a>
+        <?php /*} else if ($item['status'] == 2) { */ ?>
+            <a href="JavaScript:;" data-id="<?php /*echo $item['id']; */ ?>"
+               class="btn btn-purple btn-sm unLockBtn"><i class="fa fa-check"></i> 取消禁用</a>
+        --><?php /*} */ ?>
+        <a href="JavaScript:;" data-id="<?php echo $item['id']; ?>"
+           class="btn btn-danger btn-sm delBtn"><i class="fa fa-trash"></i> 删除</a>
+        <a href="JavaScript:;" data-id="<?php echo $item['id']; ?>"
+           class="btn btn-primary btn-sm ">用户列表</a>
+    </td>
+</tr>

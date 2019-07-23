@@ -1,0 +1,13 @@
+  set_time_limit(0);
+        $p = 1;
+        while ($list = UserProfile::findList(['birthday=""', 'offset' => ($p - 1) * 100, 'limit' => 100, 'columns' => 'user_id,sex'])) {
+            foreach ($list as $item) {
+                $birthday = UserStatus::getInstance()->createRandBirthday($item['sex']);
+                $constellation = UserStatus::getInstance()->getConstellation($birthday);
+                UserProfile::updateOne(['birthday' => $birthday, 'constellation' => $constellation], 'user_id=' . $item['user_id']);
+                //送经验值
+                PointRule::init()->executeRule($item['user_id'], PointRule::BEHAVIOR_USER_BIRTHDAY);
+            }
+            $p++;
+        }
+        echo "完成";

@@ -1,0 +1,40 @@
+<tr class="item" data-id="<?php echo $son['id']; ?>">
+    <th class='name'><?php echo $son['id']; ?></th>
+    <td class="center"><input type="checkbox" class="chk" data-id="<?php echo $son['id']; ?>"/></td>
+    <td>
+
+        <?php
+        $str = '|';
+        for ($i = 1; $i < $level; $i++) {
+            $str .= '-';
+        }; ?><?php echo $str . $son['text']; ?>
+    </td>
+    <td><?php echo date('Y-m-d H:i', $son['created']); ?></td>
+    <td class="center">
+        <?php if ($son['status'] == 0) {
+            echo "<label class='label label-danger arrowed-in'>已被系统屏蔽</label>";
+        } else if ($son['status'] == 1) {
+            echo "<label class='label label-success arrowed arrowed-right'>正常</label>";
+        } else if ($son['status'] == 2) {
+            echo "<label class='label label-gray arrowed-in arrowed-in-right'><i class='fa fa-trash'></i> 用户已删除</label>";
+        }; ?>
+    </td>
+    <td>
+        <?php if ($son['status'] == 1) { ?>
+            <a href="JavaScript:;" data-id="<?php echo $son['id']; ?>"
+               class="btn btn-danger btn-minier delBtn">屏蔽动态</a>
+        <?php } else if ($son['status'] == 0) { ?>
+            <a href="JavaScript:;" data-id="<?php echo $son['id']; ?>"
+               class="btn btn-danger btn-minier recoveryBtn">恢复正常</a>
+        <?php } ?>
+    </td>
+</tr>
+<?php
+if ($son['children']) {
+    foreach ($son['children'] as $on) {
+        $level++;
+        $this->partial('site/industry/son');
+    }
+}
+
+?>

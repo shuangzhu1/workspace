@@ -1,0 +1,352 @@
+/*登录*/
+.hide{
+    display:none;
+}
+.dis_login {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    display: inline-block;
+    border-radius: 0.5rem;
+    -webkit-border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+}
+
+.dis_login .dis_logo {
+    display: block;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border: 1px solid #ccc;
+    margin: 0 auto;
+}
+
+.dis_login .dis_logo img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+}
+
+.dis_login .login_form {
+    margin-top: 0.75rem;
+    text-align: left;
+}
+
+.dis_login .login_form div {
+    width: 100%;
+    height: 2.15rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.25rem;
+    -webkit-border-radius: 0.25rem;
+}
+
+.dis_login .login_form div label {
+    display: inline-block;
+    width: 16%;
+    vertical-align: middle;
+}
+
+.dis_login .login_form div label em {
+    display: block;
+    width: 1.05rem;
+    height: 1.05rem;
+    margin: 0.5rem auto;
+}
+
+.dis_login .login_form div label .tel_num {
+    background: url(../images/shoujihao.png) no-repeat center;
+    background-size: 1.05rem;
+}
+
+.dis_login .login_form div label .pwd_num {
+    background: url(../images/password_icon.png) no-repeat center;
+    background-size: 1.05rem;
+}
+
+.dis_login .login_form div input {
+    font-size: 0.75rem;
+    color: #999;
+    padding: 0.5rem 0;
+    border: 0;
+    width: 80%;
+    display: inline-block;
+}
+
+.dis_login .login_form div button {
+    width: 100%;
+    height: 100%;
+    background-color: #FFDE00;
+    border: 0;
+    text-align: center;
+    color: #414141;
+    font-size: 0.75rem;
+    border-radius: 0.25rem;
+    -webkit-border-radius: 0.25rem;
+}
+
+.dis_login .login_form .btn {
+    border: 0;
+    margin-top: 0.75rem;
+}
+
+.dis_login .login_form p {
+    color: #f00;
+    height: 1rem;
+    line-height: 1rem;
+    font-size: 0.5rem;
+}
+
+.dis_login .login_form div input {
+    font-size: 0.65rem;
+    line-height: 1rem;
+    height: 1rem;
+}
+
+.moxie-shim {
+    border-radius: 100%;
+}
+
+.moxie-shim input {
+    border-radius: 100%;
+}
+.step-1{
+    display:block;
+    background: url(/static/wap/images/register/bg1.png) no-repeat;
+    background-color:#FFC5B0;
+    background-size: cover;
+    /*background-position-y: -4.2rem;*/
+}
+.step-1 .username{
+    color: #f6ff00;
+}
+.step-1 .logo img{
+    width: 4.825rem;
+}
+.step-1, .step-2, .step-3 {
+    position: relative;
+}
+
+.step-1 .logo {
+    position: absolute;
+    top: 0.875rem;
+    left: 0.85rem;
+    z-index: 10;
+}
+
+.step-1 .avator_from {
+    position: absolute;
+    top: 4.5rem;
+    left: 7.45rem;
+}
+
+.step-1 .avator_from img {
+    border-radius: 50%;
+    width: 3.875rem;
+    height: 3.875rem;
+
+}
+
+.step-1 .name_from {
+    position: absolute;
+    top: 9.075rem;
+    left: 5.075rem;
+    font-size: 0.8rem;
+    color: white;
+}
+
+.step-1 .next-1 {
+    position: absolute;
+    top: 19rem;
+    /*left:4.225rem;*/
+    text-align: center;
+    z-index: 10;
+    width:100%;
+}
+.step-1 .next-1 img{
+    width: 14rem;
+}
+.step-1 .bg {
+    width: 100%;
+}
+
+.step-2 > div:first-child {
+    /*position:absolute;*/
+    margin-top: 5rem;
+    margin-left: 2.6rem;
+}
+
+.items > .item {
+    position: relative;
+    width: 85%;
+    font-size: 0.75rem;
+    font-family: PingFangSC-Regular, sans-serif;
+    padding: 1.175rem 0 1.175rem 0.575rem;
+    border-bottom: 1px solid #ddd;
+}
+.step-2 .items .item:nth-child(2){
+    height:auto;overflow: hidden;padding:0.675rem 0 0.675rem 0.575rem;
+}
+.step-2 .items .item:nth-child(2) div:first-child{
+    float: left;padding-top: 0.5rem
+}
+#eye_toggle{
+    position: absolute;
+    right:0;
+    top:1.5rem;
+    height:0.8rem;
+    /*float:right;*/
+    margin-top:0.2rem
+}
+.step-3 .avator .dis_logo .upload-widget{
+    position: absolute;width: 3.275rem;height: 3.275rem;z-index: 10;overflow: hidden;border-radius: 100%
+}
+.step-3 .avator .dis_logo .upload-widget .browse-button{
+    width: 3.275rem;height: 3.275rem;display: block; border-radius: 100%;overflow:hidden;
+}
+#avatar{
+    position: absolute;width: 3.275rem;height: 3.275rem;z-index: 9;border-radius: 100%;
+}
+
+
+#upload_btn{
+    width: 3.275rem; height: 3.275rem;
+}
+.step-2 div .item span {
+    width: 2.6rem;
+}
+
+.items .item input {
+    width: 60%;
+    height: 0.8rem;
+    border-style: none;
+    margin-left: 0.4rem;
+    padding: 10px;
+    /*outline:medium;*/
+    background-color: white;
+    font-size: 0.75rem;
+    line-height: 0.8rem;
+    vertical-align: middle;
+}
+
+.items .item input:focus {
+    padding: 10px;
+    outline: medium;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-style: none;
+    background-color: transparent;
+}
+
+::-webkit-input-placeholder {
+    font-size: 0.75rem;
+    color: #a9a9a9;
+}
+
+.step-2 div .item .code {
+    /*float: right;*/
+    position: absolute;
+    top:0.9rem;
+    right:0;
+    background-color: #FFDE00;
+    padding: 0.5rem;
+    -webkit-border-radius: 0.25rem;
+    -moz-border-radius: 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.step-2 .next-2  {
+    margin-top: 1rem;
+    margin-left: 3.175rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #414141;
+    background-color: #FFDE00;
+    width: 12.425rem;
+    height: 2.05rem;
+    line-height: 2.05rem;
+    -webkit-border-radius: 0.25rem;
+    -moz-border-radius: 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.step-2 .agree {
+    margin-top: 2rem;
+    margin-left: 4.625rem;
+    font-size: 0.6rem;
+    color: #414141;
+    line-height: 1rem;
+    height: 1rem;
+}
+
+.step-2 .agree a {
+    color: blue;
+}
+
+.step-2 .agree input {
+    height: 0.8rem;
+    width: 0.8rem;
+    padding: 10px;
+    margin-top: 0.1rem;
+    float: left;
+}
+
+.step-3 .avator {
+    margin-top: 2rem;
+    margin-left: 7.525rem;
+}
+
+.step-3 .items .item span {
+    width:1.3rem;
+    float: left;
+    margin-top: 0.075rem;
+    margin-right: 1.7rem;
+}
+
+.step-3 .next-3 {
+    margin-top: 1rem;
+    margin-left: 3.175rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #414141;
+    background-color: #FFDE00;
+    width: 12.425rem;
+    height: 2.05rem;
+    line-height: 2.05rem;
+    -webkit-border-radius: 0.25rem;
+    -moz-border-radius: 0.25rem;
+    border-radius: 0.25rem;
+}
+.step-3 .items:nth-child(3) .item span:nth-child(2) {
+    float: left;margin-right: 0.8rem
+}
+.step-3 .items:nth-child(3) .item span:nth-child(3) {
+    float: left;
+}
+
+.download{
+    margin-top: 1rem;
+    margin-left: 3.175rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #414141;
+    background-color: #FFDE00;
+    width: 12.425rem;
+    height: 2.55rem;
+    line-height: 2.55rem;
+    -webkit-border-radius: 0.25rem;
+    -moz-border-radius: 0.25rem;
+    border-radius: 0.25rem;
+}
+.sex{
+    width: 0.8rem;float: left;margin-top: 0.25rem;
+}
+.err{
+    height:1rem;
+    color:red;
+    font-size:0.7rem;
+    margin-top:1.5rem;
+    width:100%;
+    text-align:center;
+}

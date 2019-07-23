@@ -1,0 +1,119 @@
+<table id="article-list" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style='width:150px'>sub_key</th>
+        <th style="width: 200px">标识</th>
+        <!--    <th style='width:300px'>审核</th>-->
+        <th style=''>内容值</th>
+        <th style="width: 200px">操作</th>
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <td><?php echo $item['sub_key']; ?></td>
+
+            <td>
+                <?php echo $item['name']; ?>
+            </td>
+            <td>
+                <?php echo $item['val']; ?>
+            </td>
+
+            <td>
+                <a href="javascript:;" class="btn btn-sm  btn-primary editBtn"
+                   data-content="<?php echo base64_encode($item['val']); ?>"
+                   data-sub_key="<?php echo $item['sub_key']; ?>"
+                   data-name="<?php echo $item['name']; ?>"
+                   data-id="<?php echo $item['id']; ?>"><i
+                        class="fa fa-pencil"></i> 编辑</a>
+             <!--   <a href="javascript:;" data-id="<?php /*echo $item['id']; */?>" class="btn btn-xs btn-danger delBtn"><i
+                        class="fa fa-remove"> </i> 删除</a>-->
+
+            </td>
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="9">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <tr class="showpage">
+        <th class="name">操作</th>
+        <td colspan="13">
+                <span>
+                    <a class="addTpl btn-inverse btn btn-xs" href="javascript:;"><i class="fa fa-plus"></i> 添加模板</a>
+                </span>
+        </td>
+    </tr>
+</table>
+<div class="modal fade" id="msgModal">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">系统消息模板编辑</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">sub_key:</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="sub_key"
+                                   placeholder="唯一标识,建议用英文。如:register">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">名称:</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name" placeholder="如:注册成功">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">模板内容:</label>
+
+                        <div class="col-sm-10">
+                                <textarea id="content" placeholder="尊敬的#user_name#您好,欢迎注册恐龙谷" class=" form-control"
+                                          style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 80px;"></textarea>
+                        </div>
+                    </div>
+                    <p class="alert alert-info"><i class="fa fa-tag"></i>
+                        1.#***#是占位符，请勿随意修改<br/>
+                    </p>
+                    <p class="alert alert-danger error-widget" style="display: none"><i class="fa fa-warning"></i>
+                        <span class="error_msg"></span>
+                    </p>
+                    <p class="alert alert-success success-widget" style="display: none"><i class="fa fa-check"></i>
+                        <span class="success_msg"></span>
+                    </p>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <input type="hidden" value="0" id="message_id"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-original="" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script>
+    seajs.use('app/app.message', function (api) {
+        api.sysEdit();
+    });
+
+</script>

@@ -1,0 +1,91 @@
+<link rel="stylesheet" href="/static/panel/css/stat.css"/>
+<style>
+    .main_wrap {
+        width: 100%;
+        height: 400px;
+    }
+
+    .main {
+        width: 100%;
+        height: 400px;
+        display: none
+    }
+</style>
+<div class="stat_component">
+    <div class="header_bar">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">今日群聊</b></div>
+        <table width="100%">
+            <tbody>
+            <tr class="title">
+                <th></th>
+                <th>参与用户数</th>
+                <th>群聊总数</th>
+                <th>有效群聊</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr class="highlight">
+
+                <td class="normal">今日</td>
+                <?php foreach ($data['today'] as $i => $item) {
+                    if ($i == 'share_user') continue; ?>
+                    <td><?php echo $item ?></td>
+                <?php } ?>
+            </tr>
+            <tr class="">
+                <td class="normal">昨日</td>
+                <?php foreach ($data['yesterday'] as $i => $item) {
+                    if ($i == 'share_user') continue; ?>
+                    <td><?php echo $item ?></td>
+                <?php } ?>
+            </tr>
+            <tr class="expect_today">
+                <td class="normal">预计今日</td>
+                <?php foreach ($data['expect'] as $i => $item) {
+                    ?>
+                    <td><?php echo $item > $data['yesterday'][$i] ? '<i class="fa fa-arrow-up green"></i>' : ($item == $data['yesterday'][$i] ? '' : '<i class="fa fa-arrow-down red"></i>') ?><?php echo $item ?></td>
+                <?php } ?>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="DateSelectBar">
+        <div class="control-bar-wrapper clearfix" id="control-bar-wrapper">
+            <div class="control-bar bg-iframe l" id="control-bar">
+                <div class="l date-select-bar" id="date-select-bar">
+                    <a data-id="today" href="javascript:;" class="trackable date-bar-single-day current">今天</a>
+                    <span class="seprator"></span>
+                    <a data-id="yesterday" href="javascript:;" class="trackable date-bar-single-day">昨天</a>
+                    <span class="seprator"></span>
+                    <a data-id="7" href="javascript:;" class="trackable">最近7天</a>
+                    <span class="seprator"></span>
+                    <a data-id="30" href="javascript:;" class="trackable">最近30天</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content_wrap left" style="width: 99%;max-width: 100%;min-height: 500px;height: auto;">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">总群聊统计<span
+                    class="total_count total"></span><span
+                    class="right more"><a
+                        href="/stat/groupDetail">查看更多统计 <i class="fa fa-angle-double-right"></i></a></span></b></div>
+        <div class="main_wrap">
+            <div class='loading'><img src='/srv/static/panel/images/admin/loading2.gif'/>&nbsp;&nbsp;数据加载中...</div>
+            <div class="main" id="total"></div>
+        </div>
+        <div class="hr"></div>
+        <div style="min-height:200px;width: 100%" class="total_data">
+
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="/static/panel/js/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+    seajs.use('app/panel/stat/panel.group.js?v=1.1', function (api) {
+        api.single();
+    })
+</script>

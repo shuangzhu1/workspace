@@ -1,0 +1,30 @@
+<style>
+    .rent_top {
+        line-height: 1rem;
+        font-size: 0.6rem;
+        margin-top: 0.25rem;
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid #e4e4e4;
+    }
+
+    .rent {
+        padding: 0 1rem;
+    }
+
+    .rent li {
+        line-height: 2rem;
+        font-size: 0.6rem;
+        border-bottom: 1px solid #e4e4e4;
+        cursor: pointer;
+    }
+</style>
+<?php if ($skill) { ?>
+    <p class="rent_top">出租详情</p>
+    <?php foreach ($skill as $item) { ?>
+        <ul class="rent">
+            <li data-data="<?php echo (base64_encode(json_encode($item))); ?>" data-info="<?php echo (base64_encode(json_encode($info))); ?>"><span
+                    class="name"><?php echo $item['title'] ?></span><span
+                    class="price right"><?php echo sprintf('%.2f', $item['money'] / 100) ?>元/次(小时)</span></li>
+        </ul>
+    <?php } ?>
+<?php } ?>

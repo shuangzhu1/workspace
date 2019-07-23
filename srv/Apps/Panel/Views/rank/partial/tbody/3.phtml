@@ -1,0 +1,32 @@
+<?php if ($list) { ?>
+    <?php foreach ($list as $k => $item) { ?>
+        <tr>
+            <td class="center"><?php echo $k + 1; ?></td>
+            <td>
+                <?php if ($item['sex'] == 1) { ?>
+                    <i class="fa fa-mars blue bolder"></i>
+                <?php } else if ($item['sex'] == 2) { ?>
+                    <i class="fa fa-venus pink bolder"></i>
+                <?php } else { ?>
+
+                <?php }; ?>
+            </td>
+            <td class="center">
+                <span class="badge badge-primary"> <?php echo $item['grade'] ?></span></td>
+            <td class="center"><img style="width: 36px;border-radius: 100%"
+                                    src="<?php echo $item['avatar'] ?>?x-oss-process=image/resize,m_fill,h_160,w_160"/>
+            </td>
+            <td><span class="left"><?php echo $item['user_id'] ?></span></td>
+            <td><span class="left"><?php echo $item['username'] ?></span></td>
+
+            <td class="center"><?php echo intval($item['like_cnt']) ?></td>
+            <td class="center"><!--<a data-title="群聊详情" href="javascript:;" class="newTarget"
+                                  data-href="/panel/group/detail/<?php /*echo $item['id'] */?>" target="_blank">查看详情</a>-->
+            </td>
+        </tr>
+    <?php } ?>
+<?php } else { ?>
+    <tr>
+        <td colspan='12'><span class="left">暂无数据</span></td>
+    </tr>
+<?php } ?>

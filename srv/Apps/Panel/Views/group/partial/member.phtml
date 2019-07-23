@@ -1,0 +1,29 @@
+<tr>
+    <td class=""><img src="<?php echo $member_item['avatar']; ?>"
+                      style="width: 40px;height: 40px; border-radius: 100%;"/>
+    </td>
+    <td>
+        <span><?php echo $member_item['uid']; ?></span>
+    </td>
+    <td>
+        <span><?php echo $member_item['default_nick']; ?></span>
+    </td>
+    <td>
+        <span><?php echo $member_item['nick'] ?></span>
+    </td>
+    <td class="hidden-480">
+        <?php if ($member_item['uid'] == $uid) { ?>
+            <span class="badge badge-purple">
+                                                                  群主
+                                                               </span>
+        <?php } else if ($member_item['member_type'] == 2) { ?>
+            <span class="badge badge-success">
+                                                                  管理员
+                                                               </span>
+        <?php } else { ?>
+            <span class="badge badge-success">
+                                                                  普通成员
+                                                               </span>
+        <?php } ?>
+    </td>
+</tr>

@@ -1,0 +1,61 @@
+<form action="" method="get"
+      style="border: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px;border-radius: 5px;line-height: 50px;">
+    <label for="name">域名:</label>
+    <input name="host" type="text" style="width: 200px" id="host" value="<?php echo $host; ?>">
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+    <span class="btn btn-inverse btn-sm btnAdd"><i class="fa fa-plus"></i> 添加域名</span>
+</form>
+<table class="list ">
+    <thead>
+    <tr class="head">
+        <th>域名</th>
+        <th>加入黑名单时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody class="listData">
+    <?php if ($hosts) { ?>
+        <?php foreach ($hosts as $k => $h) {
+            ?>
+            <tr class="item item_<?php echo base64_encode($k) ?>">
+                <td><?php echo $k ?></td>
+                <td><?php echo date('Y-m-d H:i', $h) ?></td>
+                <td><span class="btn btn-xs btn-primary btnRemove" data-key="<?php echo base64_encode($k) ?>"
+                          data-id="<?php echo $k ?>">移除黑名单</span></td>
+            </tr>
+
+        <?php } ?>
+    <?php } ?>
+    </tbody>
+
+</table>
+<script>
+    seajs.use('app/panel/panel.base', function (api) {
+        $(".btnRemove").on('click', function () {
+            var host = $(this).data('id');
+            api.requestApi('/api/tools/removeHost', {host: host}, function (res) {
+                    if (res.result == 1) {
+                        api.showTip('ok', "删除成功", 1000, function () {
+                            $(".item_" + base64.encode(host)).remove();
+                        })
+                    }
+                }
+            )
+        });
+        $(".btnAdd").on('click', function () {
+            var host = $("#host").val();
+            if (!host || !/^([a-zA-Z0-9]+)(\.[a-zA-Z0-9]+)*\.([a-zA-Z]{2,})$/.test(host)) {
+                api.showTip("err", "请输入正确的域名", 1000);
+                return;
+            }
+            api.requestApi('/api/tools/addHost', {host: host}, function (res) {
+                    if (res.result == 1) {
+                        api.showTip('ok', "添加成功", 1000, function () {
+                            window.location.reload();
+                        })
+                    }
+                }
+            )
+        })
+    })
+</script>

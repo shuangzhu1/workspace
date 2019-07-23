@@ -1,0 +1,142 @@
+<link rel="stylesheet" href="/static/panel/css/stat.css"/>
+<style>
+    .main_wrap {
+        width: 100%;
+        height: 320px;
+    }
+
+    .main {
+        width: 100%;
+        height: 320px;
+        display: none
+    }
+</style>
+<div class="stat_component">
+    <div class="header_bar">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">今日动态</b></div>
+        <table width="100%">
+            <tbody>
+            <tr class="title">
+                <th></th>
+                <th>参与用户数</th>
+                <th>动态总数</th>
+                <th>文本类型</th>
+                <th>图文类型</th>
+                <th>小视频</th>
+                <th>音频</th>
+                <th>红包</th>
+            </tr>
+            <tr class="highlight">
+
+                <td class="normal">今日</td>
+                <?php foreach ($data['today'] as $i => $item) {
+                    if ($i == 'share_user') continue; ?>
+                    <td><?php echo $item ?></td>
+                <?php } ?>
+            </tr>
+            <tr class="">
+                <td class="normal">昨日</td>
+                <?php foreach ($data['yesterday'] as $i => $item) {
+                    if ($i == 'share_user') continue; ?>
+                    <td><?php echo $item ?></td>
+                <?php } ?>
+            </tr>
+            <tr class="expect_today">
+                <td class="normal">预计今日</td>
+                <?php foreach ($data['expect'] as $i => $item) {
+                    ?>
+                    <td><?php echo $item > $data['yesterday'][$i] ? '<i class="fa fa-arrow-up green"></i>' : ($item == $data['yesterday'][$i] ? '' : '<i class="fa fa-arrow-down red"></i>') ?><?php echo $item ?></td>
+                <?php } ?>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="DateSelectBar">
+        <div class="control-bar-wrapper clearfix" id="control-bar-wrapper">
+            <div class="control-bar bg-iframe l" id="control-bar">
+                <div class="l date-select-bar" id="date-select-bar">
+                    <a data-id="today" href="javascript:;" class="trackable date-bar-single-day current">今天</a>
+                    <span class="seprator"></span>
+                    <a data-id="yesterday" href="javascript:;" class="trackable date-bar-single-day">昨天</a>
+                    <span class="seprator"></span>
+                    <a data-id="7" href="javascript:;" class="trackable">最近7天</a>
+                    <span class="seprator"></span>
+                    <a data-id="30" href="javascript:;" class="trackable">最近30天</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content_wrap left">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">总动态统计<span
+                    class="total_count total"></span><span
+                    class="right more"><a
+                        href="/stat/discussDetail">查看更多 <i class="fa fa-angle-double-right"></i></a></span></b></div>
+        <div class="main_wrap">
+            <div class='loading'><img src='/srv/static/panel/images/admin/loading2.gif'/>&nbsp;&nbsp;数据加载中...</div>
+            <div class="main" id="total"></div>
+        </div>
+    </div>
+    <div class="content_wrap right">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">图文动态<span
+                    class="total_count image"></span><span
+                    class="right more"><a
+                        href="/stat/discussDetail?type=3">查看更多 <i class="fa fa-angle-double-right"></i></a></span></b>
+        </div>
+        <div class="main_wrap">
+            <div class='loading'><img src='/srv/static/panel/images/admin/loading2.gif'/>&nbsp;&nbsp;数据加载中...</div>
+            <div class="main" id="image"></div>
+        </div>
+    </div>
+    <div class="content_wrap left">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">视频动态<span
+                    class="total_count video"></span><span
+                    class="right more"><a
+                        href="/stat/discussDetail?type=2">查看更多 <i class="fa fa-angle-double-right"></i></a></span></b>
+        </div>
+        <div class="main_wrap">
+            <div class='loading'><img src='/srv/static/panel/images/admin/loading2.gif'/>&nbsp;&nbsp;数据加载中...</div>
+            <div class="main" id="video"></div>
+        </div>
+    </div>
+
+    <div class="content_wrap right">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">音频动态<span
+                    class="right more"><a
+                        href="/stat/discussDetail?type=4">查看更多<span class="total_count audio"></span> <i
+                            class="fa fa-angle-double-right"></i></a></span></b>
+        </div>
+        <div class="main_wrap">
+            <div class='loading'><img src='/srv/static/panel/images/admin/loading2.gif'/>&nbsp;&nbsp;数据加载中...</div>
+            <div class="main" id="audio"></div>
+        </div>
+    </div>
+    <div class="content_wrap left">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">纯文本动态<span
+                    class="total_count text"></span><span
+                    class="right more"><a
+                        href="/stat/discussDetail?type=1">查看更多 <i class="fa fa-angle-double-right"></i></a></span></b>
+        </div>
+        <div class="main_wrap">
+            <div class='loading'><img src='/srv/static/panel/images/admin/loading2.gif'/>&nbsp;&nbsp;数据加载中...</div>
+            <div class="main" id="text"></div>
+        </div>
+    </div>
+    <div class="content_wrap right">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">动态红包<span
+                    class="total_count package"></span><span
+                    class="right more"><a
+                        href="/stat/discussDetail?type=5">查看更多 <i class="fa fa-angle-double-right"></i></a></span></b>
+        </div>
+        <div class="main_wrap">
+            <div class='loading'><img src='/srv/static/panel/images/admin/loading2.gif'/>&nbsp;&nbsp;数据加载中...</div>
+            <div class="main" id="package"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/srv/static/panel/js/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+    seajs.use('/srv/static/panel/js/app/panel/stat/panel.discuss.js?v=1.0', function (api) {
+        api.single();
+    })
+</script>

@@ -1,0 +1,14 @@
+.item-thumb {
+    width: 105px;
+    height: 105px;
+}
+
+.item-content {
+    width: 240px;
+}
+
+.item-title {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 10px;
+}

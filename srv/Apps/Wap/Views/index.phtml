@@ -1,0 +1,153 @@
+<?php
+$controller = $this->router->getControllerName();
+$action = $this->router->getActionName();
+?>
+<!doctype html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="all"/>
+    <?php
+    if (isset($this->view->nocache) && $this->view->nocache) {
+        ?>
+        <meta http-equiv="Expires" CONTENT="0">
+        <meta http-equiv="Cache-Control" CONTENT="no-cache">
+        <meta http-equiv="Pragma" CONTENT="no-cache">
+        <?php
+    }
+    ?>
+
+
+    <meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+    <meta content="telephone=yes, address=yes" name="format-detection">
+    <!-- apple devices -->
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="white"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <!-- Mobile Devices Support @end -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+
+    <meta name="keywords" content="<?php echo $this->view->keywords; ?>"/>
+    <meta name="description" content="<?php echo $this->view->description; ?>"/>
+    <meta name="author" content="恐龙谷"/>
+
+    <title><?php echo $this->view->title; ?></title>
+    <script src="/srv/static/wap/js/jquery/jquery2.1.4.min.js"></script>
+    <?php if ($controller != 'agreement' && $controller != 'article') { ?>
+        <!--<script type="text/javascript" src="/static/wap/js/app/hotcss.js"></script>-->
+        <!--<script type="text/javascript" src="/static/wap/js/app/layer.js"></script>-->
+    <?php }else{ ?>
+    <!-- Mobile Devices Support @begin -->
+    <!--<meta name="viewport"   content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">-->
+    <?php }?>
+    <meta name="viewport"   content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <script>
+        (function (doc, win) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (!clientWidth) return;
+                    // 根据设备的比例调整初始font-size大小
+                    if(clientWidth>640) clientWidth = 640;
+                    docEl.style.fontSize = 20 * (clientWidth / 375) + 'px';
+                };
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            doc.addEventListener('DOMContentLoaded', recalc, false);
+        })(document, window);
+
+        window.app = {};
+        app._uid = '';
+        app.user_point = "";
+        window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", hengshuping, false);
+        function hengshuping() {
+            if (window.orientation == 90 || window.orientation == -90) {
+                //横屏
+            } else {
+                //竖屏
+            }
+        }
+    </script>
+    <script src="/static/wap/js/jweixin-1.0.0.js"></script>
+    <!--    <script src="/static/wap/gmu/zepto-extend.min.js"></script>-->
+    <!---->    <!--<script src="/static/wap/gmu/gmu-base.min.js"></script>-->
+
+  <!--  <script src="/static/wap/js/base.js"></script>-->
+    <script>
+
+        function isWeiXin() {
+            var ua = window.navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+    </script>
+    <script>
+        window.app = {};
+        app._uid = '<?php echo \Multiple\Wap\Helper\UserStatus::init()->getUid(); ?>';
+    </script>
+    <script src="/static/wap/js/seajs.js"></script>
+    <script>
+        seajs.config({
+            base: '/static/wap/js',
+            charset: 'utf-8',
+            timeout: 10000
+        });
+    </script>
+    <link rel="stylesheet" type="text/css" href="/static/wap/css/base.css"/>
+    <?php if ($controller != 'agreement' && $controller != 'article') { ?>
+        <link rel="stylesheet" href="/static/wap/css/layer.css"/>
+
+    <?php } ?>
+
+    <link rel="icon" href="/static/panel/images/admin/favicon.ico"/>
+
+    <!--videojs-->
+
+    <!--videojs-->
+
+    <!--  <link rel="stylesheet" href="/static/wap/gmu/gmu.css"/>
+      <link rel="stylesheet" href="/static/wap/css/base.css"/>
+      <link rel="stylesheet" href="/static/wap/css/index.css"/>
+      <link rel="stylesheet" href="/static/wap/css/home.css"/>
+      <link rel="stylesheet" href="/static/wap/iconfont/iconfont.css"/>-->
+    <!--    <link rel="stylesheet" href="/static/wap/css/base.css"/>
+    --></head>
+<body>
+<?php
+/*require_once MODULE_PATH . "/Views/base/header.phtml";*/
+?>
+<?php echo $this->view->getContent(); ?>
+<?php
+require_once MODULE_PATH . "/Views/base/ajax_login.phtml";
+?>
+<?php
+//require_once MODULE_PATH . "/Views/customize/wap/base/panel.phtml";
+?>
+
+<?php
+/*	//if( $hide_footber )
+	require_once MODULE_PATH . "/Views/base/footer.phtml";
+
+*/ ?>
+<?php
+//TplManager::init(CUR_APP_ID)->render('customize', 'base/reg_login');
+?>
+<div style="bottom: 38px !important;right: -5px!important;" data-widget="gotop"></div>
+<div id="ajaxStatus">
+    <div class="bd">
+        <p id='ajaxTip' class="wait">加载中...</p>
+    </div>
+</div>
+</body>
+</html>

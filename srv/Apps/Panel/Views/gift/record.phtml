@@ -1,0 +1,121 @@
+<form action="javascript:;" method="get"
+      style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px; line-height: 50px;">
+    <label for="name">赠送者用户ID</label>
+    <input name="owner_id" type="text" id="owner_id" placeholder="赠送者用户ID" value="<?php echo $owner_id; ?>">
+    &nbsp;
+    <label for="name">接收者用户ID</label>
+    <input name="user_id" type="text" id="user_id" placeholder="接收者用户ID" value="<?php echo $user_id; ?>">
+    &nbsp;
+    <label for="name">礼物筛选</label>
+    <select name="gift_id">
+        <option value="0">全部</option>
+        <?php foreach ($gift as $k => $item) { ?>
+            <option value="<?php echo $k ?>"><?php echo $item ?></option>
+        <?php } ?>
+    </select>
+    &nbsp;
+    <label for="name">赠送时间</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd"/>
+    - <input type="text" id="end" value="<?php echo $end; ?>" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd"/>
+    <input type="submit" class="btn btn-primary btn-sm btnSearch" value="搜索">
+</form>
+<table id="article-list" class='list'>
+    <thead>
+    <tr class="head">
+        <th style='width:80px'>礼物ID</th>
+        <th style='width:100px'>礼物名称</th>
+        <th style='width:80px'>显示图</th>
+        <!-- <th style='width:150px' class="arrow" data-sort="" data-order="sort_num">
+             <span class="text">排序大小 <a href="javascript:;" class="fa fa-question-circle blue tooltip-info"
+                                        data-rel="tooltip"
+                                        data-placement="top" data-original-title="越小显示越靠前"></a>
+             </span>
+             <span class="arrow_wrap">
+                 <i class="fa fa-caret-down arrow-down"></i>
+                 <i class="fa fa-caret-up arrow-up"></i>
+             </span>
+         </th>-->
+        <th style='width:180px'>赠送者</th>
+        <th style='width:180px'>接收者</th>
+        <th style='width:120px' class="arrow" data-sort="" data-order="charm">
+            <span class="text">增加魅力值</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span>
+        </th>
+        <th class="arrow" data-sort="" data-order="created">
+            <span class="text">赠送时间</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span>
+        </th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody class="listData">
+    <tr>
+        <td colspan="12">
+            <li class="loading"
+                style="text-align: center;display:none;width: 100%;line-height: 100px;height: 100px;vertical-align: middle">
+                <img
+                    style="width: 40px" src="/srv/static/panel/images/admin/loading2.gif"></li>
+        </td>
+    </tr>
+    </tbody>
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <div class="pageBar"></div>
+        </td>
+    </tr>
+</table>
+<link rel="stylesheet" href="/srv/static/panel/css/lightbox/lightbox.css"/>
+
+<script src="/srv/static/panel/js/jquery/lightbox/lightbox.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script type="text/javascript">
+
+    $('[data-rel=tooltip]').tooltip();
+    seajs.use(['app/panel/site/gift.js?v=1.1', 'app/panel/panel.base'], function (api, base) {
+        var owner_id ='<?php echo $owner_id ?>';
+        var user_id ='<?php echo $user_id ?>';
+        api.record({'url': '/api/gift/record', 'user_id': user_id, 'owner_id': owner_id});
+
+    });
+    $(document).ready(function () {
+        lightbox.option({
+            albumLabel: '%1/%2',
+            'resizeDuration': 200,
+            "fadeDuration":0,
+            "imageFadeDuration":0
+        });
+    })
+    $('#start').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+    $('#end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+</script>
+
+

@@ -1,0 +1,408 @@
+<link rel="stylesheet" href="/static/wap/js/swiper/swiper.css"/>
+<script src="/static/wap/js/swiper/swiper.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/wap/css/photoswipe/photoswipe.css"/>
+<link rel="stylesheet" type="text/css" href="/static/wap/css/photoswipe/default-skin.css"/>
+<script type="text/javascript" src="/static/wap/js/app/photoswipe/photoswipe.min.js"></script>
+<script type="text/javascript" src="/static/wap/js/app/photoswipe/photoswipe-ui-default.min.js"></script>
+<style>
+    body {
+        background-color: #F0F0F5;
+        top:0;
+        padding-bottom:0 !important;
+    }
+
+    .swiper-slide img {
+        width: 100%;
+    }
+
+    .swiper-pagination-bullet {
+        width: 0.4rem;
+        height: 0.4rem;
+    }
+
+    .swiper-pagination-bullet-active {
+        background-color: #000;
+    }
+
+    .swiper-pagination {
+        line-height: 1rem;
+    }
+
+    .package {
+        position: fixed;
+        right: 0.75rem;
+        bottom: 5.7rem;
+        display: block;
+        width: 2.05rem;
+        height: 2.35rem;
+        background: url(/static/panel/images/admin/red_package.png) no-repeat;
+        background-size: cover
+    }
+
+    .tooltips {
+        position: fixed;
+        background: rgba(0, 0, 0, 0.72);
+        border: 1px solid rgba(0, 0, 0, 0.72);
+        border-radius: 0.375rem;
+        font-size: 0.67rem;
+        color: white;
+        right: 0.75rem;
+        bottom: 8rem;
+        margin-bottom: 0.5rem;
+        padding: 0.25rem 0.75rem;
+
+    }
+
+    .arrow {
+        position: absolute;
+        width: 0;
+        height: 0;
+        line-height: 0;
+        border-width: 0.5rem 0.375rem 0;
+        border-style: solid dashed dashed dashed;
+        border-left-color: transparent;
+        border-right-color: transparent;
+        bottom: -20px;
+    }
+
+    .arrow-border {
+        color: rgba(0, 0, 0, 0.72);
+        bottom: -0.5rem;
+        right: 0.6rem;
+    }
+
+    .main {
+        padding: 0.75rem;
+        background-color: #fff;
+    }
+
+    .main .name_wrap {
+        margin-bottom: 0.75rem;
+        clear: both;
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+    }
+
+    .main .name_wrap .name {
+        font-size: 0.95rem;
+        color: #333;
+        font-weight: bold;
+        float: left;
+        max-width: 13rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .main .name_wrap .price {
+        font-size: 1rem;
+        color: #fc6b3b;
+        font-weight: bold;
+        float: right
+    }
+
+    .main .brief {
+        color: #999;
+        font-size: 0.7rem;
+        line-height: 1.2rem;
+    }
+
+    .line_header {
+        height: 2.25rem;
+        line-height: 2.25rem;
+        background-color: #fff;
+        margin: 0.5rem 0;
+        padding-left: 0.75rem;
+        font-size: 0.85rem;
+        color: #333
+    }
+
+    .goods_list {
+        padding-bottom: 4.25rem;
+        box-sizing: border-box;
+        height: auto;
+        overflow: hidden;
+
+    }
+
+    .goods_list .item {
+        width: 50%;
+        height: auto;
+        /*   overflow: hidden;*/
+        float: left;
+        margin-top: 0.5rem;
+    }
+
+    .goods_list .item:nth-child(1), .goods_list .item:nth-child(2) {
+        margin-top: 0;
+    }
+
+    .goods_list .item .name {
+        font-size: 0.75rem;
+        color: #333;
+        padding: 0 0.5rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        margin-top: 0.5rem;
+    }
+
+    .goods_list .item .price {
+        font-size: 0.75rem;
+        color: #f85252;
+        padding: 0.5rem 0.5rem 1rem 0.5rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        font-weight: bold;
+
+    }
+
+    .goods_list .item:nth-child(odd) {
+        clear: left;
+    }
+    .goods_list .item:nth-child(even) {
+        clear: right;
+    }
+
+    .goods_list .item:nth-child(odd) .item_wrap {
+        box-sizing: border-box;
+        margin-left: 0.5rem;
+        margin-right: 0.25rem;
+        height: auto;
+        background-color: #fff;
+        box-shadow: 0 0 0.188rem 0.012rem #d0d0d0;
+        /*    padding-bottom: 1rem;*/
+    }
+
+    .goods_list .item:nth-child(even) .item_wrap {
+        box-sizing: border-box;
+        margin-left: 0.25rem;
+        margin-right: 0.5rem;
+        height: auto;
+        background-color: #fff;
+        box-shadow: 0 0 0.188rem 0.012rem #d0d0d0;
+
+        /*   padding-bottom: 1rem;*/
+    }
+
+    .down {
+        height: 2.25rem;
+        line-height: 2.25rem;
+        width: 100%;
+        text-align: center;
+        background: #999;
+        font-weight: bold;
+        color: #fff;
+        font-size: 0.85rem;
+        position: fixed;
+        bottom: 0;
+    }
+</style>
+<link rel="stylesheet" type="text/css" href="/static/wap/css/footer.css"/>
+<header>
+    <?php $this->partial('base/footer'); ?>
+</header>
+<?php if( !empty($good) ) {?>
+    <?php if ($good['images']) {
+    $images = explode(',', $good['images']);
+    ?>
+    <div class="swiper-container">
+        <ul class="swiper-wrapper gallery">
+            <?php foreach ($images as $i) { ?>
+                <!--  <div class="">-->
+                <li class="swiper-slide"
+                    data-src="<?php echo $i; ?>"
+                    data-size="<?php echo \Util\ImgSize::getSizeFromUrl($i) ?>"
+                    data-med-src="<?php echo $i; ?>"
+                    data-med-size="<?php echo \Util\ImgSize::getSizeFromUrl($i) ?>"
+                    style="width: 100%;height:17.5rem;background-image: url('<?php echo $i; ?>'); background-repeat: no-repeat;background-position: center;background-size: cover">
+                    <img src="<?php echo $i; ?>" style="display: none"/>
+                </li>
+                <!--  </div>-->
+            <?php } ?>
+        </ul>
+        <div class="swiper-pagination"></div>
+
+        <!--   <div class="swiper-button-prev"></div>
+           <div class="swiper-button-next"></div>-->
+    </div>
+    <script>
+        $(document).ready(function () {
+
+            var mySwiper = new Swiper('.swiper-container', {
+
+                direction: 'horizontal',  //轮播方向
+
+                autoplay: 2000,  //自动轮播
+
+                loop: false,   //循环
+                pagination: '.swiper-pagination',
+                autoplayDisableOnInteraction: false  //用户操作后不停止
+
+            });
+
+        });
+    </script>
+
+<?php } ?>
+<div class="main">
+
+    <p class="name_wrap">
+        <span class="name"><?php echo $good['name'] ?></span>
+        <span class="price">￥<?php echo sprintf('%.2f', $good['price'] / 100) ?></span>
+    </p>
+    <p class="brief">
+        <?php echo $good['brief'] ?>
+    </p>
+    <?php }else{ ?>
+        <div style="height:8.5rem;width:100%;text-align:center">
+            <img src="/static/wap/images/shop_sold_out.png" alt="" style="position:relative;top:1.5rem;width:4.75rem">
+            <div style="color:#999;font-size:0.75rem;position:relative;bottom:-2.5rem">该商品已下架，看看TA的其他商品吧！</div>
+        </div>
+
+    <?php } ?>
+</div>
+<?php if ($goods_list) { ?>
+    <div class="line_header">
+        TA的推荐商品
+    </div>
+    <ul class="goods_list">
+        <?php foreach ($goods_list as $item) { ?>
+            <li class="item">
+                <a href="/goods/detail/<?php echo $item['id'] ?>" target="_blank">
+                    <div class="item_wrap">
+                        <div
+                            style="height:8.6725rem;width: 100%;background: url('<?php echo $item['images'] ?>?x-oss-process=image/resize,m_fill,h_750,w_750');background-size: cover">
+                        </div>
+
+                        <p class="name"><?php echo $item['name'] ?></p>
+                        <p class="price">￥<?php echo sprintf('%.2f', $item['price'] / 100) ?></p>
+                    </div>
+                </a>
+            </li>
+        <?php } ?>
+    </ul>
+
+<?php } ?>
+<?php if ($good['shop'] == \Services\Shop\ShopManager::status_user_deleted) { ?>
+    <div class="down">
+        店铺休业中！
+    </div>
+<?php } /*else if ($good['status'] != \Services\Shop\GoodManager::status_normal) {*/ ?>
+    <!--<div class="down">
+        商品已经下架了~
+    </div>
+--><?php /*} */?>
+
+
+<?php if (!strpos($this->request->getUserAgent(), 'KLG') > 0) { ?>
+
+    <div class="tooltips" id="redbag_tip" style="display:none">
+        <div class="arrow arrow-border"></div>
+        <div>下载恐龙谷，领取红包</div>
+    </div>
+    <span class="package" id="redbag">
+
+    </span>
+    <style>
+        body {
+            padding-bottom: 10rem;
+            bottom: 3.0rem
+        }
+    </style>
+<?php } ?>
+
+<div id="gallery" class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="pswp__bg"></div>
+
+    <div class="pswp__scroll-wrap">
+
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <div class="pswp__counter" style="font-size:0.625rem;font-weight: bold"></div>
+
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div id="tip"></div>
+<script>
+    APPCommon.setParams("type=goods&id=<?php echo $good['id']?>");
+    <?php if( strpos($this->request->getUserAgent(), 'KLG') !== false ) { ?>//恐龙谷查看图片
+
+    $(".swiper-wrapper li ").on('click',function() {
+        var imgUrlArr = [],
+            imgPos = 0;
+        var currentImgSrc = $(this).find('img').attr('src');
+        $(".swiper-wrapper img").each(function (index) {
+            imgUrlArr.push(this.src);
+            if (currentImgSrc == this.src)
+                imgPos = index;
+
+        });
+        var imgUrlStr = imgUrlArr.join(',');
+
+        //判断设备类型 iOS or android
+        var u = navigator.userAgent.toLowerCase();
+        if (u.indexOf('iphone') > -1 || u.toLowerCase().indexOf('ipad') > -1) {
+                window.webkit.messageHandlers.onImageClick.postMessage({imgUrl:imgUrlStr,imgPos:imgPos})
+
+        }
+
+        if (u.indexOf('android') > -1 ) {
+            android.onImageClick(imgUrlStr, imgPos);
+        }
+    });
+
+    <?php }else{?>//js插件查看图片
+    seajs.use(['app/ps.init.js?v=1.1.1'], function (ps) {
+        $(function () {
+            ps.init();
+        });
+    });
+    <?php }?>
+    $('#redbag').on('click', function () {
+        if ($('#redbag_tip').css('display') != 'none')
+            return;
+        $('#redbag_tip').slideDown('fast');
+        var t1 = setTimeout(function () {
+            $('#redbag_tip').slideUp();
+        }, 2000)
+    })
+</script>

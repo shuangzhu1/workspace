@@ -1,0 +1,68 @@
+<style>
+    .list tr td {
+        border-left: none;
+        border-right: none;
+
+    }
+
+    .log_back {
+        height: 40px;
+        line-height: 40px;
+    }
+</style>
+
+<div style="height: auto;width: 100%;overflow: hidden">
+    <div style="height: auto;width: 100%;overflow: hidden">
+        <p style="background-color: #e4e4e4;padding: 10px">
+            <label class="inline">
+                <input type="checkbox" class="ace checkAll"/>
+                <span class="lbl"> 全选</span>
+            </label>
+            &nbsp;
+            <label class="inline">
+                <a href="javascript:;" class="removeBtn btn btn-sm btn-danger"><i class="fa fa-remove"></i> 删除选中的文件/文件夹</a>
+                <a href="javascript:;" class="updateBtn btn btn-sm btn-primary"><i class="fa fa-refresh"></i> 刷新</a>
+
+            </label>
+        </p>
+    </div>
+    <table class="list ">
+        <thead>
+        <tr class="head">
+            <th style="width: 100px;">
+                    批量</th>
+            <th style="width: 400px;">文件名【Object Name】</th>
+            <th style="width: 100px;">文件大小</th>
+            <th style="width: 150px;">更新时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody class="listData">
+
+        </tbody>
+    </table>
+    <ul class="list">
+        <li class="loading"
+            style="text-align: center;display:none;width: 100%;line-height: 100px;height: 100px;vertical-align: middle">
+            <img
+                style="width: 40px" src="/srv/static/panel/images/admin/loading2.gif"></li>
+    </ul>
+    <div class="pageBar"></div>
+</div>
+<div class="modal fade" id="fileModal">
+    <div class="modal-dialog" style="width: 800px;">
+        <div class="modal-content">
+            <div class="modal-body" style="overflow:hidden;">
+                <iframe src="" class="file_detail" style="width:100%;height: 600px;border: 1px solid #f5f5f5"></iframe>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+    seajs.use('app/developer/crash.log.js?v=1.1.4', function (api) {
+        api.init();
+    });
+</script>

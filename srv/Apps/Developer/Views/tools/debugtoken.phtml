@@ -1,0 +1,76 @@
+
+<div class="col-xs-6">
+    <div class="widget-header header-color-dark">
+        <h5 class="bigger lighter">token列表</h5>
+    </div>
+    <table class="table table-striped table-bordered table-hover">
+    <thead class="thin-border-bottom">
+    <tr>
+        <th class="center">
+            #
+        </th>
+        <th class="center">
+            Token
+        </th>
+        <th class="center">
+            姓名
+        </th>
+        <th class="center">
+            uid
+        </th>
+
+        <th class="center">过期时间</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <?php $i = 0;foreach( $tokens as $key => $v) :
+        $i++;
+        ?>
+        <tr>
+            <td class="center">{{i}}</td>
+            <td class="center">
+                {{v['token']}}
+                <a id="copy_token" data-clipboard-text="{{v['token']}}" title="点击复制TOKEN"><svg aria-hidden="true" class="octicon octicon-clippy" height="16" version="1.1" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M2 13h4v1H2v-1zm5-6H2v1h5V7zm2 3V8l-3 3 3 3v-2h5v-2H9zM4.5 9H2v1h2.5V9zM2 12h2.5v-1H2v1zm9 1h1v2c-.02.28-.11.52-.3.7-.19.18-.42.28-.7.3H1c-.55 0-1-.45-1-1V4c0-.55.45-1 1-1h3c0-1.11.89-2 2-2 1.11 0 2 .89 2 2h3c.55 0 1 .45 1 1v5h-1V6H1v9h10v-2zM2 5h8c0-.55-.45-1-1-1H8c-.55 0-1-.45-1-1s-.45-1-1-1-1 .45-1 1-.45 1-1 1H3c-.55 0-1 .45-1 1z"></path></svg></a>
+            </td>
+            <td class="center">
+                {{v['name']}}
+            </td>
+            <td class="center">
+                {{v['uid']}}
+            </td>
+
+            <td class="width-30 center">
+                <?php if( time() >= $v['expire']) :?>
+                    <span class="label label-warning">已过期</span>
+                <?php else :?>
+                    <span class="label label-success arrowed-in arrowed-in-right">
+                        <?php
+                            $remain = $v['expire'] - time();
+                            echo \Util\Time::sec2time( $remain );
+
+                        ?>
+                    </span>
+
+                <?php endif;?>
+            </td>
+        </tr>
+    <?php endforeach;?>
+<tr></tr>
+    </tbody>
+</table>
+</div>
+<script src="/static/panel/js/tools/ZeroClipboard.js"></script>
+<script>
+    var client = new ZeroClipboard( document.getElementById("copy_token"));
+    client.on( "ready", function( readyEvent ) {
+        // alert( "ZeroClipboard SWF is ready!" );
+
+        client.on( "aftercopy", function( event ) {
+            // `this` === `client`
+            // `event.target` === the element that was clicked
+            event.target.style.display = "none";
+            alert("Copied text to clipboard: " + event.data["text/plain"] );
+        } );
+    } );
+</script>

@@ -1,0 +1,174 @@
+<link rel="stylesheet" href="/srv/static/panel/css/sweetalert.css">
+<script src="/srv/static/panel/js/sweetalert/sweetalert.min.js"></script>
+<div class="width-50">
+    <div class="widget-box">
+        <div class="widget-header widget-header-small ">
+            <h5 class="smaller">推广计划开关 ：</h5>
+            <div class="widget-toolbar no-border">
+                <label>
+                    <input id="switch" name="switch-field-1" class="ace ace-switch ace-switch-6 switch" type="checkbox"
+                        <?php if ($data['switch'] == 1) echo "checked" ?> >
+                    <span class="lbl"></span>
+                </label>
+            </div>
+
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="alert alert-<?php echo $data['switch'] == 1 ? 'success' : 'warning' ?> status" >
+                    <?php echo $data['switch'] == 1 ? '推广计划进行中。。。。。。' : '推广计划已停止' ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="widget-box">
+        <div class="widget-header">
+            <h5>奖励配置：</h5>
+
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+
+
+                <form id="config">
+                    <!-- <legend>Form</legend> -->
+                    <fieldset>
+                        <table class="table table-striped table-bordered" style="border:1px solid #eee">
+                            <thead>
+                            <tr>
+                                <th width="7%" class="center">ID</th>
+                                <th width="17%" class="center">参数</th>
+                                <th width="13%" class="center" >值</th>
+                                <th class="center" >参数说明</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="center">1</td>
+                                <td class="center">
+                                    一级用户激活奖励
+                                </td>
+                                <td class="center">
+                                    <input type="text" name="grade1reward" id="grade1reward" value="{{data['grade1reward'] / 100}}" size="5" style="height:20px">
+                                </td>
+                                <td>单位：元</td>
+                            </tr>
+                            <tr>
+                                <td class="center">2</td>
+                                <td class="center">
+                                    二级用户激活奖励
+                                </td>
+                                <td class="center">
+                                    <input type="text" name="grade2reward" id="grade2reward" value="{{data['grade2reward'] / 100}}" size="5" style="height:20px">
+                                </td>
+                                <td>单位：元</td>
+                            </tr>
+                            <tr>
+                                <td class="center">3</td>
+                                <td class="center">
+                                    三级用户激活奖励
+                                </td>
+                                <td class="center">
+                                    <input type="text" name="grade3reward" id="grade3reward" value="{{data['grade3reward'] / 100}}" size="5" style="height:20px">
+                                </td>
+                                <td>单位：元</td>
+                            </tr>
+                            <tr>
+                                <td class="center" style="vertical-align: middle">4</td>
+                                <td class="center" style="vertical-align: middle">
+                                    活动说明
+                                </td>
+                                <td colspan="2">
+                                    <textarea name="explain" id="explain" style="width:98%;height:300px;line-height:18px;resize: vertical;" spellcheck="false"><?php echo $data['explain']?></textarea>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </fieldset>
+
+                <div style="border:1px solid #eee;margin:10px 16px 10px;height:50px;padding: 10px 16px;line-height: 30px">
+                    当前奖励池金额：<span style="color:deeppink;font-weight:bolder;font-size:18px">{{money / 100}}</span>
+                    <div class="pull-right"><a href="javascript:;" class="btn btn-xs btn-success" id="addmoney">修改金额</a></div>
+                </div>
+                    <div class="form-actions center">
+                        <button type="button" class="btn btn-sm btn-success" id="save">
+                            保存
+                            <i class="icon-arrow-right icon-on-right bigger-110"></i>
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    //推广计划开关
+    seajs.use('app/panel/panel.base',function(api){
+        $('#switch,#save').on('click', function () {
+            var data = {};
+            data.switch = $("#switch").is(':checked') ? 1 : 0;
+            data.grade1reward = $('#grade1reward').val();
+            data.grade2reward = $('#grade2reward').val();
+            data.grade3reward = $('#grade3reward').val();
+            data.explain = $('#explain').val();
+            api.requestApi("<?php echo $this->url->get('panel/promote/config')?>", {data:data}, function (res) {
+                if (res.result == 1) {
+                    var ele = $('#switch').closest('div.width-50').find('div.status');
+                    if (res.data == 'start') {
+                        ele.removeClass('alert-warning');
+                        ele.addClass('alert-success');
+                        ele.text("推广计划进行中。。。。。。");
+                        tip.showTip('ok', "操作成功", 2000,function () {
+                            window.location.reload()
+                        });
+                    } else {
+                        ele.removeClass('alert-success');
+                        ele.addClass('alert-warning');
+                        ele.text('推广计划已停止');
+                        tip.showTip('ok', "操作成功", 2000,function () {
+                            window.location.reload()
+                        });
+                    }
+                }
+            })
+        });
+
+        //修改奖励池金额
+        $('#addmoney').on('click',function () {
+            swal({
+                    title: "修改奖励池金额",
+                    text: "<span style='color:red'>请确保绑定的支付宝账户余额充足</span>    ",
+                    html:true,
+                    type: "input",
+                    showCancelButton: true,
+                    closeOnConfirm: true,
+                    confirmButtonText: "修改",
+                    cancelButtonText: "取消",
+                    inputPlaceholder: "输入金额，单位：元"
+                },
+                function(inputValue){
+                    if (inputValue === false) return false;
+
+                    if (inputValue === "") {
+                        swal.showInputError("请输入金额");
+                        return false
+                    }
+                    api.requestApi("<?php echo $this->url->get('/panel/promote/addRemain')?>",{money:inputValue*100},function (res) {
+                        if( res.result == 1)
+                        {
+                            tip.showTip('ok','修改成功',1500,function () {
+                                window.location.reload();
+                            })
+                        }
+                    })
+                });
+        });
+    })
+</script>

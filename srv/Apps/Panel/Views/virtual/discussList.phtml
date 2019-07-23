@@ -1,0 +1,188 @@
+<form action="" method="get" style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px; border-radius: 5px;">
+    <label for="name">关键字</label>
+
+    &nbsp;<label for="name">分类</label>
+    <select name="media_type">
+        <option value="0" <?php echo $media_type == 0 ? 'selected' : ''; ?>>全部</option>
+        <option value="1" <?php echo $media_type == 1 ? 'selected' : ''; ?>>纯文本</option>
+        <option value="2" <?php echo $media_type == 2 ? 'selected' : ''; ?>>小视频</option>
+        <option value="3" <?php echo $media_type == 3 ? 'selected' : ''; ?>>图片</option>
+    </select>
+    &nbsp;<label for="name">管理员</label>
+    <select name="admin_id">
+        <option value="0">所有</option>
+        <?php foreach ($admin_list as $a) { ?>
+            <option <?php echo $admin_id == $a['id'] ? 'selected' : ''; ?>
+                value="<?php echo $a['id']; ?>"><?php echo $a['name']; ?></option>
+        <?php } ?>
+    </select>
+    &nbsp;<label for="name">时间:</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd"/>
+    - <input type="text" id="end" value="<?php echo $end; ?>" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd"/>
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+    <a class="btn btn-primary btn-sm btnAdd right" href="/panel/virtual/discussAdd"><i class="fa fa-plus"></i> 添加动态</a>
+
+</form>
+<!--<div class="tabs">
+    <a href="<?php /*echo $this->uri->setUrl('', ['type', 'p']); */ ?>"
+       class="tab <?php /*echo !array_key_exists($curType, $_type_name) ? 'active' : ''; */ ?>">全部</a>
+    <a href="" class="tab">已发布</a>
+    <a href="" class="tab">未发布</a>
+</div>-->
+<table id="article-list" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style='width:36px'>ID</th>
+        <!--  <th style='width:36px'>批量</th>-->
+        <th style='width:150px'>发布人</th>
+        <th style='width:150px'>管理员</th>
+        <th style='width:150px'>发布时间</th>
+        <th>标签</th>
+        <th style="width: 300px">文本内容</th>
+        <!--    <th style='width:300px'>审核</th>-->
+        <th style='width:60px'>类型</th>
+        <th style='width:90px'>状态</th>
+        <th style='width:50px'>点赞数</th>
+        <th style='width:50px'>收藏数</th>
+        <th style='width:50px'>评论数</th>
+        <th style='width:50px'>转发数</th>
+        <th style='width:50px'>阅读数</th>
+        <th style='width:50px'>举报数</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <th class='name'><?php echo $item['id']; ?></th>
+            <!-- <td class="center"><input type="checkbox" class="chk" data-id="<?php /*echo $item['id']; */ ?>"/></td>-->
+            <td><?php echo $item['user_id'] . '【' . $users[$item['user_id']]['username'] . '】'; ?></td>
+            <td><?php echo '【' . $item['admin_name'] . '】'; ?></td>
+            <td><?php echo date('Y-m-d H:i', $item['created']); ?></td>
+            <td>
+                <?php echo $item['tags_name']; ?>
+            </td>
+
+            <td style="width: 200px;word-break: break-all;">
+                <?php echo mb_strlen($item['content'], 'utf-8') > 20 ? mb_substr($item['content'], 0, 20, 'utf-8') . '...<a target="_blank" href="javascript:;" class="newTarget" data-title="动态详情" data-id="discuss_detail_' . $item['discuss_id'] . '" data-href="/panel/discuss/detail/' . $item['discuss_id'] . '">查看更多</a>' : $item['content']; ?>
+            </td>
+
+            <td>
+                <?php if ($item['media_type'] == 1) {
+                    echo '<label class="badge badge-inverse">纯文本</label>';
+                } else if ($item['media_type'] == 2) {
+                    echo '<label class="badge badge-pink">小视频</label>';
+                } else if ($item['media_type'] == 3) {
+                    echo '<label class="badge badge-info">图片</label>';
+                }; ?>
+            </td>
+            <td class="center">
+                <?php if ($item['status'] == 0) {
+                    echo "<label class='badge badge-danger'>已被系统屏蔽</label>";
+                } else if ($item['status'] == 1) {
+                    echo "<label class='badge badge-success'>正常</label>";
+                } else if ($item['status'] == 2) {
+                    echo "<label class='badge badge-gray'><i class='fa fa-trash'></i> 用户已删除</label>";
+                }; ?>
+            </td>
+            <td class="center">
+                <?php echo $item['like_cnt']; ?>
+            </td>
+            <td class="center">
+                <?php echo $item['fav_cnt']; ?>
+            </td>
+            <td class="center">
+                <?php echo $item['comment_cnt']; ?>
+            </td>
+            <td class="center">
+                <?php echo $item['comment_cnt']; ?>
+            </td>
+            <td class="center">
+                <?php echo $item['view_cnt']; ?>
+            </td>
+            <td class="center">
+                <?php echo $item['report_cnt']; ?>
+            </td>
+            <td>
+                <a target="_blank" href="javascript:;"
+                   data-title="动态详情"
+                   data-id="discuss_detail_<?php echo $item['discuss_id']; ?>"
+                   data-href="/panel/discuss/detail/<?php echo $item['discuss_id']; ?>"
+                   class="btn btn-minier btn-primary newTarget">查看详情</a>
+            </td>
+            <!--   <td>
+                <a href="/panel/discuss/detail/<?php /*echo $item['id']; */ ?>" class="btn btn-minier btn-primary">查看详情</a>
+                <?php /*if ($item['status'] == 1) { */ ?>
+                    <a href="JavaScript:;" data-id="<?php /*echo $item['id']; */ ?>"
+                       class="btn btn-danger btn-minier delBtn">屏蔽动态</a>
+                <?php /*} else if ($item['status'] == 0) { */ ?>
+                    <a href="JavaScript:;" data-id="<?php /*echo $item['id']; */ ?>"
+                       class="btn btn-danger btn-minier recoveryBtn">恢复正常</a>
+                <?php /*} */ ?>
+            </td>-->
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="17">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <!--  <tr class="showpage">
+          <th class="name">操作</th>
+          <td colspan="17">
+                  <span>
+                      [ <a href="javascript:;" class="selectAll">全选</a> ]
+                      [ <a href="javascript:;" class="selectNone">全不选</a> ]
+                      [ <a href="javascript:;" class="selectInvert">反选</a> ]
+                      <a class="btn-light delAllSelected" href="javascript:;">批量屏蔽</a>
+                  </span>
+          </td>
+      </tr>-->
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+        </td>
+    </tr>
+</table>
+
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+
+<script>
+    seajs.use('app/panel/discuss/discuss.edit', function (api) {
+        api.del();
+    });
+    $('#start').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+    $('#end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+</script>

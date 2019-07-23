@@ -1,0 +1,364 @@
+<link rel="stylesheet" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<style>
+    .anchorBL {
+        display: none
+    }
+
+    .tpl-field .cover {
+        position: absolute;
+        width: 200px;
+        height: 345px;
+        background-color: #000;
+        filter: alpha(opacity=50);
+        moz-opacity: 0.5;
+        opacity: 0.5;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .tpl-field .tpl_block {
+        position: relative;
+        margin-left: 2px;
+        float: left;
+        width: 205px;
+        height: 361px;
+    }
+
+    .tpl-field .tpl_block:first-child {
+        margin-left: 70px;
+    }
+
+    .tpl-field .tpl_img {
+        width: 200px;
+        position: absolute;
+        height: auto;
+        border: 8px solid #e4e4e4;
+        border-radius: 5px;
+    }
+
+    .tpl-field .tpl_block.current .tpl_img {
+        border-color: #4cb329;
+    }
+
+    .tpl-field .tpl_block.current .cover {
+        display: none;
+    }
+
+    .commit {
+        cursor: pointer;
+        z-index: 3;
+        position: fixed;
+        right: 50px;
+        color: #e4e4e4;
+        line-height: 60px;
+        text-align: center;
+        top: 80%;
+        height: 60px;
+        width: 60px;
+        background-color: darkgreen;
+        border-radius: 100%;
+    }
+
+    .commit:hover {
+        background-color: #438eb9;
+    }
+
+    .commit_background {
+        z-index: 2;
+        position: fixed;
+        right: 40px;
+        filter: alpha(opacity=50);
+        -moz-opacity: 0.5;
+        opacity: 0.5;
+        color: white;
+        top: 80%;
+        margin-top: -10px;
+        height: 80px;
+        width: 80px;
+        background-color: #000;
+        border-radius: 100%;
+    }
+
+    .user_left {
+        float: left;
+        width: 48%;
+        height: 400px;
+    }
+
+    .user_left .tip {
+        color: red;
+    }
+
+    .user_middle {
+        float: left;
+        width: 10%;
+        border-right: 1px solid #e4e4e4;
+        border-left: 1px solid #e4e4e4;
+        height: 400px;
+        position: relative;
+
+    }
+
+    .user_middle span {
+        font-size: 30px;
+        font-weight: bold;
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -10px;
+        margin-left: -15px;
+        border: 1px solid #d4d4d4;
+        background-color: #e4e4e4;
+        padding: 3px 10px;
+        cursor: pointer;
+    }
+
+    .user_middle span:hover {
+        background-color: #2a8a00;
+        color: #fff;;
+    }
+
+    .userList img {
+        border-radius: 100%;
+        width: 20px;
+        height: 20px;
+    }
+
+    .userList li {
+        list-style-type: none;
+        border-bottom: 1px dotted #e4e4e4;
+        line-height: 30px;
+        padding-right: 5px;
+    }
+
+    .user_right {
+        float: right;
+        width: 40%;
+        height: 400px;
+        overflow-y: auto;
+    }
+
+    .user_right .selectedUser li {
+        line-height: 25px;
+        border-bottom: 1px dotted #e4e4e4;
+        padding-left: 20px;;
+    }
+
+    .user_right .selectedUser li img {
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+    }
+
+    .user_right .selectedUser li .remove {
+        display: none;
+        float: right;
+        color: red;
+        font-size: 20px;;
+        margin-right: 20px;;
+        line-height: 25px;;
+        cursor: pointer;
+    }
+
+    .user_right .selectedUser li:hover {
+        background-color: #e4e4e4;
+    }
+
+    .user_right .selectedUser li:hover .remove {
+        display: inline-block;
+    }
+
+    .pageBar {
+        margin-top: 5px;;
+    }
+
+    .pageBar a {
+        display: inline-block;
+        margin: 3px;
+        border: 1px solid #e4e4e4;
+        padding: 2px 6px;
+    }
+
+    .pageBar .curr {
+        background-color: #2a8a00;
+        color: #fff;;
+    }
+
+
+    .user_avatar_list img {
+        display: inline-block;
+        width: 30px;
+        height: 30px;;
+        border-radius: 100%;
+        margin-left: 2px;
+    }
+</style>
+<div class="page-header">
+    <h1>发送系统消息</h1>
+</div>
+
+<section id="product-base" class="product-widget form" style="border: 1px solid #efefef;border-radius: 5px;width: 80%;">
+
+    <article class="widget-cont">
+        <!--  <input type="file" id="fileTest" name="file" multiple="multiple">-->
+        <div class="field base-field">
+            <label for="" class="field-label">类型:</label>
+            <label>
+                <input type="radio" name="msg_type" class="ace message_type " checked value="1">
+                <span class="lbl"><b>文字带链接</b></span>
+            </label>
+            <label>
+                <input type="radio" name="msg_type" class="ace message_type" value="2">
+                <span class="lbl"><b>单图+标题</b></span>
+            </label>
+            <label>
+                <input type="radio" name="msg_type" class="ace message_type" value="3">
+                <span class="lbl"><b>多图多标题</b></span>
+            </label>
+            <span class="tip"></span>
+        </div>
+
+        <div class="field base-field tpl-field" style="height: auto;overflow: hidden">
+            <div class="tpl_block current" data-id="1">
+                <img class="tpl_img" src="/static/panel/images/tpl/tpl1.jpeg">
+                <span class="cover"></span>
+            </div>
+            <div class="tpl_block" data-id="2">
+                <img class="tpl_img" src="/static/panel/images/tpl/tpl2.jpeg">
+                <span class="cover"></span>
+            </div>
+            <div class="tpl_block" data-id="3">
+                <img class="tpl_img" src="/static/panel/images/tpl/tpl3.jpeg">
+                <span class="cover"></span>
+            </div>
+        </div>
+        <div class="field base-field tplComponent tpl1Component"
+             style="height: auto;overflow: hidden;clear: both;border-top: 1px solid #e4e4e4">
+            <?php $this->view->partial('message/partial/tpl1'); ?>
+        </div>
+        <div class="field base-field tplComponent tpl2Component"
+             style="height: auto;overflow: hidden;clear: both;border-top: 1px solid #e4e4e4;padding-top: 10px; display: none;">
+            <?php $this->view->partial('message/partial/tpl2'); ?>
+        </div>
+        <div class="field base-field tplComponent tpl3Component"
+             style="height: auto;overflow: hidden;clear: both;border-top: 1px solid #e4e4e4;display: none;">
+            <?php $this->view->partial('message/partial/tpl3'); ?>
+        </div>
+        <div class="field base-field userComponent"
+             style="height: auto;overflow: hidden;clear: both;border-top: 1px solid #e4e4e4;">
+            <?php $this->view->partial('message/partial/user'); ?>
+        </div>
+
+        <div class="field base-field pushContent"  style="display:none;height: auto;overflow: hidden;clear: both;border-top: 1px solid #e4e4e4;padding-top: 20px;">
+            <label for="" class="field-label">推送内容:</label>
+            <label>
+                <input type="text" name="message" id="message" style="min-width: 550px" placeholder="推送内容">
+            </label>
+            <span class="tip red">*会显示在会话列表</span>
+        </div>
+
+        <hr/>
+        <p class="alert alert-danger error-widget" style="display: none"><i class="fa fa-warning"></i>
+            <span class="error_msg"></span>
+        </p>
+        <p class="alert alert-success success-widget" style="display: none"><i class="fa fa-check"></i>
+            <span class="success_msg"></span>
+        </p>
+
+        <div class="save-area" style="margin-left: 100px;margin-bottom: 10px">
+            <input type="button" value="立即推送" class="btn btn-success saveBtn btn-sm"/>
+
+            <input type="button" value="定时推送" class="btn btn-primary timingBtn btn-sm" style="margin-left:50px"/>
+        </div>
+
+    </article>
+</section>
+
+<!--<div class="commit"
+     style="">
+    <i class="fa fa-send"></i> 发布
+</div>-->
+<!--<div class="commit_background"
+     style="">
+    <i class="fa fa-send"></i>
+</div>-->
+<div class="modal fade" id="msgModal">
+    <div class="modal-dialog" style="width: 300px;">
+        <div class="modal-content" style="padding: 10px; border-radius: 5px !important;">
+            <p><img src="/srv/static/panel/images/admin/loading.gif"/>&nbsp;正在提交数据 <span class="percent"></span></p>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="sendModal">
+    <div class="modal-dialog" style="width: 800px;">
+        <div class="modal-content" style="border-radius:5px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">自定义用户列表</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <div class="user_left">
+                    <div class="field set-field diy-data" id="topic_type_box">
+                        <div><input type="text" placeholder="ID/昵称/手机号" class="search"/> <span
+                                class="btn btn-sm btn-primary btnSearch">搜索</span></div>
+                        <label class="field-label" style="text-align: left">
+                            <input type="checkbox" name="checkAll" class="checkAll" id="checkAll"/> 选中
+                        </label>
+                        <section class="form-group userList">
+
+                        </section>
+
+                    </div>
+                </div>
+                <div class="user_middle">
+                    <span class="fa fa-angle-double-right moveBtn"></span>
+                </div>
+                <div class="user_right">
+                    <ul class="selectedUser"></ul>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="updateSureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!--选择推送日期-->
+<div class="modal fade" id="select-date">
+    <div class="modal-dialog" style="width: 400px;">
+        <div class="modal-content" style="border-radius:5px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">定时推送</h4>
+            </div>
+            <div class="modal-content" style="padding: 30px; ">
+                <label for="timing">请选择推送时间：</label>
+                <input type="text" id="timing">
+            </div>
+            <div class="modal-footer" style="border-bottom-left-radius:5px;border-bottom-right-radius:5px;">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="complete-select">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="">
+    <div class="modal-dialog" style="width: 300px;">
+
+    </div>
+</div>
+<script>
+
+    seajs.use('app/panel/message/message.push.js?v=1517192139028', function (api) {
+        api.push();
+    });
+
+
+</script>

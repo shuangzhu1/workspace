@@ -1,0 +1,25 @@
+<?php if ($list) { ?>
+    <?php foreach ($list as $item) { ?>
+        <tr>
+            <td  class="center"><img style="width: 36px;border-radius: 100%"
+                                     src="<?php echo $item['avatar'] ? $item['avatar'] : $item['default_avatar'] ?>?x-oss-process=image/resize,m_fill,h_160,w_160"/></td>
+            <td><span class="left"><?php echo $item['id'] ?></span></td>
+            <td><span class="left"><?php echo $item['default_name'] ?></span></td>
+            <td class="center"><?php echo $item['member_count'] ?></td>
+            <td class="center"><?php echo date('Y-m-d H:i',$item['created']) ?></td>
+
+            <td class="center"><a  data-title="群聊详情" href="javascript:;" class="newTarget" data-href="/panel/group/detail/<?php echo $item['id'] ?>" target="_blank">查看详情</a></td>
+        </tr>
+    <?php } ?>
+<?php } else { ?>
+    <tr>
+        <td colspan='12'><span class="left">暂无数据</span></td>
+    </tr>
+<?php } ?>
+
+<tr class="showpage">
+    <th class="name">分页</th>
+    <td colspan="5">
+        <div class="pageBar"><?php echo $bar ?></div>
+    </td>
+</tr>

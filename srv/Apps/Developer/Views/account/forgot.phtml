@@ -1,0 +1,39 @@
+<div class="content">
+    <div class="loginSide">
+        <img src="/srv/static/panel/images/admin/login_page_bg.jpg" alt="" style="border-radius:8px;"/>
+    </div>
+
+    <form class="forgotForm form" action="javascript:;">
+        <h2 class="head formHead">
+            商户登陆 - 找回密码
+        </h2>
+
+        <p class="field">
+            <label for="">
+                注册邮箱：
+            </label>
+            <input type="text" name="email" id="email" placeholder="邮箱"/>
+            <span class="red">*</span>
+        </p>
+
+        <p class="field">
+            <label for=""></label>
+            <input class="miBtn btn-green loginBtn" type="submit" value="找回密码"/> <a href="/account/login">返回登陆?</a>
+
+        </p>
+
+        <p class="field">
+        </p>
+
+        <p class="field">
+            <label for=""></label> 您还没用账号？<a href="/account/reg">立即注册</a>
+        </p>
+    </form>
+
+    <div class="clear"></div>
+</div>
+<script>
+    seajs.use('app/panel/account/account.init', function (api) {
+        api.forgot();
+    });
+</script>

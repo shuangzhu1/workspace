@@ -1,0 +1,95 @@
+
+<link rel="stylesheet" href="/srv/static/panel/css/lightbox/lightbox.css"/>
+<script src="/static/panel/js/jquery/lightbox/lightbox.js"></script>
+<script>
+    $(document).ready(function () {
+        lightbox.option({
+            albumLabel: '%1/%2',
+            'resizeDuration': 200,
+            "fadeDuration":0,
+            "imageFadeDuration":0
+        });
+    })
+</script>
+<div class="col-xs-12">
+    <div>
+        <a href="javascript:;" class="btn btn-xs btn-primary newTarget" target="_blank" data-href="/panel/notice/add?type=4&type_name=礼物收益" data-title="添加公告" >
+            添加公告
+        </a>
+    </div>
+    <table id="article-list" class=" list">
+        <thead>
+        <tr class="head">
+            <th style="width:36px">ID</th>
+            <th style="width:200px;">标题</th>
+            <th style="width:150px">缩略图</th>
+            <th style="width:120px">链接</th>
+            <th style="width:120px">客户端显示</th>
+            <th style="width:150px">创建时间</th>
+            <th style="width:150px">最后修改</th>
+            <th style="width:150px">操作</th>
+
+        </tr>
+        </thead>
+        <tbody class="listData">
+        <?php if($list) { ?>
+            <?php foreach($list as $item) :?>
+                <tr class="item" data-id="{{item['id']}}" style="height:50px">
+                    <th class="name">{{item['id']}}</th>
+                    <td><?php echo mb_substr($item['title'],0,30) ?></td>
+                    <td>
+                        <a href="{{item['thumb']}}" data-lightbox="roadtrip{{item['id']}}">
+                            <img class="" alt="" src="{{item['thumb']}}?x-oss-process=image/resize,m_fill,h_200,w_200" style="max-height:45px">
+                        </a>
+
+                    </td>
+                    <td><a class="btn btn-xs" href="<?php echo \Services\Site\MaterialManager::$urlPrefix . $item['link'] ?>" target="_blank">预览</a></td>
+                    <td>
+                        <label>
+                            <input name="switch-field-1" class="ace ace-switch ace-switch-5 show-btn " type="checkbox" <?php if( $item['enable'] == 1) echo "checked"  ?>>
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                    <td><?php echo date('Y/m/d H:i',$item['created']) ?></td>
+                    <td><?php echo date('Y/m/d H:i',$item['updated']) ?></td>
+
+                    <td>
+                        <a href="javascript:;" class="btn btn-xs btn-primary newTarget" target="_blank" data-href="/panel/notice/add?notice_id={{item['id']}}&type_name=礼物收益" data-title="编辑公告" >
+                            编辑
+                        </a>
+
+
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php }else{ ?>
+            <tr>
+                <td colspan="7" class="center"><span class="red" style="font-weight:bold;font-size:15px">暂无数据</span></td>
+            </tr>
+        <?php } ?>
+
+
+        </tbody>
+    </table>
+</div>
+<script>
+    //删除
+    seajs.use('app/panel/panel.base',function (api) {
+        $('.show-btn').on('click',function () {
+            var _this = this;
+            var $tr = $(_this).closest('tr');
+            var id = $tr.data('id');
+            var enable = $tr.find('.show-btn').is(':checked') ? 1 : 0;
+            api.requestApi('/api/notice/toggleEnable',{id:id,enable:enable},function(res){
+                if( res.result === 1 )
+                {
+                    tip.showTip('ok','操作成功',1000);
+                }
+                else
+                    tip.showTip('err','操作失败',1000)
+            })
+        })
+    });
+
+
+</script>

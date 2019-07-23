@@ -1,0 +1,158 @@
+.stat_component .filters {
+    padding-bottom: 10px;
+}
+
+.stat_component .filter {
+    margin-left: 15px;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.stat_component .control-bar-wrapper {
+    position: relative;
+    padding-top: 20px;
+    padding-bottom: 15px;
+    color: #323437;
+    padding-left: 20px;
+}
+
+.stat_component .stat_label {
+    display: inline-block;
+    height: 26px;
+    padding-right: 5px;
+    line-height: 26px;
+    color: #787a7d;
+}
+
+.stat_component .control-bar-wrapper .control-bar .date-select-bar {
+    border: 1px solid #e1e3e4;
+    border-radius: 2px;
+}
+
+.stat_component .control-bar-wrapper .control-bar .date-select-bar a {
+    display: inline-block;
+    float: left;
+    height: 24px;
+    line-height: 24px;
+    padding: 0 10px;
+    color: #323437;
+    background-color: #fff;
+}
+
+.stat_component .control-bar-wrapper .control-bar .date-select-bar a {
+    display: inline-block;
+    float: left;
+    height: 24px;
+    line-height: 24px;
+    padding: 0 10px;
+    color: #323437;
+    background-color: #fff;
+}
+
+.stat_component .control-bar-wrapper .control-bar .date-select-bar a:last-child.cur {
+    border-radius: 0 2px 2px 0;
+    right: -1px;
+}
+
+.stat_component .control-bar-wrapper .control-bar .date-select-bar .cur {
+    position: relative;
+    bottom: -1px;
+    margin-top: -2px;
+    padding-top: 1px;
+    height: 25px;
+    background-color: #438eb9;
+    color: #fff;
+}
+
+.stat_component .filter .group {
+    float: left;
+    background-color: #fff;
+    border-radius: 2px;
+    margin: 0;
+}
+
+.stat_component .filter .group li:first-child {
+    margin-left: 0;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.stat_component .filter .group .cur {
+    position: relative;
+    z-index: 1;
+    border: 1px solid #438eb9;
+    color: #fff;
+}
+
+.stat_component .filter .group li:hover {
+    background-color: #f3f4f4;
+}
+
+.stat_component .filter .group .cur, .filter .group li.cur:hover {
+    background-color: #438eb9;
+}
+
+.stat_component .filter .group li {
+    cursor: pointer;
+    padding: 0 12px;
+    border: 1px solid #e1e3e4;
+    margin-left: -1px;
+}
+
+.stat_component .filter .group li, .filter label {
+    height: 24px;
+    line-height: 24px;
+    float: left;
+}
+
+.stat_component .time {
+    width: 80px;
+    height: 24px;
+    line-height: 24px;
+    margin: 0 0 0 7px;
+    padding: 0 0 0 6px;
+    border: 1px solid #e1e3e4;
+    border-right: none;
+    text-indent: 0;
+    color: #323437;
+    cursor: pointer;
+    float: left;
+    border-top-left-radius: 2px !important;
+    border-bottom-left-radius: 2px !important;
+}
+
+.stat_component .time_picker {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    float: left;
+    border: 1px solid #e4e4e4;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    text-align: center;
+    color: #666;
+    cursor: pointer;
+}
+
+.stat_component .split_line {
+    display: inline-block;
+    float: left;
+    margin-left: 7px;
+    font-size: 16px;
+    color: #666
+}
+
+.stat_component .control-bar-wrapper .select-bar-item {
+    position: relative;
+    margin-left: 5px;
+    height: 24px;
+    line-height: 24px;
+}
+
+.stat_component .filter .group li:last-child {
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+img{
+    background: #fff;
+}

@@ -1,0 +1,89 @@
+<?php
+if (!($this->router->getControllerName() == 'user' && in_array($this->router->getActionName(), array('login', 'signup')))) {
+    ?>
+    <div id="user-reg-dialog" title="用户注册" style="display: none;">
+        <form action="javascript:;" class="form w250-center" method="post" id="signUpForm">
+            <p>
+                <label for="">昵称</label>
+                <span class="red">*</span>
+                <input type="text" name="username" class="username" placeholder="昵称"
+                       value=""/>
+                <span class="tip"></span>
+            </p>
+
+            <p>
+                <label for="">手机号</label>
+                <span class="red">*</span>
+                <input type="tel" name="phone" class="phone" placeholder="手机号/用于登陆"
+                       value=""/>
+                <span class="tip"></span>
+            </p>
+
+            <p>
+                <label for="">密码</label>
+                <span class="red">*</span>
+                <input type="password" name="password" class="password"
+                       value="">
+                <span class="tip"></span>
+            </p>
+
+            <p>
+                <label for="">确认密码</label>
+                <span class="red">*</span>
+                <input type="password" name="repassword" class="repassword"
+                       value="">
+                <span class="tip"></span>
+            </p>
+
+            <p style="margin: 20px 0 0;">
+                <input type="submit" value="注册" class="btn btn-green regBtn"/>
+            </p>
+
+            <p style="color: #666;">
+                已有账号？ <a href="javascript:;" class="switchToLoginBtn">立即登陆</a>
+            </p>
+        </form>
+    </div>
+
+    <div id="user-login-dialog" title="用户登陆" style="display: none;">
+        <form action="javascript:;" method="post" id="loginForm" class="form">
+            <p>
+                <label for="phone">手机号</label>
+                <span class="red">*</span>
+                <input type="text" name="phone" id="phone" class="phone" placeholder="手机号" value=""/>
+                <span class="tip"></span>
+            </p>
+
+            <p>
+                <label for="password">密码</label>
+                <span class="red">*</span>
+                <input type="password" id="password" name="password" class="password" value="">
+                <span class="tip"></span>
+            </p>
+
+            <p style="margin: 20px 0 0;">
+                <input type="submit" value="登陆" id="loginBtn" class="btn btn-green loginBtn"/>
+            </p>
+
+            <p style="margin: 20px 0 0;">
+                <button class="btn btn-green loginBtn switchToRegBtn">注册</button>
+            </p>
+
+            <!--<p>
+                <a href="javascript:;" id="goForgotBtn" data-go="<?php /*echo urlencode($this->request->get('go')); */ ?>"
+                   style="display: none;">忘记密码？ 立即找回</a>
+            </p>
+
+            <p style="color: #666;font-size: 10pt;">
+                还没有有账号？ <a
+                    href="javascript:;" class="switchToRegBtn">立即注册</a>-->
+            </p>
+        </form>
+    </div>
+
+    <script>
+        seajs.use('emoi/emoi.user', function (user) {
+            user.user_dialog();
+        });
+    </script>
+<?php } ?>

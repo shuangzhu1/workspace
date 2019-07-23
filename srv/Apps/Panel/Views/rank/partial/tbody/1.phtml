@@ -1,0 +1,33 @@
+<?php if ($list) { ?>
+    <?php foreach ($list as $k => $item) { ?>
+        <tr>
+            <td class="center"><?php echo $k + 1; ?></td>
+            <td>
+                <?php if ($item['sex'] == 1) { ?>
+                    <i class="fa fa-mars blue bolder"></i>
+                <?php } else if ($item['sex'] == 2) { ?>
+                    <i class="fa fa-venus pink bolder"></i>
+                <?php } else { ?>
+
+                <?php }; ?>
+            </td>
+            <td class="center">
+                <span class="badge badge-primary"> <?php echo $item['grade'] ?></span></td>
+            <td class="center"><img style="width: 36px;border-radius: 100%"
+                                    src="<?php echo $item['avatar'] ?>?x-oss-process=image/resize,m_fill,h_160,w_160"/>
+            </td>
+            <td><span class="left"><?php echo $item['user_id'] ?></span></td>
+            <td><span class="left"><?php echo $item['username'] ?></span></td>
+
+            <td class="center"><?php echo $item['fans_cnt'] ?></td>
+            <td class="">
+                <a data-title="用户详情" href="javascript:;" class="newTarget btn btn-primary btn-sm"
+                   data-href="/panel/users/detail/?user_id=<?php echo $item['user_id']  ?>" target="_blank"><i class="fa fa-link"></i> 查看用户详情</i></a>
+            </td>
+        </tr>
+    <?php } ?>
+<?php } else { ?>
+    <tr>
+        <td colspan='12'><span class="left">暂无数据</span></td>
+    </tr>
+<?php } ?>

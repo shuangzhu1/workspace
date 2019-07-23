@@ -1,0 +1,32 @@
+<section >
+    <article>
+        <div class="field set-field">
+            <label for="" class="field-label">选择图文：</label>
+            <select name="" id="" class="chose-existing">
+                <option value="">--选择--</option>
+                <?php foreach ($list as $item) :?>
+                    <option value="{{item['id']}}">{{item['title']}}</option>
+                <?php endforeach; ?>
+            </select>
+            <span class="tip"><span class="red"><*可选*></span><span class="blue">选择现有图文后以下信息将自动填充</span></span>
+        </div>
+        <div class="field set-field">
+            <label for="" class="field-label">标题</label>
+            <input type="text" style="width: 400px;" class="title" name="title"/>
+            <span class="tip"><span class="red"></span></span>
+        </div>
+        <div class="field set-field">
+            <label for="" class="field-label">链接地址</label>
+            <input type="text" name="link" class="link" value="http://" style="width: 400px;"/>
+            <span class="tip"><span class="red"></span></span>
+        </div>
+        <div class="field set-field">
+            <label for="" class="field-label">图片</label>
+            <span class="upload-widget" data-unique="0"><a class="btn btn-sm btn-success  browse-button"
+                                                           href="javascript:;">选择图片</a></span>
+            <img alt="请选择图片" src="" id="thumb_0" class="thumb"
+                 style="height: 32px;display:none"/>
+            <span class="tip"><span class="red"></span></span>
+        </div>
+    </article>
+</section>

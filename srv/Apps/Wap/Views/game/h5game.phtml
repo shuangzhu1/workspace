@@ -1,0 +1,62 @@
+<div style="width:100%;margin-top:0px;">
+    <ul>
+        <?php if( $list ) {?>
+            <?php foreach ($list as $k => $item) :?>
+            <li style="-webkit-tap-highlight-color:transparent;height:80px;display: block" class="item game-link" data-link="<?php echo $item['link'] ?>" data-id="<?php echo $item['id'] ?>">
+                <div style="position:relative;float:left;padding:20px 20px 20px 20px;" class="logo">
+                    <img src="<?php echo $item['logo'] ?>?x-oss-process=image/resize,m_fill,h_90,w_90" alt=""
+                         style="width:70px;height:70px;border-radius:5px">
+                    <?php if($k < 3) :?>
+                        <img src="/static/wap/images/hot_game.png" style="position: absolute;top:9px;right:17px;width:25px;height:29px" alt="">
+                    <?php   endif;?>
+                </div>
+                <div style="float:left;border-bottom:1px solid #d0d0d0;height:100px;width:275px;position:relative" class="content">
+                    <span style="float:left;height:70px;line-height: 70px;font-size:16px;color:#333;font-weight:bold;/*padding-left:10px*/" class="name">
+                        <?php echo mb_substr($item['name'],0,6) ?>
+<!--                        <span class="hot" style="top:9px"><img src="/static/wap/images/hot_game.png" style="width:25px;height:29px" alt=""></span>
+-->                    </span>
+                    <span style="position:absolute;top:50px;left:0;height:30px;padding-top:10px;color:#d0d0d0"><?php echo $item['view_cnt'] ?>人在玩</span>
+
+                    <div style="float:right;padding:40px 20px 0px 0;margin-top:-10px" class="start-game game-link" data-id="<?php echo $item['id'] ?>" >
+                            <div
+                                 style=" -webkit-tap-highlight-color:transparent;color:#838B8B;border-radius:8px;width:83px;height:35px;background-color:#eee;line-height: 35px;text-align: center;font-size:15px;font-weight:bold"
+                                 class="game-link"
+                                 data-id="<?php echo $item['id'] ?>"
+                                 data-link="<?php echo $item['link'] ?>"
+                            >
+                                开始
+                            </div>
+
+                    </div>
+                </div>
+
+            </li>
+                <div style="clear:both"></div>
+
+            <?php endforeach; ?>
+        <?php }else{ ?>
+            <li style="width:100%;text-align: center;margin-top:150px">
+                    <img src="/static/wap/images/no-game.png" alt="" style="width:100px;height:100px;">
+
+                <div>休闲小游戏敬请期待......</div>
+
+            </li>
+        <?php } ?>
+    </ul>
+</div>
+<script>
+    $(function () {
+        var screen_width = $('body').width();
+        $('.content').css('width',(screen_width - 110) + 'px');
+    });
+    seajs.use('/srv/static/panel/js/app/panel/panel.base',function (api) {
+        $('.game-link').on('click',function () {
+            location.href = $(this).data('link');
+
+            api.requestApi('/game/visitIncr',{id:$(this).data('id')},function () {
+
+            },false,true)
+        });
+    });
+
+</script>

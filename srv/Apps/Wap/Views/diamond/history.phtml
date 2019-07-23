@@ -1,0 +1,56 @@
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<style>
+    .history_detail {
+        padding: 0 20px;
+        line-height: 30px;
+        font-size: 16px;
+    }
+
+    .history_detail .item {
+        border-bottom: 1px solid #e4e4e4;
+        height: 80px;
+        overflow: hidden;
+        box-sizing: border-box;
+        padding: 10px 0;
+    }
+
+    .history_detail .left_wrap {
+        float: left;
+        width: 70%;
+    }
+
+    .history_detail .left_wrap .desc {
+        color: #333;
+        font-size: 15px;
+    }
+
+    .history_detail .left_wrap .time {
+        font-size: 16px;
+        color: #999;
+    }
+
+    .history_detail .right_wrap {
+        float: right;
+        width: 30%;
+        line-height: 60px;
+        text-align: right;
+        color: #333;
+        font-size: 18px;
+    }
+
+    .donate {
+        color: #fc6b38;
+        font-size: 19px;
+    }
+</style>
+<ul class="history_detail" id="history_wrap">
+    <li class="item">
+    </li>
+</ul>
+<script>
+    seajs.use(['/static/wap/js-dev/base.js', 'app/more'], function (base, load_more) {
+        load_more.more('/api/diamond/history', {}, function () {
+        }, "#history_wrap", ".item", {amount: 8})
+    })
+</script>

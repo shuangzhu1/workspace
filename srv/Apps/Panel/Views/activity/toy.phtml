@@ -1,0 +1,363 @@
+<link rel="stylesheet" href="/static/panel/css/sweetalert.css">
+<script type="text/javascript" src="/static/panel/js/sweetalert/sweetalert.min.js"></script>
+<style>
+    .fa-times-circle-o:before {
+        content: "\f05c";
+        color:rgba(119, 119, 119, 0.88);
+    }
+</style>
+<div class="width-60">
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4>机器人配置：</h4>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+                <form id="config" action="">
+                    <!-- <legend>Form</legend> -->
+                    <fieldset>
+                        <table class="table table-striped table-bordered" style="border:1px solid #eee">
+                            <thead>
+                            <tr>
+                                <th width="190px" class="center">参数</th>
+                                <th width="22%" class="center"">值</th>
+                                <th  class="center"">说明</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td>活动最大个数：</td>
+
+                                    <td class="center">
+                                        <input type="text" name="ac_num_limit"  value="<?php echo $config['ac_num_limit']?>" size="5" style="height:20px;padding:0 5px 0"><span style="color:red">个</span>
+                                    </td>
+                                    <td>机器人发起活动的最大个数</td>
+                                </tr>
+
+                                <tr>
+                                    <td>是否发起置顶活动：</td>
+
+                                    <td class="center">
+                                        <input type="text" name="ac_top"  value="<?php echo $config['ac_top']?>" size="5" style="height:20px;padding:0 5px 0"><span style="color:red">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    </td>
+                                    <td>是否发起置顶活动，1=> 是，0=> 否</td>
+                                </tr>
+                                <tr>
+                                    <td>是否发起新活动：</td>
+
+                                    <td class="center">
+                                        <input type="text" name="new_ac"  value="<?php echo $config['new_ac']?>" size="5" style="height:20px;padding:0 5px 0"><span style="color:red">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    </td>
+                                    <td>是否发起新活动，1=> 是，0=> 否</td>
+                                </tr>
+                                <tr>
+                                    <td>是否加入活动：</td>
+
+                                    <td class="center">
+                                        <input type="text" name="join"  value="<?php echo $config['join']?>" size="5" style="height:20px;padding:0 5px 0"><span style="color:red">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    </td>
+                                    <td>是否派遣机器人加入可加入的活动，1=> 是，0=> 否</td>
+                                </tr>
+
+                                <tr>
+                                    <td>是否加入用户发起的活动：</td>
+
+                                    <td class="center">
+                                        <input type="text" name="join_user_ac"  value="<?php echo $config['join_user_ac']?>" size="5" style="height:20px;padding:0 5px 0"><span style="color:red">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    </td>
+                                    <td>是否加入用户发起的活动;1=> 是，0=> 否</td>
+                                </tr>
+                                <tr>
+                                    <td>普通活动金额：</td>
+
+                                    <td class="center">
+                                        <input type="text" name="ac_cost"  value="<?php
+                                        $tmp = explode(',',$config['ac_cost']);
+                                        foreach($tmp as &$v)
+                                        {
+                                            $v = $v / 100;
+                                        }
+                                        echo implode(',',$tmp);
+
+                                        ?>" size="5" style="height:20px;padding:0 5px 0"><span style="color:red">元</span>
+                                    </td>
+                                    <td>发起普通活动金额（元）,多个值用“,”拼接</td>
+                                </tr>
+                                <tr>
+                                    <td>机器人开始发起活动的时间</td>
+
+                                    <td class="center">
+<!--                                        <input type="text" name="ac_start_time"  value="--><?php //echo $config['ac_start_time'] ?><!--" size="5" style="height:20px;padding:0 5px 0">-->
+                                        <select name="ac_start_time" id="">
+                                            <option value="1" <?php if($config['ac_start_time'] == 1) echo 'selected';  ?>>01:00</option>
+                                            <option value="2" <?php if($config['ac_start_time'] == 2) echo 'selected';  ?>>02:00</option>
+                                            <option value="3" <?php if($config['ac_start_time'] == 3) echo 'selected';  ?>>03:00</option>
+                                            <option value="4" <?php if($config['ac_start_time'] == 4) echo 'selected';  ?>>04:00</option>
+                                            <option value="5" <?php if($config['ac_start_time'] == 5) echo 'selected';  ?>>05:00</option>
+                                            <option value="6" <?php if($config['ac_start_time'] == 6) echo 'selected';  ?>>06:00</option>
+                                            <option value="7" <?php if($config['ac_start_time'] == 7) echo 'selected';  ?>>07:00</option>
+                                            <option value="8" <?php if($config['ac_start_time'] == 8) echo 'selected';  ?>>08:00</option>
+                                            <option value="9" <?php if($config['ac_start_time'] == 9) echo 'selected';  ?>>09:00</option>
+                                            <option value="10" <?php if($config['ac_start_time'] == 10) echo 'selected';  ?>>10:00</option>
+                                            <option value="11" <?php if($config['ac_start_time'] == 11) echo 'selected';  ?>>11:00</option>
+                                            <option value="12" <?php if($config['ac_start_time'] == 12) echo 'selected';  ?>>12:00</option>
+                                            <option value="13" <?php if($config['ac_start_time'] == 13) echo 'selected';  ?>>13:00</option>
+                                            <option value="14" <?php if($config['ac_start_time'] == 14) echo 'selected';  ?>>14:00</option>
+                                            <option value="15" <?php if($config['ac_start_time'] == 15) echo 'selected';  ?>>15:00</option>
+                                            <option value="16" <?php if($config['ac_start_time'] == 16) echo 'selected';  ?>>16:00</option>
+                                            <option value="17" <?php if($config['ac_start_time'] == 17) echo 'selected';  ?>>17:00</option>
+                                            <option value="18" <?php if($config['ac_start_time'] == 18) echo 'selected';  ?>>18:00</option>
+                                            <option value="19" <?php if($config['ac_start_time'] == 19) echo 'selected';  ?>>19:00</option>
+                                            <option value="20" <?php if($config['ac_start_time'] == 20) echo 'selected';  ?>>20:00</option>
+                                            <option value="21" <?php if($config['ac_start_time'] == 21) echo 'selected';  ?>>21:00</option>
+                                            <option value="22" <?php if($config['ac_start_time'] == 22) echo 'selected';  ?>>22:00</option>
+                                            <option value="23" <?php if($config['ac_start_time'] == 23) echo 'selected';  ?>>23:00</option>
+<!--                                            <option value="24" --><?php //if($config['ac_start_time'] == 0) echo 'selected';  ?><!-->24:00</option>-->
+                                        </select>
+                                        <span style="color:red">点</span>
+                                    </td>
+                                    <td>每天开始发起活动的时间，单位小时，24小时制</td>
+                                </tr>
+                                <tr>
+                                    <td>机器人结束发起活动的时间</td>
+
+                                    <td class="center">
+<!--                                        <input type="text" name="ac_end_time"  value="--><?php //echo $config['ac_end_time']?><!--" size="5" style="height:20px;padding:0 5px 0">-->
+                                        <select name="ac_end_time" id="">
+                                            <option value="1" <?php if($config['ac_end_time'] == 1) echo 'selected';  ?>>01:00</option>
+                                            <option value="2" <?php if($config['ac_end_time'] == 2) echo 'selected';  ?>>02:00</option>
+                                            <option value="3" <?php if($config['ac_end_time'] == 3) echo 'selected';  ?>>03:00</option>
+                                            <option value="4" <?php if($config['ac_end_time'] == 4) echo 'selected';  ?>>04:00</option>
+                                            <option value="5" <?php if($config['ac_end_time'] == 5) echo 'selected';  ?>>05:00</option>
+                                            <option value="6" <?php if($config['ac_end_time'] == 6) echo 'selected';  ?>>06:00</option>
+                                            <option value="7" <?php if($config['ac_end_time'] == 7) echo 'selected';  ?>>07:00</option>
+                                            <option value="8" <?php if($config['ac_end_time'] == 8) echo 'selected';  ?>>08:00</option>
+                                            <option value="9" <?php if($config['ac_end_time'] == 9) echo 'selected';  ?>>09:00</option>
+                                            <option value="10" <?php if($config['ac_end_time'] == 10) echo 'selected';  ?>>10:00</option>
+                                            <option value="11" <?php if($config['ac_end_time'] == 11) echo 'selected';  ?>>11:00</option>
+                                            <option value="12" <?php if($config['ac_end_time'] == 12) echo 'selected';  ?>>12:00</option>
+                                            <option value="13" <?php if($config['ac_end_time'] == 13) echo 'selected';  ?>>13:00</option>
+                                            <option value="14" <?php if($config['ac_end_time'] == 14) echo 'selected';  ?>>14:00</option>
+                                            <option value="15" <?php if($config['ac_end_time'] == 15) echo 'selected';  ?>>15:00</option>
+                                            <option value="16" <?php if($config['ac_end_time'] == 16) echo 'selected';  ?>>16:00</option>
+                                            <option value="17" <?php if($config['ac_end_time'] == 17) echo 'selected';  ?>>17:00</option>
+                                            <option value="18" <?php if($config['ac_end_time'] == 18) echo 'selected';  ?>>18:00</option>
+                                            <option value="19" <?php if($config['ac_end_time'] == 19) echo 'selected';  ?>>19:00</option>
+                                            <option value="20" <?php if($config['ac_end_time'] == 20) echo 'selected';  ?>>20:00</option>
+                                            <option value="21" <?php if($config['ac_end_time'] == 21) echo 'selected';  ?>>21:00</option>
+                                            <option value="22" <?php if($config['ac_end_time'] == 22) echo 'selected';  ?>>22:00</option>
+                                            <option value="23" <?php if($config['ac_end_time'] == 23) echo 'selected';  ?>>23:00</option>
+<!--                                            <option value="24" --><?php //if($config['ac_end_time'] == 24) echo 'selected';  ?><!-->24:00</option>-->
+                                        </select>
+                                        <span style="color:red">点</span>
+
+                                    </td>
+                                    <td>每天开始结束活动的时间，单位小时，24小时制</td>
+                                </tr>
+                                <tr>
+                                    <td>置顶活动金额：</td>
+
+                                    <td class="center">
+                                        <input type="text" name="top_ac_cost"  value="<?php echo $config['top_ac_cost'] / 100?>" size="5" style="height:20px;padding:0 5px 0"><span style="color:red">元</span>
+                                    </td>
+                                    <td>发起置顶活动金额（元）</td>
+                                </tr>
+
+                                <tr>
+                                    <td>每秒得分(机器人发起)：</td>
+
+                                    <td class="center">
+                                        <input type="text" name="max_redbag_score_pres_ai"  value="<?php echo $config['max_redbag_score_pres_ai']?>" size="5" style="height:20px;padding:0 5px 0"><span style="color:red">分</span>
+                                    </td>
+                                    <td>机器人发起的红包雨活动中，机器人每秒可得的最高分数</td>
+                                </tr>
+                                <tr>
+                                    <td>每秒得分(用户发起)：</td>
+
+                                    <td class="center">
+                                        <input type="text" name="max_redbag_socre_pres_user"  value="<?php echo $config['max_redbag_socre_pres_user']?>" size="5" style="height:20px;padding:0 5px 0"><span style="color:red">分</span>
+                                    </td>
+                                    <td>用户发起的红包雨活动中，机器人每秒可得的最高分数</td>
+                                </tr>
+
+                                <tr>
+                                    <td>问答正确率(机器人发起)：</td>
+
+                                    <td class="center">
+                                        <input type="text" name="correct_rate_ai"  value="<?php echo $config['correct_rate_ai']?>" size="5" style="height:20px;padding:0 5px 0"><span style="color:red">%</span>
+                                    </td>
+                                    <td>机器人发起的问答活动中，机器人的正确率，按百分比</td>
+                                </tr>
+                                <tr>
+                                    <td>问答正确率(用户发起)：</td>
+
+                                    <td class="center">
+                                        <input type="text" name="correct_rate_user"  value="<?php echo $config['correct_rate_user']?>" size="5" style="height:20px;padding:0 5px 0"><span style="color:red">%</span>
+                                    </td>
+                                    <td>用户发起的问答活动中，机器人的正确率，按百分比</td>
+                                </tr>
+                                <tr>
+                                    <td>是否开启快捷回复：</td>
+
+                                    <td class="center">
+                                        <input type="text" name="quick_reply"  value="<?php echo $config['quick_reply']?>" size="5" style="height:20px;padding:0 5px 0"><span style="color:red">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    </td>
+                                    <td>是否开启快捷回复功能：1 => 是 , 0 => 否</td>
+                                </tr>
+                                <tr>
+                                    <td>发起活动间隔：</td>
+
+                                    <td class="center">
+                                        <input type="text" name="ac_gap"  value="<?php echo $config['ac_gap']?>" size="5" style="height:20px;padding:0 5px 0"><span style="color:red">分</span>
+                                    </td>
+                                    <td>机器人发起活动的间隔，单位为分</td>
+                                </tr>
+                                <tr>
+                                    <td>置顶活动倒计时：</td>
+
+                                    <td class="center">
+                                        <input type="text" name="top_ac_delay"  value="<?php echo $config['top_ac_delay']?>" size="5" style="height:20px;padding:0 5px 0"><span style="color:red">分</span>
+                                    </td>
+                                    <td>机器人发起的置顶活动延迟多久开始，单位为分</td>
+                                </tr>
+                                <tr>
+                                    <td>活动倒计时（A）：</td>
+
+                                    <td class="center">
+                                        <input type="text" name="ac_delay"  value="<?php echo $config['ac_delay']?>" size="5" style="height:20px;padding:0 5px 0"><span style="color:red">分</span>
+                                    </td>
+                                    <td>机器人发起的活动延迟多久开始，单位为分</td>
+                                </tr>
+                                <tr>
+                                    <td>附加随机倒计时（B）：</td>
+
+                                    <td class="center">
+                                        <input type="text" name="ac_random_delay"  value="<?php echo $config['ac_random_delay']?>" size="5" style="height:20px;padding:0 5px 0"><span style="color:red">分</span>
+                                    </td>
+                                    <td>机器人发起活动附加的随机延迟时间，最终延迟时间为A+random(B)，单位为分</td>
+                                </tr>
+                                <tr>
+                                    <td>iOS提测中：</td>
+
+                                    <td class="center">
+                                        <label>
+                                            <input id="ios-test" class="ace ace-switch ace-switch-7" type="checkbox" <?php if($config['ios_test'] == 1) echo "checked"; ?>>
+                                            <span class="lbl"></span>
+                                        </label>
+<!--                                        <input type="text" name="ios_test"  value="--><?php //echo $config['ios_test']?><!--" size="5" style="height:20px;padding:0 5px 0"><span style="color:red"></span>-->
+                                    </td>
+                                    <td>ios是否提测中</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </fieldset>
+
+                    <div class="form-actions center">
+                        <button type="button" class="btn btn-sm btn-success" id="save">
+                            保存
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<script>
+    seajs.use("app/panel/panel.base.js",function (api) {
+
+        $('#save').on('click',function(){
+            var canSave = true;
+            //非空验证
+            $('#config input[type="text"]').each(function (i) {
+                if( $(this).val() === '' )
+                {
+                    tip.showTip('err','值不能为空',2000);
+                    canSave = false;
+                    return false;
+                }
+
+                //非数字验证
+                if( $(this).attr('name') !== 'ac_cost' )
+                {
+                    if( isNaN( $(this).val() ) ){
+                        tip.showTip('err','值只能为数字',2000);
+                        $(this).css('color','red');
+                        canSave = false;
+                        return false;
+                    }
+                }else
+                {
+                    $(this).val().replace(/，/,',').split(',').forEach(function (v) {
+                        if(isNaN(v))
+                        {
+                            tip.showTip('err','值只能为数字',2000);
+
+                            canSave = false;
+                            return false;
+                        }
+
+                    })
+                    if( !canSave )
+                    {
+                        $(this).css('color','red');
+                    }
+
+                }
+
+
+
+            });
+            //工作时间验证
+            var ac_start = parseInt($('select[name="ac_start_time"]').val());
+            var ac_end = parseInt($('select[name="ac_end_time"]').val());
+            if( ac_start >= ac_end )
+            {
+                tip.showTip('err','开始工作时间应小于结束工作时间',2000);
+                canSave = false;
+                return false;
+            }
+
+            //
+            if( canSave )
+            {
+                api.requestApi('/panel/activity/toy',$('#config').serialize(),function (res) {
+                    if(res.result === 1)
+                    {
+                        tip.showTip('ok','保存成功',1500,function () {
+                            window.location.reload()
+                        });
+                    }
+                });
+            }
+
+        });
+        //ios提测中
+        $('#ios-test').on('change',function () {
+            var ios_test = $(this).is(':checked') ? 1 : -1;
+            api.requestApi('/panel/activity/iosTest',{ios_test:ios_test},function (res) {
+                if( res.result ===1 )
+                {
+                    tip.showTip('ok','保存成功',800,function () {
+                        window.location.reload()
+                    });
+                }
+            });
+        });
+        //去除非法值提示
+        $('#config input').on('focus',function () {
+            $(this).css('color','#666');
+        });
+
+    });
+
+</script>

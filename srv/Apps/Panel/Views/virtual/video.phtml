@@ -1,0 +1,165 @@
+<form action="javascript:;" method="get"
+      style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px; border-radius: 5px;">
+
+    &nbsp;<label for="name">管理员</label>
+    <select name="admin_id">
+        <option value="0">所有</option>
+        <?php foreach ($admin_list as $a) { ?>
+            <option <?php echo $admin_id == $a['id'] ? 'selected' : ''; ?>
+                value="<?php echo $a['id']; ?>"><?php echo $a['name']; ?></option>
+        <?php } ?>
+    </select>
+    &nbsp;<label for="name">时间:</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd"/>
+    - <input type="text" id="end" value="<?php echo $end; ?>" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd"/>
+    <input type="submit" class="btn btn-primary btn-sm btnSearch" value="搜索">
+    <a class="btn btn-primary btn-sm btnAdd right" href="javascript:;"><i class="fa fa-plus"></i> 添加视频</a>
+
+</form>
+<div class="tabs">
+    <a data-key="status" data-val="0" href="javascript:;"
+       class="tab active">未发布</a>
+    <a data-key="status" data-val="1" href="javascript:;"
+       class="tab">已发布</a>
+</div>
+<table id="article-list" class='list'>
+    <thead>
+    <tr class="head">
+        <th style='width:50px'>批量</th>
+        <th style='width:36px'>ID</th>
+        <th style='width:200px'>随机发布人</th>
+        <th style='width:150px'>管理员</th>
+        <th>话题</th>
+        <th style='width:150px'>添加时间</th>
+        <th style='width:150px'>发布时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody class="listData">
+    <tr>
+        <td colspan="17" style="height: 100px;line-height: 100px" class="center">
+            <img
+                style="width: 40px" src="/srv/static/panel/images/admin/loading2.gif">
+        </td>
+    </tr>
+    </tbody>
+    <tr class="">
+        <th class="name">操作</th>
+        <td colspan="17">
+            [ <a href="javascript:;" class="selectAll">全选</a> ]
+            [ <a href="javascript:;" class="selectNone">全不选</a> ]
+            [ <a href="javascript:;" class="selectInvert">反选</a> ]
+            <!-- <a class="btn-light delAllSelected" href="javascript:;">批量屏蔽</a>-->
+            <span class="btn btn-sm btn-primary btnBatch"><i class="fa fa-paper-plane "></i> 批量发布</span>
+        </td>
+    </tr>
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <div class="pageBar"></div>
+        </td>
+    </tr>
+</table>
+
+<div class="modal fade" id="videoModal">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">添加视频</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">选择视频:</label>
+
+                        <div class="col-sm-10">
+                            <section>
+                                <article>
+                                    <video style="display:none;" controls="controls" id="video"
+                                           data-duration="0"></video>
+                                    <span class="upload-widget" data-unique="2"><a
+                                            class="btn btn-sm btn-success  browse-button"
+                                            href="javascript:;">选择视频</a></span>
+                                    <input type="hidden" id="video_ID" value=""/>
+                                    <span id="videoUrl" style="height: 32px;"></span>
+                                </article>
+                            </section>
+
+                        </div>
+                    </div>
+                    <div class="form-group uid">
+                        <div class="field base-field" style="height: auto;overflow: hidden">
+                            <?php $this->view->partial('virtual/video/user'); ?>
+                        </div>
+
+                    </div>
+                    <div class="form-group submit_yunpian">
+                        <label for="ruleName" class="col-sm-2 control-label">立即发布:</label>
+                        <div class="col-sm-10">
+                            <input id="is_publish" type="checkbox"
+                                   class="ace ace-switch ace-switch-5"/>
+                            <span class="lbl"></span>
+                        </div>
+
+                    </div>
+                    <p class="alert alert-danger error-widget" style="display: none"><i class="fa fa-warning"></i>
+                        <span class="error_msg"></span>
+                    </p>
+                    <p class="alert alert-success success-widget" style="display: none"><i class="fa fa-check"></i>
+                        <span class="success_msg"></span>
+                    </p>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <input type="hidden" value="0" id=""/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-original="" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="msgModal" style="top:300px">
+    <div class="modal-dialog" style="width: 400px;">
+        <div class="modal-content" style="padding: 10px; border-radius: 5px !important;">
+            <p><img src="/srv/static/panel/images/admin/loading.gif"/>&nbsp;正在提交数据 <span class="percent"></span></p>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="videoPlay">
+    <div class="modal-dialog" style="background: #fff;margin-top: 50px;border-radius: 2px">
+        <div class="modal-body" style="overflow:hidden;">
+            <video id="my-video" class="video-js" controls preload="auto" width="740" height="400"
+                   poster="MY_VIDEO_POSTER.jpg" data-setup="{}">
+                <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
+                <source src="http://vjs.zencdn.net/v/oceans.webm" type="video/webm">
+                <source src="http://vjs.zencdn.net/v/oceans.ogv" type="video/ogg">
+                <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a web browser that
+                    <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>
+            </video>
+        </div>
+    </div>
+</div>
+<script>
+
+</script>
+<link href="/srv/static/panel/js/tools/video/video-js.min.css" rel="stylesheet">
+<script src="/srv/static/panel/js/tools/video/video.min.js"></script>
+
+<script>
+    seajs.use('app/panel/virtual/virtual.video.js?v=1.2.6', function (api) {
+        api.addVideo();
+
+        /*   api.toLatLng();*/
+    });
+
+
+</script>
+

@@ -1,0 +1,21 @@
+<tr class="item" data-id="<?php echo $item['id']; ?>">
+    <th class='name'><?php echo $item['id']; ?></th>
+    <th class='name'><?php echo $item['name']; ?></th>
+    <td><?php if ($item['thumb']) { ?><a data-lightbox="roadtrip"
+                                         href="<?php echo $item['thumb'] ?>"><img
+                src="<?php echo $item['thumb'] ?>?x-oss-process=image/resize,m_fill,h_40,w_40"/>
+            </a><?php } ?>
+    </td>
+    <!-- <td>
+        <?php /*echo $item['sort_num'] */ ?>
+    </td>-->
+    <td><?php echo $item['owner_id'] ?>【<?php echo $item['owner_name'] ?>】</td>
+    <td><?php echo $item['user_id'] ?>【<?php echo $item['user_name'] ?>】</td>
+
+    <td><?php echo $item['charm'] ?></td>
+    <td>
+        <?php echo date('Y-m-d H:i', $item['created']) ?>
+    </td>
+    <td></td>
+
+</tr>

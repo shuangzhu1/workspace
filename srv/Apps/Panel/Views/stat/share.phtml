@@ -1,0 +1,174 @@
+<?php
+$site = ["朋友圈" => 'icon-friends', 'QQ' => "icon-QQ1", 'QQ空间' => "icon-QQkongjian", "微信好友" => 'icon-weixin1'];
+?>
+<link rel="stylesheet" type="text/css" href="/static/panel/ali_iconfont/iconfont.css">
+<style>
+    .icon {
+        width: 1em;
+        height: 1em;
+        vertical-align: -0.15em;
+        fill: currentColor;
+        overflow: hidden;
+    }
+
+</style>
+<script src="/static/panel/ali_iconfont/iconfont.js"></script>
+<form action="" method="get" style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px;">
+    <label for="name">关键字</label>
+    <input name="key" type="text" id="key" placeholder="用户昵称/手机/用户ID" value="<?php echo $key; ?>">
+    &nbsp;
+    &nbsp;<label for="name">平台</label>
+    <select name="platform">
+        <option value="0" <?php echo $platform == 0 ? 'selected' : ''; ?>>全部</option>
+        <option value="微信" <?php echo $platform == '微信' ? 'selected' : ''; ?>>微信</option>
+        <option value="朋友圈" <?php echo $platform == '朋友圈' ? 'selected' : ''; ?>>朋友圈</option>
+        <option value="QQ" <?php echo $platform == 'QQ' ? 'selected' : ''; ?>>QQ</option>
+        <option value="QQ空间" <?php echo $platform == 'QQ空间' ? 'selected' : ''; ?>>QQ空间</option>
+
+    </select>
+
+
+    &nbsp;<label for="name">时间:</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd"/>
+    - <input type="text" id="end" value="<?php echo $end; ?>" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd"/>
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+</form>
+<div class="tabs">
+    <a href="<?php echo $this->uri->setUrl(['type' => 0], ['p']); ?>"
+       class="tab <?php echo $type == '0' ? 'active' : ''; ?>">全部</a>
+    <a href="<?php echo $this->uri->setUrl(['type' => 'invite'], ['p']); ?>"
+       class="tab <?php echo $type == 'invite' ? 'active' : ''; ?>">邀请</a>
+    <a href="<?php echo $this->uri->setUrl(['type' => 'user'], ['p']); ?>"
+       class="tab <?php echo $type == 'user' ? 'active' : ''; ?>">名片</a>
+    <a href="<?php echo $this->uri->setUrl(['type' => 'discuss'], ['p']); ?>"
+       class="tab <?php echo $type == 'discuss' ? 'active' : ''; ?>">动态</a>
+</div>
+<table id="article-list" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style='width:36px'>ID</th>
+        <!--    <th style='width:50px'>批量</th>-->
+        <th style='width:150px'>分享人</th>
+        <th style='width:150px'>分享时间</th>
+
+        <th style='width:300px'>分享类型</th>
+        <th style='width:200px'>分享平台</th>
+        <!--    <th style='width:300px'>审核</th>-->
+        <th style='width:60px'>分享地址</th>
+        <th style='width:100px'> <?php if ($sort && $sort == 'back_count') { ?>
+                <a href="<?php echo $this->uri->setUrl(['order' => $sort_order == 'desc' ? 'asc' : 'desc']); ?>"
+                   class="order active">
+                    <i class="fa fa-long-arrow-<?php echo $sort_order == 'desc' ? 'down' : 'up'; ?>"></i> 访客数</a>
+            <?php } else { ?>
+                <a href="<?php echo $this->uri->setUrl(['order' => 'desc', 'sort' => 'back_count']); ?>" class="order">
+                    <i class="fa fa-arrows-v"></i> 访客数</a>
+            <?php } ?></th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        $content = \Util\FilterUtil::unPackageContentTag($item['content'], 0, "/panel/users/detail?user_id=");
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <th class='name'><?php echo $item['id']; ?></th>
+            <!--   <td class="center"><input type="checkbox" class="chk" data-id="<?php /*echo $item['id']; */ ?>"/></td>-->
+            <td><?php echo $item['user_id'] . '【' . $users[$item['user_id']]['username'] . '】'; ?></td>
+            <td><?php echo date('Y-m-d H:i', $item['created']); ?></td>
+            <td>
+
+                <?php if ($item['type'] == \Services\Social\SocialManager::TYPE_DISCUSS) { ?>
+                    <a data-title="动态详情" data-href="/srv/discuss/detail/<?php echo $item['item_id'] ?>" class="btn btn-purple btn-minier newTarget"  target="_blank"><i
+                            class="fa fa-link"></i> 动态详情</a>
+                <?php } elseif ($item['type'] == \Services\Social\SocialManager::TYPE_USER) { ?>
+                    <a data-title="用户详情"  data-href="/users/detail/?user_id=<?php echo $item['item_id'] ?>" target="_blank"
+                       class="btn btn-primary btn-minier newTarget"><i
+                            class="fa fa-link"></i> 用户详情</a>
+                <?php } ?>   <?php echo \Services\Social\SocialManager::$_share_type[$item['type']]; ?>
+            </td>
+            <td>
+                <svg class="icon" style="font-size: 25px;" aria-hidden="true">
+                    <use xlink:href="#<?php echo $site[$item['site']] ?>"></use>
+                </svg>
+                <?php echo $item['site'] ?>
+            </td>
+            <td>
+                <a target="_blank"
+                   href="<?php echo substr($item['url'],0,4)=='http' ? $item['url'] : 'http://' . $item['url'] ?>"
+                   class="btn btn-purple btn-minier"><i class="fa fa-link"></i>查看分享地址</a>
+            </td>
+            <td>
+                <?php echo $item['back_count'] ?>
+            </td>
+            <td>
+
+            </td>
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="17">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <!--  <tr class="showpage">
+          <th class="name">操作</th>
+          <td colspan="17">
+                  <span>
+                      [ <a href="javascript:;" class="selectAll">全选</a> ]
+                      [ <a href="javascript:;" class="selectNone">全不选</a> ]
+                      [ <a href="javascript:;" class="selectInvert">反选</a> ]
+                      <a class="btn-light delAllSelected" href="javascript:;">批量屏蔽</a>
+                  </span>
+          </td>
+      </tr>-->
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+        </td>
+    </tr>
+</table>
+
+
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+
+<script>
+    $('[data-rel=tooltip]').tooltip();
+    seajs.use('app/panel/discuss/discuss.edit', function (api) {
+        api.del();
+        api.recommend();
+    });
+    $('#start').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank:true,
+        onChangeDateTime: function () {
+        }
+    });
+    $('#end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank:true,
+        onChangeDateTime: function () {
+        }
+    });
+</script>

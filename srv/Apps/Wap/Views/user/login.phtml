@@ -1,0 +1,54 @@
+<?php if ($this->request->get('from') == 'app') { ?>
+    <!-- <script>
+         window.onload=function(){
+             //安卓
+             if( window.android!==undefined){
+                 window.android.reload();
+             }
+         }
+
+     </script>-->
+<?php } else { ?>
+    <link rel="stylesheet" type="text/css" href="/static/wap/css/user.css"/>
+
+    <div class="dis_login">
+        <span class="dis_logo"><img src="/static/wap/images/logo.png"/></span>
+        <div class="login_form" id="loginForm">
+            <form>
+                <ul>
+                    <li>
+                        <div>
+                            <label for="">
+                                <em class="tel_num"></em>
+                            </label>
+                            <input type="tel" name="tel" id="tel" value="" placeholder="请输入手机号"/>
+
+                        </div>
+                        <p class="ft_error"></p>
+                    </li>
+                    <li>
+                        <div>
+                            <label for="">
+                                <em class="pwd_num"></em>
+                            </label>
+                            <input type="password" name="pwd" id="pwd" value="" placeholder="输入密码"/>
+
+                        </div>
+                        <p class="ft_error"></p>
+                    </li>
+                </ul>
+
+                <div class="btn">
+                    <button type="button" id="mylogin">登录</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+        do_login(function () {
+                window.location.href = "<?php echo $go?>";
+            }
+        )
+    </script>
+<?php } ?>
+

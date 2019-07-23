@@ -1,0 +1,15 @@
+<p class="reply_item" data-id="<?php echo $reply['reply_id'] ?>">  <span
+    class="item_sy"><span
+        class="blue"><?php echo $reply['username']; ?></span> <em>回复</em> <span
+        class="blue"><?php echo $reply['to_username']; ?></span>:</span>
+<span class="item_content" data-type="reply"
+      data-id="<?php echo $reply['reply_id'] ?>">
+          <?php if ($reply['images']) {
+              $images = explode(',', $reply['images']);
+              ?>
+              <?php foreach ($images as $img) { ?>
+                  <a href="<?php echo $img ?>" data-lightbox="roadtrip"> <img class="content_img"
+                                                                              src="<?php echo $img ?>?x-oss-process=image/resize,m_fill,h_100,w_100"/></a>
+              <?php } ?>
+          <?php } ?>
+    <?php echo $reply['content']; ?></span></p>

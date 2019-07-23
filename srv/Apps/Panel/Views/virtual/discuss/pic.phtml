@@ -1,0 +1,105 @@
+<style>
+    #picturesPreview {
+        padding: 12px;
+        border: 1px solid #e4e4e4;
+        color: #888;
+        margin: 0 0 0 127px;
+        width: 1000px;
+    }
+
+    #picturesPreview .pic {
+        float: left;
+        margin: 4px;
+        text-align: center;
+        position: relative;
+    }
+
+    #picturesPreview .pic img {
+        height: 60px;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        padding: 1px;
+        display: block;
+    }
+
+    #picturesPreview .pic .rmBtn {
+        text-align: center;
+        height: 24px;
+        line-height: 24px;
+        display: block;
+    }
+
+    #picturesPreview .pic .setMainPic {
+        background: #f6f6f6;
+        display: block;
+        height: 24px;
+        line-height: 24px;
+        text-align: center;
+    }
+
+    .img-select {
+        min-height: 120px;
+        margin-left: 120px;
+        border-radius: 5px;;
+        overflow: hidden;
+    }
+
+    .img-select li {
+        width: 80px;
+        min-height: 80px;
+        margin-right: 8px;
+        float: left;
+        margin-bottom: 5px;
+        position: relative;
+        /*
+                overflow: hidden;
+        */
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .img-select li .removeBtn {
+        border-radius: 100%;
+        background-color: #fff;
+        border: 1px solid #e4e4e4;
+        padding: 2px 3px;
+    }
+
+    .img-select li .removeBtn:hover {
+        background-color: grey;
+        border: 1px solid gray;
+        color: white;
+    }
+
+    .img-select li .upImg {
+        position: absolute;
+        top: -10px;
+        right: -5px;
+        z-index: 1000;
+        display: inline-block;
+    }
+
+    .moxie-shim-html5 {
+        display: none;
+    }
+</style>
+<section>
+
+
+    <article>
+        <div class="field set-field">
+            <label for="" class="field-label" style="float:left;">图片:</label>
+            <ul class="pub-all-pic img-select" id="picturesPreview">
+                <li class="add-more browse-button pic" id="uploadProductPictures" href="javascript:;"
+                    style="width: 80px;display: inline-block;text-align: center; height: 80px; border:3px  dotted #e4e4e4;line-height: 80px;vertical-align: middle"><span
+                        class="fa grey fa-plus fa-2x"
+                    ></span></li>
+            </ul>
+
+            <span class="tip"></span>
+        </div>
+        <p style="margin: 8px 0 8px 126px;color: #888;">请上传1-9张图片以内图片</p>
+
+
+    </article>
+</section>

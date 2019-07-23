@@ -1,0 +1,97 @@
+<style>
+    #mapWrap {
+        margin-left: 130px !important;
+        border-radius: 5px;;
+    }
+</style>
+<section id="product-addr" class="product-widget">
+    <!-- <h3 class="widget-tit">区域地址</h3>-->
+    <input name="province_name" type="hidden" id="province_name"
+           value="广东省"/>
+    <input name="city_name" type="hidden" id="city_name"
+           value="深圳市"/>
+    <input name="county_name" type="hidden" id="county_name"
+           value="南山区"/>
+    <article class="widget-cont">
+        <div class="field base-field">
+            <label class="field-label">开启地址位置</label>
+
+            <input id="open_position" type="checkbox" name="open_position"
+                   class="ace ace-switch ace-switch-5"/>
+            <span class="lbl"></span>
+        </div>
+        <div class="address_component" style="display: none">
+            <div class="field base-field">
+                <label for="" class="field-label"><span style="color: green;">选择区域</span></label>
+                <select name="province_id" id="province_id " class=" selc province_id">
+                    <option value="">==请选择省份==</option>
+                    <?php
+                    foreach ($provinces as $_p) {
+                        ?>
+                        <option value="<?php echo $_p['id'] ?>"
+                        ><?php echo $_p['short_name'] ?></option>
+                    <?php } ?>
+                </select>
+                <select name="city_id" id="city_id" class="selc city_id">
+                    <option value="">==请选择市区==</option>
+                    <?php
+                    if (!empty($cities)) {
+                        foreach ($cities as $_c) {
+                            ?>
+                            <option value="<?php echo $_c['id'] ?>"
+                            ><?php echo $_c['short_name'] ?></option>
+                        <?php }
+                    } ?>
+                </select>
+                <select name="county_id" id="county_id" class="selc county_id">
+                    <option value="">==请选择区县乡==</option>
+                    <?php
+                    if (!empty($counties)) {
+                        foreach ($counties as $_c) {
+                            ?>
+                            <option value="<?php echo $_c['id'] ?>"
+                            ><?php echo $_c['name'] ?></option>
+                        <?php }
+                    } ?>
+                </select>
+                <span class="red">*</span>（请选择区域）
+            </div>
+            <div class="field base-field">
+                <label class="field-label">详细地址</label>
+
+                <input type="text" name="address" id="txtAddress"
+                       placeholder=""
+                       style="width: 240px;"
+                       class="form-field txt"
+                       value="大冲国际">
+                <span class="red">*</span>（无需填写【省市县】,<b class="red">填写完点击空白区域即可重新定位</b>）
+            </div>
+
+            <div class="field base-field">
+                <label class="field-label"></label>
+                <span class="tip">请先选择区域，并填写详细地址</span>
+                <span class="red">如果地图没加载出来，请 <a href="">刷新</a></span>
+            </div>
+
+            <div id="mapWrap" style="width: 1000px;height: 360px;border: 1px solid #eee;"></div>
+            <div class="field"><label class="field-label">经度<span class="required">*</span></label>
+
+                <input type="text" name="lng" data-required="1" placeholder="请拖动选择经度" class="form-field txt"
+                       id="txtLng" value="113.961974"
+                       style="width: 60px;" readonly="readonly">
+                <span class="red">*</span>
+                <span class="red">自动根据地址获取经纬度</span>
+            </div>
+            <div class="field"><label class="field-label">纬度<span class="required">*</span></label>
+                <input type="text" name="lat" data-required="1" placeholder="请拖动选择纬度" class="form-field txt"
+                       id="txtLat" value="22.547832"
+                       style="width: 60px;"
+                       readonly="readonly">
+                <span class="red">*</span>
+                <span class="red">拖动地图标点可精确调整位置</span>
+            </div>
+        </div>
+
+
+    </article>
+</section>

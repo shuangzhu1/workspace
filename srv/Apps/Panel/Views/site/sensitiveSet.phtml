@@ -1,0 +1,144 @@
+<style>
+    .inner-nav, .page-header {
+        background: #fff;
+    }
+
+    .page-header h1 {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .inner-nav {
+        box-shadow: none;
+    }
+
+    .main-container:after, .page-content {
+        background: #ececec
+    }
+
+</style>
+
+<div class="setting_content" style="width: 100%; min-height: 800px; background-color: #fff;border: 1px solid #e4e4e4">
+    <div class="page-header">
+        <h1><i class="fa fa-cogs"></i> 敏感词设置
+        <span class="pull-right">
+          <!--  <span class="btn-group">-->
+            <!--            </span>
+            -->        </span>
+        </h1>
+        <!-- /.col-lg-12 -->
+    </div>
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label for="ruleName" class="col-sm-1 control-label">开启敏感词:</label>
+            <div class="col-sm-10">
+                <input id="enable" type="checkbox" <?php echo $setting['enable'] == 1 ? 'checked' : '' ?>
+                       class="ace ace-switch ace-switch-5"/>
+                <span class="lbl"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="ruleName" class="col-sm-1 control-label"></label>
+            <div class="col-sm-10">
+                开启普通敏感词:
+                <input id="enable_normal" type="checkbox" <?php echo $setting['enable_normal'] == 1 ? 'checked' : '' ?>
+                       class="ace ace-switch ace-switch-5"/>
+                <span class="lbl"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="ruleName" class="col-sm-1 control-label"></label>
+            <div class="col-sm-10">
+                开启政治敏感词:
+                <input id="enable_law" type="checkbox" <?php echo $setting['enable_law'] == 1 ? 'checked' : '' ?>
+                       class="ace ace-switch ace-switch-5"/>
+                <span class="lbl"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="ruleName" class="col-sm-1 control-label">屏蔽规则:</label>
+            <div class="col-sm-10">
+                <input type="radio" value="1" name="rule"
+                       class="ace rule" <?php echo $setting['rule'] == 1 ? 'checked' : '' ?> />
+                <span class="lbl">匹配到的所有敏感词均以 “<b class="green">等量</b>” 的 <b class="red" style="font-size: 18px">“ *
+                        ”</b> 替换；<b
+                        class="blue">例如:垃圾
+                        替换后为 <span style="font-size: 18px" class="red">“ ** ”</span></b></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="ruleName" class="col-sm-1 control-label"></label>
+            <div class="col-sm-10">
+                <input type="radio" <?php echo $setting['rule'] == 2 ? 'checked' : '' ?> value="2" name="rule"
+                       class="ace rule"/>
+                <span class="lbl">匹配到的所有敏感词均以 “<b class="purple">固定</b>” 的 <b class="red" style="font-size: 18px">“ *
+                        ”</b> 替换；<b
+                        class="blue">例如:垃圾，共产党，五四青年 替换后都为 <span style="font-size: 18px" class="red">“ *** ”</span> </b></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="ruleName" class="col-sm-1 control-label"></label>
+            <div class="col-sm-10">
+                <input type="radio" <?php echo $setting['rule'] == 3 ? 'checked' : '' ?> value="3" name="rule"
+                       class="ace rule"/>
+                <span class="lbl">匹配到的所有敏感词均以 “<b class="purple">不固定</b>” 的 <b class="red" style="font-size: 18px">“ *
+                        ”</b> 替换；一到两个字时替换成等额的<b class="red" style="font-size: 18px">“ *
+                        ”</b>，超过时前后两个字不变中间为等额的<b class="red" style="font-size: 18px">“ *
+                        ”</b>；<b
+                        class="blue">例如:垃圾，共产党，五四青年 替换后分别为 <span style="font-size: 18px" class="red">“ ** ”，“ 共*党 ”，“ 五**年 ”</span>
+                    </b></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="ruleName" class="col-sm-1 control-label"></label>
+            <div class="col-sm-10">
+                <input type="radio" <?php echo $setting['rule'] == 4 ? 'checked' : '' ?> value="4" name="rule"
+                       class="ace rule"/>
+                <span class="lbl">匹配到的所有敏感词均以 “<b class="purple">不固定</b>” 的 <b class="red" style="font-size: 18px">“ *
+                        ”</b> 替换；一个字时替换成<b class="red" style="font-size: 18px">“ *
+                        ”</b>，超过时第一个字不变,“ <span class="blue bold">超出的部分</span> ” 为等额的<b class="red"
+                                                                                        style="font-size: 18px">“ *
+                        ”</b>；<b
+                        class="blue">例如:屌，傻屌，共产党，五四青年 替换后分别为 <span style="font-size: 18px" class="red">“ * ”,“ 傻* ”，“ 共** ”，“ 五*** ”</span>
+                    </b></span>
+            </div>
+        </div>
+        <div class="form-group" style="border-top: 1px dotted #e4e4e4;margin-top: 10px;padding-top: 10px">
+            <label for="ruleName" class="col-sm-1 control-label"></label>
+
+            <div class="col-sm-10">
+                <button type="button" class="btn btn-primary" data-original="" id="sureBtn">确定</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+<script>
+    seajs.use('app/panel/panel.base', function (api) {
+        $("#sureBtn").on('click', function () {
+            var data = {
+                enable: 0,
+                enable_normal: 0,
+                enable_law: 0,
+                rule: 0
+            };
+            if (($("#enable").is(":checked"))) {
+                data.enable = 1;
+            }
+            if (($("#enable_normal").is(":checked"))) {
+                data.enable_normal = 1;
+            }
+            if (($("#enable_law").is(":checked"))) {
+                data.enable_law = 1;
+            }
+            data.rule = $(".rule:checked").val();
+            api.requestApi('/api/site/setSensitive', {data:data}, function (res) {
+                if (res.result == 1) {
+                    tip.showTip('ok', "设置成功", 1000, function () {
+                        window.location.reload();
+                    })
+                }
+            })
+        })
+    })
+</script>

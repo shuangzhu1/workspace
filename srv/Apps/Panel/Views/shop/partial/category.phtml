@@ -1,0 +1,37 @@
+<?php $color = ['item-orange','item-red','item-green','item-blue','item-pink','item-purple','item-black','item-grey','item-brown','item-default']; ?>
+<ol class="dd-list">
+    <?php foreach( $categorys as $category) :?>
+        <li style="cursor:pointer;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+            class="dd-item <?php if( $category['pid'] != 0 ) echo $color[$category['pid'] % 10];else echo $color[$category['id'] % 10]; ?>"
+            data-id="{{category['id']}}"
+            data-name="{{category['name']}}"
+            data-pid="{{category['pid']}}"
+            data-desc="{{category['desc']}}">
+            <div class="dd-handle" >
+
+
+                <div class="left category-title">
+                    <span>{{category['name']}}</span>
+                </div>
+                <div class="left category-desc" style="margin-left:10px;color:#aaa;font-weight:normal;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;max-width:70%">
+                    <span>{{category['desc']}}</span>
+
+                </div>
+                <div class="pull-right action-buttons">
+                    <a class="blue" href="javascript:;">
+                        <i class="fa fa-pencil bigger-130 editBtn"></i>
+                    </a>
+                    <?php if( !isset($category['children']) || count($category['children']) === 0) {?>
+                        <a class="red" href="javascript:;">
+                            <i class="fa fa-trash bigger-130 delBtn"></i>
+                        </a>
+                    <?php } ?>
+                </div>
+            </div>
+            <?php
+            if(isset($category['children']) && count($category['children']) !== 0)
+                $this->partial('shop/partial/category',['categorys' => $category['children']]);
+            ?>
+        </li>
+    <?php endforeach; ?>
+</ol>

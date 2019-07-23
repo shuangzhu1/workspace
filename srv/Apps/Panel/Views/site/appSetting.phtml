@@ -1,0 +1,292 @@
+<div class="page-header">
+    <h1>
+        <i class="fa fa-gear"></i> App设置
+        <small>
+
+        </small>
+    </h1>
+</div>
+<style>
+    .form-group {
+        min-height: 30px;
+        overflow: hidden;
+    }
+
+    .form-group .control-label {
+        text-align: right;
+    }
+
+    .form-group select {
+        margin: 0;
+    }
+</style>
+<main class="tab-content" style="border:none; ">
+    <section id="home" class="tab-pane in active">
+        <div class="form-group">
+            <label for="name" class="col-sm-2 control-label">展示版本信息</label>
+
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                         <label>
+                             <input type="radio" name="version" class="ace version"
+                                    value="1" <?php if ($info['version'] == 1) { ?>
+                                 checked
+                             <?php } ?>>
+                             <span class="lbl"> <b>是</b></span>
+                         </label>
+                <label>
+                    <input type="radio" name="version" class="ace version"
+                           value="0" <?php if ($info['version'] == 0) { ?>
+                        checked
+                    <?php } ?>>
+                    <span class="lbl"> <b>否</b></span>
+                </label>
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+
+        <div class="form-group" style="display: none">
+            <label for="logo" class="col-sm-2 control-label">展示红包/钱包功能</label>
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                         <label>
+                             <input type="radio" name="wallet" class="ace wallet"
+                                    value="1" <?php if ($info['wallet'] == 1) { ?>
+                                 checked
+                             <?php } ?>>
+                             <span class="lbl"> <b>是</b></span>
+                         </label>
+                <label>
+                    <input type="radio" name="wallet" class="ace wallet" value="0" <?php if ($info['wallet'] == 0) { ?>
+                        checked
+                    <?php } ?>>
+                    <span class="lbl"> <b>否</b></span>
+                </label>
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="logo" class="col-sm-2 control-label">展示视频问答红包功能</label>
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                         <label>
+                             <input type="radio" name="video_red_package" class="ace video_red_package"
+                                    value="1" <?php if ($info['video_red_package'] == 1) { ?>
+                                 checked
+                             <?php } ?>>
+                             <span class="lbl"> <b>是</b></span>
+                         </label>
+                <label>
+                    <input type="radio" name="video_red_package" class="ace video_red_package"
+                           value="0" <?php if ($info['video_red_package'] == 0) { ?>
+                        checked
+                    <?php } ?>>
+                    <span class="lbl"> <b>否</b></span>
+                </label>
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="logo" class="col-sm-2 control-label">展示打赏功能</label>
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                         <label>
+                             <input type="radio" name="reward" class="ace reward"
+                                    value="1" <?php if ($info['reward'] == 1) { ?>
+                                 checked
+                             <?php } ?>>
+                             <span class="lbl"> <b>是</b></span>
+                         </label>
+                <label>
+                    <input type="radio" name="reward" class="ace reward" value="0" <?php if ($info['reward'] == 0) { ?>
+                        checked
+                    <?php } ?>>
+                    <span class="lbl"> <b>否</b></span>
+                </label>
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="logo" class="col-sm-2 control-label">展示技能服务</label>
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                         <label>
+                             <input type="radio" name="skill" class="ace skill"
+                                    value="1" <?php if ($info['skill'] == 1) { ?>
+                                 checked
+                             <?php } ?>>
+                             <span class="lbl"> <b>是</b></span>
+                         </label>
+                <label>
+                    <input type="radio" name="skill" class="ace skill" value="0" <?php if ($info['skill'] == 0) { ?>
+                        checked
+                    <?php } ?>>
+                    <span class="lbl"> <b>否</b></span>
+                </label>
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="logo" class="col-sm-2 control-label">开启红包君推广功能</label>
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                         <label>
+                             <input type="radio" name="package_promote" class="ace package_promote"
+                                    value="1" <?php if ($info['package_promote'] == 1) { ?>
+                                 checked
+                             <?php } ?>>
+                             <span class="lbl"> <b>是</b></span>
+                         </label>
+                <label>
+                    <input type="radio" name="package_promote" class="ace package_promote"
+                           value="0" <?php if ($info['package_promote'] == 0) { ?>
+                        checked
+                    <?php } ?>>
+                    <span class="lbl"> <b>否</b></span>
+                </label>
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="logo" class="col-sm-2 control-label">开启VIP功能</label>
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                         <label>
+                             <input type="radio" name="vip" class="ace vip"
+                                    value="1" <?php if ($info['vip'] == 1) { ?>
+                                 checked
+                             <?php } ?>>
+                             <span class="lbl"> <b>是</b></span>
+                         </label>
+                <label>
+                    <input type="radio" name="vip" class="ace vip"
+                           value="0" <?php if ($info['vip'] == 0) { ?>
+                        checked
+                    <?php } ?>>
+                    <span class="lbl"> <b>否</b></span>
+                </label>
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="logo" class="col-sm-2 control-label">开启私密房间功能</label>
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                         <label>
+                             <input type="radio" name="private_room" class="ace private_room"
+                                    value="1" <?php if ($info['private_room'] == 1) { ?>
+                                 checked
+                             <?php } ?>>
+                             <span class="lbl"> <b>是</b></span>
+                         </label>
+                <label>
+                    <input type="radio" name="private_room" class="ace private_room"
+                           value="0" <?php if ($info['private_room'] == 0) { ?>
+                        checked
+                    <?php } ?>>
+                    <span class="lbl"> <b>否</b></span>
+                </label>
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="logo" class="col-sm-2 control-label">开启H5小游戏列表</label>
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                         <label>
+                             <input type="radio" name="h5_game" class="ace h5_game"
+                                    value="1" <?php if ($info['h5_game'] == 1) { ?>
+                                 checked
+                             <?php } ?>>
+                             <span class="lbl"> <b>是</b></span>
+                         </label>
+                <label>
+                    <input type="radio" name="h5_game" class="ace h5_game"
+                           value="0" <?php if ($info['h5_game'] == 0) { ?>
+                        checked
+                    <?php } ?>>
+                    <span class="lbl"> <b>否</b></span>
+                </label>
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="logo" class="col-sm-2 control-label">开启礼物收益入口</label>
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                         <label>
+                             <input type="radio" name="gift_income" class="ace gift_income"
+                                    value="1" <?php if ($info['gift_income'] == 1) { ?>
+                                 checked
+                             <?php } ?>>
+                             <span class="lbl"> <b>是</b></span>
+                         </label>
+                <label>
+                    <input type="radio" name="gift_income" class="ace gift_income"
+                           value="0" <?php if ($info['gift_income'] == 0) { ?>
+                        checked
+                    <?php } ?>>
+                    <span class="lbl"> <b>否</b></span>
+                </label>
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="name" class="col-sm-1 control-label"></label>
+
+            <div class="col-sm-10" style="padding: 0 0 0 30px;">
+                <button type="submit" class="btn btn-primary btn-large btnSave" name="btn-base">
+                    <i class="fa fa-paper-plane"></i>立即保存
+                </button>
+            </div>
+        </div>
+    </section>
+
+</main>
+<script>
+    seajs.use('app/panel/panel.base', function (api) {
+        $(".btnSave").on('click', function () {
+            var version = $(".version:checked").val();
+            var wallet = $(".wallet:checked").val();
+            var reward = $(".reward:checked").val();
+            var skill = $(".skill:checked").val();
+            var package_promote = $(".package_promote:checked").val();
+
+            var video_red_package = $(".video_red_package:checked").val();
+            var vip = $(".vip:checked").val();
+            var private_room = $(".private_room:checked").val();
+            var h5_game = $(".h5_game:checked").val();
+            var gift_income = $(".gift_income:checked").val();
+
+            var data = {
+                version: version,
+                wallet: wallet,
+                reward: reward,
+                skill: skill,
+                package_promote: package_promote,
+                video_red_package: video_red_package,
+                vip: vip,
+                private_room: private_room,
+                h5_game: h5_game,
+                gift_income: gift_income
+            };
+            api.requestApi('/api/site/appSetting', data, function (res) {
+                if (res.result == 1) {
+                    tip.showTip("ok", '保存成功', 1000);
+                }
+            })
+
+        })
+    });
+
+</script>

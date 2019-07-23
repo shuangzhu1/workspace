@@ -1,0 +1,79 @@
+<link rel="stylesheet" href="/static/panel/css/badge.css">
+<style>
+    .listData .data-item td {
+        border: none;
+        line-height: 30px;
+    }
+
+    .listData .data-item td:first-child {
+        border-left: 1px solid #e4e4e4;
+    }
+
+    .listData .data-item td:last-child {
+        border-right: 1px solid #e4e4e4;
+    }
+</style>
+<form action="javascript:;" method="get" style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px;">
+    &nbsp;<label for="name">时间:</label>
+    <input type="text" id="start" value="<?php echo date('Y-m-d', strtotime('-8 days')) ?>" placeholder="开始时间"
+           name="start"
+           data-date-format="yyyy-mm-dd"/>
+    - <input type="text" id="end" value="<?php echo date('Y-m-d', strtotime('-2 days')) ?>" placeholder="结束时间"
+             name="end"
+             data-date-format="yyyy-mm-dd"/>
+    <input type="submit" class="btn btn-primary btn-sm btnSearch" value="搜索">
+</form>
+<table class="list">
+    <thead>
+    <tr class="head">
+        <th style="width: 100px">注册时间</th>
+        <th style="width: 100px;">新增用户</th>
+        <th style="" colspan="9">留存率</th>
+    </tr>
+    </thead>
+    <tbody class="listData">
+    <tr>
+        <td colspan="17" style="height: 100px;line-height: 100px" class="center">
+            <img
+                style="width: 40px" src="/srv/static/panel/images/admin/loading2.gif">
+        </td>
+    </tr>
+    </tbody>
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <div class="pageBar"></div>
+        </td>
+    </tr>
+</table>
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script>
+    $(function () {
+        seajs.use('/srv/static/panel/js/app/panel/stat/panel.retainUser.js', function (api) {
+            api.page({'start': $("#start").val(), 'end': $("#end").val()});
+        });
+        $('#start').datetimepicker({
+            lang: "ch",
+            step: 5,
+            format: "Y-m-d",
+            maxDate: 0,
+            timepicker: false,
+            allowBlank: true,
+            onChangeDateTime: function () {
+            }
+        });
+        $('#end').datetimepicker({
+            lang: "ch",
+            step: 5,
+            format: "Y-m-d",
+            maxDate: 0,
+            timepicker: false,
+            allowBlank: true,
+            onChangeDateTime: function () {
+            }
+        });
+    });
+
+
+</script>

@@ -1,0 +1,130 @@
+<?php
+$gender = array(
+    '0' => '保密',
+    '1' => '男',
+    '2' => '女',
+);
+$status = array(
+    '0' => '永久封号',
+    '1' => '正常',
+    '2' => '待解封',
+);
+?>
+<style>
+    .item_0 {
+        background-color: #e4e4e4
+    }
+
+    thead tr th {
+        height: 50px;
+    }
+
+
+</style>
+<div class="page-header">
+    <h1><i class="fa fa-th-list"></i> <?php echo "【" . $uid . "】的好友列表" ?>
+        <span class="pull-right">
+          <!--  <span class="btn-group">-->
+              <a class="btn btn-primary btn-sm newTarget"
+                 data-title="关注列表"
+                 data-id="attention"
+                 href="javascript:;"
+                 data-href="/panel/contact/followers?user_id=<?php echo $uid ?>">
+                  关注列表
+              </a>
+             <a class="btn btn-success btn-sm newTarget"
+                data-title="粉丝列表"
+                data-id="fans"
+                href="javascript:;"
+                data-href="/panel/contact/fans?user_id=<?php echo $uid ?>">
+                 粉丝列表
+             </a>
+               <a class="btn btn-purple btn-sm newTarget"
+                  data-title="黑名单列表"
+                  data-id="blacklist"
+                  href="javascript:;"
+                  data-href="/panel/contact/blacklist?user_id=<?php echo $uid ?>">
+                   黑名单列表
+               </a>
+            <!--            </span>
+            -->        </span>
+    </h1>
+    <!-- /.col-lg-12 -->
+</div>
+<form action="" method="get" style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px;">
+    <label for="name">关键字</label>
+    <input name="key" type="text" id="key" placeholder="用户昵称/好友备注/用户ID" value="<?php echo $key; ?>">
+    &nbsp;
+    <input type="hidden" name='user_id' value="<?php echo $uid ?>">
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+</form>
+<table class="list listData">
+    <thead>
+    <tr class="head">
+        <th style="width: 80px;">会员ID</th>
+        <!--        <th>批量</th>
+        -->
+        <th style="width: 60px;">头像</th>
+        <th style="width: 150px;">昵称</th>
+        <th style="width: 120px;">真实姓名</th>
+        <th style="width: 100px;">备注</th>
+        <th style="width: 60px;">性别</th>
+        <th style="width: 150px;">成为好友时间</th>
+        <th style="width: 100px;">是否星标</th>
+        <th style="width: 120px;">查看TA的动态</th>
+        <th style="width: 120px;">查看我的动态</th>
+
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php
+    if ($list) {
+        foreach ($list as $k => $item) {
+            ?>
+            <tr class="item " data-id="<?php echo $item['user_info']['user_id']; ?>">
+                <th class="name"><?php echo $item['user_info']['user_id']; ?></th>
+                <td><a href="<?php echo $item['user_info']['avatar']; ?>" data-lightbox="roadtrip"><img
+                            src="<?php echo $item['user_info']['avatar']; ?>?x-oss-process=image/resize,m_fill,h_160,w_160"
+                            style="width: 40px; height: 40px;"/></a></td>
+                <td><?php echo $item['user_info']['username']; ?></td>
+                <td><?php echo $item['user_info']['true_name']; ?></td>
+
+
+                <td><?php echo $item['personal_setting'] && $item['personal_setting']['mark'] ? $item['personal_setting']['mark'] : ''; ?></td>
+
+                <td><?php echo isset($gender[$item['user_info']['sex']]) ? $gender[$item['user_info']['sex']] : "保密"; ?></td>
+                <td><?php echo date('Y-m-d H:i', $item['created']) ?></td>
+                <td><?php echo (($item['contact_member']['is_star'] == 1)) ? '是' : '否'; ?></td>
+                <td><?php echo (($item['personal_setting'] && $item['personal_setting']['scan_his_discuss'] == 1) || !$item['personal_setting']) ? '是' : '否'; ?></td>
+                <td><?php echo (($item['personal_setting'] && $item['personal_setting']['scan_my_discuss'] == 1) || !$item['personal_setting']) ? '是' : '否'; ?></td>
+
+                <td>
+                    <a class="newTarget"
+                       data-title="用户详情"
+                       data-id="user"
+                       href="javascript:;"
+                       data-href="/panel/users/detail/?user_id=<?php echo $item['user_id']; ?>"
+                    >用户详情</a> |
+                </td>
+            </tr>
+        <?php } ?>
+
+        <tr class="showpage">
+            <th class="name">分页</th>
+            <td colspan="16" id="dataTables-example_paginate">
+
+                <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+            </td>
+        </tr>
+        <?php
+    } else {
+        ?>
+        <tr class="even gradeC">
+            <td colspan="16">
+                <p class="noData">没有用户数据</p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+</table>

@@ -1,0 +1,189 @@
+<style>
+    .mark.mark-active0 {
+        background: #999;
+    }
+
+    .mark.mark-active1 {
+        background: #269e3b;
+    }
+
+    .mark.mark-1 {
+        background: #c9302c;
+    }
+
+    .mark.mark-2 {
+        background: goldenrod;
+    }
+
+    .mark.mark-3 {
+        background: #8187ff;
+    }
+
+    .mark.mark-4 {
+        background: #bfa5ff;
+    }
+
+    .mark.mark-5 {
+        background: #5bc0de;
+    }
+</style>
+<div class="page-header">
+    <h1>
+        后台账号管理
+        <small>
+            <i class="icon-double-angle-right"></i>
+            账号列表
+        </small>
+        <span class="right">
+            <a href="javascript:;" class="btn btn-success btn-sm addBtn">添加账号</a>
+        </span>
+    </h1>
+</div>
+<script>
+    seajs.use('app/panel/account/account.admin', function (api) {
+        api.del()
+        api.saveAdmin()
+    });
+</script>
+<table id="article-list" class=' list'>
+    <tr class="head">
+        <th style='width:36px'>ID</th>
+        <th style='width:80px;'>登陆账号</th>
+        <th style='width:120px'>用户名称</th>
+        <th style='width:120px'>用户角色</th>
+        <th style='width:80px'>账号状态</th>
+        <th style='width:60px'>登陆次数</th>
+        <th style='width:140px'>最近登陆</th>
+        <th>操作</th>
+    </tr>
+    <?php if ($list) { ?>
+        <tbody class="listData">
+        <?php
+        foreach ($list as $item) {
+            ?>
+            <tr class="item" data-id="<?php echo $item['id']; ?>">
+                <th class="name">
+                    <?php echo $item['id']; ?>
+                </th>
+                <td>
+                    <?php echo $item['account']; ?>
+                </td>
+                <td>
+                    <?php echo $item['name']; ?>
+                </td>
+                <td>
+                    <span class="mark mark-<?php echo $item['level']; ?>">
+                        <?php echo \Components\Auth\RoleManager::$_role_map[$item['level']]; ?>
+                    </span>
+                </td>
+                <td>
+                    <span class="mark mark-active<?php echo $item['active']; ?>">
+                        <?php echo $item['active'] == 1 ? "已激活" : "已禁用"; ?>
+                    </span>
+                </td>
+                <td>
+                    <?php echo $item['login_times']; ?>
+                </td>
+                <td>
+                    <?php echo date("Y-m-d H:i:s", $item['last_login']); ?>
+                </td>
+                <td>
+                    <a href="javascript:;" class="miBtn upBtn"
+                       data-id="<?php echo $item['id']; ?>"
+                       data-level="<?php echo $item['level']; ?>"
+                       data-account="<?php echo $item['account']; ?>"
+                       data-name="<?php echo $item['name']; ?>"
+                       data-active="<?php echo $item['active']; ?>"
+                        >
+                        修改
+                    </a>
+                    <?php
+                    if ($admin->id != $item['id']) {
+                        ?>
+                        <a href="javascript:;" class="miBtn delBtn" data-id="<?php echo $item['id']; ?>">
+                            删除
+                        </a>
+                    <?php } ?>
+                </td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    <?php } else { ?>
+        暂无数据
+    <?php } ?>
+</table>
+
+<main class="popup-wrap" id="optionPopup">
+    <section class="popup-widget" id="optionWidget">
+        <header class="popup-head">后台管理员<span class="popup-close">x</span></header>
+        <main class="popup-content">
+            <div class="field set-field">
+                <label for="" class="field-label">登陆账号：</label>
+                <input type="text" class="account" value="">
+                <span class="help-inline"><i class="red">*</i> (用于登陆,6-16位字母数字下线)</span>
+            </div>
+
+            <div class="field set-field">
+                <label for="" class="field-label">用户姓名：</label>
+                <input type="text" class="name" value="">
+                <span class="help-inline"></span>
+            </div>
+
+            <div class="field set-field">
+                <label for="" class="field-label">用户密码：</label>
+                <input type="text" class="password" value="">
+                <span class="help-inline">(为空则不修改[新建用户时必填])</span>
+            </div>
+
+            <div class="field set-field">
+                <label for="" class="field-label">用户角色：</label>
+                <select name="" id="" class="role">
+                    <option value="">请选择</option>
+                    <?php foreach (\Components\Auth\RoleManager::$_role_map as $k => $v) {
+                        ?>
+                        <option value="<?php echo $k; ?>">
+                            <?php echo $v; ?>
+                        </option>
+                    <?php } ?>
+                </select>
+                <i class="red">*</i>
+            </div>
+
+            <div class="field set-field">
+                <label for="" class="field-label">是否激活：</label>
+                <label>
+                    <input type="radio" name="active" class="ace active" value="1" checked>
+                    <span class="lbl"> <b>是</b></span>
+                </label>
+                <label>
+                    <input type="radio" name="active" class="ace active" value="0">
+                    <span class="lbl"> <b>否</b></span>
+                </label>
+                <span class="help-inline"><i class="red">*</i>(激活后账号才能使用)</span>
+            </div>
+
+            <div class="field res-area">
+                <input type="hidden" value="" class="res-val"/>
+                <input class="btn btn-sm btn-success res-btn" type="button" value="确认"
+                       data-cid="<?php echo intval($this->request->get('cid')); ?>"/>
+                <span class="help-inline"></span>
+            </div>
+        </main>
+    </section>
+</main>
+<style>
+    #optionWidget {
+        width: 500px;
+        margin-left: -250px;
+        top: 50px;
+    }
+
+    .option-title {
+        font-size: 13px;
+        background: #FEFCEF;
+        text-align: center;
+        padding: 8px;
+        color: #333;
+        border: 1px solid #DEEFFB;
+    }
+</style>

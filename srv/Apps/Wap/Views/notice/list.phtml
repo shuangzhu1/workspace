@@ -1,0 +1,127 @@
+<style>
+    body{
+        background-color: #f0f0f5;
+    }
+    .items{
+        position:absolute;
+        width:100%;
+        padding-bottom:30px;
+    }
+    .items .item:before{
+        position: absolute;
+        display: block;
+        content: "";
+        top: 0;
+        bottom: 0;
+        left: 30px;
+        width: 1px;
+        max-width: 3px;
+        background-color: #ccc;
+    }
+    .items .item {
+        width:100%;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+    }
+    .items .divider {
+        margin-top:30px;
+        left:30px;
+        position:relative;
+    }
+    .items  .point{
+        box-sizing:border-box;
+        border-radius:50%;
+        width:16px;
+        height:16px;
+        border:8px solid orange;
+        box-shadow:0 0 10px orange;
+        z-index:999;
+        position: relative;
+        left:-8px;
+        top:3px;
+    }
+    .items  .date{
+        font-size:15px;
+        color:#7b7b7b;
+    }
+    .items .item .brief{
+        border-radius: 10px;
+        background-color:#ffffff;
+        height:186px;
+        width:310px;
+        right:-45px;
+        position: relative;
+        margin-top:20px;
+    }
+    .items .item .brief .title{
+        font-size:15px;
+        color:#333333;
+        font-weight:bold;
+        width:90%;
+        margin-left:auto;
+        margin-right:auto;
+        padding-top:15px;
+    }
+    .items .item .brief .content{
+        border-radius:3px;
+        background-color:#f8f8f8;
+        height:83px;
+        width:90%;
+        margin:12px auto;
+        padding:15px;
+        font-size: 14px;
+        color:#747474;
+        font-weight:400;
+    }
+    .items .item .brief .hr{
+        height:0;
+        border-top:1px solid #eee;
+        width:90%;
+        margin:10px auto;
+     }
+    .items .item .read{
+        width:90%;
+        margin:10px auto;color:#369ae7;
+        font-weight:500;
+        font-size:14px;
+    }
+</style>
+
+<div>
+    <?php if( $list ) {?>
+    <div class="items" >
+        <?php foreach ($list as $k => $v) :?>
+            <span class="divider" >
+                    <span class="point"></span>
+                    <span class="date"><?php echo $k; ?></span>
+            </span>
+            <?php foreach ($v as $item) :?>
+                <div style="height:0;border-top:1px solid #ccc;width:100px;position:relative;left:30px;top:60px"></div>
+                <div class="item" data-link="<?php echo $item['link'] ?>">
+                    <div class="brief">
+                        <div class="title"><?php echo $item['title'] ?></div>
+                        <div class="content">
+                            <?php echo $item['content'] ?>
+                        </div>
+                        <div class="hr"></div>
+                        <div class="read" >阅读全文</div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+    </div>
+    <!--暂无公告-->
+    <?php }else{ ?>
+        <div style="width:100%;text-align:center;margin:100px auto;">
+            <img src="/static/wap/images/no_notice.png" alt="" style="width:150px;height:150px;">
+            <div style="color:#4f4f4f;font-size:16px;">暂无公告</div>
+        </div>
+    <?php } ?>
+</div>
+
+<script>
+    $('.item').on('click',function () {
+        var link = $(this).data('link');
+        window.location.href = "<?php echo \Services\Site\MaterialManager::$urlPrefix ?>"+ link;
+    });
+</script>

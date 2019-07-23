@@ -1,0 +1,215 @@
+<style>
+    #loadWrap {
+        position: absolute;
+        top: 300px;
+        left: 50%;
+        width: 150px;
+        height: 40px;
+        margin-left: -60px;
+        border: 1px solid #e4e4e4;
+        z-index: 1000;
+        background: #fff;
+        border-radius: 5px;
+        overflow: hidden;
+        padding: 10px 5px;
+        display: none;
+    }
+
+    ul {
+        margin: 0;
+    }
+
+    legend {
+        border-bottom: none;
+        margin-bottom: 10px;
+        font-size: 18px;;
+    }
+
+    #float_handle {
+        width: auto;
+        display: none;
+        height: auto;
+        position: absolute;
+        border-radius: 5px;
+        border: 1px solid #e4e4e4;
+        background: #fff;
+        padding: 2px 0;
+        line-height: 26px;
+        overflow: hidden;
+    }
+
+    #float_handle p {
+        padding: 0 10px;
+    }
+
+    #float_handle p:hover {
+        cursor: pointer;
+        background: #f4f4f4;
+
+    }
+</style>
+
+<link rel="stylesheet" type="text/css" href="/static/panel/css/log.css"/>
+<div style="position: relative">
+    <div class="tabs" style="height: auto;">
+        选择目录
+        <?php
+        foreach ($tabs as $v) {
+            ?>
+            <a href="javascript:;" data-id="<?php echo $v ?>"
+               class="tab <?php echo ($tab == $v) ? 'active' : ''; ?>"><?php echo $v ?></a>
+        <?php } ?>
+        <span class="btn btn-primary btn-sm right btnFull"><i class="fa fa-expand"></i>全屏显示</span>
+    </div>
+
+    <section class="tree-panel">
+        <ul>
+            <?php
+            if ($folders) {
+                foreach ($folders as $item) {
+                    ?>
+                    <li class="folder" data-path="<?php echo $item['path']; ?>">
+                        <fieldset>
+                            <legend>
+                                <a href="javascript:;" class="getSubBtn" data-path="<?php echo $item['path']; ?>">
+                                    <i class="fa <?php echo "fa-folder" ?>"></i>
+                                    <span class="name"><?php echo $item['name']; ?></span>
+                                </a>
+                            </legend>
+                        </fieldset>
+                        <ul class="sub-files" data-path="<?php echo $item['path']; ?>">
+
+                        </ul>
+                    </li>
+                <?php }
+            } ?>
+        </ul>
+    </section>
+    <section class="read-area" id="readArea" data-path="">
+
+    </section>
+    <div id="loadWrap">
+        <img src="/srv/static/panel/images/admin/loading.gif">
+        正在加载数据..
+    </div>
+    <div id="float_handle">
+        <p class="clearScreen">清屏</p>
+    </div>
+    <section class="tool-panel">
+        <span class="total_line_count"></span>
+        <ul style="border-top: 1px dotted #565656; padding: 5px 0; border-bottom: 1px dotted #565656;margin: 0">
+            <li class="start_line"><input type="text" class="start" name="start_line"/>-<input type="text" class="end"
+                                                                                               name="end_line"/></li>
+            <li><span class="btn btn-sm btn-primary lineFilterBtn"
+                      style="background-color: #4e5355;color: #bbb;border-color: #5f6161;">确定</span>
+            </li>
+        </ul>
+        <span class="">取末尾行 </span>
+        <ul style="border-top: 1px dotted #565656; padding: 5px 0; border-bottom: 1px dotted #565656;margin: 0">
+            <li><input type="text" class="end_row" name="end_row"/>&nbsp;<span
+                    class="btn btn-primary btn-sm EndLineFilter"
+                    style="background-color: #4e5355;color: #bbb;border-color: #5f6161;">确定</span>
+            </li>
+            <li>
+            </li>
+        </ul>
+    </section>
+    <script>
+        seajs.use('app/panel/log/panel.log.js?v=1.1.11', function (e) {
+            e.log();
+        });
+        window.onresize = function () {
+            if (!checkFull()) {
+                exitFullAct();
+            }
+        };
+        function checkFull() {
+            var isFull = document.fullscreenEnabled || window.fullScreen || document.webkitIsFullScreen || document.msFullscreenEnabled;
+            //to fix : false || undefined == undefined
+            if (isFull === undefined) isFull = false;
+            return isFull;
+        }
+        $(".btnFull").on('click', function () {
+            if (!$(this).hasClass('full')) {
+                fullAct();
+                $(this).addClass("full");
+            } else {
+                exitFullAct();
+                exitFull();
+            }
+        });
+        function fullAct() {
+            var window_height = $(window).height();
+            var height = window_height;
+            $(".page-content").css({'margin-top': '0', 'min-height': height});
+            $("#readArea").css({'height': height});
+            $(".tree-panel").css({'height': height});
+            $(".tool-panel").css({'height': height});
+            $(".btnFull").html("<i class='fa fa-compress'></i> 退出全屏");
+            requestFullScreen(document.getElementsByClassName("page-content")[0]);
+        }
+        function exitFullAct() {
+            $(".page-content").css({'margin-top': '100px', 'min-height': '640px'});
+            $("#readArea").css({'height': '640px'});
+            $(".tree-panel").css({'height': '640px'});
+            $(".tool-panel").css({'height': '640px'});
+            $(".btnFull").html("<i class='fa fa-expand'></i> 全屏显示").removeClass("full");
+        }
+        function requestFullScreen(element) {
+            // 判断各种浏览器，找到正确的方法
+            var requestMethod = element.requestFullScreen || //W3C
+                element.webkitRequestFullScreen ||  //Chrome等
+                element.mozRequestFullScreen || //FireFox
+                element.msRequestFullScreen; //IE11
+            if (requestMethod) {
+                requestMethod.call(element);
+            }
+            else if (typeof window.ActiveXObject !== "undefined") {//for Internet Explorer
+                var wscript = new ActiveXObject("WScript.Shell");
+                if (wscript !== null) {
+                    wscript.SendKeys("{F11}");
+                }
+            }
+
+        }
+        function exitFull() {
+            // 判断各种浏览器，找到正确的方法
+            var exitMethod = document.exitFullscreen || //W3C
+                document.mozCancelFullScreen ||  //Chrome等
+                document.webkitExitFullscreen || //FireFox
+                document.webkitExitFullscreen; //IE11
+            if (exitMethod) {
+                exitMethod.call(document);
+            }
+            else if (typeof window.ActiveXObject !== "undefined") {//for Internet Explorer
+                var wscript = new ActiveXObject("WScript.Shell");
+                if (wscript !== null) {
+                    wscript.SendKeys("{F11}");
+                }
+            }
+        }
+        $("#readArea").on('mousedown', function (e) {
+            //右键
+            if (e.button == 2) {
+                var left = e.pageX - 190;
+                var top = e.pageY - 55 - $(this).position().top;
+                $("#float_handle").css({
+                    'left': left,
+                    'top': top
+                }).show();
+                e.stopPropagation();
+                e.preventDefault();
+            } else {
+                if ($("#float_handle").is(":visible")) {
+                    $("#float_handle").hide()
+                }
+            }
+        }).on('contextmenu', function () {
+            return false;
+        });
+       /* $(document).on('mousedown', function (e) {
+            $("#float_handle").hide()
+        })*/
+
+    </script>
+</div>

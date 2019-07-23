@@ -1,0 +1,178 @@
+<form action="javascript:;" method="get"
+      style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px; line-height: 50px;">
+    <label for="name">视频ID</label>
+    <input name="video_id" type="text" id="video_id" placeholder="视频ID"
+           value="<?php echo $video_id ? $video_id : ''; ?>">
+    <label for="name">关键字</label>
+    <input name="key" type="text" id="key" placeholder="用户昵称/手机/用户ID" value="<?php echo $key; ?>">
+    <!--  &nbsp;
+    <label for="name">状态</label>
+    <select name="status">
+        <option value="-1" <?php /*echo $status == -1 ? 'selected' : ''; */ ?>>全部</option>
+        <option value="0" <?php /*echo $status == 0 ? 'selected' : ''; */ ?>>关闭</option>
+        <option value="1" <?php /*echo $status == 1 ? 'selected' : ''; */ ?>>正常</option>
+    </select>-->
+    &nbsp;<label for="name">最后发布时间:</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd"/>
+    - <input type="text" id="end" value="<?php echo $end; ?>" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd"/>
+    <input type="submit" class="btn btn-primary btn-sm btnSearch" value="搜索" style="padding:2px 9px">
+</form>
+<div class="tabs">
+    <a data-key="is_recommend" data-val="0" href="javascript:;"
+       class="tab active">未推荐</a>
+    <a data-key="is_recommend" data-val="1" href="javascript:;"
+       class="tab ">已推荐</a>
+
+    <a data-key="status" data-val="0" href="javascript:;"
+       class="tab " >已屏蔽</a>
+
+    <!--<a data-key="status" data-val="0" href="javascript:;"
+       class="tab">屏蔽视频</a>-->
+    <!--  <a data-key="type" data-val="2" href="javascript:;"
+       class="tab <?php /*echo $type == 2 ? 'active' : '' */ ?>">机器人</a>-->
+</div>
+
+<table id="article-list" class='list'>
+    <thead>
+    <tr class="head">
+        <th style='width:50px'>批量</th>
+        <th style='width:50px'>ID</th>
+        <th style='width:200px'>发布人</th>
+        <th style="width: 170px">视频缩略图</th>
+        <th>话题</th>
+        <th>问答视频</th>
+        <th style="width: 100px" class="arrow" data-sort="" data-order="like_cnt">
+            <span class="text">点赞数</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span></th>
+        <th style="width: 100px" class="arrow" data-sort="" data-order="view_cnt">
+            <span class="text">播放量</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span></th>
+        <th style="width: 100px" class="arrow" data-sort="" data-order="comment_cnt">
+            <span class="text">评论数</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span></th>
+        <th style="width: 100px" class="arrow" data-sort="" data-order="reward_cnt">
+            <span class="text">打赏数</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span></th>
+        <th style="width: 100px" class="arrow" data-sort="" data-order="report_cnt">
+            <span class="text">举报数</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span></th>
+        <th style='width:70px' class="center">
+            状态
+        </th>
+        <th style='width:150px'>发布时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody class="listData">
+    <tr>
+        <td colspan="17" style="height: 100px;line-height: 100px" class="center">
+            <img style="width: 40px" src="/srv/static/panel/images/admin/loading2.gif">
+        </td>
+    </tr>
+    </tbody>
+    <tr class="">
+        <th class="name">操作</th>
+        <td colspan="17">
+            [ <a href="javascript:;" class="selectAll">全选</a> ]
+            [ <a href="javascript:;" class="selectNone">全不选</a> ]
+            [ <a href="javascript:;" class="selectInvert">反选</a> ]
+            <a class="btn-light btnBatchRemove" href="javascript:;">批量屏蔽</a>
+            <a class="btn-light btnBatchRec" style="display: none;" href="javascript:;">批量恢复</a>
+
+        </td>
+    </tr>
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <div class="pageBar"></div>
+        </td>
+    </tr>
+</table>
+<div class="modal fade" id="videoPlay">
+    <div class="modal-dialog" style="background: #fff;margin-top: 50px;border-radius: 2px">
+        <div class="modal-body" style="overflow:hidden;">
+            <video id="my-video" class="video-js" controls  width="740" height="400"
+                   poster="" data-setup="{}" src="">
+                <!--<source  type="video/mp4">
+                <source  type="video/webm">
+                <source  type="video/ogg">-->
+                <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a web browser that
+                    <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>
+            </video>
+        </div>
+    </div>
+</div>
+<script>
+
+</script>
+<link href="/static/panel/js/tools/video/video-js.min.css" rel="stylesheet">
+<script src="/static/panel/js/tools/video/video.min.js"></script>
+
+<script>
+    seajs.use('app/panel/video/video.js?v=1.9', function (api) {
+        var opt = {video_id: "<?php echo $video_id ?>"};
+        api.Video(opt);
+    });
+
+
+</script>
+
+<link rel="stylesheet" href="/srv/static/panel/css/lightbox/lightbox.css"/>
+
+<script src="/srv/static/panel/js/jquery/lightbox/lightbox.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        lightbox.option({
+            albumLabel: '%1/%2',
+            'resizeDuration': 200,
+            "fadeDuration": 0,
+            "imageFadeDuration": 0
+        });
+    })
+
+</script>
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script>
+    $('#start').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+    $('#end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+
+
+</script>

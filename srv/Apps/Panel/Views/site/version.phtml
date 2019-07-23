@@ -1,0 +1,283 @@
+<link rel="stylesheet" type="text/css" href="/static/panel/js/tools/datetimepicker/bootstrap-datetimepicker.min.css">
+<form action="" method="get" style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px;">
+    <label for="name">客户端类型:</label>
+    <select name="os">
+        <option value="-1" <?php echo $os == '-1' ? 'selected' : ''; ?>>全部</option>
+        <option value="android" <?php echo $os == 'android' ? 'selected' : ''; ?>>安卓</option>
+        <option value="ios" <?php echo $os == 'ios' ? 'selected' : ''; ?>>IOS</option>
+    </select>
+    &nbsp;<label for="name">发布时间:</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd"/>
+    - <input type="text" id="end" value="<?php echo $end; ?>" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd"/>
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+    <div class="right"><span class="btn btn-primary btn-sm btnAdd"><i class="fa fa-plus"></i> 发布版本</span></div>
+</form>
+<table id="article-list" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style='width:80px'>版本号</th>
+        <th style='width:50px'>平台</th>
+        <th style='width:120px'>向下兼容版本</th>
+        <!--    <th style='width:300px'>审核</th>-->
+        <th style='width:200px'>添加时间</th>
+        <th style='width:200px'>发布时间</th>
+        <th style='width:200px'>安装包md5</th>
+        <th>详情</th>
+        <th style="width:60px">操作</th>
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <td class="center"><?php echo $item['version']; ?></td>
+            <td class="center"><?php echo $item['os']; ?></td>
+            <td><?php echo $item['limit_version'] == '' ? '全部' : $item['limit_version']; ?></td>
+            <td>
+                <?php echo date('Y-m-d H:i:s', $item['created']); ?>
+            </td>
+            <td>
+                <?php if( $item['release_at'] != 0 )echo date('Y-m-d H:i:s', $item['release_at']);else echo ''; ?>
+            </td>
+            <td>
+                <?php echo $item['file_md5']; ?>
+            </td>
+            <td>
+                <?php echo $item['detail']; ?>
+            </td>
+
+            <td class="center">
+                <?php if( $item['status'] == 0 ) {?>
+                    <span class="btn btn-success btn-sm release " data-action="release" data-id="{{item['id']}}">
+                    <i class="fa fa-vimeo" aria-hidden="true"></i>
+                     发布
+                </span>
+                <?php  }elseif( $item['status'] == 1 ){?>
+                    <span class="btn  btn-sm unrelease " data-action="unrelease" data-id="{{item['id']}}" title="取消该版本发布">
+                    <i class="fa fa-vimeo" aria-hidden="true"></i>
+                     撤回
+                </span>
+                <?php } ?>
+
+                <span class="btn btn-primary btn-sm editBtn"
+                      data-id="<?php echo $item['id'] ?>"
+                      data-version="<?php echo $item['version'] ?>"
+                      data-os="<?php echo $item['os'] ?>"
+                      data-limit_version="<?php echo $item['limit_version'] ?>"
+                      data-detail="<?php echo $item['detail'] ?>"
+                ><i class="fa fa-edit"></i> 编辑</span>
+                <span class="btn btn-danger btn-sm removeBtn" data-id="<?php echo $item['id'] ?>"><i
+                        class="fa fa-remove"></i> 删除</span>
+            </td>
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="17">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <tr class="showpage">
+        <th class="name">操作</th>
+        <td colspan="17">
+            <span class="btn btn-inverse btn-xs btnAdd"><i class="fa fa-plus"></i> 发布新版本</span>
+            <!-- <span>
+                 [ <a href="javascript:;" class="selectAll">全选</a> ]
+                 [ <a href="javascript:;" class="selectNone">全不选</a> ]
+                 [ <a href="javascript:;" class="selectInvert">反选</a> ]
+                 <a class="btn-light delAllSelected" href="javascript:;">批量屏蔽</a>
+             </span>-->
+        </td>
+    </tr>
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+        </td>
+    </tr>
+</table>
+<div class="modal fade" id="versionModal">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">发布版本</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">版本类型:</label>
+
+                        <div class="col-sm-10">
+                            <select name="os" id="os" class="form-control ">
+                                <option value="android">安卓</option>
+                                <option value="ios">IOS</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">版本号:</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="version"
+                                   placeholder="版本号：1.2.3">
+                        </div>
+                    </div>
+
+                    <div class="form-group limit_version_android">
+                        <label for="ruleName" class="col-sm-2 control-label">向下兼容:</label>
+
+                        <div class="col-sm-10">
+                            <!--  <input type="limit_version" class="form-control" id="limit_version_android"
+                                     placeholder="兼容所有不用填写" value="">-->
+                            <select name="limit_version" id="limit_version_android" class="form-control ">
+                                <option value="">所有</option>
+                                <option value="-1">当前版本</option>
+                                <?php if ($version_list && $version_list['android']) {
+                                    $version = explode(',', $version_list['android']['version']);
+                                    rsort($version);
+                                    ?>
+                                    <?php foreach ($version as $k => $item) { ?>
+                                        <option
+                                            value="<?php echo $item; ?>"><?php echo $item; ?></option>
+                                    <?php } ?>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group limit_version_ios" style="display: none;">
+                        <label for="ruleName" class="col-sm-2 control-label">向下兼容:</label>
+
+                        <div class="col-sm-10">
+                            <select name="limit_version" id="limit_version_ios" class="form-control ">
+                                <option value="">所有</option>
+                                <option value="-1">当前版本</option>
+
+                                <?php if ($version_list && $version_list['ios']) {
+                                    $version = explode(',', $version_list['ios']['version']);
+                                    rsort($version);
+                                    ?>
+                                    <?php foreach ($version as $k => $item) { ?>
+                                        <option
+                                            value="<?php echo $item; ?>"><?php echo $item; ?></option>
+                                    <?php } ?>
+                                <?php } ?>
+                            </select>
+                            <!-- <input type="limit_version" class="form-control" id="limit_version_ios"
+                                    placeholder="1.0.1,兼容所有不用填写" value="">-->
+                            <input type="hidden" id="version_list"
+                                   value="<?php echo base64_encode(json_encode($version_list, JSON_UNESCAPED_UNICODE)); ?>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">版本详情:</label>
+                        <div class="col-sm-10">
+                                <textarea id="detail" placeholder="修复了哪些bug,增加了哪些功能" class=" form-control"
+                                          style="word-wrap: break-word; resize: horizontal; height: 150px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">选择文件:</label>
+                        <div class="col-sm-10">
+                            <div class="field set-field fileSection">
+
+            <span class="upload-widget" id="upload-widget" data-unique="2"><a
+                    class="btn btn-sm btn-success browse-button"
+                    href="javascript:;">选择apk文件</a></span>
+                                <input type="hidden" id="file_ID" value=""/>
+                                <input type="hidden" id="file_MD5" value=""/>
+                                <span id="fileUrl" style="height: 32px;"></span>
+                                <span class="help-inline red">IOS无需选择</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <p class="alert alert-danger error-widget" style="display: none"><i class="fa fa-warning"></i>
+                        <span class="error_msg"></span>
+                    </p>
+                    <p class="alert alert-success success-widget" style="display: none"><i class="fa fa-check"></i>
+                        <span class="success_msg"></span>
+                    </p>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary sureBtn" data-status=0 >保存</button>
+                <button type="button" class="btn btn-success sureBtn" data-status=1>保存并发布</button>
+                <input type="hidden" name="version_id">
+                <input type="hidden" name="status">
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="msgModal">
+    <div class="modal-dialog" style="width: 300px;">
+        <div class="modal-content" style="padding: 10px; border-radius: 5px !important;">
+            <p><img src="/srv/static/panel/images/admin/loading.gif"/>&nbsp;正在提交数据 <span class="percent"></span></p>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/srv/static/panel/js/tools/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<!--<div id="ossfile">你的浏览器不支持flash,Silverlight或者HTML5！</div>
+<div id="container">
+    <a id="selectfiles" href="javascript:void(0);" class='btn'>选择文件</a>
+    <a id="postfiles" href="javascript:void(0);" class='btn'>开始上传</a>
+</div>-->
+
+<!--<pre id="console"></pre>-->
+<script>
+   /* seajs.use('app/app.oss.js?v=1.0', function (api) {
+        api.upload();
+    });*/
+
+</script>
+
+<script>
+    seajs.use('app/panel/site/version.js?v=1.0.4.13', function (api) {
+        api.edit();
+    });
+
+    // var receive_start_val;
+    /*  $('#start').datetimepicker({
+     language: 'zh-CN',
+     weekStart: 1,
+     todayBtn: 1,
+     autoclose: 1,
+     todayHighlight: 1,
+     startView: 2,
+     forceParse: 0,
+     minView: 'month',
+     endDate: new Date()
+     }).on('changeDate', function (ev) {
+     receive_start_val = ev.date.valueOf();
+     });
+     $('#end').datetimepicker({
+     language: 'zh-CN',
+     weekStart: 1,
+     todayBtn: 1,
+     autoclose: 1,
+     todayHighlight: 1,
+     startView: 2,
+     forceParse: 0,
+     minView: 'month',
+     endDate: new Date()
+     }).on('changeDate', function (ev) {
+     receive_start_val = ev.date.valueOf();
+     });*/
+
+</script>

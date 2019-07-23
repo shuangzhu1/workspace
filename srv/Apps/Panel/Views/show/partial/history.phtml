@@ -1,0 +1,39 @@
+<table id="article-list" class='list' style="width: 96%;margin:0 auto 50px;">
+    <thead>
+    <tr>
+        <th class="center">期数</th>
+        <th class="center">参与总人数</th>
+        <th class="center">我的排名</th>
+        <th class="center">我的得分</th>
+        <th class="center">统计时间</th>
+      <!--  <th>操作</th>-->
+    </tr>
+    </thead>
+    <tbody class="listData">
+    <?php if ($list) { ?>
+        <?php foreach ($list as $item) { ?>
+            <tr>
+                <td class="center"><?php echo $item['issue'] ?>
+                </td>
+                <td class="center"><?php echo $item['user_count'] ?></td>
+                <td  class="center"><?php echo $item['rank'] ?></td>
+                <td class="center"><?php echo $item['score'] ?></td>
+                <td class="center"><?php echo date('Y-m-d H:i', $item['created']) ?></td>
+
+               <!-- <td class="center"><a href="/panel/group/detail/<?php /*echo $item['id'] */?>" target="_blank">查看详情</a></td>-->
+            </tr>
+        <?php } ?>
+    <?php } else { ?>
+        <tr>
+            <td colspan='12'><span class="left">暂无数据</span></td>
+        </tr>
+    <?php } ?>
+
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="5">
+            <div class="pageBar"><?php echo $bar ?></div>
+        </td>
+    </tr>
+    </tbody>
+</table>

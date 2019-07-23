@@ -1,0 +1,112 @@
+<?php foreach ($list as $k => $item) {
+    $media_type = strtoupper($item['media_type']);
+
+    ?>
+    <li class="item item_msg" data-id="<?php echo $item['gid'] ?>" data-name="<?php echo $item['group_info']['name'] ?>"
+        data-cid="<?php echo $item['gid'] ?>" data-gid_id="<?php echo $item['gid'] ?>">
+        <div
+            data-title="会话详情"
+            data-id="converstation_<?php echo $item['gid'] ?>"
+            style="display: block;overflow: hidden">
+            <a class="newTarget" href="javascript:;" data-title="群聊详情-<?php echo $item['gid'] ?>"
+               data-href="/panel/group/detail/<?php echo $item['gid']; ?>"><img class="avatar"
+                                                                                src="<?php echo $item['group_info']['avatar'] ?>?x-oss-process=image/resize,m_fill,h_160,w_160"
+                                                                                style="min-height: 50px;min-width: 50px"
+                /></a>
+            <div class="info">
+                <p class="username"><?php echo $item['group_info']['name'] ?> </p>
+
+                <p class="msg"><?php
+                    if ($media_type == \Services\Im\NotifyManager::msgType_PICTURE) {
+                        $body = json_decode($item['body'], true);
+                        $extend_json = json_decode($item['extend_json'], true);
+                        if ($extend_json) {
+                            if ($extend_json['extend_type'] == \Services\Im\ImManager::TYPE_THIRD_LOCATION_IMAGE) {
+                                ?>
+                                【第三方平台分享】
+                            <?php } else { ?>
+                                【图片信息】
+                            <?php } ?>
+                        <?php } else { ?>
+                            【图片信息】
+                        <?php } ?>
+                    <?php } else if ($media_type == \Services\Im\NotifyManager::msgType_AUDIO) { ?>
+                        【语音信息】
+                    <?php } else if ($media_type == \Services\Im\NotifyManager::msgType_VIDEO) { ?>
+                        【视频信息】
+                    <?php } else if ($media_type == \Services\Im\NotifyManager::msgType_VIDEO) { ?>
+                        【视频信息】
+                    <?php } else if ($media_type == \Services\Im\NotifyManager::msgType_CUSTOM) {
+                        $body = json_decode($item['body'], true);
+                        $extend_type = $body['extend_type'];
+                        ?>
+                        <?php if ($extend_type == \Services\Im\ImManager::TYPE_NEW_RED_BAG) { ?>
+                            【红包信息】
+                        <?php } else if ($extend_type == \Services\Im\ImManager::TYPE_ACTIVITY_SHARE) { ?>
+                            【活动分享】
+                        <?php } else if ($extend_type == \Services\Im\ImManager::TYPE_USER) { ?>
+                            【用户名片】
+                        <?php } else if ($extend_type == \Services\Im\ImManager::TYPE_SYSTEM_GIF) { ?>
+                            <?php if ($body['type'] == 1) { ?>
+                                <img class="sys_gif"
+                                     src="http://circleimg.klgwl.com/gif/2/<?php echo $body['msg'] ?>.gif"/>
+                            <?php } else if ($body['type'] == 2 || $body['type'] == 0) { ?>
+                                <img class="sys_gif"
+                                     src="http://circleimg.klgwl.com/gif/1/<?php echo $body['msg'] ?>.gif"/>
+                            <?php } else if ($body['type'] == 3) {
+                                $body['extend'] = is_array($body['extend']) ? $body['extend'] : json_decode($body['extend'], true);
+                                $body['extend']['dicecount'] = explode(',', $body['extend']['dicecount']);
+                                foreach ($body['extend']['dicecount'] as $img) {
+                                    ?>
+                                    <img class="sys_gif"
+                                         src="/static/panel/images/chat_gif/shaizi/<?php echo $img ?>.png"/>
+                                <?php } ?>
+                            <?php } else if ($body['type'] == 4) {
+                                $body['extend'] = is_array($body['extend']) ? $body['extend'] : json_decode($body['extend'], true);
+                                $body['extend']['pokercount'] = explode(',', $body['extend']['pokercount']);
+                                foreach ($body['extend']['pokercount'] as $img) {
+                                    ?>
+                                    <img class="sys_gif"
+                                         src="/static/panel/images/chat_gif/puke/<?php echo $img ?>.png"/>
+                                <?php } ?>
+                            <?php } else if ($body['type'] == 5) { ?>
+                                <?php if ($body['msg'] == 'dice_large') { ?>
+                                    <img class="sys_gif"
+                                         src="/static/panel/images/chat_gif/compare/large.png"/>
+                                <?php } else { ?>
+                                    <img class="sys_gif"
+                                         src="/static/panel/images/chat_gif/compare/small.png"/>
+                                <?php } ?>
+
+
+                            <?php } else { ?>
+
+                            <?php } ?>
+                        <?php } else if ($extend_type == \Services\Im\ImManager::TYPE_DYNAMIC) { ?>
+                            【分享动态】
+                        <?php } else if ($extend_type == \Services\Im\ImManager::TYPE_NEW_RED_BAG) { ?>
+                            【红包信息】
+                        <?php } else { ?>
+                            【其他信息】
+                        <?php } ?>
+                    <?php } else { ?>
+                        <?php echo $item['body'] ?>
+                    <?php } ?>
+
+                </p>
+
+            </div>
+            <div class="right_content">
+                <p class="time"><?php echo \Util\Time::formatHumaneTime(strlen($item['send_time']) == 10 ? $item['send_time'] : $item['send_time'] / 1000) ?></span></p>
+
+                <!--  <p class="unread_count">
+                    <?php /*if ($unread_count) { */ ?>
+                        <span class="count">
+                                <?php /*echo $unread_count < 100 ? $unread_count : '99+' */ ?>
+                            </span>
+                    <?php /*} */ ?>
+                </p>-->
+            </div>
+        </div>
+    </li>
+<?php } ?>

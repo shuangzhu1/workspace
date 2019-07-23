@@ -1,0 +1,229 @@
+<style>
+    .voice {
+        cursor: pointer;
+    }
+
+    .list .dur {
+        float: left;
+        margin-right: 5px;;
+    }
+
+    .list .voice {
+        cursor: pointer;
+        float: left;
+    }
+
+    .idle {
+        display: inline-block;
+        padding: 5px 10px;
+        border: 1px solid #e4e4e4;
+        border-radius: 5px;
+        margin-bottom: 2px;
+        background-color: #f2f2f2;
+        color: #444;
+    }
+    .anchorBL{display: none}
+</style>
+<form action="javascript:;" method="get" style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px; ">
+    <label for="name">用户id</label>
+    <input name="uid" type="text" id="uid" placeholder="用户id"
+           value="<?php echo $uid ? $uid : ''; ?>">
+    <input type="submit" class="btn btn-primary btn-sm btnSearch" value="搜索">
+</form>
+<div class="tabs">
+    <a href="<?php echo $this->uri->setUrl(['type' => 0], ['p']); ?>"
+       class="tab <?php echo $type == 0 ? 'active' : ''; ?>">待审核</a>
+    <a href="<?php echo $this->uri->setUrl(['type' => 1], ['p']); ?>"
+       class="tab <?php echo $type == 1 ? 'active' : ''; ?>">已通过</a>
+    <a href="<?php echo $this->uri->setUrl(['type' => 2], ['p']); ?>"
+       class="tab <?php echo $type == 2 ? 'active' : ''; ?>">已拒绝</a>
+</div>
+<table id="article-list" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style='width:36px'>ID</th>
+        <th style='width:200px'>申请人</th>
+        <th style='width:150px'>申请时间</th>
+        <th style='width:150px'>申请技能</th>
+        <th style='width:150px'>地理位置</th>
+
+        <th style='width:200px'>技能描述</th>
+        <th style='width:150px'>申请金额</th>
+        <th style='width:150px'>图片</th>
+        <!-- <th style='width:250px'>证据</th>-->
+        <th style='width:80px'>音频</th>
+        <th style='width:150px'>处理时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        $apply = json_decode($item['apply'], true);
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <th class='name'><?php echo $item['id']; ?></th>
+            <td class="">
+                <a href="javascript:;"
+                   data-title="用户详情"
+                   class="newTarget"
+                   data-href="/panel/users/detail/?user_id=<?php echo $item['uid']; ?>"><?php echo $users[$item['uid']]['username'] . '【' . $item['uid'] . '】' ?></a>
+            </td>
+            <td>
+                <?php echo $item['created'] ? date('Y-m-d H:i', $item['created']) : '暂未记录'; ?>
+            </td>
+            <td>
+                <?php echo $apply['title'] ?>
+            </td>
+            <td>
+                <a href="javascript:;" class="lngLat" data-lng="<?php echo $apply['lng'] ?>" data-lat="<?php echo $apply['lat'] ?>">查看地理位置</a>
+            </td>
+            <td>
+                <span
+                    title="<?php echo $apply['desc'] ?>"><?php echo mb_strlen($apply['desc']) > 20 ? mb_substr($apply['desc'], 0, 20) . '..' : $apply['desc'] ?></span>
+            </td>
+
+            <td>
+                <?php echo $apply['money'] >= 100 ? ($apply['money'] / 100) . '元' : ($apply['money'] . '分') ?>
+            </td>
+            <td>
+                <?php if ($apply['pictures']) { ?>
+                    <?php $images = explode(',', $apply['pictures']);
+                    foreach ($images as $i) {
+                        ?>
+                        <a href="<?php echo $i; ?>" data-lightbox="roadtrip<?php echo $item['id']; ?>"><img
+                                src="<?php echo $i; ?>?x-oss-process=image/resize,m_fill,h_160,w_160"
+                                style="width: 40px; height: 40px;"/></a>
+                    <?php } ?>
+                <?php } ?>
+            </td>
+            <td>
+                <?php if ($apply['audio'] && strrpos($apply['audio'], 'audio')) {
+                    $time = explode('_t_', $apply['audio'])[1];
+                    $time = explode('.', $time)[0];
+                    ?>
+                    <span
+                        class="dur"><?php echo $time . 's' ?></span>
+                    <span class="voice" data-id="<?php echo $item['id'] ?>"
+                          data-src="<?php echo $apply['audio'] ?>"
+                          style="width: 16px;height: 16px;display:inline-block;background: url(/static/panel/images/admin/voice-left.png) no-repeat;"></span>
+                <?php } ?>
+            </td>
+            <td>
+                <?php if ($item['deal_time']) {
+                    echo date('Y-m-d H:i', $item['deal_time']);
+                    ?>
+                <?php } else { ?>
+                    <span class="badge badge-primary"><i class="fa fa-circle-o-notch fa-spin"></i> 待处理</span>
+                <?php } ?>
+                <?php if ($item['reason'] != '') { ?>
+                    <p><a href="javascript:;" class="tooltip-info" data-rel="tooltip"
+                          data-placement="top" data-original-title="'.$item['reason'].'">查看原因</a></p>
+                <?php } ?>
+
+            </td>
+            <td>
+                <!-- <a href="/panel/discuss/detail/<?php /*echo $item['id']; */ ?>" class="btn btn-minier btn-primary">查看详情</a>-->
+                <?php if ($item['deal_time'] == 0) { ?>
+                    <a href="JavaScript:;" data-id="<?php echo $item['id']; ?>"
+                       class="btn btn-success btn-sm   checkBtn">通过</a>
+                    <a href="JavaScript:;" data-id="<?php echo $item['id']; ?>"
+                       class="btn btn-danger btn-sm  failBtn">不通过</a>
+                <?php } ?>
+            </td>
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="17">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+        </td>
+    </tr>
+</table>
+<div class="modal fade" id="addressModal">
+    <div class="modal-dialog" style="width: 1000px;">
+        <div class="modal-content">
+         <!--   <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-music"></i> 申请位置</h4>
+            </div>-->
+            <div class="modal-body" style="overflow:hidden;position: relative">
+                <div id="mapWrap" style="width:100%;height: 500px;border: 1px solid #eee;"></div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div class="modal fade" id="checkModal">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">审核不通过</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <div>
+                    <!-- <label for="form-field-11">审核失败原因</label>-->
+
+                    <textarea id="reason" placeholder="请填写原因" class=" form-control"
+                              style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 100px;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" value="0" id="apply_id"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<audio src="" id="voice_box">
+
+</audio>
+<link rel="stylesheet" href="/srv/static/panel/css/lightbox/lightbox.css"/>
+
+<script src="/srv/static/panel/js/jquery/lightbox/lightbox.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        lightbox.option({
+            albumLabel: '%1/%2',
+            'resizeDuration': 200,
+            "fadeDuration":0,
+            "imageFadeDuration":0
+        });
+    })
+    $('[data-rel=tooltip]').tooltip();
+</script>
+<script src="/srv/static/panel/js/tools/Url.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=MWkGH8HcEfA5nbdkiYXp67VmxbgL4iGe"></script>
+
+<script type="text/javascript">
+
+    seajs.use('app/panel/rent/apply', function (api) {
+        api.apply();
+        api.lngLat()
+    });
+
+
+</script>

@@ -1,0 +1,172 @@
+<div class="page-header">
+    <h1>用户标签列表
+        <span class="pull-right">
+          <!--  <span class="btn-group">-->
+               <span class="btn btn-primary btn-sm btnAdd"><i class="fa fa-plus"></i> 添加标签</span>
+            <!--            </span>
+            -->        </span>
+    </h1>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="tabs">
+    <a data-id="1" href="<?php echo $this->uri->setUrl(['type' => 0], ['p']); ?>"
+       class="tab <?php echo $type == 0 ? 'active' : ''; ?>">全部</a>
+    <a data-id="1" href="<?php echo $this->uri->setUrl(['type' => 1], ['p']); ?>"
+       class="tab <?php echo $type == 1 ? 'active' : ''; ?>">自我描述</a>
+    <a data-id="2" href="<?php echo $this->uri->setUrl(['type' => 2], ['p']); ?>"
+       class="tab <?php echo $type == 2 ? 'active' : ''; ?>">爱好特长</a>
+</div>
+<table id="article-list" class='list' style="width: 800px">
+    <thead>
+    <tr class="head">
+        <!-- <th style='width:36px'>标签ID</th>-->
+        <th style='width:150px'>标签名称</th>
+        <th style='width:100px'>排序大小 <a href="javascript:;" class="fa fa-question-circle blue tooltip-info"
+                                        data-rel="tooltip"
+                                        data-placement="top" data-original-title="越小显示越靠前"></a></th>
+        <th style='width:150px'>状态</th>
+        <th style='width:150px'>所属分类</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <!-- <th class='name'><?php /*echo $item['id']; */ ?></th>-->
+            <th class='name'><?php echo $item['name']; ?></th>
+            <td>
+                <?php echo $item['sort_num'] ?>
+            </td>
+            <td><?php echo $item['enable'] == 1 ? '正常' : '禁用' ?></td>
+            <td>
+                <?php if ($item['extra'] == 1) { ?>
+                    <span
+                        class="badge badge-primary"><?php echo \Services\Discuss\TagManager::$user_tag_group[$item['extra']] ?></span>
+                <?php } else if ($item['extra'] == 2) { ?>
+                    <span
+                        class="badge badge-success"><?php echo \Services\Discuss\TagManager::$user_tag_group[$item['extra']] ?></span>
+                <?php } ?>
+            </td>
+            <td>
+                <a href="JavaScript:;"
+                   data-id="<?php echo $item['id']; ?>"
+                   data-name="<?php echo $item['name']; ?>"
+                   data-enable="<?php echo $item['enable']; ?>"
+                   data-sort_num="<?php echo $item['sort_num']; ?>"
+                   data-thumb="<?php echo $item['thumb']; ?>"
+                   data-extra="<?php echo $item['extra']; ?>"
+                   class="btn btn-primary btn-sm editBtn"><i class="fa fa-edit"></i> 编辑</a>
+                <?php if ($item['enable'] == 1) { ?>
+                    <a href="JavaScript:;" data-id="<?php echo $item['id']; ?>"
+                       class="btn btn-danger btn-sm lockBtn"><i class="fa fa-remove"></i> 禁用</a>
+                <?php } else { ?>
+                    <a href="JavaScript:;" data-id="<?php echo $item['id']; ?>"
+                       class="btn btn-purple btn-sm unLockBtn"><i class="fa fa-check"></i> 取消禁用</a>
+                <?php } ?>
+            </td>
+
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="9">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <!--  <tr class="showpage">
+          <th class="name">操作</th>
+          <td colspan="13">
+                  <span>
+                      [ <a href="javascript:;" class="selectAll">全选</a> ]
+                      [ <a href="javascript:;" class="selectNone">全不选</a> ]
+                      [ <a href="javascript:;" class="selectInvert">反选</a> ]
+                      <a class="btn-light delAllSelected" href="javascript:;">批量屏蔽</a>
+                  </span>
+          </td>
+      </tr>-->
+    <tr class="showpage">
+        <th class="name">操作</th>
+        <td colspan="13">
+            <span class="btn btn-xs btn-inverse btnAdd"><i class="fa fa fa-plus"></i> 添加标签</span>
+        </td>
+    </tr>
+</table>
+<div class="modal fade" id="tagModal">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">标签编辑</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">标签名称:</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name"
+                                   placeholder="标签名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">所属分类:</label>
+
+                        <div class="col-sm-10">
+                            <select name="extra" id="extra">
+                                <?php foreach (\Services\Discuss\TagManager::$user_tag_group as $k => $item) { ?>
+                                    <option value="<?php echo $k ?>"><?php echo $item ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">排序:</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="sort_num" placeholder="排序越小越靠前">
+                        </div>
+                    </div>
+                    <div class="form-group submit_yunpian">
+                        <label for="ruleName" class="col-sm-2 control-label">可用:</label>
+                        <div class="col-sm-10">
+                            <input id="enable" type="checkbox"
+                                   class="ace ace-switch ace-switch-5"/>
+                            <span class="lbl"></span>
+                        </div>
+
+                    </div>
+                    <p class="alert alert-danger error-widget" style="display: none"><i class="fa fa-warning"></i>
+                        <span class="error_msg"></span>
+                    </p>
+                    <p class="alert alert-success success-widget" style="display: none"><i class="fa fa-check"></i>
+                        <span class="success_msg"></span>
+                    </p>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <input type="hidden" value="0" id="tag_id"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-original="" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+    $('[data-rel=tooltip]').tooltip();
+    seajs.use('app/panel/site/tags.js?v=1.2.2', function (api) {
+        api.editUserTag();
+    });
+</script>

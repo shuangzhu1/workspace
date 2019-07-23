@@ -1,0 +1,164 @@
+<form action="javascript:;" method="get"
+      style="border: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px; border-radius: 5px;line-height: 50px;">
+    &nbsp;<label for="name">黄图分值:</label>
+    <input type="text" id="score_start" placeholder="0" name="score_start" style="width: 50px"
+    />
+    - <input type="text" id="score_end" placeholder="100" name="score_end" style="width: 50px"
+    />
+    &nbsp;<label for="name">鉴定时间:</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd"/>
+    - <input type="text" id="end" value="<?php echo $end; ?>" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd"/>
+    <input type="submit" class="btn btn-primary btn-sm SearchBtn" value="搜索">
+</form>
+<style>
+    .list {
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+    }
+
+    .list li {
+        border-radius: 2px 2px 0 0;
+        float: left;
+        width: 10%;
+        height: auto;
+        margin-left: 1.25%;
+        margin-bottom: 10px;
+        border: 1px solid #e4e4e4;
+        position: relative;
+    }
+
+    .list li .score {
+        width: 100%;
+        padding: 2px;
+        background-color: #e4e4e4;
+        text-align: center
+    }
+
+    .list li .handle_filter {
+        width: 100%;
+        height: 80px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background-color: #00a0c7;
+        opacity: 0.4;
+        filter: alpha(opacity=40);
+        -moz-opacity: 0.4;
+        display: none;
+    }
+
+    .handle_box {
+        position: absolute;
+        bottom: 22px;
+        left: 0;
+        width: 100%;
+        display: none;
+    }
+
+    .handle_box .handle_item {
+        margin-bottom: 3px;
+        width: 100%;
+        text-align: center;
+
+    }
+
+    .handle_box .handle_item .porn {
+        border: 1px solid #e4e4e4;
+        padding: 2px 8px;
+        display: inline-block;
+        background-color: #e4e4e4;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .handle_box .handle_item .not_porn {
+        border: 1px solid #e4e4e4;
+        padding: 2px 8px;
+        display: inline-block;
+        background-color: #e4e4e4;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .handle_box .handle_item .porn:hover, .handle_box .handle_item .not_porn:hover {
+        font-weight: bold;
+    }
+
+    .list li:hover {
+        border-color: #438EAC;
+    }
+
+    .list li:hover .chk {
+        display: inline-block;
+    }
+
+    .list li.checked {
+        border-color: #438EAC;
+    }
+
+    .list li .chk {
+        display: none;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+    }
+
+    .list li.checked .chk {
+        display: inline-block;
+    }
+
+    .list li:nth-child(9n+1) {
+        clear: left;
+        margin-left: 0;
+    }
+
+    .list li:first-child {
+        clear: none;
+        margin-left: 0;
+    }
+
+    .list li img {
+        width: 100%;
+        height: auto;
+        cursor: pointer;
+
+    }
+</style>
+<div style="height: auto;width: 100%;overflow: hidden">
+    <p style="background-color: #e4e4e4;padding: 10px">
+        <label class="inline">
+            <input type="checkbox" class="ace checkAll"/>
+            <span class="lbl"> 全选</span>
+        </label>
+        &nbsp;
+        <label class="inline"><a href="javascript:;" class="pornBtn">删除选中的图片</a></label>
+        &nbsp;
+        <label class="inline"><a href="javascript:;" class="notPornBtn">忽略选中的图片</a></label>
+    </p>
+    <ul class="list">
+        <li class="loading"
+            style="text-align: center;display:none;width: 100%;line-height: 100px;height: 100px;vertical-align: middle">
+            <img
+                style="width: 40px" src="/srv/static/panel/images/admin/loading2.gif"></li>
+    </ul>
+    <div class="pageBar"></div>
+</div>
+<p class="handle_filter">
+</p>
+<div class="handle_box" style="">
+    <p class="handle_item"><span class="porn"
+                                 style="">黄图并删除</span>
+    </p>
+    <p class="handle_item"><span class="not_porn"
+        >正常并忽略</span>
+    </p>
+</div>
+
+<script>
+    seajs.use('app/panel/system/imgCheck.js?v=1.0.0', function (api) {
+        api.init();
+    });
+</script>

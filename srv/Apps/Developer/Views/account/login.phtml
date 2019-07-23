@@ -1,0 +1,127 @@
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/canvas/css/normalize.css"/>
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/canvas/css/demo.css"/>
+<!--必要样式-->
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/canvas/css/component.css"/>
+<!--[if IE]>
+<script src="/srv/static/panel/css/canvas/js/html5.js"></script>
+<![endif]-->
+<style>
+    body {
+        background: #e4e4e4 !important;
+    }
+
+    section {
+        padding: 0;
+    }
+
+    .loginForm {
+        position: absolute;
+        background: #fff;
+        top: 50%;
+        left: 50%;
+        width: 340px;
+        height: auto;
+        overflow: hidden;
+        border-radius: 5px;
+        box-shadow: 1px;
+        margin-left: -170px;
+        margin-top: -200px;
+    }
+
+    .content_head {
+        width: 100%;
+        height: auto;
+        line-height: 50px;
+        background-color: #00a2ca;
+        color: #fff;
+        border-radius: 5px 5px 0 0
+    }
+
+    .content_body {
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        padding: 10px;
+    }
+
+    .content_body #account {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid #e4e4e4 !important;
+    }
+
+    .content_body #password {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 5px;
+        border: 1px solid #e4e4e4 !important;
+    }
+</style>
+<div class="demo-1">
+
+    <div class="content">
+        <div id="large-header" class="large-header">
+            <canvas id="demo-canvas"></canvas>
+            <!--  <div class="loginSide">
+                  <img src="/static/panel/images/admin/login_page_bg.jpg" alt="" style="border-radius:8px;"/>
+              </div>
+            <div>-->
+            <form class="loginForm form" action="javascript:;">
+                <div class="content_head">
+                    <p class="head formHead" style="text-align: center;padding: 5px;;">
+                        开发人员账号登陆
+                    </p>
+                </div>
+                <div class="content_body">
+
+                    <p class="field" style="margin-bottom: 20px;">
+
+                          <span class="block input-icon input-icon-right"><input type="text" name="account" id="account"
+                                                                                 class="form-control"
+                                                                                 placeholder="用户名或邮箱">
+                                 <i class="fa fa-user" style="line-height: 40px;"></i>
+	</span>
+
+
+                    </p>
+
+                    <p class="field">
+                  <span class="block input-icon input-icon-right">
+															<input type="password" name="password" id="password"
+                                                                   class="form-control"
+                                                                   placeholder="密码" data-tip="长度为6-16位">
+															<i class="fa fa-lock" style="line-height: 40px;"></i>
+														</span>
+                    </p>
+                    <hr style="border-style: dotted;"/>
+                    <p class="field center">
+                        <label for=""></label>
+                        <input class="btn btn-primary btn-sm loginBtn  " type="submit" value="登 录"
+                               style="margin-right: 5px;"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input class="btn btn-purple  btn-sm " type="reset" value="重 置"/>
+                    </p>
+                </div>
+
+            </form>
+
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<script>
+    seajs.use('app/panel/account/account.init', function (api) {
+        api.login();
+    });
+    /*  $(function () {
+     var offset = $(window).height() / 2 - $(".loginForm").height() / 2 - 10;
+     $(".loginForm").css({"margin-top": offset})
+     })*/
+</script>
+<script src="/srv/static/panel/css/canvas/js/TweenLite.min.js"></script>
+<script src="/srv/static/panel/css/canvas/js/EasePack.min.js"></script>
+<script src="/srv/static/panel/css/canvas/js/rAF.js"></script>
+<script src="/srv/static/panel/css/canvas/js/demo-1.js"></script>

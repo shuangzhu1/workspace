@@ -1,0 +1,124 @@
+<div class="page-header">
+    <h1>动态权重设置
+        <span class="pull-right">
+          <!--  <span class="btn-group">-->
+            <!--            </span>
+            -->        </span>
+    </h1>
+    <!-- /.col-lg-12 -->
+</div>
+<table id="article-list" class='list' style="width: 400px ">
+    <tr class="head">
+        <th style='width:150px'>规则名称</th>
+        <th style='width:80px'>权重大小 <a href="javascript:;" class="fa fa-question-circle blue tooltip-info"
+                                       data-rel="tooltip"
+                                       data-placement="top" data-original-title="越大所占比重越大"></a></th>
+    </tr>
+    <?php
+    if ($list) {
+    ?>
+    <tbody class="listData">
+    <?php
+    foreach ($list as $k => $item) {
+        ?>
+        <tr class="item" data-id="<?php echo $k; ?>">
+            <th class='name'><?php echo $item['name']; ?>【<?php echo $k; ?>】</th>
+            <td>
+                <span class="key_val"><?php echo $item['val'] ?></span>
+                <input style="display: none" class="val" type="text" name="<?php echo $k; ?>"
+                       value="<?php echo $item['val']; ?>"/>
+            </td>
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="9">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <!--  <tr class="showpage">
+          <th class="name">操作</th>
+          <td colspan="13">
+                  <span>
+                      [ <a href="javascript:;" class="selectAll">全选</a> ]
+                      [ <a href="javascript:;" class="selectNone">全不选</a> ]
+                      [ <a href="javascript:;" class="selectInvert">反选</a> ]
+                      <a class="btn-light delAllSelected" href="javascript:;">批量屏蔽</a>
+                  </span>
+          </td>
+      </tr>-->
+    <tr class="showpage">
+        <th class="name">操作</th>
+        <td colspan="13">
+            <a href="JavaScript:;" class="btn btn-primary btn-minier editBtn"><i class="fa fa-edit"></i> 编辑</a>
+            <a href="JavaScript:;" class="btn btn-primary btn-minier saveBtn" style="display: none;"><i
+                    class="fa fa-save"></i> 保存</a>
+
+        </td>
+    </tr>
+</table>
+</script>
+<script type="text/javascript">
+    $('[data-rel=tooltip]').tooltip();
+    seajs.use('app/panel/panel.base', function (api) {
+        $(".editBtn").on('click', function () {
+            $("input").show();
+            $(".key_val").hide();
+            $(".saveBtn").show();
+            $(".editBtn").hide();
+        });
+        $(".val").on('blur', function () {
+            if (isNaN($(this).val())) {
+                $(this).focus();
+            }
+
+
+        });
+        $(".saveBtn").on('click', function () {
+            var data = [];
+            $(".val").each(function () {
+                var key = $(this).attr('name');
+                var val = $(this).val();
+                data.push({key: key, val: val});
+            });
+            api.requestApi('/api/discuss/weight', {
+                data: data,
+            }, function (res) {
+                if (res.result == 1) {
+                    tip.showTip('ok', res.data, 1000);
+                    setTimeout(function () {
+                        window.location.reload()
+                    }, 1000);
+                } else {
+
+                }
+            });
+            /*   $(this).confirm("确定要保存吗?", {
+             ok: function () {
+             api.requestApi('/api/discuss/weight', {
+             data: data,
+             }, function (res) {
+             if (res.result == 1) {
+             tip.showTip('ok', res.data, 1000);
+             setTimeout(function () {
+             window.location.reload()
+             }, 1000);
+             } else {
+
+             }
+             });
+             },
+             cancel: function () {
+             return false;
+             }
+             });*/
+        })
+    })
+    ;
+</script>
+
+

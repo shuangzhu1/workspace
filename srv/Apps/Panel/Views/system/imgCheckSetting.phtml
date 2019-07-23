@@ -1,0 +1,170 @@
+<div class="page-header">
+    <h1>
+        <i class="fa fa-gear"></i> 鉴黄设置
+        <small>
+
+        </small>
+    </h1>
+</div>
+<style>
+    .form-group {
+        min-height: 30px;
+        overflow: hidden;
+    }
+
+    .form-group .control-label {
+        text-align: right;
+    }
+
+    .form-group select {
+        margin: 0;
+    }
+</style>
+<main class="tab-content" style="border:none; ">
+    <p class="alert alert-info"><i class="fa fa-tag"></i>
+        1.关闭鉴黄后 动态鉴黄和评论鉴黄将会失效<br/>
+        &nbsp; 2.超过<b class="red">“最低分值”</b>后将会自动鉴定为黄图<br/>
+        &nbsp; 3.<b class="red">“最低分值”</b>为空或者为0，则视所有系统鉴定为黄图分类的全部标记为黄图<br/>
+
+    </p>
+    <section id="home" class="tab-pane in active">
+        <div class="form-group">
+            <label for="name" class="col-sm-1 control-label">鉴黄:</label>
+
+            <div class="col-sm-10">
+                    <span class="col-sm-2">
+                         <label>
+                             <input type="radio" name="enable" class="ace enable"
+                                    value="1" <?php if ($setting['enable'] == 1) { ?>
+                                 checked
+                             <?php } ?>>
+                             <span class="lbl"> <b>开启</b></span>
+                         </label>
+                <label>
+                    <input type="radio" name="enable" class="ace enable"
+                           value="0" <?php if ($setting['enable'] == 0) { ?>
+                        checked
+                    <?php } ?>>
+                    <span class="lbl"> <b>关闭</b></span>
+                </label>
+                    </span>
+                <span class="help-block with-errors">  </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="logo" class="col-sm-1 control-label">动态鉴黄:</label>
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                         <label>
+                             <input type="radio" name="enable_discuss" class="ace enable_discuss"
+                                    value="1" <?php if ($setting['enable_discuss'] == 1) { ?>
+                                 checked
+                             <?php } ?>>
+                             <span class="lbl"> <b>开启</b></span>
+                         </label>
+                <label>
+                    <input type="radio" name="enable_discuss" class="ace enable_discuss"
+                           value="0" <?php if ($setting['enable_discuss'] == 0) { ?>
+                        checked
+                    <?php } ?>>
+                    <span class="lbl"> <b>关闭</b></span>
+                </label>
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="logo" class="col-sm-1 control-label">评论鉴黄:</label>
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                         <label>
+                             <input type="radio" name="enable_comment" class="ace enable_comment"
+                                    value="1" <?php if ($setting['enable_comment'] == 1) { ?>
+                                 checked
+                             <?php } ?>>
+                             <span class="lbl"> <b>开启</b></span>
+                         </label>
+                <label>
+                    <input type="radio" name="enable_comment" class="ace enable_comment"
+                           value="0" <?php if ($setting['enable_comment'] == 0) { ?>
+                        checked
+                    <?php } ?>>
+                    <span class="lbl"> <b>关闭</b></span>
+                </label>
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="logo" class="col-sm-1 control-label">头像(照片墙)鉴黄:</label>
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                         <label>
+                             <input type="radio" name="enable_avatar" class="ace enable_avatar"
+                                    value="1" <?php if ($setting['enable_avatar'] == 1) { ?>
+                                 checked
+                             <?php } ?>>
+                             <span class="lbl"> <b>开启</b></span>
+                         </label>
+                <label>
+                    <input type="radio" name="enable_avatar" class="ace enable_avatar"
+                           value="0" <?php if ($setting['enable_avatar'] == 0) { ?>
+                        checked
+                    <?php } ?>>
+                    <span class="lbl"> <b>关闭</b></span>
+                </label>
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="logo" class="col-sm-1 control-label">最低分值:</label>
+            <div class="col-sm-10">
+                    <span class="col-sm-2">
+                         <input type="text" id="score" name="score" value="<?php echo $setting['score'] ?>">
+                    </span>
+                <span class="help-block with-errors red">0-100之内</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="name" class="col-sm-1 control-label"></label>
+
+            <div class="col-sm-10" style="padding: 0 0 0 30px;">
+                <button type="submit" class="btn btn-primary btn-large btnSave" name="btn-base">
+                    <i class="fa fa-paper-plane"></i>立即保存
+                </button>
+            </div>
+        </div>
+    </section>
+
+</main>
+<script>
+    seajs.use('app/panel/panel.base', function (api) {
+        $(".btnSave").on('click', function () {
+            var enable = $(".enable:checked").val();
+            var enable_discuss = $(".enable_discuss:checked").val();
+            var enable_comment = $(".enable_comment:checked").val();
+            var enable_avatar = $(".enable_avatar:checked").val();
+
+            var score = $("#score").val();
+            if (score != '') {
+                if (isNaN(score) || (score > 100 || score < 0)) {
+                    tip.showTip("err", '无效的分值', 1000);
+                    return ;
+                }
+            }
+            var data = {enable: enable, enable_discuss: enable_discuss, enable_comment: enable_comment,enable_avatar:enable_avatar, score: score};
+            api.requestApi('/api/site/imgCheckSetting', data, function (res) {
+                if (res.result == 1) {
+                    tip.showTip("ok", '保存成功', 1000,function(){
+                        window.location.reload();
+                    });
+                }
+            })
+
+        })
+    });
+
+</script>

@@ -1,0 +1,44 @@
+[Tue, 23 Jul 19 10:45:49 +0800][ERROR] E:\xampp\htdocs\srv\Models\BaseModel.php #0 [internal function]: PDOStatement->execute()
+#1 [internal function]: Phalcon\Db\Adapter\Pdo->executePrepared(Object(PDOStatement), Array, Array)
+#2 E:\xampp\htdocs\srv\Models\BaseModel.php(205): Phalcon\Db\Adapter\Pdo->query('select *  from ...')
+#3 E:\xampp\htdocs\srv\Apps\Panel\Controllers\DiscussController.php(280): Models\BaseModel::findOne(Array)
+#4 [internal function]: Multiple\Panel\Controllers\DiscussController->detailAction('62853')
+#5 [internal function]: Phalcon\Dispatcher->callActionMethod(Object(Multiple\Panel\Controllers\DiscussController), 'detailAction', Array)
+#6 [internal function]: Phalcon\Dispatcher->dispatch()
+#7 E:\xampp\htdocs\srv\index.php(85): Phalcon\Mvc\Application->handle()
+#8 {main} 205行 SQLSTATE[HY000]: General error: 1449 The user specified as a definer ('klgwl'@'%') does not exist,数据：array (
+  '_url' => '/discuss/detail/62853',
+)
+[Tue, 23 Jul 19 10:45:49 +0800][ERROR] E:\xampp\htdocs\srv\Models\BaseModel.php #0 [internal function]: PDOStatement->execute()
+#1 [internal function]: Phalcon\Db\Adapter\Pdo->executePrepared(Object(PDOStatement), Array, Array)
+#2 E:\xampp\htdocs\srv\Models\BaseModel.php(205): Phalcon\Db\Adapter\Pdo->query('select *  from ...')
+#3 E:\xampp\htdocs\srv\Apps\Panel\Controllers\DiscussController.php(280): Models\BaseModel::findOne(Array)
+#4 [internal function]: Multiple\Panel\Controllers\DiscussController->detailAction('62853')
+#5 [internal function]: Phalcon\Dispatcher->callActionMethod(Object(Multiple\Panel\Controllers\DiscussController), 'detailAction', Array)
+#6 [internal function]: Phalcon\Dispatcher->dispatch()
+#7 E:\xampp\htdocs\srv\index.php(85): Phalcon\Mvc\Application->handle()
+#8 {main} 205行 SQLSTATE[HY000]: General error: 1449 The user specified as a definer ('klgwl'@'%') does not exist,数据：array (
+  '_url' => '/discuss/detail/62853',
+)
+[Tue, 23 Jul 19 10:47:32 +0800][ERROR] E:\xampp\htdocs\srv\Models\BaseModel.php #0 [internal function]: PDOStatement->execute()
+#1 [internal function]: Phalcon\Db\Adapter\Pdo->executePrepared(Object(PDOStatement), Array, Array)
+#2 E:\xampp\htdocs\srv\Models\BaseModel.php(205): Phalcon\Db\Adapter\Pdo->query('select *  from ...')
+#3 E:\xampp\htdocs\srv\Apps\Panel\Controllers\DiscussController.php(280): Models\BaseModel::findOne(Array)
+#4 [internal function]: Multiple\Panel\Controllers\DiscussController->detailAction('53548')
+#5 [internal function]: Phalcon\Dispatcher->callActionMethod(Object(Multiple\Panel\Controllers\DiscussController), 'detailAction', Array)
+#6 [internal function]: Phalcon\Dispatcher->dispatch()
+#7 E:\xampp\htdocs\srv\index.php(85): Phalcon\Mvc\Application->handle()
+#8 {main} 205行 SQLSTATE[HY000]: General error: 1449 The user specified as a definer ('klgwl'@'%') does not exist,数据：array (
+  '_url' => '/discuss/detail/53548',
+)
+[Tue, 23 Jul 19 10:47:32 +0800][ERROR] E:\xampp\htdocs\srv\Models\BaseModel.php #0 [internal function]: PDOStatement->execute()
+#1 [internal function]: Phalcon\Db\Adapter\Pdo->executePrepared(Object(PDOStatement), Array, Array)
+#2 E:\xampp\htdocs\srv\Models\BaseModel.php(205): Phalcon\Db\Adapter\Pdo->query('select *  from ...')
+#3 E:\xampp\htdocs\srv\Apps\Panel\Controllers\DiscussController.php(280): Models\BaseModel::findOne(Array)
+#4 [internal function]: Multiple\Panel\Controllers\DiscussController->detailAction('53548')
+#5 [internal function]: Phalcon\Dispatcher->callActionMethod(Object(Multiple\Panel\Controllers\DiscussController), 'detailAction', Array)
+#6 [internal function]: Phalcon\Dispatcher->dispatch()
+#7 E:\xampp\htdocs\srv\index.php(85): Phalcon\Mvc\Application->handle()
+#8 {main} 205行 SQLSTATE[HY000]: General error: 1449 The user specified as a definer ('klgwl'@'%') does not exist,数据：array (
+  '_url' => '/discuss/detail/53548',
+)

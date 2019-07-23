@@ -1,0 +1,35 @@
+<ul class="nav ace-nav">
+    <li class="light-blue">
+        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+
+            <span class="user-info">
+                <small>欢迎光临</small>
+                <?php echo $admin['name']; ?>
+            </span>
+
+            <i class="fa fa-caret-down"></i>
+        </a>
+
+        <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+            <li>
+                <a href="/developer/setting/password">
+                    <i class="fa fa-lock"></i>
+                    密码设置
+                </a>
+            </li>
+            <li>
+                <a href="/developer/setting/index">
+                    <i class="fa fa-user"></i>
+                    资料设置
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a href="/developer/account/logout">
+                    <i class="fa fa-sign-out"></i>
+                    退出
+                </a>
+            </li>
+        </ul>
+    </li>
+</ul>

@@ -1,0 +1,129 @@
+<style>
+    .line {
+        margin: 12px 0;
+        border: 1px solid #DEEFFB;
+        line-height: 36px;
+        font-size: 14px;
+        padding: 0 8px;
+        background: #FEFCEF;
+        color: #000;
+        font-family: 'Microsoft Yahei';
+    }
+
+    .func-list .module-func, .func-list .base-func {
+    }
+
+    .func-list .func {
+        width: 247px;
+        height: 80px;
+        float: left;
+        font-size: 12px;
+        line-height: 120%;
+        border: 1px solid #d0dfeb;
+        margin: 10px 10px 0 0;
+        background: #fff;
+        position: relative;
+        color: #999;
+        overflow: hidden;
+        box-shadow: 0 0px 3px rgba(188, 204, 214, 0.3);
+    }
+
+    .func-list .func dt {
+        width: 80px;
+        height: 80px;
+        float: left;
+        overflow: hidden;
+    }
+
+    .func-list .func dt img {
+        width: 78px;
+        height: 78px;
+        padding: 1px;
+    }
+
+    .func-list .func dd {
+        float: left;
+        width: 150px;
+        margin: 0 0 0 10px;
+    }
+
+    .func-list .func dd .name {
+        color: #000;
+        font-weight: normal;
+        font-size: 14px;
+        padding: 8px 0 4px;
+        margin: 0;
+    }
+
+    .func-list .func dd .price-line {
+        line-height: 20px;
+        color: #666;
+    }
+
+    .func-list .func.choosed {
+        border-color: #b5c3cd;
+    }
+
+    .func-list .func .checkIcon {
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 0;
+        background: #fff;
+        border: 1px solid #d0dfeb;
+        border-right: none;
+        border-top: none;
+        text-align: center;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        line-height: 20px;
+    }
+
+    .func-list .func .checkIcon {
+        color: #eee;
+    }
+
+    .func-list .func.choosed .checkIcon {
+        color: #47ae2a;
+    }
+
+    .func-list .line {
+        border-bottom: 1px solid #d0dfeb;
+        line-height: 36px;
+        color: #f00;
+    }
+</style>
+<p class="line">营销功能<span class="normal"></span></p>
+<div class="func-list">
+    <div class="module-func">
+        <?php
+        if ($mineModules) {
+            foreach ($mineModules as $module) {
+                ?>
+                <dl class="module func choosed"
+                    data-name="<?php echo $module['name']; ?>"
+                    data-module_name="<?php echo $module['module_name']; ?>"
+                    data-month_price="<?php echo $module['month_price']; ?>"
+                    data-year_price="<?php echo $module['year_price']; ?>">
+                    <dt><img src="<?php echo \Util\ImgSize::getSize($module['image'], 80); ?>" alt=""/></dt>
+                    <dd>
+                        <h2 class="name">
+                            <a href="/panel/<?php echo $module['module_name']; ?>"><?php echo $module['name']; ?></a>
+                        </h2>
+
+                        <p class="price-line">
+                        </p>
+
+                        <p>
+                            <?php echo $module['description']; ?>
+                        </p>
+                    </dd>
+                </dl>
+            <?php
+            }
+        }
+        ?>
+    </div>
+</div>
+<div class="clearfix" style="margin: 0 0 40px;"></div>

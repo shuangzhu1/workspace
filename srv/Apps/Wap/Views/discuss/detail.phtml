@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title><?php echo $title ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="/static/wap/css/share.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/wap/css/footer.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/wap/css/share_detail.css"/>
+    <script type="text/javascript" src="/static/wap/js/jquery/jquery2.1.4.min.js"></script>
+
+    <script type="text/javascript" src="/static/wap/js/seajs.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/wap/css/photoswipe/photoswipe.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/wap/css/photoswipe/default-skin.css"/>
+    <script type="text/javascript" src="/static/wap/js/app/photoswipe/photoswipe.min.js"></script>
+    <script type="text/javascript" src="/static/wap/js/app/photoswipe/photoswipe-ui-default.min.js"></script>
+    <script type="text/javascript" src="/static/wap/js/audio.min.js"></script>
+    <!--<script type="text/javascript" src="/static/wap/js/app/layer.js"></script>-->
+    <link href="/static/panel/js/tools/video/video-js.min.css?v=1.2" rel="stylesheet">
+    <script src="/static/panel/js/tools/video/video.min.js?v=1.2"></script>
+    <!--<script type="text/javascript" src="/static/wap/js/app/hotcss.js"></script>-->
+    <script>
+        (function (doc, win) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (!clientWidth) return;
+                    // 根据设备的比例调整初始font-size大小
+                    if(clientWidth>640) clientWidth = 640;
+                    docEl.style.fontSize = 20 * (clientWidth / 375) + 'px';
+                };
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            doc.addEventListener('DOMContentLoaded', recalc, false);
+        })(document, window);
+        audiojs.events.ready(function () {
+            audiojs.createAll();
+        });
+        seajs.config({
+            base: '/static/wap/js',
+            charset: 'utf-8',
+            timeout: 10000
+        });
+    </script>
+    <!--toast start-->
+    <style>
+        .tooltips{
+            position:absolute;
+            background:rgba(0, 0, 0, 0.72);
+            border:1px solid rgba(0, 0, 0, 0.72);
+            border-radius:0.375rem;
+            font-size:0.67rem;
+            color:white;
+            top:-3rem;
+            right:-0.5rem;
+            padding:0.25rem 0.75rem ;
+
+        }
+        .arrow{
+            position:absolute;
+            width: 0px;
+            height:0px;
+            line-height: 0px;
+            border-width: 0.5rem 0.375rem 0;
+            border-style: solid dashed dashed dashed;
+            border-left-color: transparent;
+            border-right-color: transparent;
+        }
+        .arrow-border{
+            color: rgba(0, 0, 0, 0.72);
+            bottom: -0.5rem;
+            right: 1.5rem;
+        }
+    </style>
+
+    <!--toast end-->
+
+</head>
+<body >
+
+<header>
+    <?php $this->partial('base/footer')/*require   __DIR__ .  '/../base/footer.phtml'*/
+    ; ?>
+</header>
+<script>
+    var from = "<?php echo $this->request->get('from', 'string', '')?>";
+    var browser = {
+        versions: function () {
+            var u = navigator.userAgent, app = navigator.appVersion;
+            return {//移动终端浏览器版本信息
+                trident: u.indexOf('Trident') > -1, //IE内核
+                presto: u.indexOf('Presto') > -1, //opera内核
+                webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+                iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者QQHD浏览器
+                iPad: u.indexOf('iPad') > -1, //是否iPad
+                webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+            };
+        }()
+    }
+    //                pc
+    if (!browser.versions.mobile && from != 'panel') {
+        $('body').addClass("share-pc");
+        $(".public-header").addClass("share-pc-header");
+    }
+
+
+</script>
+<div class="content_box">
+    <div class="dynamic_detail">
+        <div class="container">
+            <dl class="clearfix">
+                <dt>
+
+                    <a href="<?php echo $this->uri->baseUrl('user?to=' . $item['user_info']['uid']); ?>">
+                        <img
+                            src="<?php echo $item['user_info']['avatar']; ?>?x-oss-process=image/resize,m_fill,h_100,w_100"/>
+                    </a>
+                </dt>
+                <dd>
+                    <p>
+                        <span
+                            class="dynamic_name"><?php echo $item['user_info']['contact_mark'] ? $item['user_info']['contact_mark'] : $item['user_info']['username']; ?></span>
+
+                        <em class="<?php echo $item['user_info']['sex'] == 1 ? 'sex boy' : 'sex girl'; ?>"></em>
+                        <!--<em class="sex girl"></em>-->
+<!--                        <span class="dynamic_level">Lv--><?php //echo $item['user_info']['grade'] ?><!--</span>-->
+                    </p>
+                    <p>
+                        <span class="dy_time"><?php echo $item['show_time']; ?></span>
+                        <!--<a href="javascript:;" class="comment_del">删除</a>-->
+                    </p>
+                    <!--是否点赞-->
+<!--                    <a href="javascript:;" class="detail_like">-->
+<!--                        <em class="--><?php //echo $item['is_like'] ? 'vLike' : ''; ?><!--"></em>-->
+<!--                        --><?php //echo $item['like_cnt']; ?>
+<!--                    </a>-->
+                    <em class="dy_num">阅 <?php echo $item['view_cnt'] ?></em>
+                </dd>
+            </dl>
+
+                   <p class="dymaic_con"><span><?php echo $item['content']; ?></span></p>
+                <?php if ($item['tags_name']) {
+                    $tags = explode(',', $item['tags_name']);
+                    ?>
+                    <!-- 标签 -->
+                    <!--<div class="dymaic_sort">
+                                    <p>
+
+                                        <?php /*foreach ($tags as $t) { */ ?>
+                                            <span><?php /*echo $t; */ ?></span>
+                                        <?php /*} */ ?>
+                                    </p>
+                                </div>-->
+                <?php  } ?>
+                <?php if ($item['share_original_item_id'] == 0) { ?>
+
+                    <div class="dymaic_all_img">
+                        <?php if ($item['media_type'] == 3) {
+                            $media = explode(',', $item['media']);
+
+                            ?>
+
+                            <!--一张图片-->
+                            <?php if (count($media) == 1) {
+                                preg_match('/([0-9]{2,5})x([0-9]{2,5})/', $media[0], $matches);
+                                if ($matches[1] >= $matches[2]) {
+                                    ?>
+                                    <!--一张图片的时候 横向-->
+                                    <div class="dymaic_img">
+                                        <ul class="gallery">
+                                            <li style="width:9rem;height:6.2rem;" data-src="<?php echo $media[0]; ?>"
+                                                data-size="<?php echo \Util\ImgSize::getSizeFromUrl($media[0]) ?>"
+                                                data-med-src="<?php echo $media[0]; ?>"
+                                                data-med-size="<?php echo \Util\ImgSize::getSizeFromUrl($media[0]) ?>">
+                                                <img
+                                                    src="<?php echo $media[0]; ?>?x-oss-process=image/resize,m_fill,h_496,w_720"/>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                <?php } else { ?>
+                                    <!--一张图片的时候 竖向-->
+                                    <div class="dymaic_v_img">
+                                        <ul class="gallery">
+                                            <li style="width:6.2rem;height:9rem;" data-src="<?php echo $media[0]; ?>"
+                                                data-size="<?php echo \Util\ImgSize::getSizeFromUrl($media[0]) ?>"
+                                                data-med-src="<?php echo $media[0]; ?>"
+                                                data-med-size="<?php echo \Util\ImgSize::getSizeFromUrl($media[0]) ?>">
+                                                <img
+                                                    src="<?php echo $media[0]; ?>?x-oss-process=image/resize,m_fill,h_720,w_496"/>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                <?php } ?>
+                            <?php } else { ?>
+                                <!--大于1张图片的时候-->
+                                <ul class="gallery">
+                                    <?php foreach ($media as $i) { ?>
+                                        <li data-src="<?php echo $i; ?>"
+                                            data-size="<?php echo \Util\ImgSize::getSizeFromUrl($i) ?>"
+                                            data-med-src="<?php echo $i; ?>"
+                                            data-med-size="<?php echo \Util\ImgSize::getSizeFromUrl($i) ?>">
+                                            <img src="<?php echo $i; ?>?x-oss-process=image/resize,m_fill,h_200,w_200"/>
+                                        </li>
+                                    <?php } ?>
+                                </ul>
+                            <?php } ?>
+
+                        <?php } else if ($item['media_type'] == 2) {
+                            $media = explode('?', $item['media']);
+                            ?>
+                            <!--放视频的时候 sss-->
+
+                            <div class="dymaic_video">
+                                <?php if( !empty($item['package_id'])) {?>
+                                    <div class="tooltips" id="redbag_tip" style="display:none">
+                                        <div class="arrow arrow-border"></div>
+                                        <div>下载恐龙谷，领取红包</div>
+                                    </div>
+                                <img id="redbag" src="/static/wap/images/doudonghongbao_shiping.gif" style="z-index: 9999"/>
+                                <?php }?>
+
+                                <video  id="my-video" class="video-js"  playsinline webkit-playsinline x5-video-player-type="h5" x5-video-player-fullscreen="true"
+
+                                        poster="<?php echo $media[0]; ?>"
+                                       preload="auto"
+                                       src="<?php echo $media[1]; ?>">
+                                </video>
+                                <!--  <div class="live_bg" id="live_bg">
+                                      <img src="/static/wap/images/play.jpg"/>
+                                  </div>-->
+                            </div>
+
+                        <?php } elseif ($item['media_type'] == 4) {
+                            $media = explode('?', $item['media']);
+                            ?>
+                            <div class="con-block">
+                                <div class="souse-block">
+                                    <img src="/static/wap/images/music/joystick_stop@2x.png" alt="" class="play-btn">
+                                    <!-- <img src="assets/images/joystick_play@2x.png" alt="" class="play-btn"> -->
+                                    <div class="music">
+                                        <img
+                                            src="<?php if ($media[0] == 'nopic') echo "/static/wap/images/music/default_vociecover@2x.png"; else echo $media[0] ?>"
+                                            alt="" class="img-muic">
+                                    </div>
+                                    <audio src="<?php echo $media[1]?>" preload="none" id="myAudio"></audio>
+                                </div>
+                            </div>
+
+                        <?php } ?>
+                    </div>
+
+                    <?php if ($item['address']) { ?>
+                        <!-- 所在地区 -->
+                        <div class="dymaic_place">
+                            <em></em>
+                            <span><?php echo $item['address']; ?></span>
+                        </div>
+                    <?php } ?>
+
+
+                <?php } ?>
+            </div>
+
+        <?php if ($item['original_info']) {  ?>
+            <!--转发动态-->
+            <?php if ($item['share_original_type'] == \Services\Social\SocialManager::TYPE_DISCUSS) { ?>
+                <?php if ($item['original_info']['status'] == 1) { ?>
+                    <!-- 转载 -->
+
+                    <div class="dymaic_reship">
+                        <div class="container">
+                            <div class="dymaic_reship_con">
+                                <p onClick='window.location.href="/discuss/detail?item_id=<?php echo $item['original_info']['discuss_id']; ?>"'>
+
+                                    <span>转载自<em><?php echo $item['original_info']['username']; ?></em>：</span><?php echo $item['original_info']['content']; ?>
+                                </p>
+                                <div class="dymaic_reship_all_img">
+                                    <?php if ($item['original_info']['media_type'] == 3) {
+                                        $media = explode(',', $item['original_info']['media']);
+                                        ?>
+
+                                        <!--一张图片-->
+                                        <?php if (count($media) == 1) {
+                                            preg_match('/([0-9]{2,5})x([0-9]{2,5})/', $media[0], $matches);
+                                            if ($matches[1] >= $matches[2]) {
+                                                ?>
+                                                <!--一张图片的时候 横向-->
+                                                <div class="dymaic_reship_img">
+                                                    <ul class="gallery">
+                                                        <li style="width:auto;height:6.2rem; " data-src="<?php echo $media[0]; ?>"
+                                                        data-size="<?php echo \Util\ImgSize::getSizeFromUrl($media[0]) ?>"
+                                                        data-med-src="<?php echo $media[0]; ?>"
+                                                        data-med-size="<?php echo \Util\ImgSize::getSizeFromUrl($media[0]) ?>">
+                                                        <img src="<?php echo $media[0]; ?>"/>
+                                                        </li>
+                                                    </ul>
+
+                                                </div>
+                                            <?php } else { ?>
+                                                <!--一张图片的时候 竖向-->
+                                                <div class="dymaic_reship_v">
+                                                    <ul class="gallery">
+                                                        <li style="width:auto;height:9rem; " data-src="<?php echo $media[0]; ?>"
+                                                        data-size="<?php echo \Util\ImgSize::getSizeFromUrl($media[0]) ?>"
+                                                        data-med-src="<?php echo $media[0]; ?>"
+                                                        data-med-size="<?php echo \Util\ImgSize::getSizeFromUrl($media[0]) ?>">
+                                                        <img src="<?php echo $media[0]; ?>"/>
+                                                        </li>
+                                                    </ul>
+
+                                                </div>
+                                            <?php } ?>
+                                        <?php } else { ?>
+                                            <!--大于1张图片的时候-->
+                                            <ul class="gallery">
+                                                <?php foreach ($media as $i) { ?>
+                                                    <li data-src="<?php echo $i; ?>"
+                                                        data-size="<?php echo \Util\ImgSize::getSizeFromUrl($i) ?>"
+                                                        data-med-src="<?php echo $i; ?>"
+                                                        data-med-size="<?php echo \Util\ImgSize::getSizeFromUrl($i) ?>"
+                                                    >
+                                                        <img
+                                                            src="<?php echo $i; ?>?x-oss-process=image/resize,m_fill,h_200,w_200"/>
+                                                    </li>
+                                                <?php } ?>
+                                            </ul>
+                                        <?php } ?>
+
+                                    <?php } else if ($item['original_info']['media_type'] == 2) {
+                                        $media = explode('?', $item['original_info']['media']);
+                                        ?>
+                                        <!--放视频的时候 d-->
+                                        <div class="dymaic_reship_video">
+                                            <div class="dynamic_video">
+                                            <?php if( !empty($item['original_info']['package_id'])) {?>
+                                                <div class="tooltips" id="redbag_tip" style="display:none">
+                                                    <div class="arrow arrow-border"></div>
+                                                    <div>下载恐龙谷，领取红包</div>
+                                                </div>
+                                                <img id="redbag" src="/static/wap/images/doudonghongbao_shiping.gif"/>
+
+                                            <?php }?>
+
+                                            <video  id="my-video" class="video-js"  playsinline webkit-playsinline x5-video-player-type="h5" x5-video-player-fullscreen="true"
+                                                   poster="<?php echo $media[0]; ?>"
+                                                   preload="auto"
+                                                   src="<?php echo $media[1]; ?>">
+                                            </video>
+                                            <!--   <div class="live_bg" id="live_bg">
+                                                   <img src="/static/wap/images/play.jpg"/>
+                                               </div>-->
+                                        </div>
+                                        <?php }elseif( $item['media_type'] == 4 ){
+                                        $media = explode('?', $item['media']);
+                                        ?>
+                                        <div class="con-block">
+                                            <div class="souse-block">
+                                                <img src="/static/wap/images/music/joystick_stop@2x.png" alt="" class="play-btn">
+                                                <!-- <img src="assets/images/joystick_play@2x.png" alt="" class="play-btn"> -->
+                                                <div class="music">
+                                                    <img src="<?php if($media[0] == 'nopic') echo "/static/wap/images/music/default_vociecover@2x.png";else echo $media[0]?>" alt="" class="img-muic">
+                                                </div>
+                                                <audio src="<?php $media[1]?>" preload="none" id="myAudio"></audio>
+                                            </div>
+                                        </div>
+                                   <?php } ?>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+                        <!--转发新闻-->
+            <?php } elseif ($item['share_original_type'] == \Services\Social\SocialManager::TYPE_NEWS) { ?>
+
+                <a href="http://news.klgwl.com/wap/news/share/<?php echo $item['original_info']['news_id']; ?>">
+                <div class="dymaic_reship">
+
+                    <div class="container">
+                        <div class="dymaic_reship_con">
+                            <p>
+                                <span>转发资讯<em><?php echo $item['original_info']['username']; ?></em>：</span><?php echo $item['original_info']['title']; ?>
+                            </p>
+                            <div class="dymaic_reship_all_img">
+                                <?php if ($item['original_info']['media_type'] == 3) {
+                                    $media = explode(',', $item['original_info']['media']);
+                                    ?>
+
+                                    <!--一张图片-->
+                                    <?php if (count($media) == 1) {
+                                        preg_match('/([0-9]{2,5})x([0-9]{2,5})/', $media[0], $matches);
+                                        if ($matches[1] >= $matches[2]) {
+                                            ?>
+                                            <!--一张图片的时候 横向-->
+                                            <div class="dymaic_reship_img">
+                                                <ul class="gallery">
+                                                    <li style="width:auto;height:6.2rem; data-src="
+                                                        data-src="<?php echo $media[0]; ?>"
+                                                        data-size="<?php echo \Util\ImgSize::getSizeFromUrl($media[0]) ?>"
+                                                        data-med-src="<?php echo $media[0]; ?>"
+                                                        data-med-size="<?php echo \Util\ImgSize::getSizeFromUrl($media[0]) ?>">
+                                                    <img src="<?php echo $media[0]; ?>"/>
+                                                    </li>
+                                                </ul>
+
+                                            </div>
+                                        <?php } else { ?>
+                                            <!--一张图片的时候 竖向-->
+                                            <div class="dymaic_reship_v">
+                                                <ul class="gallery">
+                                                    <li style="width:auto;height:9rem; data-src=" data-src="<?php echo $media[0]; ?>"
+                                                    data-size="<?php echo \Util\ImgSize::getSizeFromUrl($media[0]) ?>"
+                                                    data-med-src="<?php echo $media[0]; ?>"
+                                                    data-med-size="<?php echo \Util\ImgSize::getSizeFromUrl($media[0]) ?>">
+                                                    <img src="<?php echo $media[0]; ?>"/>
+                                                    </li>
+                                                </ul>
+
+                                            </div>
+                                        <?php } ?>
+                                    <?php } else { ?>
+                                        <!--大于1张图片的时候-->
+                                        <ul class="gallery">
+                                            <?php foreach ($media as $i) { ?>
+                                                <li data-src="<?php echo $i; ?>"
+                                                    data-size="<?php echo \Util\ImgSize::getSizeFromUrl($i) ?>"
+                                                    data-med-src="<?php echo $i; ?>"
+                                                    data-med-size="<?php echo \Util\ImgSize::getSizeFromUrl($i) ?>">
+                                                    <img
+                                                        src="<?php echo $i; ?>?x-oss-process=image/resize,m_fill,h_200,w_200"/>
+                                                </li>
+                                            <?php } ?>
+                                        </ul>
+                                    <?php } ?>
+
+                                <?php } else if ($item['original_info']['media_type'] == 2) {
+                                    $media = explode('?', $item['original_info']['media']);
+                                    ?>
+                                    <!--放视频的时候-->
+
+                                    <div class="dymaic_reship_video">
+
+
+
+
+                                        <video controls id="my-video" class="video-js" controls playsinline webkit-playsinline x5-video-player-type="h5" x5-video-player-fullscreen="true"
+                                               poster="<?php echo $media[0]; ?>"
+                                               preload="auto" data-setup="{}"
+                                               src="<?php echo $media[1]; ?>">
+                                        </video>
+                                        <!--   <div class="live_bg" id="live_bg">
+                                               <img src="/static/wap/images/play.jpg"/>
+                                           </div>-->
+                                    </div>
+                                <?php } ?>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                </a>
+            <?php }elseif ($item['share_original_type'] == \Services\Social\SocialManager::TYPE_GOOD) { ?>
+
+                        <a href="http://wap.klgwl.com/goods/detail/<?php echo $item['original_info']['good_id']; ?>">
+                            <div class="dymaic_reship">
+
+                                <div class="container">
+                                    <div class="dymaic_reship_con" style="padding:0;margin-left:0">
+
+                                            <div style="padding:0.5rem 0 0;font-size:0.6rem;color:#c0c0c0;">来自 <span style="color:#507daf;"><?php echo $item['original_info']['shop_owner']?></span> 的店铺</div>
+                                            <span style="font-size:0.85rem;color:#333;font-weight:bold"><?php echo $item['original_info']['title']; ?></span>
+                                            <div style="margin-top:0.25rem;font-weight:bold;color:#fc6b38;font-size:0.85rem">¥ <?php echo sprintf("%.2f",$item['original_info']['price'] / 100)?></div>
+                                            <div style="font-size: 0.7rem;color: #999;padding: 0.1rem 0 0.25rem;line-height: 1rem;position:relative">
+                                                <?php echo $item['original_info']['brief']?>
+                                                <div class="tooltips" id="redbag_tip" style="display:none">
+                                                    <div class="arrow arrow-border"></div>
+                                                    <div>下载恐龙谷，领取红包</div>
+                                                </div>
+                                                <img id="shop_redbag" src="/static/panel/images/admin/red_package.png" alt="" style="width:1.8rem;position:absolute;top:-2.25rem;right:0.75rem">
+                                            </div>
+
+
+                                        <div class="dymaic_reship_all_img">
+                                            <?php if ($item['original_info']['media_type'] == 3) {
+                                                $media = explode(',', $item['original_info']['media']);
+                                                ?>
+
+                                                <!--一张图片-->
+                                                <?php if (count($media) == 1) {
+                                                    preg_match('/([0-9]{2,5})x([0-9]{2,5})/', $media[0], $matches);
+                                                    if ($matches[1] >= $matches[2]) {
+                                                        ?>
+                                                        <!--一张图片的时候 横向-->
+                                                        <div class="dymaic_reship_img">
+                                                            <ul class="gallery">
+                                                                <li style="width:auto;height:6.2rem; " data-src="<?php echo $media[0]; ?>" data-size="<?php echo \Util\ImgSize::getSizeFromUrl($media[0]) ?>"
+                                                                    data-med-src="<?php echo $media[0]; ?>" data-med-size="<?php echo \Util\ImgSize::getSizeFromUrl($media[0]) ?>">
+                                                                <img style="width:auto;height:6.2rem; " src="<?php echo $media[0]; ?>"/>
+                                                                </li>
+                                                            </ul>
+
+                                                        </div>
+                                                    <?php } else { ?>
+                                                        <!--一张图片的时候 竖向-->
+                                                        <div class="dymaic_reship_v">
+                                                            <ul class="gallery">
+                                                                <li style="width:auto;height:9rem;"
+                                                                data-src="<?php echo $media[0]; ?>"
+                                                                data-size="<?php echo \Util\ImgSize::getSizeFromUrl($media[0]) ?>"
+                                                                data-med-src="<?php echo $media[0]; ?>"
+                                                                data-med-size="<?php echo \Util\ImgSize::getSizeFromUrl($media[0]) ?>">
+                                                                <img style="width:auto;height:9rem;" src="<?php echo $media[0]; ?>"/>
+                                                                </li>
+                                                            </ul>
+
+                                                        </div>
+                                                    <?php } ?>
+                                                <?php } else { ?>
+                                                    <!--大于1张图片的时候-->
+                                                    <ul class="gallery">
+                                                        <?php foreach ($media as $i) { ?>
+                                                            <li data-src="<?php echo $i; ?>"
+                                                                data-size="<?php echo \Util\ImgSize::getSizeFromUrl($i) ?>"
+                                                                data-med-src="<?php echo $i; ?>"
+                                                                data-med-size="<?php echo \Util\ImgSize::getSizeFromUrl($i) ?>">
+                                                                <img
+                                                                        src="<?php echo $i; ?>?x-oss-process=image/resize,m_fill,h_200,w_200"/>
+                                                            </li>
+                                                        <?php } ?>
+                                                    </ul>
+                                                <?php } ?>
+
+                                            <?php } else if ($item['original_info']['media_type'] == 2) {
+                                                $media = explode('?', $item['original_info']['media']);
+                                                ?>
+                                                <!--放视频的时候 s-->
+
+                                                <div class="dymaic_reship_video">
+
+
+
+
+                                                    <video controls id="my-video" class="video-js" controls playsinline webkit-playsinline x5-video-player-type="h5" x5-video-player-fullscreen="true"
+                                                           poster="<?php echo $media[0]; ?>"
+                                                           preload="auto" data-setup="{}"
+                                                           src="<?php echo $media[1]; ?>">
+                                                    </video>
+                                                    <!--   <div class="live_bg" id="live_bg">
+                                                           <img src="/static/wap/images/play.jpg"/>
+                                                       </div>-->
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <?php } ?>
+
+        <?php } ?>
+                    </div>
+        <div class="dymaic_option">
+            <ul class="clearfix">
+                <!--alredy 表明已经点赞或者收藏，没有点赞或收藏不加alredy-->
+                <li class="<?php echo $item['is_like'] ? 'alredy' : ''; ?>"><em
+                        class="love"></em><?php echo $item['like_cnt']; ?>人喜欢
+                </li>
+                <li>
+                    <em class="collect <?php echo $item['is_collect'] ? 'alredy' : ''; ?>"></em><?php echo $item['fav_cnt']; ?>
+                    人收藏
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="dynamic_all_box">
+        <div class="container">
+            <div class="dynamic_all_con">
+                <h1>全部评论(<span><?php echo $item['comment_cnt']; ?></span>条)</h1>
+                <div id="dataWrap02">
+                    <li class="item"></li>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dynamic_no_mes">
+        <h6><i></i><span>没有更多了</span><i></i></h6>
+    </div>
+</div>
+<div class="p_b"></div>
+</section>
+<!--ps DOM start-->
+
+<div id="gallery" class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="pswp__bg"></div>
+
+    <div class="pswp__scroll-wrap">
+
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <div class="pswp__counter" style="font-size:0.625rem;font-weight: bold"></div>
+
+                <!--<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>-->
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- <div class="pswp__loading-indicator"><div class="pswp__loading-indicator__line"></div></div> -->
+
+            <!--<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip">
+                     <a href="#" class="pswp__share--facebook"></a>
+                    <a href="#" class="pswp__share--twitter"></a>
+                    <a href="#" class="pswp__share--pinterest"></a>
+                    <a href="#" download class="pswp__share--download"></a>
+                </div>
+            </div>-->
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--ps DOM end-->
+
+</body>
+</html>
+
+<script type="text/javascript">
+    seajs.use(['app/discuss.js?v=1.0.2', 'app/ps.init.js?v=1.1.23'], function (api, ps) {
+        api.more(<?php echo $item['discuss_id']?>, '/api/comment/list');
+        $(function () {
+            ps.init();
+        });
+    });
+
+    window.onload = function () {
+        //音频
+        var audio = $("#myAudio")[0];
+        if (audio !== undefined) {
+            audio.addEventListener("playing", function () {
+                $(".music").addClass("scrollChange");
+                $(".play-btn").attr("src", "/static/wap/images/music/joystick_play@2x.png")
+            });
+            audio.addEventListener("pause", function () {
+                $(".music").removeClass("scrollChange");
+                $(".play-btn").attr("src", "/static/wap/images/music/joystick_stop@2x.png")
+            });
+        }
+        //下载bar
+        APPCommon.setParams("type=dynamic&id=<?php echo $item['discuss_id']?>");
+        var headerTop = $(".public-header").height();
+        $(window).scroll(function(){
+            if($(this).scrollTop() <= 0){
+                $(".public-header").removeClass("navout navin");
+            }else{
+                $(".public-header").removeClass("navin").addClass("navout");
+                $('body').on('touchend',function(){
+                    setTimeout(function(){
+                        $(".public-header").removeClass("navout").addClass("navin");
+                    },1200);
+                })
+            }
+        });
+
+        $('#redbag').on('click',function () {
+            if( $('#redbag_tip').css('display') != 'none' )
+                return;
+            $('#redbag_tip').slideDown('fast');
+            var t1 = setTimeout(function () {
+                $('#redbag_tip').slideUp();
+            },2000)
+            return false;
+        })
+
+        $('#shop_redbag').on('click',function () {
+            if( $('#redbag_tip').css('display') != 'none' )
+                return false;
+            $('.tooltips').css('top','-4.5rem');
+            $('#redbag_tip').slideDown('fast');
+            var t1 = setTimeout(function () {
+                $('#redbag_tip').slideUp();
+            },2000)
+            return false;
+        })
+
+
+
+
+
+    }
+    <?php if($item['media_type'] == 2) { ?>
+    var vjs = videojs('my-video', {
+        controls:true,
+        bigPlayButton:true,
+    }
+    ,function onPlayerReady() {
+        var v_width = 0,
+            v_height = 0,
+            duration = 0,
+            m = false;
+        var _player = this;
+        var isPlaying = false;
+        this.on('loadedmetadata',function () {
+            var $video = $('#my-video');
+                v_width = $video.width();
+                v_height = $video.height();
+
+
+        });
+
+        this.on('play',function () {
+            isPlaying = true;
+        });
+        this.on('timeupdate',function () {
+            duration = this.duration();
+            var s_time = 0.8 * duration;
+            if(m)
+            {
+                this.isFullscreen() && this.exitFullscreen();
+                this.pause();
+            }
+            if(this.currentTime() > s_time && !m )
+            {
+                this.pause();
+                $('#my-video').before(
+                    '<div style="position:absolute;width:'+ '100%' +';height:' + '100%'+';background:rgba(0,0,0,0.7);z-index:99;text-align:center">\n' +
+                    '<div style="width:8.35rem;height:100%;margin:0 auto;font-size:0.85rem;color:#fff;display: -webkit-flex;align-items: center">\n' +
+                    '<div style="width:100%;">\n' +
+                    '<span >观看完整视频</span>\n' +
+                    '<div style="margin-top:1rem;background: #0AD09F;width:100%;height:1.85rem;border-radius:1.85rem;line-height:1.85rem"><a style="color:#fff" href="javascript:;" onclick="APPCommon.init()">请下载恐龙谷 >></a></div>\n' +
+                    '</div>\n' +
+                    '</div>\n' +
+                    '</div>'
+                );
+                m = true;
+            }
+        });
+
+        this.on('pause',function () {
+            isPlaying = false;
+        });
+        this.on('ended',function () {
+            isPlaying = false;
+        });
+        /*this.on('touchend',function () {
+            if(isPlaying)
+            {
+                _player.pause();
+                $('.vjs-big-play-button').show();
+            }
+            else
+            {
+                _player.play();
+                $('.vjs-big-play-button').hide();
+            }
+        });*/
+    });
+
+    var thumb = $('#my-video').attr('poster');
+    var tmp = thumb.split('_');
+    var scale = tmp[tmp.length-1].split('.')[0].split('x');
+    $('#my-video').closest('div').css('height',($('#my-video').width()/(scale[0]/scale[1]))+'px');
+
+<?php }?>
+
+</script>
+

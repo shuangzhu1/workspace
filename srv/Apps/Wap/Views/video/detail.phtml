@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title><?php echo $title ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="/srv/static/wap/css/share.css"/>
+    <link rel="stylesheet" type="text/css" href="/srv/static/wap/css/footer.css?v=1.0"/>
+    <link rel="stylesheet" type="text/css" href="/srv/static/wap/css/share_detail.css"/>
+    <script type="text/javascript" src="/srv/static/wap/js/jquery/jquery2.1.4.min.js"></script>
+    <script type="text/javascript" src="/srv/static/wap/js/app/hotcss.js"></script>
+    <script type="text/javascript" src="/srv/static/wap/js/seajs.js"></script>
+    <script type="text/javascript" src="/srv/static/wap/js/audio.min.js"></script>
+    <script type="text/javascript" src="/srv/static/wap/js/app/layer.js"></script>
+    <link href="/srv/static/panel/js/tools/video/video-js.min.css" rel="stylesheet">
+    <script src="/srv/static/panel/js/tools/video/video.min.js"></script>
+    <script>
+        audiojs.events.ready(function () {
+            audiojs.createAll();
+        });
+        seajs.config({
+            base: '/srv/static/wap/js',
+            charset: 'utf-8',
+            timeout: 10000
+        });
+    </script>
+
+</head>
+<body>
+
+<header style="height:2.1rem">
+    <?php if (!strpos($this->request->getUserAgent(), 'KLG') > 0) { ?>
+        <div class="public-header" style="position:static;">
+            <div class="public_download">
+                <dl style="width:95%">
+                    <dt class="klg-icon" style="width:4rem;margin-right:0">
+                        <div style="float:left;height:100%;width:100%">
+                            <img src="/srv/static/wap/images/video_logo.png" alt="恐龙谷" style="width:3.75rem;height:1rem;" >
+                        </div>
+
+                    </dt>
+                    <dd style="font-size:0.625rem;border-left:2px solid #333;font-weight:bold;padding-left:0.45rem">
+                        娱乐自媒体社交平台
+                    </dd>
+                    <dd class="down_btn">
+                        <a  href="javascript:;" onclick="APPCommon.init()" style="line-height:100%;height:100%;padding:0.2rem;margin-top:0.15rem;border-radius:0.25rem">免费下载</a>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <a href="" id="bridge" style="display: none"></a>
+
+        <script>
+            var APPCommon = {
+                iphoneSchema: "",
+                iphoneDownUrl: 'https://itunes.apple.com/cn/app/kong-long-gu/id1208329358?mt=8',
+                androidSchema: '',
+                androidDownUrl: "<?php echo $download_url?>",
+                params:"",
+                openApp: function () {
+                    // event.stopPropagation();
+                    var browser = {
+                        versions: function () {
+                            var u = navigator.userAgent, app = navigator.appVersion;
+                            return {//移动终端浏览器版本信息
+                                trident: u.indexOf('Trident') > -1, //IE内核
+                                presto: u.indexOf('Presto') > -1, //opera内核
+                                webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                                gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                                mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                                ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                                android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+                                iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者QQHD浏览器
+                                iPad: u.indexOf('iPad') > -1, //是否iPad
+                                webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+                            };
+                        }()
+                    }
+                    //                pc
+                    if (!browser.versions.mobile) {
+                        window.location.href = "http://www.klgwl.com";
+                    } else {
+                        var this_ = this;
+                        //微信
+                        var u = navigator.userAgent.toLowerCase();
+                        if (this_.isWeixin()) {
+                            if (u.indexOf('android') > -1 || u.indexOf('linux') > -1) {//安卓手机
+                                $("#imgtip").show();
+                                $("#imgtip").attr("src", "/static/wap/images/download/androdtips.png");
+                            } else if (u.indexOf('iphone') > -1) {//苹果手机
+                                //window.location.href = APPCommon.iphoneDownUrl;
+                                $("#imgtip").show();
+                                $("#imgtip").attr("src", "/static/wap/images/download/appletips.png");
+                            }
+                        } else {//非微信浏览器
+                            if (u.toLowerCase().indexOf('iphone') > -1 || u.toLowerCase().indexOf('ipad') > -1) {
+                                window.location.href = APPCommon.iphoneDownUrl;
+                            } else if (navigator.userAgent.match(/android/i)) {
+
+                                window.location.href = APPCommon.androidDownUrl;
+                            }
+                        }
+                    }
+                },
+                isWeixin: function () { //判断是否是微信
+                    var ua = navigator.userAgent.toLowerCase();
+                    if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+                init: function () {
+                    var _this = this;
+                    var params = _this.params;
+                    _this.iphoneSchema = "DValleyNew://response_from_klg?" + params;
+                    _this.androidSchema = "klg://klg.com?" + params;
+                    var u = navigator.userAgent.toLowerCase();
+                    if( !_this.isWeixin() )
+                    {
+                        if (u.toLowerCase().indexOf('iphone') > -1 || u.toLowerCase().indexOf('ipad') > -1) {
+                            //window.location.href =  APPCommon.iphoneSchema;
+                            _this.openByAnchor(APPCommon.iphoneSchema);
+                            setTimeout(function () {
+                                _this.openApp()
+                            }, 500);
+                        } else if (navigator.userAgent.match(/android/i)) {
+                            //window.location.href = APPCommon.androidSchema;
+                            _this.openByAnchor(APPCommon.androidSchema);
+                            setTimeout(function () {
+                                _this.openApp()
+                            }, 500);
+                        }
+                    }else {
+                        if (u.indexOf('android') > -1 || u.indexOf('linux') > -1) {//安卓手机
+                            $("#imgtip").show();
+                            $("#imgtip").attr("src", "/static/wap/images/download/androdtips.png");
+                        } else if (u.indexOf('iphone') > -1) {//苹果手机
+                            //window.location.href = APPCommon.iphoneDownUrl;
+                            $("#imgtip").show();
+                            $("#imgtip").attr("src", "/static/wap/images/download/appletips.png");
+                        }
+
+                    }
+
+
+                },
+                setParams:function(params){
+                    this.params = params;
+                },
+                openByAnchor:function(href){
+                    $('#bridge').attr('href',href);
+                    document.getElementById('bridge').click();
+                }
+            }
+
+
+
+        </script>
+    <?php } else { ?>
+
+    <?php } ?>
+    <style>
+        .public-header {
+            top: 0;
+        }
+
+        .more {
+            width: 100%;
+            margin: 0 auto;
+            height: auto;;
+            overflow: hidden;
+        }
+
+        .more li {
+            float: left;
+            width: 33%;
+            margin-right: .5%;
+            margin-bottom: .5%;
+            background-color: #fff;
+        }
+
+        .more li:nth-child(3n) {
+            margin-right: 0;
+            float: right;
+        }
+
+        .more li a {
+            width: 100%;
+            display: block;
+            text-decoration: none;
+        }
+
+        .more li a .cover {
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            padding-top: 132%;
+            position: relative;
+        }
+
+        .more .cover .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: 1.8rem;
+            width: 1.8rem;
+            margin-top: -0.9rem;
+            margin-left: -0.9rem;
+            background: url(/static/wap/images/play_icon.png) no-repeat;
+            background-size: contain;
+        }
+
+        .tooltips {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.72);
+            border: 1px solid rgba(0, 0, 0, 0.72);
+            border-radius: 15px;
+            font-size: 0.67rem;
+            color: white;
+            top: -3rem;
+            right: -0.5rem;
+            padding: 10px 30px;
+
+        }
+
+        .arrow {
+            position: absolute;
+            width: 0;
+            height: 0;
+            line-height: 0;
+            border-width: 20px 15px 0;
+            border-style: solid dashed dashed dashed;
+            border-left-color: transparent;
+            border-right-color: transparent;
+        }
+
+        .arrow-border {
+            color: rgba(0, 0, 0, 0.72);
+            bottom: -20px;
+            right: 1.5rem;
+        }
+
+        .user_info_wrap {
+            position: absolute;
+            top: .6rem;
+            left: .5rem;
+            height: 2rem;
+            z-index: 98;
+        }
+
+        .user_info {
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+            border-radius: 1rem;
+        }
+
+        .user_info .avatar {
+            float: left;
+            width: 1.5rem;
+            height: 1.5rem;
+            margin: .2rem .3rem 0;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .user_info .avatar img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .user_info .user-content {
+            float: left;
+            padding-top: .15rem;
+            margin-right: 3rem;
+            font-size: 0.6rem;
+            color: #fff;
+        }
+
+        .user_info .user-content .username {
+            letter-spacing: 0;
+            text-shadow: 0 0 2px #000;
+        }
+
+        .user_info .user-content .uid {
+            padding-top: .1rem;
+            letter-spacing: 0;
+            text-shadow: 0 0 2px #000;
+        }
+
+        .user_info .attention {
+            position: absolute;
+            width: 2rem;
+            height: 1.2rem;
+            border-radius: .6rem;
+            line-height: 1.2rem;
+            color: #fff;
+            font-size: .6rem;
+            text-align: center;
+            top: 0.4rem;
+            right: .4rem;
+            text-decoration: none;
+            background-color: #ff2526;
+            background-image: -webkit-linear-gradient(left, #2BBB5A 0, #0bd1a0 100%);
+            background-image: linear-gradient(to right, #2BBB5A 0, #0bd1a0 100%);
+        }
+    </style>
+</header>
+<img src="/static/wap/images/download/appletips.png" id="imgtip" alt="">
+<script>
+    var from = "<?php echo $this->request->get('from', 'string', '')?>";
+    var browser = {
+        versions: function () {
+            var u = navigator.userAgent, app = navigator.appVersion;
+            return {//移动终端浏览器版本信息
+                trident: u.indexOf('Trident') > -1, //IE内核
+                presto: u.indexOf('Presto') > -1, //opera内核
+                webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+                iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者QQHD浏览器
+                iPad: u.indexOf('iPad') > -1, //是否iPad
+                webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+            };
+        }()
+    }
+    //                pc
+    if (!browser.versions.mobile && from != 'panel') {
+        $('body').addClass("share-pc");
+        $(".public-header").addClass("share-pc-header");
+    }
+
+
+</script>
+<div class="content_box">
+    <div class="dynamic_detail" style="padding-top:0">
+        <div class="container" style="width:100%">
+            <!--  <dl class="clearfix">
+                <dt>
+                    <a href="<?php /*echo $this->uri->baseUrl('user?to=' . $video['user_id']); */ ?>">
+
+                    </a>
+                </dt>
+                <dd>
+                    <p>
+                        <span
+                            class="dynamic_name"><?php /*$user['username']; */ ?></span>
+
+                        <em class="<?php /*echo $user['sex'] == 1 ? 'sex boy' : 'sex girl'; */ ?>"></em>
+                        <em class="dy_num">阅 320</em>
+                </dd>
+            </dl>-->
+            <div class="dymaic_all_img">
+                <?php
+                $media = explode('?', $video['url']);
+                ?>
+                <!--放视频的时候-->
+                <!--toast start-->
+                <!--toast end-->
+                <div class="poster" style="position:relative" >
+                    <a href="javascript:;" >
+                        <div style="background:url(<?php echo $media[0] ?>) no-repeat;background-size:cover;padding-top:112%">
+                        </div>
+                        <img id="video-play" src="/static/wap/images/play.jpg" alt="" style="width:3rem;position: absolute;top:8rem;left:8rem">
+                    </a>
+                </div>
+                <div  style="position:relative;display:none " id="video-page"  >
+                    <div class="user_info_wrap">
+
+                        <style>
+                            .handle {
+                                position: absolute;
+                                bottom: 0;
+                                left: 0;
+                                /*   width: 100%;*/
+                                height: 2rem;
+                                line-height: 2rem;
+                                background-color: rgba(30, 30, 30, .75);
+                                color: #fff;
+                                text-decoration: none;
+                                font-size: 0.6rem;
+                                padding-left: 1rem;
+                                right: 0;
+                                letter-spacing: 0.05rem;
+                            }
+
+                            .likeBtn {
+                                text-align:center;
+                                position: absolute;
+                                top: .4rem;
+                                right: .25rem;
+                                width: 2.7rem;
+                                height: 1.2rem;
+                                line-height: 1.2rem;
+                                background-color: #ff2526;
+                                border-radius: 0.6rem;
+                                padding: 0 0.5rem;
+                                background-image: -webkit-linear-gradient(left, #2BBB5A 0, #0bd1a0 100%);
+                                background-image: linear-gradient(to right, #2BBB5A 0, #0bd1a0 100%);
+                            }
+                        </style>
+                        <div class="user_info">
+                            <p class="avatar"><img
+                                    src="<?php echo $user['avatar']; ?>?x-oss-process=image/resize,m_fill,h_100,w_100"/>
+                            </p>
+
+                            <div class="user-content">
+                                <p class="username"><?php echo mb_strlen($user['username']) > 8 ? mb_substr($user['username'], 0, 8) . '..' : $user['username'] ?></p>
+                                <p class="uid">ID:<?php echo $user['user_id'] ?></p>
+
+                            </div>
+                            <a class="attention" data-id="<?php echo $user['user_id'] ?>">关注</a>
+                        </div>
+                    </div>
+                    <video controls id="my-video" class="video-js" controls playsinline webkit-playsinline
+                           poster="<?php echo $media[0]; ?>"
+                           preload="auto" data-setup="{}"
+                           src="<?php echo $media[1]; ?>">
+                    </video>
+                    <a class="handle">
+                        <span><?php echo $video['like_cnt'] ?>人感觉该视频不错</span>
+                        <span class="likeBtn" data-id="<?php echo $video['id'] ?>">我要点赞</span>
+                    </a>
+                    <!--  <div class="live_bg" id="live_bg">
+                          <img src="/static/wap/images/play.jpg"/>
+                      </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dynamic_all_box">
+    <div class="container"style="width:100%">
+        <div class="">
+            <h1 style="line-height: 1.5rem;font-weight: bold;font-size: 0.7rem;letter-spacing: 0.1rem;padding: 0.1rem;margin-bottom: 0.1rem">
+                <span
+                    style="line-height: 100%;border-bottom: 0.05rem solid #0BD1A0;padding-bottom: 0.1rem">更多热门视频</span>
+            </h1>
+            <ul id="dataWrap02" class="more">
+                <?php foreach ($more as $item) {
+                    $url = $item['url'];
+                    $url = explode('?', $url);
+                    ?>
+                    <li class="" style="width: 33%">
+                        <a href="javascript:;<?php /*echo $this->uri->baseUrl('video/detail?item_id=' . $item['id']); */?>">
+                            <div class="cover" style="background-image: url(<?php echo $url[0] ?>)" data-video-src="<?php echo $url[1]?>">
+                                <span class="play-btn"></span>
+                            </div>
+
+                        </a>
+                    </li>
+                <?php } ?>
+
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+    APPCommon.setParams("type=video&id=<?php echo $video['id']?>");
+    $(function () {
+        $(".attention").on('click', function () {
+            var id = $(this).attr('data-id');
+            APPCommon.setParams("type=homepage&uid=" + id);
+            APPCommon.init();
+        })
+        $(".likeBtn").on('click', function () {
+            var id = $(this).attr('data-id');
+            APPCommon.setParams("type=video&vid=" + id);
+            APPCommon.init();
+        })
+    });
+    seajs.use(['app/discuss', 'app/ps.init'], function (api, ps) {
+        $(function () {
+            ps.init();
+        });
+    });
+    $("#imgtip").on("click", function () {
+        event.stopPropagation();
+        $("#imgtip").hide();
+    })
+    window.onload = function () {
+        //音频
+        var audio = $("#myAudio")[0];
+        if (audio !== undefined) {
+            audio.addEventListener("playing", function () {
+                $(".music").addClass("scrollChange");
+                $(".play-btn").attr("src", "/static/wap/images/music/joystick_play@2x.png")
+            });
+            audio.addEventListener("pause", function () {
+                $(".music").removeClass("scrollChange");
+                $(".play-btn").attr("src", "/static/wap/images/music/joystick_stop@2x.png")
+            });
+        }
+    };
+    var vjs = videojs('my-video', {
+        "controlBar": false
+    }, function onPlayerReady() {
+        this.on('ended', function () {
+            // console.log('end');
+            $('.vjs-big-play-button').show();
+        })
+        this.on('playing', function () {
+            // console.log('end');
+            $('.vjs-big-play-button').hide();
+        })
+
+
+    });
+
+    $('#video-play').on('click',function () {
+        $('header').slideUp('fast');
+        $('.poster').hide();
+        $('#video-page').show();
+        vjs.play();
+    });
+    var thumb = $('#my-video').attr('poster');
+    var tmp = thumb.split('_');
+    var scale = tmp[tmp.length - 1].split('.')[0].split('x');
+
+    $('#my-video').css('height', ($('body').width() / (scale[0] / scale[1])) + 'px');
+    $('.more li').each(function () {
+        $(this).on('click',function () {
+            var thumb = $(this).find('a div').css('background-image').replace('url(\"','').replace('\")','');
+            var tmp = thumb.split('_');
+            var scale = tmp[tmp.length - 1].split('.')[0].split('x');
+            $('.poster').hide();
+            $('header').hide();
+            $('#video-page').show();
+            $('#my-video').css('height', ($('body').width() / (scale[0] / scale[1])) + 'px');
+            $('#my-video').attr('src',$(this).data('video-src'));
+            vjs.src($(this).find('div').data('video-src'));
+            vjs.load($(this).data('video-src'));
+            $('html,body').animate({ scrollTop: '0px' }, 800);
+            vjs.play();
+        });
+    });
+</script>
+

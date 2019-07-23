@@ -1,0 +1,409 @@
+<style>
+    @keyframes play {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @-webkit-keyframes play {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @-moz-keyframes play {
+        0% {
+            -moz-transform: rotate(0deg);
+        }
+        100% {
+            -moz-transform: rotate(360deg);
+        }
+    }
+
+    @-o-keyframes play {
+        0% {
+            -o-transform: rotate(0deg);
+        }
+        100% {
+            -o-transform: rotate(360deg);
+        }
+    }
+
+    @-ms-keyframes play {
+        0% {
+            -ms-transform: rotate(0deg);
+        }
+        100% {
+            -ms-transform: rotate(360deg);
+        }
+    }
+
+    .playing {
+        position: fixed;
+        right: 0;
+        top: 200px;
+        width: 460px;
+        border: 1px solid #f2f2f2;
+        height: 360px;
+        z-index: 3;
+        /*  right: -300px*/;
+    }
+
+    .playing .top {
+        height: 60px;
+        line-height: 60px;
+        width: 100%;
+        padding: 0 10px;
+        vertical-align: middle;
+        border-bottom: 1px solid #888;
+        position: relative;
+        z-index: 100;
+        cursor: move;
+    }
+
+    .playing .lyric {
+        height: 300px;
+        line-height: 40px;
+        position: relative;
+        padding: 0 10px;
+        vertical-align: middle;
+        box-sizing: content-box;
+        overflow-y: scroll;
+        left: 0;
+        right: 0;
+        font-size: 15px;
+        z-index: 100;
+    }
+
+    .playing .lyric .take_place {
+        height: 130px;
+        width: 100%;
+    }
+
+    .playing .lyric .current {
+        color: #31c27c;
+        /* font-size: 16px;*/
+    }
+
+    .playing .thumb {
+        display: inline-block;
+        overflow: hidden;
+        width: 50px;
+        height: 50px;
+        float: left;
+    }
+
+    .playing .thumb img {
+        width: 40px;
+        border-radius: 100%;
+    }
+
+    .playing .thumb img.rounding {
+        -webkit-animation: play 3s linear infinite;
+        -moz-animation: play 3s linear infinite;
+        -o-animation: play 3s linear infinite;
+        animation: play 3s linear infinite;
+    }
+
+    .playing_handle {
+        font-size: 20px;
+        color: #e4e4e4;
+        margin-left: 10px;
+        display: inline-block;
+        float: left;
+        cursor: pointer;
+    }
+
+    .playing_handle.playBtn, .playing_handle.pauseBtn {
+        font-size: 30px;
+    }
+
+    .playing_handle.forwardBtn {
+        margin-right: 10px;
+    }
+
+    .playing_handle.pauseBtn {
+        display: none;
+    }
+
+    .playing {
+        background: #2D3C4F;
+        color: #e4e4e4;
+        vertical-align: middle;
+        border-radius: 10px;
+        display: none;
+        z-index: 1500;
+
+    }
+
+    .playing_cover {
+        position: absolute;
+        right: 0;
+        top: 60px;
+        width: 360px;
+        height: 300px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        -webkit-filter: blur(60px);
+        -moz-filter: blur(60px);
+        -o-filter: blur(60px);
+        -ms-filter: blur(60px);
+        filter: blur(60px);
+        z-index: 2;
+    }
+
+    .playing .name {
+        width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .music_handle .handle_item {
+        font-size: 20px;
+        opacity: 0.8;
+        margin-right: 10px;
+        font-weight: normal;
+        cursor: pointer;
+    }
+
+    .search_result {
+        margin: 0;
+        padding: 0 10px;
+    }
+
+    .search_result .s_type label {
+        font-weight: bold;
+        color: #444;
+        font-size: 15px;
+        line-height: 30px;
+    }
+
+    .search_result li {
+        line-height: 40px;
+        position: relative;
+    }
+
+    .search_result .s_list li {
+        cursor: pointer;
+        padding: 0 5px;
+    }
+
+    .search_result .s_list li:hover {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+        background-color: #F5F5F5;
+    }
+
+    /*定义滚动条轨道 内阴影+圆角*/
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        background-color: #F5F5F5;
+    }
+
+    /*定义滑块 内阴影+圆角*/
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+        background-color: #555;
+    }
+
+    .top_wrap {
+        padding: 10px 10px 20px 10px;
+        border-bottom: 1px solid #e4e4e4;
+    }
+
+    .top_wrap.top_163, .top_wrap.top_baidu,.top_wrap.top_qq{
+        display: none;
+    }
+
+    .top_wrap .top {
+        display: inline-block;
+        padding: 3px 10px;
+        line-height: 24px;
+        border: 1px solid #e4e4e4;
+        border-radius: 2px;
+        background: #f4f4f4;
+        color: #444;
+        cursor: pointer;
+    }
+
+    .top_wrap .top.checked {
+        border-color: #4cb329;
+        background: #4cb329;
+        color: #fff;
+    }
+</style>
+<link rel="stylesheet" type="text/css" href="/static/panel/ali_iconfont/iconfont.css?v=1.0">
+
+<meta name="referrer" content="no-referrer"/>
+<div class="tabs">
+    <a data-key="platform" data-val="163" href="javascript:;"
+       class="tab">网易云音乐</a>
+    <a data-key="platform" data-val="xiami" href="javascript:;"
+       class="tab active">虾米音乐</a>
+    <a data-key="platform" data-val="baidu" href="javascript:;"
+       class="tab">百度音乐</a>
+    <a data-key="platform" data-val="qq" href="javascript:;"
+       class="tab">QQ音乐</a>
+</div>
+<div class="top_wrap top_qq">
+    <!--  排行榜:-->
+    <span class="top checked" data-id="26">热歌榜</span>
+    <span class="top" data-id="27">新歌榜</span>
+    <span class="top" data-id="3">欧美</span>
+    <span class="top" data-id="4">流行指数</span>
+    <span class="top" data-id="5">内地</span>
+    <span class="top" data-id="6">港台</span>
+    <span class="top" data-id="16">韩国</span>
+    <span class="top" data-id="17">日本</span>
+    <span class="top" data-id="25">中国新歌声</span>
+    <span class="top" data-id="28">网络歌曲</span>
+    <span class="top" data-id="36">k歌金曲</span>
+    <span class="top" data-id="51">明日之子</span>
+    <span class="top" data-id="108">美国公牌榜</span>
+    <span class="top" data-id="169">vivo高品质音乐榜</span>
+</div>
+<div class="top_wrap top_163">
+    <!--  排行榜:-->
+    <span class="top checked" data-id="3778678">热歌榜</span>
+    <span class="top" data-id="3779629">新歌榜</span>
+    <span class="top" data-id="19723756">飙升榜</span>
+    <span class="top" data-id="2884035">原创榜</span>
+    <span class="top" data-id="21845217">KTV唛榜</span>
+    <span class="top" data-id="1899724">中国嘻哈榜</span>
+    <span class="top" data-id="112504">港台</span>
+    <span class="top" data-id="64016">内地</span>
+    <span class="top" data-id="60131">日本Oricon周榜</span>
+    <span class="top" data-id="60198">美国Billboard周榜</span>
+</div>
+<div class="top_wrap top_baidu">
+    <!--  排行榜:-->
+    <span class="top checked" data-id="2">热歌榜</span>
+    <span class="top" data-id="1">新歌榜</span>
+    <span class="top" data-id="6">KTV热歌榜</span>
+    <span class="top" data-id="8">Billboard</span>
+    <span class="top" data-id="11">摇滚榜</span>
+    <span class="top" data-id="12">爵士</span>
+    <span class="top" data-id="16">流行</span>
+    <span class="top" data-id="18">Hito中文榜</span>
+    <span class="top" data-id="21">欧美金曲榜</span>
+    <span class="top" data-id="22">经典老歌榜</span>
+    <span class="top" data-id="23">情歌对唱榜</span>
+    <span class="top" data-id="24">影视金曲榜</span>
+    <span class="top" data-id="25">网络歌曲榜</span>
+</div>
+<div class="top_wrap top_xiami">
+    <!--  排行榜:-->
+    <span class="top checked" data-id="101">虾米音乐榜</span>
+    <span class="top" data-id="102">虾米新歌榜</span>
+    <span class="top" data-id="103">虾米原创榜</span>
+    <span class="top" data-id="104">大虾推荐榜</span>
+    <span class="top" data-id="1">Hito中文榜</span>
+    <span class="top" data-id="2">香港劲歌金榜</span>
+    <span class="top" data-id="3">英国UK单曲榜</span>
+    <span class="top" data-id="4">Billboard单曲榜</span>
+    <span class="top" data-id="5">Oricon公信单曲榜</span>
+    <span class="top" data-id="6">M-net综合数据周榜</span>
+</div>
+<div class="playlist playlist_qq">
+
+</div>
+
+<form action="javascript:;" method="get"
+      style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px; line-height: 50px;position: relative;width: 100%;height: 80px">
+    <!--   <label for="name">关键字</label>-->
+    <input name="key" type="text" id="key" placeholder="歌手/歌曲名称/专辑名称" autocomplete="off"
+           style="width: 500px;height: 36px;line-height: 36px;" value="<?php echo $key; ?>">
+    <input type="hidden" value="0" name="top_id"/>
+    <ul class="search_result"
+        style="position: absolute;width: 500px;height: auto;overflow: hidden;box-sizing: border-box;border: 1px solid #4cb329;left: 8px;top:50px;background-color: #fff;">
+
+    </ul>
+    <!-- <input type="hidden" name="platform" id="platform" value="<?php /*echo $platform */ ?>">-->
+    <button type="submit" class="btn btn-inverse btn-sm submitBtn btnSearch" style=""><i class='fa fa-search'></i>搜索
+    </button>
+
+</form>
+<table id="article-list" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style='width:36px'>ID</th>
+        <th style='width:80px'>歌曲封面</th>
+        <th style='width:150px'>歌曲名称</th>
+        <th style='width:150px'>
+            <span class="text">歌手</span>
+        </th>
+        <th style="width: 200px">所属专辑</th>
+        <th style='width:120px'>
+            <span class="text">音乐时长</span>
+        </th>
+        <th style="width: 150px">试听</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody class="listData">
+    <tr>
+        <td colspan="17" style="height: 100px;line-height: 100px" class="center">
+            <img
+                style="width: 40px" src="/srv/static/panel/images/admin/loading2.gif">
+        </td>
+    </tr>
+    </tbody>
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <div class="pageBar"></div>
+        </td>
+    </tr>
+</table>
+<div class="playing" style="">
+    <div class="top">
+        <span class="thumb"><img class="rounding" src=""/></span>
+        <span class="playing_handle backwardBtn"><i class="fa fa-step-backward"></i> </span>
+        <span class="playing_handle playBtn" data-song="" data-src=""><i class="fa fa-play-circle"></i> </span>
+        <span class="playing_handle pauseBtn" data-song=""><i class="fa fa-pause-circle"></i> </span>
+        <span class="playing_handle forwardBtn"><i class="fa fa-step-forward"></i></span>
+        <span class="name left"></span>
+    </div>
+    <ul class="lyric">
+    </ul>
+    <div class="playing_cover" style=""></div>
+</div>
+
+<audio src="" id="voice_box">
+</audio>
+<link rel="stylesheet" href="/srv/static/panel/css/lightbox/lightbox.css"/>
+
+<script src="/static/panel/js/jquery/lightbox/lightbox.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        lightbox.option({
+            albumLabel: '%1/%2',
+            'resizeDuration': 200,
+            "fadeDuration": 0,
+            "imageFadeDuration": 0
+        });
+    })
+
+</script>
+<script>
+    seajs.use('app/panel/music/music.search.js?v=1.07.7', function (api) {
+        api.searchOnline();
+    });
+
+</script>

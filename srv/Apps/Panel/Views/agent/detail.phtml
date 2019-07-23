@@ -1,0 +1,132 @@
+<link rel="stylesheet" href="/static/panel/css/badge.css?v=1.0.0">
+<style>
+    .infoList tr td:first-child {
+        width: 150px;
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    .infoList tr td {
+        line-height: 28px;
+        height: 28px;
+        border: 1px solid #efefef;
+    }
+</style>
+<table id="info-list" class=' list'>
+
+    <tbody class="infoList">
+    <tr>
+        <td>用户ID</td>
+        <td><?php echo $item['user_id'] ?></td>
+    </tr>
+    <tr>
+        <td>邀请码</td>
+        <td><?php echo $item['code'] ?></td>
+    </tr>
+    <tr>
+        <td>是否店家</td>
+        <td><?php echo $item['is_partner'] ? '是' : '否' ?></td>
+    </tr>
+    <tr>
+        <td>开店邀请人</td>
+        <td><?php echo $item['parent_merchant'] ? $item['parent_merchant'] : '无' ?></td>
+    </tr>
+    <tr>
+        <td>是否代理</td>
+        <td><?php echo $item['is_partner'] ? '是' : '否' ?></td>
+    </tr>
+    <tr>
+        <td>代理邀请人</td>
+        <td><?php echo $item['parent_partner'] ? $item['parent_partner'] : '无' ?></td>
+    </tr>
+    <tr>
+        <td>用户名</td>
+        <td><?php echo $item['user_info']['username'] ?></td>
+    </tr>
+    <tr>
+        <td>真实姓名</td>
+        <td><?php echo $item['user_info']['true_name'] ?></td>
+    </tr>
+    <tr>
+        <td>手机号码</td>
+        <td><?php echo $item['phone'] ?></td>
+    </tr>
+    <tr>
+        <td>qq</td>
+        <td><?php echo $item['qq'] ?></td>
+    </tr>
+    <tr>
+        <td>邮箱</td>
+        <td><?php echo $item['qq'] ?></td>
+    </tr>
+    <tr>
+        <td>微信</td>
+        <td><?php echo $item['qq'] ?></td>
+    </tr>
+    <tr>
+        <td>详细地址</td>
+        <td><?php echo $item['address'] ?></td>
+    </tr>
+    <tr>
+        <td>描述</td>
+        <td><?php echo $item['brief'] ?></td>
+    </tr>
+
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="col-xs-12">
+        <!-- PAGE CONTENT BEGINS -->
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="widget-box">
+                    <div class="widget-header header-color-blue2">
+                        <h4 class="lighter smaller">Choose Categories</h4>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main padding-8">
+                            <div id="tree1" class="tree"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="widget-box">
+                    <div class="widget-header header-color-green2">
+                        <h4 class="lighter smaller">Browse Files</h4>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main padding-8">
+                            <div id="tree2" class="tree"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            var $assets = "assets";//this will be used in fuelux.tree-sampledata.js
+        </script>
+
+        <!-- PAGE CONTENT ENDS -->
+    </div><!-- /.col -->
+</div><!-- /.row -->
+<script src="/static/ace/js/fuelux/data/fuelux.tree-sampledata.js"></script>
+<script src="/static/ace/js/fuelux/fuelux.tree.min.js"></script>
+<script>
+    $('#tree1').ace_tree({
+        dataSource: treeDataSource ,
+        multiSelect:true,
+        loadingHTML:'<div class="tree-loading"><i class="fa fa-refresh fa-spin blue"></i></div>',
+        'open-icon' : 'fa fa-minus',
+        'close-icon' : 'fa fa-plus',
+        'selectable' : true,
+        'selected-icon' : 'fa fa-ok',
+        'unselected-icon' : 'fa fa-remove'
+    });
+</script>

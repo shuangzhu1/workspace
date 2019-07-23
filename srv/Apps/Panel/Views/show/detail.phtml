@@ -1,0 +1,579 @@
+<link rel="stylesheet" href="/static/panel/css/stat.css"/>
+<link href="/static/panel/js/tools/acornmediaplayer/acornmediaplayer.base.css" rel="stylesheet" type="text/css">
+<!-- Themes -->
+<link href="/static/panel/js/tools/acornmediaplayer/themes/access/acorn.access.css" rel="stylesheet" type="text/css">
+<link href="/static/panel/js/tools/acornmediaplayer/themes/darkglass/acorn.darkglass.css" rel="stylesheet"
+      type="text/css">
+<script src="/static/panel/js/tools/acornmediaplayer/jquery.acornmediaplayer.js"></script>
+<style>
+    .ui-slider .ui-slider-handle:before {
+        content: '' !important;
+    }
+
+    .ace-thumbnails > li {
+        border: none;
+    }
+
+    .gallerys {
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        margin-top: 10px;
+    }
+
+    .gallerys img {
+        /*   border-radius: 5px;*/
+    }
+
+    .gallerys li {
+        float: left;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+
+    .widget-cont .tr .acorn-player {
+        line-height: 20px;
+    }
+
+    .widget-cont .tr .title {
+        width: 100px;
+        text-align: right;
+        display: inline-block;
+    }
+
+    .widget-cont .tr {
+        border-bottom: none;
+    }
+
+    .widget-cont .tr .sm {
+        margin-bottom: 0;
+        border-right: 1px solid #f0f0f0;
+    }
+
+    .widget-cont .tr .sm:last-child {
+        border-right: none
+    }
+
+    .video .handle i:hover {
+        color: #2c6aa0;
+        opacity: 0.8;
+    }
+
+    .video .btns i:hover {
+        background-color: #e4e4e4;
+    }
+
+    .video .video_content {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .video .video_item {
+        width: 24%;
+        float: left;
+        margin-bottom: 10px;
+
+    }
+
+    .video .video_wrap {
+        position: relative;
+        width: 180px;
+        height: 300px;
+    }
+
+    .video .handle {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -20px;
+        margin-top: -30px;
+        width: 40px;
+        height: 40px;
+        display: block;
+        color: #e4e4e4
+    }
+
+    .video .percent_wrap {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        width: auto;
+        right: 0;
+        background-color: #e4e4e4;
+        margin: 0 5px;
+    }
+
+    .video .percent_wrap .percent {
+        line-height: 28px;
+        height: 28px;
+        background-color: #00AA00;
+        display: inline-block;
+    }
+
+    .video .btn_wrap {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: auto;
+        border: 1px solid #e4e4e4;
+        padding: 2px;
+        background-size: 50%;
+        right: 0;
+        z-index: 2;
+        opacity: 0.9;
+        line-height: 5px;
+        background-color: white;
+        margin: 0 5px;
+    }
+
+    .video .btn_wrap .btns {
+        padding: 5px;
+        height: 20px;
+        line-height: 20px
+    }
+
+    .video .btn_wrap .btns i {
+        margin-right: 2px;
+        border: 1px solid #e4e4e4;
+        padding: 3px 5px;
+        border-radius: 2px;
+    }
+</style>
+<div class="stat_component video" style="height: auto;overflow: hidden">
+    <div class="header_bar" style="height: auto;overflow: hidden">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;"><i class="fa fa-camera"></i>&nbsp;
+                <b>“<?php echo $user['username'] ?>”</b>的作品</b></div>
+        <?php if ($show) { ?>
+            <!-- <?php /*foreach ($show as $item) {
+                $media = explode('?', $item['url']);
+                $thumb = "";
+                if (stripos($media[0], 'circleimg') >= 0) {
+                    $thumb = $media[0];
+                    $media = $media[1];
+                } else {
+                    $thumb = !empty($media[1]) ? $media[1] : $thumb;
+                    $media = $media[0];
+                }
+                */ ?>
+                <div style="width: 500px;height:auto;overflow: hidden;margin: 5px;float: left">
+                    <figure>
+                        <video id="demo1" controls="controls" width="500" height="200"
+                               poster="<?php /*echo $thumb; */ ?>?x-oss-process=image/resize,m_fill,h_300,w_300"
+                               preload="metadata"
+                               aria-describedby="full-descript">
+                            <source type="video/mp4"
+                                    src="<?php /*echo $media; */ ?>"/>
+                        </video>
+                    </figure>
+                </div>
+            --><?php /*} */ ?>
+            <div
+                style="width: 100% ;height:auto;overflow: hidden;">
+                <ul class="gallerys">
+                    <?php foreach ($show as $key => $item) {
+                        $media = explode('?', $item['url']);
+                        $thumb = "";
+                        if (stripos($media[0], 'circleimg') >= 0) {
+                            $thumb = $media[0];
+                            $media = $media[1];
+                        } else {
+                            $thumb = !empty($media[1]) ? $media[1] : $thumb;
+                            $media = $media[0];
+                        }
+                        ?>
+                        <li class="video_item"
+                            data-id="<?php echo $key ?>">
+                            <div class="video_wrap" data-id="<?php echo $key ?>" style="float: left">
+                                <div class="video_content">
+                                    <video style="width: 100%;height: 100%" poster="<?php echo $thumb ?>"
+                                           data-src="<?php echo $media ?>"
+                                           id="video_<?php echo $key ?>"
+                                           data-id="<?php echo $key ?>"
+                                           src=""
+                                    >
+                                        <!--  <source src="" type="video/mp4"/>-->
+                                    </video>
+                                    <!--  <img style="width: 100%;height: auto"
+                                     data-src="<?php /*echo $thumb; */ ?>"
+                                     src="<?php /*echo $thumb . '?x-oss-process=image/resize,m_fill,h_640,w_400'; */ ?>"/>-->
+                                </div>
+                                <span class="handle" data-id="<?php echo $key ?>"
+                                      style="">
+                                    <i class="fa fa-play-circle play" style="font-size: 40px;"></i>
+                                    <i class="fa fa-pause-circle pause"
+                                       style="font-size: 40px;display: none"></i>
+                                </span>
+                                <p class="percent_wrap">
+                                    <span class="percent" data-id="<?php echo $key ?>"> </span>
+                                </p>
+                                <p class="btn_wrap">
+                                <span class="btns" data-id="<?php echo $key ?>">
+                                     <i class="fa fa-play btn-play"></i>
+                                     <i class="fa fa-pause btn-pause" style="display: none"></i>
+                                     <i class="fa fa-backward btn-backward"></i>
+                                     <i class="fa fa-forward btn-forward"></i>
+                                     <i class="fa fa-expand btn-expend"></i>
+                                        <i class="fa fa-compress btn-compress" style="display: none"></i>
+                                     <label class="time right" style="margin-right: 5px">
+                                         <!--<b class="current_time">0:00</b>/--><b class="total_time">0:00</b></label>
+                                </span>
+                                </p>
+                            </div>
+                            <style>
+                                .description p {
+                                    line-height: 40px;
+                                }
+
+                                .description .lb {
+                                    color: #000;
+                                    font-weight: bold;
+                                }
+                            </style>
+                            <div class="description" style="float: left;padding: 20px">
+
+                                <p><label
+                                        class="lb">发布时间：</label><label><?php echo date('Y-m-d H:i', $item['created']) ?></label>
+                                </p>
+                                <p><label class="lb">获得点赞：</label><label><?php echo $item['like_cnt'] ?></label></p>
+                                <p><label class="lb">获得打赏：</label><label><?php echo $item['reward_cnt'] ?></label>
+                                </p>
+                                <p><label
+                                        class="lb">视频状态：</label><label><?php echo $item['status'] == 1 ? '<span class="green">正常</span>' :
+                                            ($item['status'] == 0 ? "<span class='red'>被屏蔽</span>" : '用户已删除') ?></label>
+                                </p>
+                                <p><label class="lb">操作：</label>
+                                    <label>
+                                        <?php if ($item['status'] == 1) { ?>
+                                            <span class="btn btn-sm btn-danger delBtn"
+                                                  data-id="<?php echo $item['id'] ?>">屏蔽</span>
+                                        <?php } else if ($item['status'] == 0) { ?>
+                                            <span class="btn btn-sm btn-success recoveryBtn"
+                                                  data-id="<?php echo $item['id'] ?>">恢复</span>
+                                        <?php } ?>
+
+                                    </label>
+                                </p>
+
+                            </div>
+
+                        </li>
+                    <?php } ?>
+                </ul>
+            </div>
+        <?php } ?>
+
+        <!--   <?php /*if ($show['video']) {
+            $media = explode('?', $show['video']);
+            $thumb = "";
+            if (stripos($media[0], 'circleimg') >= 0) {
+                $thumb = $media[0];
+                $media = $media[1];
+            } else {
+                $thumb = !empty($media[1]) ? $media[1] : $thumb;
+                $media = $media[0];
+            }
+            */ ?>
+            <div style="width: 500px;height:auto;overflow: hidden;margin: 5px;float: left">
+                <figure>
+                    <video id="demo1" controls="controls" width="500" height="200"
+                           poster="<?php /*echo $thumb; */ ?>?x-oss-process=image/resize,m_fill,h_300,w_300"
+                           preload="metadata"
+                           aria-describedby="full-descript">
+                        <source type="video/mp4"
+                                src="<?php /*echo $media; */ ?>"/>
+                    </video>
+                </figure>
+            </div>
+
+        --><?php /*} */ ?>
+
+        <!--    <div
+            style="width: <?php /*echo $show['video'] ? '60%' : '90%' */ ?>;height:auto;overflow: hidden;margin: 5px;float: left">
+            <ul class="gallerys">
+
+                <?php
+        /*                $imgs = explode(',', $show['images']);
+
+                        foreach ($imgs as $m) { */ ?>
+                    <li style="width: 150px;height: 250px">
+                        <img style="width: 100%;height: auto"
+                             data-src="<?php /*echo $m; */ ?>"
+                             src="<?php /*echo $m . '?x-oss-process=image/resize,m_fill,h_640,w_400'; */ ?>"
+                             class="gallery-pic" onclick="$.openPhotoGallery(this)"/>
+                        </a>
+                    </li>
+
+                <?php /*} */ ?>
+            </ul>
+        </div>-->
+        <div style="clear: both"></div>
+
+
+    </div>
+
+</div>
+<!--<div class="stat_component" style="height: auto;overflow: hidden;margin-top: -10px;">
+    <div class="header_bar" style="height: auto;overflow: hidden">
+        <div class="page-header" style="margin-bottom: 2px;"><b
+                style="padding-left: 10px;"><i class="fa fa-tachometer"></i>&nbsp;本期数据</b></div>
+        <section>
+
+            <article class="widget-cont" style="width: 50%;">
+                <div class="tr " style="height: auto;">
+                    <label class="sm">
+                        <span class="title">当前魅力值:</span>
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><?php /*echo $show['current_month_charm']; */ ?></span>
+                    </label>
+                    <label class="sm">
+                        <span class="title">当前点赞数:</span>
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><?php /*echo $show['current_month_like']; */ ?></span>
+                    </label>
+                    <label class="sm">
+                        <span class="title">当前踩数:</span>
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><?php /*echo $show['current_month_dislike']; */ ?></span>
+                    </label>
+                </div>
+            </article>
+            <article class="widget-cont" style="width: 50%;">
+                <div class="tr " style="height: auto;">
+                    <label class="sm">
+                        <span class="title">总点赞数:</span>
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><?php /*echo $show['like_cnt']; */ ?></span>
+                    </label>
+                    <label class="sm">
+                        <span class="title">总踩数:</span>
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><?php /*echo $show['dislike_cnt']; */ ?></span>
+                    </label>
+                    <label class="sm">
+                        <span class="title">总魅力值:</span>
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><?php /*echo $user['charm']; */ ?></span>
+                    </label>
+                </div>
+            </article>
+        </section>
+
+    </div>
+
+</div>-->
+<!--<div class="stat_component" style="height: auto;overflow: hidden;margin-top: -10px;">
+    <div class="header_bar" style="height: auto;overflow: hidden">
+        <div class="page-header" style="margin-bottom: 2px;"><b
+                style="padding-left: 10px;"><i class="fa fa-clock-o"></i>&nbsp;历史战绩</b></div>
+        <section>
+
+            <article class="widget-cont history_data" style="width: 50%;">
+
+            </article>
+
+        </section>
+
+    </div>
+
+</div>-->
+<!--<link rel="stylesheet" href="/static/panel/js/jquery/gallery/photoGallery.css"/>
+<script src="/static/panel/js/jquery/gallery/jquery.photo.gallery.js"></script>
+<script src="/static/panel/js/jquery/jquery-ui-1.10.0.custom.min.js"></script>
+-->
+<script type="text/javascript">
+    //打开自动播放
+    $(function () {
+        $("video").each(function () {
+            var id = $(this).data('id');
+            var video = document.getElementById("video_" + id);
+            var __this = $(this);
+            //加载完成
+            video.addEventListener('loadedmetadata', function () {
+                var minute = Math.floor(this.duration / 60);
+                var second = Math.ceil(this.duration % 60);
+                second = second > 10 ? second : "0" + second;
+                $("li[data-id='" + id + "']").find('.total_time').html(minute + ":" + second);
+            });
+            //进度条
+            video.addEventListener('timeupdate', function () {
+                var percent = ((this.currentTime / this.duration) * 100).toFixed(1);
+                $(".percent[data-id='" + id + "']").css({'width': (percent) + '%'})
+
+            });
+            //进度条
+            video.addEventListener('error', function () {
+                alert("加载出错")
+            });   //进度条
+            video.addEventListener('progress', function () {
+                console.log(this);
+            });
+            //播放结束
+            video.addEventListener('pause', function () {
+                $(".video li[data-id='" + id + "'] .handle .play").show();
+                $(".video li[data-id='" + id + "'] .btn-play").show();
+                $(".video li[data-id='" + id + "'] .btn-pause").hide();
+            });
+
+        });
+        $(".video .handle").on('click', '.play', function () {
+            // $(this).hide().siblings().show();
+            $(this).hide();
+            var id = $(this).parent().data('id');
+            $(".btns .btn-expend").show();
+            $(".btns .btn-compress").hide();
+            var video = document.getElementById("video_" + id);
+            $(".video li[data-id='" + id + "'] .btn-play").hide();
+            $(".video li[data-id='" + id + "'] .btn-pause").show();
+
+            if ($("#video_" + id).attr('src') == '') {
+                $("#video_" + id).attr('src', $("#video_" + id).attr('data-src'));
+            }
+            video.play();
+        }).on('click', '.pause', function () {
+            $(this).show();
+            var id = $(this).parent().data('id');
+            var video = document.getElementById("video_" + id);
+            $(".video li[data-id='" + id + "'] .btn-play").show();
+            $(".video li[data-id='" + id + "'] .btn-pause").hide();
+            video.play();
+        });
+        $(".video .btns").on('click', '.btn-play', function () {
+            // $(this).hide().siblings().show();
+            var id = $(this).parent().data('id');
+            $(".video li[data-id='" + id + "'] .play").hide();
+            $(".video li[data-id='" + id + "'] .btn-play").hide();
+            $(".video li[data-id='" + id + "'] .btn-pause").show();
+            var video = document.getElementById("video_" + id);
+            if ($("#video_" + id).attr('src') == '') {
+                $("#video_" + id).attr('src', $("#video_" + id).attr('data-src'));
+            }
+            video.play();
+        }).on('click', '.btn-pause', function () {
+            // $(this).hide().siblings().show();
+            var id = $(this).parent().data('id');
+            $(".video li[data-id='" + id + "'] .play").show();
+            $(".video li[data-id='" + id + "'] .btn-play").show();
+            $(".video li[data-id='" + id + "'] .btn-pause").hide();
+            var video = document.getElementById("video_" + id);
+            video.pause();
+        }).on('click', '.btn-forward', function () {
+            // $(this).hide().siblings().show();
+            var id = $(this).parent().data('id');
+            var video = document.getElementById("video_" + id);
+            if (video.currentTime > 0) {
+                video.currentTime = video.currentTime + 2;
+            }
+        }).on('click', '.btn-backward', function () {
+            // $(this).hide().siblings().show();
+            var id = $(this).parent().data('id');
+            var video = document.getElementById("video_" + id);
+            if (video.currentTime > 0) {
+                if (video.currentTime - 2 > 0) {
+                    video.currentTime = video.currentTime - 2;
+                } else {
+                    video.currentTime = 0;
+                }
+
+            }
+
+        })
+
+    });
+</script>
+<script>
+    var full_ID = null;
+    window.onresize = function () {
+        if (!checkFull()) {
+            $(".btns .btn-expend").show();
+            $(".btns .btn-compress").hide();
+            $(".video_wrap[data-id='" + full_ID + "']").css({'height': '300px', 'width': '180px'});
+            exitFull();
+        }
+    };
+    function checkFull() {
+        var isFull = document.fullscreenEnabled || window.fullScreen || document.webkitIsFullScreen || document.msFullscreenEnabled;
+        //to fix : false || undefined == undefined
+        if (isFull === undefined) isFull = false;
+        return isFull;
+    }
+
+    $(".btn-expend").on('click', function () {
+        full_ID = $(this).parent().data('id');
+        $(".btns .btn-expend").hide();
+        $(".btns .btn-compress").show();
+        $(".video_wrap[data-id='" + full_ID + "']").css({'height': '100%', 'width': '100%'});
+        requestFullScreen($(".video_wrap[data-id='" + full_ID + "']")[0]);
+    });
+    $(".btn-compress").on('click', function () {
+        full_ID = $(this).parent().data('id');
+        $(".btns .btn-expend").show();
+        $(".btns .btn-compress").hide();
+        $(".video_wrap[data-id='" + full_ID + "']").css({'height': '300px', 'width': '180px'});
+        exitFull();
+    });
+    $(".video_item").on("click", function () {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+
+    }, false);
+
+    function requestFullScreen(element) {
+        // 判断各种浏览器，找到正确的方法
+        var requestMethod = element.requestFullScreen || //W3C
+            element.webkitRequestFullScreen ||  //Chrome等
+            element.mozRequestFullScreen || //FireFox
+            element.msRequestFullScreen; //IE11
+        if (requestMethod) {
+            requestMethod.call(element);
+        }
+        else if (typeof window.ActiveXObject !== "undefined") {//for Internet Explorer
+            var wscript = new ActiveXObject("WScript.Shell");
+            if (wscript !== null) {
+                wscript.SendKeys("{F11}");
+            }
+        }
+
+    }
+    function exitFull() {
+        // 判断各种浏览器，找到正确的方法
+        var exitMethod = document.exitFullscreen || //W3C
+            document.mozCancelFullScreen ||  //Chrome等
+            document.webkitExitFullscreen || //FireFox
+            document.webkitExitFullscreen; //IE11
+        if (exitMethod) {
+            exitMethod.call(document);
+        }
+        else if (typeof window.ActiveXObject !== "undefined") {//for Internet Explorer
+            var wscript = new ActiveXObject("WScript.Shell");
+            if (wscript !== null) {
+                wscript.SendKeys("{F11}");
+            }
+        }
+    }
+</script>
+<script>
+    seajs.use('app/panel/panel.base', function (api) {
+        //屏蔽
+        $(".delBtn").on('click', function () {
+            var id = $(this).data('id');
+            api.requestApi('/api/show/del', {id: id}, function (res) {
+                if (res.result == 1) {
+                    window.location.reload();
+                }
+            });
+        });
+        //恢复正常
+        $(".recoveryBtn").on('click', function () {
+            var id = $(this).data('id');
+            api.requestApi('/api/show/recovery', {id: id}, function (res) {
+                if (res.result == 1) {
+                    window.location.reload();
+                }
+            });
+        });
+
+    })
+</script>

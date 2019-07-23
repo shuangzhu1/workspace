@@ -1,0 +1,298 @@
+body {
+  background-color: #f9f9f9; }
+
+.public-header {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  width: 100%;
+  z-index: 99;
+  height: 3.0rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.public-header .header {
+  height: 2.0rem;
+  background-color: #0bd1a0;
+  position: relative; }
+
+.public-header .header h1 {
+  font-size: 0.85rem;
+  color: #fff;
+  text-align: center;
+  line-height: 2.0rem;
+  margin: 0; }
+
+.public-header .header a {
+  position: absolute;
+  left: 0.5rem;
+  top: 0.25rem; }
+
+.public-header .header a span {
+  border: 3px solid #fff;
+  width: 0.7rem;
+  height: 0.7rem;
+  vertical-align: middle;
+  display: inline-block;
+  line-height: 1.5rem;
+  border-right: none;
+  border-top: none;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg); }
+
+.dynamic_detail dl {
+  position: relative; }
+
+.dynamic_detail dl dd .detail_like {
+  color: #999;
+  font-size: 0.6rem;
+  position: absolute;
+  top: 0;
+  right: 0; }
+
+.dynamic_detail dl dd .detail_like em {
+  display: inline-block;
+  width: 0.85rem;
+  height: 0.85rem;
+  background: url(../images/love_icon_n.png) no-repeat center;
+  background-size: cover !important;
+  margin-right: 0.25rem;
+  vertical-align: middle; }
+
+.dynamic_detail dl dd .detail_like em.vLike {
+  background: url(../images/love_icon_s.png) no-repeat center; }
+
+.dynamic_detail .dymaic_matter {
+  padding-bottom: 0.75rem; }
+
+.dynamic_people {
+  margin-top: 0.25rem;
+  background: #fff;
+  padding: 0.5rem 0; }
+
+.dynamic_people .dynamic_people_about ul {
+  width: 9.75rem;
+  height: 1.5rem;
+  overflow: hidden;
+  display: inline-block; }
+
+.dynamic_people .dynamic_people_about ul li {
+  margin-left: 0.5rem;
+  float: left;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  -webkit-border-radius: 50%; }
+
+.dynamic_people .dynamic_people_about ul li img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  -webkit-border-radius: 50%; }
+
+.dynamic_people .dynamic_people_about .dy_people_name {
+  float: right;
+  color: #999;
+  font-size: 0.6rem;
+  margin-top: 0.5rem; }
+
+.dynamic_all_box {
+  margin-top: 0.25rem;
+  background-color: #fff; }
+
+.dynamic_all_box .dynamic_all_con {
+  margin-left: 0.45rem; }
+
+.dynamic_all_box .dynamic_all_con h1 {
+  color: #333;
+  font-size: 0.7rem;
+  margin-bottom: 0.85rem;
+  padding-top: 0.5rem; }
+
+.dynamic_all_box .dynamic_all_con ul li {
+  margin-top: 0.9rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid #e0e0e0; }
+
+.dynamic_all_box .dynamic_all_con ul li dl {
+  position: relative; }
+
+.dynamic_all_box .dynamic_all_con ul li dl dt {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  display: inline-block;
+  float: left;
+  margin-right: 0.5rem; }
+
+.dynamic_all_box .dynamic_all_con ul li dl dt img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  -webkit-border-radius: 50%; }
+
+.dynamic_all_box .dynamic_all_con ul li dl dd p {
+  line-height: 0.5rem; }
+
+.dynamic_all_box .dynamic_all_con ul li dl dd .comment_like {
+  position: absolute;
+  right: 0;
+  top: 0.25rem;
+  color: #999;
+  font-size: 0.6rem; }
+
+.dynamic_all_box .dynamic_all_con ul li dl dd .comment_like em {
+  display: inline-block;
+  width: 0.9rem;
+  height: 0.9rem;
+  background: url(../images/love_icon_n.png) no-repeat center;
+  margin-right: 0.25rem;
+  background-size: cover !important;
+  vertical-align: middle; }
+
+.dynamic_all_box .dynamic_all_con ul li dl dd .comment_like em.vLike {
+  background: url(../images/love_icon_s.png) no-repeat center; }
+
+.dynamic_all_box .dynamic_all_con ul .des {
+  margin: 0.6rem 0 0 2rem;
+  font-size: 0.7rem;
+  color: #333;
+  max-height: 100%; }
+  .dynamic_all_box .dynamic_all_con ul .des .item_picture_icon {
+    color: #0bd1a0;
+    font-style: normal; }
+    .dynamic_all_box .dynamic_all_con ul .des .item_picture_icon i {
+      background: url(../images/icon_picture.png) no-repeat center;
+      background-size: cover;
+      display: inline-block;
+      vertical-align: middle;
+      width: 0.75rem;
+      height: 0.75rem; }
+
+.dynamic_no_mes {
+  margin: 2rem 0; }
+
+.dynamic_no_mes h6 {
+  text-align: center; }
+
+.dynamic_no_mes h6 i {
+  width: 4.45rem;
+  height: 1px;
+  background: #e0e0e0;
+  vertical-align: middle;
+  display: inline-block; }
+
+.dynamic_no_mes h6 span {
+  font-size: 0.6rem;
+  color: #999;
+  margin: 0 0.4rem; }
+
+.dymaic_option {
+  border-top: 1px solid #e0e0e0; }
+  .dymaic_option ul {
+    display: flex;
+    flex-direction: row;
+    padding: 0.65rem 0; }
+    .dymaic_option ul li {
+      width: 49%;
+      border-right: 1px solid #e0e0e0;
+      text-align: center;
+      font-size: 0.6rem;
+      color: #999;
+      line-height: 0.95rem; }
+      .dymaic_option ul li em {
+        width: 0.75rem;
+        height: 0.75rem;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 0.5rem; }
+        .dymaic_option ul li em.love {
+          background: url(../images/love_icon_n.png) ;
+        background-size:100% 100%;}
+        .dymaic_option ul li em.collect {
+          background: url(../images/collection_icon_n.png) ;
+          background-size:100% 100%;}
+    .dymaic_option ul li.alredy em.love {
+      background: url(../images/love_icon_s.png) ;
+      background-size:100% 100%;}
+    .dymaic_option ul li.alredy em.collect {
+      background: url(../images/collection_icon_s.png) ;
+      background-size:100% 100%;}
+    .dymaic_option ul li:last-child {
+      border-right: 0; }
+
+.dynamic_option_list {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 0.5rem 0; }
+  .dynamic_option_list a {
+    font-size: 0.7rem;
+    margin-right: 1.25rem;
+    color: #999;
+    font-weight: bold;
+    font-family: "Microsoft YaHei";
+    padding-bottom: 0.25rem; }
+  .dynamic_option_list a.active {
+    color: #0bd1a0; }
+
+.dy_del {
+  font-size: 0.5rem;
+  color: #ffac2d; }
+
+.dy_comment {
+  width: 86%;
+  margin-left: 2rem;
+  margin-top: 0.5rem; }
+
+.public_download {
+  padding: 0.25rem 0;
+   }
+  .public_download dl {
+    width: 92%;
+    margin: 0 auto; }
+    .public_download dl dt {
+      float: left;
+      margin-right: 0.5rem;
+      display: inline-block;
+      width: 2.45rem; }
+    .klg-icon{
+      height: 2.5rem;
+      width: 2.5rem;
+    }
+.klg-icon img {
+  width: 100%;
+  height: 100%;
+}    .public_download dl dd {
+      display: inline-block; }
+      .public_download dl dd h6 {
+        font-size: 0.75rem;
+        color: #333;
+        padding-bottom: 0.35rem;
+        margin-bottom:0; }
+      .public_download dl dd p {
+        font-size: 0.6rem;
+        color: #999; }
+      .public_download dl dd a {
+        display: inline-block;
+        width: 3.5rem;
+        height: 1.6rem;
+        line-height: 1.6rem;
+        font-size: 0.75rem;
+        font-weight: bold;
+        color: #fff;
+        text-align: center;
+        background-color: #0bd1a0;
+        border-radius: 0.85rem;
+        -webkit-border-radius: 0.85rem;
+        float: right;
+        margin-top: 0.4rem; }
+      .public_download dl dd.down_btn {
+        float: right; }
+
+/*# sourceMappingURL=share_detail.css.map */
+
+/*# sourceMappingURL=share_detail.css.map */

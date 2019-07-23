@@ -1,0 +1,187 @@
+<style type="text/css">
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    .topMenu {
+        line-height: 36px;
+        font-size: 14px;
+        font-family: 'Microsoft YaHei';
+        font-weight: bold;
+        border-bottom: 1px solid #999;
+        margin: 0;
+        padding: 0;
+    }
+
+    .secMenu {
+        line-height: 30px;
+        font-weight: normal;
+        background: #F4FAFE;
+        font-size: 14px;
+        margin: 0;
+        padding: 0;
+        border: 1px solid #DEEFFB;
+        border-bottom: none;
+    }
+
+    .thrMenu {
+        line-height: 24px;
+        color: #666;
+        border: 1px solid #DEEFFB;
+        padding: 6px 2px;
+        margin: 0 0 8px;
+    }
+
+    .thrMenu label {
+        padding: 0 8px;
+        display: inline-block;
+    }
+
+    .menu {
+        margin: 0 8px 0 4px;
+    }
+
+    .chooseTip {
+        margin: 20px;
+        color: #ff0000;
+    }
+</style>
+
+<script type="text/javascript">
+    seajs.use('app/admin/admin.manager', function (api) {
+        api.setGroupPermission();
+    });
+</script>
+<div class="content">
+    <form action="javascript:;" id="permissionForm">
+        <table class='list'>
+            <caption>
+                <b class="captitle">管理组权限设置</b>
+            </caption>
+            <tr class="showpage">
+                <td style="font-size: 14px;">
+                    选择组：【
+                    <?php
+                    foreach ($groups as $group) {
+                        ?>
+                        <a href="<?php echo $this->uri->actionUrl('?gid=' . $group['id']); ?>"
+                           style="<?php echo $groupInfo['id'] == $group['id'] ? 'color:red;' : ''; ?>"><?php echo $group['name']; ?></a> |
+                        <?php
+                    }
+                    ?>】
+                    <input type="button" value="全选" class="btn-light selcAll">
+                    <input type="button" value="全不选" class="btn-light selcNone">
+                    <input type="button" value="提交权限设置" data-gid='<?php echo $gid; ?>' id=""
+                           class="btn-light setPermissionBtn">
+                </td>
+            </tr>
+            <?php if ($groupInfo) { ?>
+                <tr>
+                    <td>
+
+                        <ul>
+                            <?php
+
+                            $userPerms = array();
+                            $userRights = array();
+
+
+                            foreach ($groupPermissions as $val) {
+                                $userPerms[$val['id']] = $val['menu_id'];
+                                $userRights[$val['id']] = $val['right_type'];
+                            }
+
+                            foreach ($menuCats as $topCat) {
+                                if ($topCat['parent_id'] == 0) {
+                                    ?>
+                                    <li class="menu">
+                                        <h2 class="topMenu"><?php echo $topCat['title']; ?> </h2>
+                                        <?php
+                                        foreach ($menuCats as $secCat) {
+                                            if ($secCat['parent_id'] == $topCat['id']) {
+                                                ?>
+                                                <h3 class="secMenu"> ├一 <?php echo $secCat['title']; ?>
+                                                    [ <a href="javascript:;" class="selcAll"
+                                                         data-cid="<?php echo $secCat['id']; ?>">全选</a> |
+                                                    <a href="javascript:;" class="selcNone"
+                                                       data-cid="<?php echo $secCat['id']; ?>">全不选</a> ] </h3>
+                                                <div class="thrMenu">
+                                                    <?php
+                                                    foreach ($menus as $menu) {
+                                                        //过滤账号相关权限
+                                                        if ($secCat['id'] == 7 && in_array($menu['id'], [2, 3, 4, 5, 6, 7])) {
+                                                            continue;
+                                                        }
+                                                        if ($menu['cid'] == $secCat['id']) {
+                                                            ?>
+                                                            <label value='<?php echo $menu['id']; ?>' class="change">
+                                                                <?php
+
+                                                                if ($key = array_search($menu['id'], $userPerms)) {
+                                                                    ?>
+                                                                    <input type="checkbox"
+                                                                           data-old-perm="<?php echo $userRights[$key]; ?>"
+                                                                           data-cid="<?php echo $secCat['id']; ?>"
+                                                                           value="<?php echo $userRights[$key]; ?>"
+                                                                           data-menu-id="<?php echo $menu['id']; ?>"
+                                                                           data-perm-id="<?php echo $key; ?>"
+                                                                        <?php if ($userRights[$key] == 1) echo 'checked="checked"'; ?>
+                                                                           class='chk ace'/>
+                                                                    <?php
+                                                                } else {
+                                                                    ?>
+                                                                    <input type="checkbox" data-old-perm="0" value="0"
+                                                                           data-cid="<?php echo $secCat['id']; ?>"
+                                                                           data-menu-id=<?php echo $menu['id']; ?> class='chk
+                                                                           ace'>
+                                                                    <?php
+                                                                }
+
+                                                                ?>
+                                                                <span class="lbl"></span>
+                                        <span
+                                            title='<?php echo $menu['controller'] . '/' . $menu['action']; ?>'>
+                                            <?php echo $menu['title']; ?>
+                                            <?php if ($menu['module'] == 'panel') { ?>
+                                                <i class="badge badge-primary">展示</i>
+                                            <?php } else { ?>
+                                                <i class="badge badge-success">api</i>
+
+                                            <?php } ?>
+                                                </span>
+                                                            </label>
+                                                        <?php }
+                                                    } ?>
+                                                </div>
+                                            <?php }
+                                        } ?>
+                                    </li>
+                                    <?php
+                                }
+                            }
+                            ?>
+                        </ul>
+
+                    </td>
+                </tr>
+                <tr class="showpage">
+                    <td>
+                        <p style="margin:8px 0;">
+                            <input type="button" value="提交" data-gid='<?php echo $gid; ?>'
+                                   class="btn-gray setPermissionBtn">
+                            <input type="button" value="全选" class="btn-light selcAll">
+                            <input type="button" value="全不选" class="btn-light selcNone">
+                        </p>
+                    </td>
+                </tr>
+            <?php } else { ?>
+                <tr>
+                    <td>
+                        <p class="chooseTip">请选择一个管理员组~~~~~</p>
+                    </td>
+                </tr>
+            <?php } ?>
+        </table>
+    </form>
+</div>

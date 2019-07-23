@@ -1,0 +1,953 @@
+body,div,form,h1,h2,h3,h4,h5,h6,html,input,li,ol,p,ul {
+    margin: 0;
+    padding: 0
+}
+
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section {
+    display: block
+}
+
+ol,ul {
+    list-style: none
+}
+
+img {
+    border: 0
+}
+
+.clearfix {
+    zoom: 1
+}
+
+.clearfix:after,.clearfix:before {
+    content: "\0020";
+    display: block;
+    height: 0;
+    overflow: hidden
+}
+
+.clearfix:after {
+    clear: both
+}
+
+body {
+    background-color: #f5f5f5;
+    font-family: "Lantinghei SC","Microsoft Yahei","Hiragino Sans GB","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    -webkit-text-size-adjust: none
+}
+
+* {
+    -webkit-tap-highlight-color: transparent
+}
+
+a {
+    text-decoration: none;
+    color: #2f7c2f;
+    -webkit-transition: color .3s ease-out
+}
+
+img {
+    -ms-interpolation-mode: bicubic
+}
+
+.show {
+    display: block
+}
+
+.hide {
+    display: none
+}
+
+input,textarea {
+    outline: 0
+}
+
+blockquote {
+    margin: 10px 0;
+    color: #999;
+    padding-left: 10px;
+    border-left: 5px solid #efefef
+}
+
+.block-title {
+    display: block;
+    padding-left: 7px;
+    border-left: 3px solid #45cab6
+}
+
+.load-more {
+    text-align: center;
+    margin: 10px 0 20px
+}
+
+.load-more .refresh-btn {
+    background: #ddd;
+    display: inline-block;
+    font-size: .875em;
+    padding: 8px 20px;
+    color: #333
+}
+
+.Mobile .app-box,.Tablet .app-box {
+    margin-top: 10px
+}
+
+header {
+    height: 66px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    z-index: 101
+}
+
+header .logo {
+    display: block;
+    float: left;
+    margin: 2px 50px 0 8px
+}
+
+header .logo-wp {
+    display: inline-block;
+    vertical-align: top
+}
+
+header .logo-wp .logo {
+    margin: 13px;
+    text-indent: 100%;
+    overflow: hidden;
+    *overflow: initial;
+    *text-indent: -9866px;
+    white-space: nowrap;
+    height: 40px;
+    width: 103px;
+    display: block
+}
+
+header .logo-wp .logo:hover {
+    text-decoration: none
+}
+
+header .drawer {
+    display: none
+}
+
+.header-nav {
+    display: inline-block;
+    vertical-align: top
+}
+
+.header-nav li {
+    display: inline-block;
+    text-align: center
+}
+
+.header-nav li a {
+    text-decoration: none;
+    padding: 26px 15px 0;
+    font-size: 14px;
+    color: #999;
+    -moz-transition: color .5s;
+    -o-transition: color .5s;
+    -webkit-transition: color .5s;
+    transition: color .5s;
+    display: block
+}
+
+.header-nav li a.green {
+    color: #24aa42
+}
+
+.PC header .inner {
+    position: relative;
+    max-width: 940px;
+    _width: 960px;
+    margin: 0 auto
+}
+
+.mask {
+    display: none;
+    position: fixed;
+    background: rgba(0,0,0,.1);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100
+}
+
+.Mobile .menu-list .arrow-down,.Tablet .menu-list .arrow-down {
+    display: none
+}
+
+.extra {
+    position: absolute;
+    right: 0;
+    top: 20px
+}
+
+.extra .launcher:hover {
+    opacity: 1
+}
+
+@media screen and (max-width:960px) {
+    .header-nav {
+        display: none
+    }
+}
+
+@media screen and (max-width:699px) {
+    .mask,.menu-list.pc-main-menu {
+        display: none
+    }
+
+    header {
+        height: 55px
+    }
+
+    header .drawer {
+        display: inline-block
+    }
+    header .inner .extra {
+        display: none
+    }
+}
+
+
+footer {
+    border-top: 1px solid #eee;
+    padding: 1.5em 0 0;
+    padding: .8em;
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+    background-color: #fff
+}
+
+footer nav {
+    margin-top: .5em
+}
+
+footer nav a {
+    color: #999;
+    margin-right: .85em
+}
+
+footer nav .last {
+    margin-right: 0
+}
+
+footer .intellectual,footer .useless {
+    margin: 10px 10%;
+    font-size: .8em
+}
+
+footer .intellectual a,footer .useless a {
+    color: #aaa
+}
+
+.links {
+    width: 940px;
+    padding: 20px 0;
+    margin: 0 auto
+}
+
+.links a {
+    color: #aaa;
+    padding: 0 10px
+}
+
+.icons-adv-embed {
+    background-position: 0 0
+}
+
+.icons-adv {
+    background-position: 0 -15px
+}
+
+.icons-award-small {
+    background-position: 0 -30px
+}
+
+.game-popup {
+    width: 680px
+}
+
+@media screen and (max-width:674px) {
+    .tag-popup {
+        visibility: hidden
+    }
+}
+.detail-wrap {
+    max-width: 960px;
+    margin: 10px 0 20px;
+    background: #fff;
+    box-shadow: 0 1px 0 #eee
+}
+
+.detail-top {
+    position: relative;
+    padding: 15px;
+    border-bottom: 1px solid #e8e8e8
+}
+
+.detail-top .app-icon,.detail-top .app-info {
+    float: left
+}
+
+.detail-top .app-icon img,.detail-top .app-info img {
+    display: block
+}
+
+.detail-top .tagline {
+    color: #999;
+    min-height: 10px;
+    font-size: .875em;
+    margin: 5px 0 10px
+}
+
+.detail-top .app-info {
+    margin: 5px 0 0 15px
+}
+
+.detail-top .app-info .title {
+    vertical-align: middle;
+    display: inline-block;
+    max-width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis
+}
+
+.detail-top .app-info .app-name {
+    color: #333;
+    font-size: 1.2em
+}
+
+.detail-top .app-info .app-name .tag {
+    top: -2px
+}
+
+.detail-top .app-info .app-meta {
+    margin-top: 5px;
+    color: #ccc;
+    font-size: .75em
+}
+
+.detail-top .qr-info {
+    position: absolute;
+    top: 12px;
+    right: 235px;
+    text-align: center
+}
+
+.detail-top .qr-info img {
+    display: block;
+    width: 90px;
+    height: 90px;
+    margin: 0 auto
+}
+
+.detail-top .qr-info a {
+    color: #999;
+    text-align: center;
+    font-size: 13px
+}
+
+.detail-top .dir-install-btn,.detail-top .install-btn,.detail-top .push-btn {
+    letter-spacing: 1px;
+    display: inline-block;
+    font-size: .875em;
+    text-align: center;
+    padding: 5px 15px;
+    color: #fff;
+    background: #4cc9b6
+}
+
+.detail-top .dir-install-btn.disabled,.detail-top .install-btn.disabled,.detail-top .push-btn.disabled {
+    color: #666;
+    background: #ccc;
+    font-size: .75em
+}
+
+.detail-top .dir-install-btn.sem-btn,.detail-top .install-btn.sem-btn,.detail-top .push-btn.sem-btn {
+    background: #24aa42;
+    font-size: 1em
+}
+
+
+.detail-top .app-security {
+    position: absolute;
+    right: 20px;
+    top: 80px
+}
+
+.detail-top .download-wp {
+    position: relative
+}
+
+.detail-top .download-wp .bubble {
+    z-index: 1;
+    top: 45px
+}
+
+.detail-top .download-wp .bubble .arrow {
+    right: 86px
+}
+
+.detail-top .download-wp .install-btn {
+    vertical-align: middle
+}
+
+.detail-top .download-wp .n-download {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 12px;
+    color: #999;
+    padding-left: 10px
+}
+
+.screenshot {
+    overflow: hidden;
+    padding: 15px
+}
+
+.screenshot img {
+    margin-right: 5px
+}
+
+.scroll-wp {
+    position: relative;
+    height: 266px;
+    overflow-x: auto;
+    overflow-y: hidden
+}
+
+.scroll-wp img {
+    box-sizing: border-box;
+    float: left;
+    display: block;
+    display: inline-block;
+    height: 266px
+}
+
+.scroll-wp img:last-child {
+    margin-right: 0
+}
+
+.carousel {
+    overflow: hidden
+}
+
+.carousel .item {
+    display: block;
+    float: left;
+    text-align: center
+}
+
+.carousel .carousel-wp {
+    width: 100%;
+    position: relative
+}
+.block-title {
+    font-size: .875em;
+    color: #666;
+    margin: 0 0 10px
+}
+
+.block-title a {
+    color: #666;
+    cursor: pointer
+}
+
+.editorComment .con {
+    background: #f5f5f5;
+    padding: 10px
+}
+
+.all-version,.app-news,.award-info,.change-info,.desc-info,.editorComment,.use-skills {
+    padding: 15px;
+    color: #999
+}
+
+.all-version .con,.all-version .more-link,.app-news .con,.app-news .more-link,.award-info .con,.award-info .more-link,.change-info .con,.change-info .more-link,.desc-info .con,.desc-info .more-link,.editorComment .con,.editorComment .more-link,.use-skills .con,.use-skills .more-link {
+    line-height: 1.6;
+    font-size: .8125em
+}
+
+.all-version .more-link,.app-news .more-link,.award-info .more-link,.change-info .more-link,.desc-info .more-link,.editorComment .more-link,.use-skills .more-link {
+    position: relative;
+    display: block;
+    text-align: right;
+    margin-top: 10px;
+    padding-right: 30px;
+    color: #999;
+    cursor: pointer
+}
+
+.all-version .more-link .arrow-down,.app-news .more-link .arrow-down,.award-info .more-link .arrow-down,.change-info .more-link .arrow-down,.desc-info .more-link .arrow-down,.editorComment .more-link .arrow-down,.use-skills .more-link .arrow-down {
+    top: 6px;
+    right: 12px
+}
+
+.all-version .more-link .arrow-up,.app-news .more-link .arrow-up,.award-info .more-link .arrow-up,.change-info .more-link .arrow-up,.desc-info .more-link .arrow-up,.editorComment .more-link .arrow-up,.use-skills .more-link .arrow-up {
+    top: 0;
+    right: 12px
+}
+
+.old-version-list li {
+    margin: 0;
+    padding: 10px 0;
+    position: relative;
+    border-bottom: 1px dashed #ddd
+}
+
+.old-version-list li .icon-wrap {
+    float: left;
+    margin-right: 10px
+}
+
+.old-version-list li img {
+    width: 40px;
+    height: 40px;
+    display: block
+}
+
+.old-version-list li p,.old-version-list li span {
+    font-size: .8125em
+}
+
+.old-version-list li p {
+    color: #555
+}
+
+.old-version-list li a {
+    position: absolute;
+    top: 16px;
+    right: 10px;
+    letter-spacing: 1px;
+    font-size: .875em;
+    text-align: center;
+    padding: 5px 15px;
+    color: #fff;
+    background: #4cc9b6
+}
+
+.app-news-list li {
+    margin: 0;
+    padding: 5px 0;
+    position: relative;
+    border-bottom: 1px dashed #ddd;
+    overflow: hidden
+}
+
+.app-news-list li span {
+    font-size: .8125em;
+    float: right;
+    line-height: 22px
+}
+
+.app-news-list li p {
+    color: #555;
+    float: left;
+    line-height: 22px
+}
+
+.app-news-list li a {
+    font-size: .875em;
+    color: #555
+}
+
+.arrow-down {
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: transparent;
+    border-top-color: #ccc;
+    border-width: 6px;
+    margin-left: -6px;
+    _font-size: 0;
+    _line-height: 0;
+    _border-right-color: pink;
+    _border-left-color: pink;
+    _border-bottom-color: pink;
+    _filter: chroma(color=pink)
+}
+
+.arrow-up {
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: transparent;
+    border-bottom-color: #ccc;
+    border-width: 6px;
+    margin-left: -6px;
+    _font-size: 0;
+    _line-height: 0;
+    _border-right-color: pink;
+    _border-left-color: pink;
+    _border-top-color: pink;
+    _filter: chroma(color=pink)
+}
+
+.award-info .con,.change-info .con,.desc-info .con {
+    line-height: 20px;
+
+    overflow: hidden;
+    margin-bottom:50px;
+}
+
+.app-news .con,.use-skills .con {
+    height: 0;
+    overflow: hidden
+}
+
+.app-news .more-link,.use-skills .more-link {
+    margin-top: 0
+}
+
+.award-info .issue {
+    color: #999;
+    font-size: .875em
+}
+
+.award-info .con h2 {
+    margin: 20px 0
+}
+
+.award-info .con img {
+    border-radius: 100%;
+    width: 30px;
+    height: 30px;
+    vertical-align: top;
+    margin: -3px 5px -3px 10px
+}
+
+.col-left {
+    width: 70%;
+    float: left
+}
+
+.col-right {
+    width: 30%;
+    float: right
+}
+
+.col-right .mp-pic {
+    width: 100%;
+    padding: 15px;
+    display: block;
+    box-sizing: border-box
+}
+
+.award-title {
+    display: inline-block;
+    color: #666;
+    margin: 0 0 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ededed;
+    font-size: .8125em
+}
+
+.award-title .tip {
+    color: #999
+}
+
+.award-title:hover {
+    color: #2f7c2f;
+.tip-color: #ccc
+}
+
+.view-stat {
+    display: none
+}
+
+.detail-down {
+    margin-top: 10px
+}
+
+.detail-down .install-wdj-btn {
+    vertical-align: middle;
+    display: inline-block;
+    font-size: 1em;
+    letter-spacing: 1px;
+    text-align: center;
+    padding: 8px 20px;
+    color: #fff;
+    background: #24aa42
+}
+
+.detail-down .tip {
+    color: #ccc;
+    font-size: .75em;
+    margin-left: 10px;
+    vertical-align: middle
+}
+
+.fix-banner {
+    position: fixed;
+    bottom: 0;
+    background: rgba(0,0,0,.8);
+    width: 100%;
+    overflow: hidden;
+    z-index: 999999
+}
+
+.fix-banner .jr-title {
+    height: 30px;
+    line-height: 30px;
+    background: #F24949;
+    padding-left: 20px;
+    color: #fff
+}
+
+.jr-list {
+    width: 25%;
+    height: 122px;
+    float: left;
+    text-align: center;
+    position: relative;
+    padding-top: 12px
+}
+
+.jr-list .app-title {
+    margin: 4px 0;
+    font-size: 12px;
+    color: #fff;
+    height: 20px;
+    overflow: hidden;
+    vertical-align: middle
+}
+
+.jr-list .download-btn {
+    letter-spacing: 1px;
+    display: inline-block;
+    font-size: 12px;
+    text-align: center;
+    padding: 4px 8px;
+    color: #fff;
+    background: #4cc9b6
+}
+
+@media screen and (max-width:850px) {
+    .col-left,.col-right {
+        float: none;
+        width: auto
+    }
+}
+
+@media screen and (max-width:650px) {
+    .qr-info {
+        display: none
+    }
+
+    .num-list {
+        float: none;
+        margin: 125px 0 0;
+        border-top: 1px dashed #ededed;
+        padding-top: 15px
+    }
+
+    .detail-top .app-security {
+        position: static;
+        float: right;
+        margin: -25px 0 0 0
+    }
+}
+
+@media screen and (max-width:450px) {
+    .detail-top .app-icon img {
+        width: 78px;
+        height: 78px
+    }
+
+    .detail-top .app-info {
+        margin: 0 0 0 10px
+    }
+
+    .detail-top .app-info .app-name {
+        font-size: 1em
+    }
+
+    .detail-top .tagline {
+        min-height: 15px;
+        margin: 2px 0 5px
+    }
+
+    .num-list {
+        position: relative;
+        margin: 90px -10px -5px -10px;
+        padding-top: 5px;
+        text-align: center
+    }
+
+    .num-list .item {
+        border-right: 0;
+        padding-right: 0
+    }
+
+    .num-list .item b {
+        display: inline-block
+    }
+
+    .num-list .item.last,.num-list .item.love {
+        padding-left: 5px
+    }
+
+    .detail-top .app-info .title {
+        max-width: 200px
+    }
+
+    .detail-top .app-security {
+        display: none;
+        float: none;
+        text-align: center;
+        padding-top: 10px;
+        border-top: 1px dashed #ededed;
+        margin: 10px 0 -5px 0
+    }
+
+    .award-info,.change-info,.comments,.desc-info,.detail-top,.editorComment,.infos,.screenshot {
+        padding: 10px
+    }
+
+    .view-stat {
+        cursor: pointer;
+        position: absolute;
+        width: 30px;
+        top: 0;
+        right: 0;
+        height: 26px;
+        display: inline-block
+    }
+
+    .view-stat .arrow-down {
+        top: 10px;
+        right: 10px
+    }
+
+    .view-stat .arrow-up {
+        top: 2px;
+        right: 10px
+    }
+}
+
+.popup-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #000;
+    z-index: 99
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto
+}
+
+header .inner {
+    max-width: 940px;
+    margin: 0 auto
+}
+
+.bubble {
+    display: none;
+    width: 180px;
+    padding: 10px;
+    font-size: .75em;
+    background: #262626;
+    position: absolute;
+    color: #fff;
+    right: 10px;
+    top: 50px
+}
+
+.bubble .arrow {
+    width: 0;
+    height: 0;
+    font-size: 0;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent #262626;
+    overflow: hidden;
+    position: absolute;
+    right: 22px;
+    top: -20px
+}
+
+.wc-float {
+    position: fixed;
+    top: 32%;
+    right: 0;
+    width: 30px;
+    display: block;
+    z-index: 2000;
+    color: gray;
+    background-color: #f5f5f5;
+    padding: 12px 0 12px 5px;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 12px 0 0 12px;
+    border: 1px solid #ccc;
+    border-right: 0
+}
+
+.comeon-uc,.well {
+    position: fixed;
+    bottom: 0;
+    background: #fff;
+    width: 100%;
+    padding: 10px 0;
+    overflow: hidden;
+    z-index: 9999;
+    box-shadow: 0 -1px 1px #eee
+}
+
+.comeon-uc .p-logo,.well .p-logo {
+
+    background-size: 36px 40px;
+    height: 40px;
+    width: 36px;
+    float: left;
+    margin: 0 15px
+}
+
+.comeon-uc .desc .txt,.well .desc .txt {
+    line-height: 1;
+    font-size: 16px;
+    color: #555;
+    margin: 4px 0 7px;
+    font-weight: 700
+}
+
+.comeon-uc .desc .txt:last-child,.well .desc .txt:last-child {
+    font-size: 20px;
+    color: #999;
+    margin: 0;
+    font-weight: 400;
+    line-height: 36px;
+}
+
+.comeon-uc .green-btn,.well .green-btn {
+    position: absolute;
+    right: 15px;
+    top: 12px;
+    font-size: 1.1em;
+    display: inline-block;
+    padding: 0 20px;
+    line-height: 36px;
+    background: #24aa42;
+    color: #fff;
+    border-radius: 5px;
+    float: right
+}
+
+.award-detail .comeon-uc,.videodetail .comeon-uc {
+    display: none
+}

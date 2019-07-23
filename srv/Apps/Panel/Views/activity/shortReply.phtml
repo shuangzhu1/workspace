@@ -1,0 +1,164 @@
+<?php
+    $color = ['orange','red','default','blue','grey','green','pink']
+?>
+<link rel="stylesheet" href="/static/ace/css/jquery-ui-1.10.3.full.min.css">
+<script src="/static/ace/js/jquery-ui-1.10.3.full.min.js"></script>
+<div class="col-xs-8">
+    <div class="widget-box">
+        <div class="widget-header" >
+            <h4>快捷短语</h4>
+            <span style="line-height:36px">
+            <a href="javascript:;" class="btn btn-xs btn-success pull-right"  style="margin-top:5px;margin-right:5px" id="add" >添加</a>
+
+            </span>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+                <form>
+                    <!-- <legend>Form</legend> -->
+
+                    <fieldset style="height:650px;overflow:auto">
+                        <div class="alert alert-success" style="border-radius:2px">
+                            1、该页条目展示顺序即为app端展示顺序
+                            <br>
+                            2、拖动条目可编辑顺序
+                            <br>
+                            3、<span class="red">排序结束请点击“确认排序”按钮保存排序</span>
+                        </div>
+                        <label for="ac_type">活动类型:</label>
+                        <select name="" id="ac_type">
+                            <option value="0" <?php if($ac_type == 0 ) echo 'selected'; ?> >红包雨</option>
+                            <option value="1" <?php if($ac_type == 1 ) echo 'selected'; ?> >知识问答</option>
+                        </select>
+                        <br>
+                        <br>
+                        <ul id="words" class="item-list ui-sortable">
+                            <?php foreach($words['phrases'] as $k => $v) {?>
+                                <li class="item-<?php echo $color[$k%7]?> clearfix">
+                                    <label class="inline">
+                                        <i class="fa fa-chevron-circle-right " aria-hidden="true"></i>
+                                        &nbsp;&nbsp;
+                                        <!--<input type="checkbox" class="ace">-->
+                                        <span class="lbl item" data-key="<?php echo $k ?>"> <?php echo $v; ?></span>
+                                    </label>
+
+                                    <div class="pull-right action-buttons" style="margin-right:10px">
+                                        <a href="javascript:;" class="blue">
+                                            <i class="fa fa-pencil bigger-130 edit"></i>
+                                        </a>
+
+                                        <span class="vbar"></span>
+
+                                        <a href="javascript:;" class="red">
+                                            <i class="fa fa-trash bigger-130 del"></i>
+                                        </a>
+                                    </div>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                    </fieldset>
+
+                    <div class="form-actions center">
+                        <button type="button" class="btn btn-sm btn-success" id="saveOrder">
+                            确定排序
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--modal-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog">
+        <div class="modal-content" style="border-radius:5px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">编辑短语</h4>
+            </div>
+            <div class="modal-body center" >
+                <input type="hidden" id="key" value="-1">
+                <textarea style="width:100%;height:50px" placeholder="最多18个字"></textarea>
+            </div>
+            <div class="modal-footer" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-sm btn-primary" id="save">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script>
+    seajs.use('app/panel/panel.base.js',function (api) {
+        $('#words').sortable();
+        $('#ac_type').on('change',function(){
+            var ac_type = $('#ac_type').val();
+            window.location.href = window.location.origin + window.location.pathname +  "?ac_type="+ac_type;
+        });
+        //添加
+        $('#add').on('click',function () {
+            $('#key').val(-1);
+            var word = $('#myModal textarea').val();
+            $('#myModal').modal('show');
+        });
+        //编辑
+        $('#words li div a .edit').on('click',function () {
+            var word = $.trim($(this).closest('li').find('span.item').html()),
+                key = $(this).closest('li').find('span.item').data('key');
+            $('#myModal textarea').val(word);
+            $('#key').val(key);
+            $('#myModal').modal('show');
+        });
+        //删除
+        $('#words li div a .del').on('click',function () {
+            var key = $(this).closest('li').find('span.item').data('key');
+            var ac_type = $('#ac_type').val();
+            api.requestApi('/panel/activity/shortReply',{type:'del',key:key,ac_type:ac_type},function (res) {
+                if( res.result == 1 )
+                {
+                    tip.showTip('ok','操作成功',1000,function () {
+                        window.location.reload();
+                    });
+                }
+            },true)
+        });
+        //保存排序
+        $('#saveOrder').on('click',function () {
+            var words = [];
+            $('#words').find('span.item').each(function () {
+                words.push($.trim($(this).html()));
+            });
+            var ac_type = $('#ac_type').val();
+            api.requestApi('/panel/activity/shortReply',{words:words,type:'order',ac_type:ac_type},function (res) {
+                if(res.result == 1)
+                {
+                    tip.showTip('ok','操作成功',1000,function () {
+                        window.location.reload();
+                    })
+                }
+            });
+        });
+        //modal保存
+        $('#save').on('click',function () {
+            var word = $.trim($('#myModal textarea').val());
+            var key = $('#key').val();
+            var ac_type = $('#ac_type').val();
+            if(word.length > 18 )
+            {
+                tip.showTip('err','短语最多为18个字符',100);
+                return false;
+            }
+            api.requestApi('/panel/activity/shortReply',{word:word,key:key,type:'edit',ac_type:ac_type},function (res) {
+                if( res.result == 1 )
+                {
+                    tip.showTip('ok','操作成功',1000,function () {
+                        window.location.reload();
+                    });
+
+                }
+            })
+        });
+    });
+
+</script>

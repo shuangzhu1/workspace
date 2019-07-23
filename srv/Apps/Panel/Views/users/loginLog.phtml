@@ -1,0 +1,109 @@
+<style>
+
+
+    .list td, .list th {
+        line-height: 30px;
+    }
+
+
+</style>
+<form action="" method="get" style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px;">
+    <label for="name">终端类型:</label>
+    <select name="os">
+        <option value="" <?php echo($os == '' ? 'selected' : '') ?> >全部
+        </option>
+        <option value="android" <?php echo($os == 'android' ? 'selected' : '') ?> >android
+        </option>
+        <option value="ios" <?php echo($os == 'ios' ? 'selected' : '') ?>>ios</option>
+    </select>
+    &nbsp;<label for="name">登录时间:</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd"/>
+    - <input type="text" id="end" value="<?php echo $end; ?>" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd"/>
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+    <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
+</form>
+<table class="list listData" style="width: 80%">
+    <thead>
+    <tr class="head">
+        <th style="width: 200px">登录时间</th>
+        <th style="width: 80px;">终端类型</th>
+        <th style="width: 100px;">APP版本号</th>
+        <th style="width: 150px;">手机系统版本号</th>
+        <th style="width: 150px;">手机型号</th>
+        <th style="width: 100px;">终端ip</th>
+        <th style="width: 100px;">登录方式</th>
+        <!-- <th>管理</th>-->
+    </tr>
+    </thead>
+    <tbody>
+    <?php
+    if ($list) {
+        foreach ($list as $k => $item) {
+            ?>
+            <tr class="item item_<?php echo $item['id'] ?>" data-id="<?php echo $item['id']; ?>">
+                <td><?php echo date('Y年m月d日 H时i分s秒', $item['login_time']); ?></td>
+                <td><?php echo $item['client_type'] ?></td>
+                <td><?php echo $item['app_version']; ?></td>
+                <td><?php echo $item['os']; ?></td>
+                <td><?php echo $item['phone_model']; ?></td>
+                <td><?php if($item['login_address']){?>
+                        <?php echo $item['login_address']['country']. $item['login_address']['province']. $item['login_address']['city'] ?>
+                    <?php }?><?php echo $item['client_ip'] ?></td>
+                <td><?php echo \Services\User\UserStatus::$login_type[$item['login_type']]; ?></td>
+
+
+                <!--  <td>
+                    <a href="/panel/users/detail/?user_id=<?php /*echo $item['user_id']; */ ?>">用户详情</a> |
+                </td>-->
+            </tr>
+        <?php } ?>
+
+        <tr class="showpage">
+            <th class="name">分页</th>
+            <td colspan="16" id="dataTables-example_paginate">
+
+                <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+            </td>
+        </tr>
+        <?php
+    } else {
+        ?>
+        <tr class="even gradeC">
+            <td colspan="16">
+                <p class="noData">没有用户数据</p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+</table>
+
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script>
+    $('#start').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d H:i",
+        maxDate: 0,
+        /*   timepicker: false,*/
+        allowBlank: true,
+        onChangeDateTime: function () {
+        },
+
+    });
+    $('#end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d H:i",
+        maxDate: 0,
+        allowBlank: true,
+        /* timepicker: false,*/
+        onChangeDateTime: function () {
+        }
+    });
+</script>
+
+
+

@@ -1,0 +1,10 @@
+ set_time_limit(0);
+             $i = 0;
+             while ($uids = UserProfile::getColumn(['', 'columns' => 'user_id', 'limit' => 1000, 'offset' => $i * 1000], 'user_id')) {
+                 foreach ($uids as $j) {
+                     DiscussManager::getInstance()->updateNewestDiscussPic($j);
+                 }
+                 $i++;
+             }
+             echo "更新完成";
+             exit;

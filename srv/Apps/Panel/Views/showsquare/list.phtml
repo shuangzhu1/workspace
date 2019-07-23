@@ -1,0 +1,152 @@
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<!--<link rel="stylesheet" type="text/css" href="/static/ace/css/select2.css">
+<script type="text/javascript" src="/static/ace/js/select2.min.js"></script>-->
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<div class="col-xs-10" >
+    <form action="/panel/showsquare/list" method="post" >
+        <input type="text" name="uids" placeholder="请输入UID，多个值空格分隔" title="请输入UID，多个值空格分隔" size="27" value="{{uids}}">&nbsp;&nbsp; <input type="submit" class="btn btn-primary btn-xs" value="搜索"  style="padding:1px 10px">
+    </form>
+</div>
+<div class="clearfix"></div>
+<hr class="space-8">
+<div class="col-xs-10">
+<div class="widget-box">
+    <!--<div class="widget-header widget-header-flat">
+
+        <a class="btn btn-success btn-sm btnAdd right" href="">
+            <i class="fa fa-plus"></i>
+            新建任务
+        </a>
+    </div>-->
+    <div class="widget-header" >
+
+
+        <h5 class="smaller <?php if(!isset($type) ) echo 'hidden'?>" >任务状态：</h5>
+        <select name="" id="type"  class="<?php if(!isset($type) ) echo 'hidden'?>" >
+            <option value=0 <?php if($type == 0) echo "selected"?> >待执行</option>
+            <option value=1 <?php if($type == 1) echo "selected"?> >正在执行</option>
+        </select>
+
+        <div class="widget-toolbar" style="line-height: 40px;height:40px;padding:0 30px">
+													<!--<span class="label label-success">
+														16%
+														<i class="icon-arrow-up"></i>
+													</span>-->
+            <a class="btn btn-success btn-xs addBtn right" href="javascript:;" style="margin:5px 0;padding:0 5px">
+                <i class="fa fa-plus"></i>
+                新建任务
+            </a>
+        </div>
+    </div>
+
+    <div class="widget-body">
+        <div class="widget-main">
+            <table id="article-list" class=" list">
+                <thead>
+                <tr class="head">
+                    <th class="center" style="width:180px">任务ID</th>
+                    <th class="center">操作对象</th>
+                    <th class="center">开始时间</th>
+                    <th class="center">结束时间</th>
+                    <th class="center">期望增长分值</th>
+                    <th class="center">任务状态</th>
+                    <th class="center">操作</th>
+                </tr>
+                </thead>
+                <tbody class="listData">
+                <?php foreach ( $list as $item ) {?>
+                    <tr class="item" data-id="{{item['id']}}" data-type="<?php if( $item['start'] < time() && $item['end'] > time() ) echo 1;else echo 0?>">
+                        <th class="center">
+                            {{item['id']}}
+                        </th>
+                        <td class="center">
+                            {{item['uid']}}
+                        </td>
+                        <td class="center">
+                            <?php echo date('Y/m/d H:i',$item['start'])?>
+                        </td>
+                        <td class="center">
+                            <?php echo date('Y/m/d H:i',$item['end'])?>
+                        </td>
+                        <td class="center">
+                            {{item['score']}}
+                        </td>
+                        <td class="center">
+                            <?php if( $item['start'] < time() && $item['end'] > time() ) {?>
+                                <span class="label label-sm label-success">正在执行</span>
+                            <?php }else{?>
+                                <span class="label label-sm label-warning">等待执行</span>
+                            <?php }?>
+                        </td>
+                        <td class="center">
+                            <a href="javascript:;" class="btn btn-danger btn-xs abortTask">取消任务</a>
+                        </td>
+
+
+
+                    </tr>
+                <?php }?>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+
+<main class="popup-wrap" id="optionPopup" >
+    <section class="popup-widget" id="optionWidget" style="left:34%;top:150px">
+        <header class="popup-head">添加秀场任务<span class="popup-close">x</span></header>
+        <main class="popup-content">
+            <div class="field set-field">
+                <label for="" class="field-label">目标用户UID：</label>
+                <input type="text" id="uids" value="">
+                <span class="help-inline"><i class="red">*</i> (多个uid用空格隔开)</span>
+            </div>
+
+            <div class="field set-field">
+                <label for="" class="field-label">任务执行时间：</label>
+                <input class="datetimepicker" id="start"  type="text" size="13"> - <input id="end" class="datetimepicker" type="text" size="13">
+                <span class="help-inline"><i class="red">*</i></span>
+            </div>
+            
+
+            <div class="field set-field">
+                <label for="" class="field-label">预期提高分数：</label>
+                <input type="text" id="score" value="">
+                <span class="help-inline"><i class="red">*</i></span>
+            </div>
+            <div class="field res-area" style="text-align: center">
+                <input type="hidden" value="" class="res-val"/>
+                <input class="btn btn-sm btn-primary res-btn" type="button" value="保存"/>
+
+            </div>
+        </main>
+    </section>
+</main>
+
+<script>
+    seajs.use('app/panel/account/account.showsquare',function(api){
+        api.addTask();
+    });
+    $('.datetimepicker').datetimepicker({format:"Y/m/d H:i"});
+    $('#type').on('change',function(){
+        var type = $(this).find(':selected').val();
+        window.location.href = '/panel/showsquare/list'+ '?type=' + type;
+    });
+    seajs.use('app/panel/panel.base',function(api){
+        $('.abortTask').on('click',function () {
+            var id = $(this).closest('tr').attr('data-id'),
+                type =$(this).closest('tr').attr('data-type'),
+                _this = this;
+            api.requestApi('/panel/showsquare/abortTask',{id:id,type:type},function(res){
+                if( res.result == 1 )
+                {
+                    $(_this).closest('tr').addClass('hidden');
+                    tip.showTip('ok','操作成功',2000);
+                }
+            },true)
+        })
+    });
+
+</script>

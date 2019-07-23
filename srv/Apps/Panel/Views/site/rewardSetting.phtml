@@ -1,0 +1,521 @@
+<div class="page-header">
+    <h1>
+        <i class="fa fa-gear"></i> 系统奖励设置
+        <small>
+
+        </small>
+    </h1>
+</div>
+<style>
+    .form-group {
+        min-height: 30px;
+        overflow: hidden;
+    }
+
+    .form-group input[type='number'] {
+        width: 100px;
+    }
+
+    .form-group .control-label {
+        text-align: right;
+    }
+
+    .form-group select {
+        margin: 0;
+    }
+
+    .disabled {
+        background-color: #e4e4e4;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .discuss_recommend_wrap, .share_wrap {
+        padding-top: 10px;
+        margin-bottom: 10px;
+        width: 99%;
+    }
+
+    .disabled .form-group input {
+        background-color: #f5f5f5;
+    }
+</style>
+<main class="tab-content" style="border:none; ">
+    <p class="alert alert-info"><i class="fa fa-tag"></i>
+        1.关闭系统奖励后 所有奖励都将失效<br/>
+        &nbsp; 2.金额单位为<b class="red">“分”</b><br/>
+
+    </p>
+    <section id="home" class="tab-pane in active">
+        <div style="width: 100%;height: auto;overflow: hidden;border: 1px solid #d4d4d4 ;padding:10px 0 0 0;">
+            <div class="form-group">
+                <label for="name" class="col-sm-1 control-label">系统奖励总开关:</label>
+
+                <div class="col-sm-10">
+                    <span class="col-sm-2">
+                         <label>
+                             <input type="radio" name="enable" class="ace enable"
+                                    value="1" <?php if ($setting['enable'] == 1) { ?>
+                                 checked
+                             <?php } ?>>
+                             <span class="lbl"> <b>开启</b></span>
+                         </label>
+                <label>
+                    <input type="radio" name="enable" class="ace enable"
+                           value="0" <?php if ($setting['enable'] == 0) { ?>
+                        checked
+                    <?php } ?>>
+                    <span class="lbl"> <b>关闭</b></span>
+                </label>
+                    </span>
+                    <span class="help-block with-errors">  </span>
+                </div>
+            </div>
+        </div>
+        <div class="enableWrap <?php echo $setting['enable'] == 0 ? 'disabled' : '' ?>">
+            <div class="discuss_recommend"
+                 style="width: 100%;height: auto;overflow: hidden;border: 1px solid #d4d4d4;padding:10px 0 0 20px;border-top: none;">
+                <div class="form-group" style="">
+                    <label for="logo" class="col-sm-1 control-label">动态被推荐:</label>
+                    <div class="col-sm-10">
+                    <span class="col-sm-10">
+                         <label>
+                             <input type="radio" name="enable_discuss_recommend" class="ace enable_discuss_recommend"
+                                    value="1" <?php if ($setting['discuss_recommend']['enable'] == 1) { ?>
+                                 checked
+                             <?php } ?>>
+                             <span class="lbl"> <b>开启</b></span>
+                         </label>
+                        <label>
+                            <input type="radio" name="enable_discuss_recommend" class="ace enable_discuss_recommend"
+                                   value="0" <?php if ($setting['discuss_recommend']['enable'] == 0) { ?>
+                                checked
+                            <?php } ?>>
+                            <span class="lbl"> <b>关闭</b></span>
+                        </label>
+                        <!-- <span class="help-block with-errors"></span>-->
+                    </span>
+                    </div>
+                </div>
+                <div
+                    class="discuss_recommend_wrap  <?php echo $setting['discuss_recommend']['enable'] == 0 ? 'disabled' : '' ?>">
+                    <div class="form-group" style="">
+                        <label for="logo" class="col-sm-1 control-label">每天限额(<label class="red">分</label>):</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="limit" min="0"
+                                   value="<?php echo $setting['discuss_recommend']['limit'] ?>"> 分
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label for="logo" class="col-sm-1 control-label">随机金额(<label class="red">分</label>):</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="start" min="0"
+                                   value="<?php echo $setting['discuss_recommend']['start'] ?>"> 分 -
+                            <input type="number" class="end" min="0"
+                                   value="<?php echo $setting['discuss_recommend']['end'] ?>"> 分
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="">
+                        <label for="logo" class="col-sm-1 control-label">获得奖励概率:</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="probability" min="0" max="100"
+                                   value="<?php echo $setting['discuss_recommend']['probability'] ?>"> %
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="robot_package"
+                 style="width: 100%;height: auto;overflow: hidden;border: 1px solid #d4d4d4;padding:10px 0 0 20px;border-top: none;">
+                <div class="form-group" style="">
+                    <label for="logo" class="col-sm-1 control-label">机器人动态红包:</label>
+                    <div class="col-sm-10">
+                    <span class="col-sm-10">
+                         <label>
+                             <input type="radio" name="enable_robot_discuss_package"
+                                    class="ace enable_robot_discuss_package"
+                                    value="1" <?php if ($setting['robot_discuss_package']['enable'] == 1) { ?>
+                                 checked
+                             <?php } ?>>
+                             <span class="lbl"> <b>开启</b></span>
+                         </label>
+                        <label>
+                            <input type="radio" name="enable_robot_discuss_package"
+                                   class="ace enable_robot_discuss_package"
+                                   value="0" <?php if ($setting['robot_discuss_package']['enable'] == 0) { ?>
+                                checked
+                            <?php } ?>>
+                            <span class="lbl"> <b>关闭</b></span>
+                        </label>
+                        <!-- <span class="help-block with-errors"></span>-->
+                    </span>
+                    </div>
+                </div>
+                <div
+                    class="robot_discuss_package  <?php echo $setting['robot_discuss_package']['enable'] == 0 ? 'disabled' : '' ?>">
+                    <div class="form-group" style="">
+                        <label for="logo" class="col-sm-1 control-label">每天限额(<label class="red">分</label>):</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="limit" min="0"
+                                   value="<?php echo $setting['robot_discuss_package']['limit'] ?>"> 分
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label for="logo" class="col-sm-1 control-label">红包随机金额(<label class="red">分</label>):</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="start" min="0"
+                                   value="<?php echo $setting['robot_discuss_package']['start'] ?>"> 分 -
+                            <input type="number" class="end" min="0"
+                                   value="<?php echo $setting['robot_discuss_package']['end'] ?>"> 分
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="">
+                        <label for="logo" class="col-sm-1 control-label">发红包概率:</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="probability" min="0" max="100"
+                                   value="<?php echo $setting['robot_discuss_package']['probability'] ?>"> %
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="share"
+                 style="width: 100%;height: auto;overflow: hidden;border: 1px solid #d4d4d4;padding: 10px 0 0  20px;border-top: none">
+                <div class="form-group" style="">
+                    <label for="logo" class="col-sm-1 control-label">分享:</label>
+                    <div class="col-sm-10">
+                    <span class="col-sm-10">
+                         <label>
+                             <input type="radio" name="enable_share" class="ace enable_share"
+                                    value="1" <?php if ($setting['share']['enable'] == 1) { ?>
+                                 checked
+                             <?php } ?>>
+                             <span class="lbl"> <b>开启</b></span>
+                         </label>
+                        <label>
+                            <input type="radio" name="enable_share" class="ace enable_share"
+                                   value="0" <?php if ($setting['share']['enable'] == 0) { ?>
+                                checked
+                            <?php } ?>>
+                            <span class="lbl"> <b>关闭</b></span>
+                        </label>
+                        <!-- <span class="help-block with-errors"></span>-->
+                    </span>
+                    </div>
+                </div>
+
+                <div class="share_wrap  <?php echo $setting['share']['enable'] == 0 ? 'disabled' : '' ?>">
+                    <div class="form-group" style="">
+                        <label for="logo" class="col-sm-1 control-label">每人每天上限:</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="day_count" min="0"
+                                   value="<?php echo $setting['share']['day_count'] ?>"> 次
+
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label for="logo" class="col-sm-1 control-label">每天金额上限(<label class="red">分</label>):</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="limit" min="0"
+                                   value="<?php echo $setting['share']['limit'] ?>"> 分
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label for="logo" class="col-sm-1 control-label">每次随机金额(<label class="red">分</label>):</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="start" min="0"
+                                   value="<?php echo $setting['share']['start'] ?>"> 分 -
+                            <input type="number" class="end" min="0"
+                                   value="<?php echo $setting['share']['end'] ?>"> 分
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label for="logo" class="col-sm-1 control-label">随机龙豆(<label class="red">个</label>):</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="coin_start" min="0"
+                                   value="<?php echo $setting['share']['coin_start'] ?>"> 个-
+                            <input type="number" class="coin_end" min="0"
+                                   value="<?php echo $setting['share']['coin_end'] ?>"> 个
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label for="logo" class="col-sm-1 control-label">获现金奖励概率:</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="probability" min="0" max="100"
+                                   value="<?php echo $setting['share']['probability'] ?>"> %
+
+                        </div>
+                    </div>
+                    <!-- <div class="form-group" style="">
+                        <label for="logo" class="col-sm-1 control-label">获龙豆奖励概率:</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="probability_coin" min="0" max="100"
+                                   value="<?php /*echo $setting['share']['probability_coin'] */ ?>">%
+
+                        </div>
+                    </div>-->
+                    <p class="alert alert-danger error-widget" style="display: none"><i class="fa fa-warning"></i>
+                        <span class="error_msg"></span>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        <div
+            style="width: 100%;height: auto;overflow: hidden;border: 1px solid #f4f4f4;padding:10px 0 0 0;border-top: none">
+            <div class="form-group">
+                <label for="name" class="col-sm-1 control-label"></label>
+
+                <div class="col-sm-10" style="padding: 0 0 0 30px;">
+                    <button type="submit" class="btn btn-primary btn-large btnSave" name="btn-base">
+                        <i class="fa fa-paper-plane"></i>立即保存
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+<script>
+    seajs.use('app/panel/panel.base', function (api) {
+        $(".enable").on('click', function () {
+            if ($(this).val() == 1) {
+                $(".enableWrap").removeClass("disabled");
+            } else {
+                $(".enableWrap").addClass("disabled");
+            }
+        });
+        $(".enable_discuss_recommend").on('click', function () {
+            if ($(this).val() == 1) {
+                $(".discuss_recommend_wrap").removeClass("disabled");
+            } else {
+                $(".discuss_recommend_wrap").addClass("disabled");
+            }
+        });
+        $(".enable_robot_discuss_package").on('click', function () {
+            if ($(this).val() == 1) {
+                $(".robot_discuss_package").removeClass("disabled");
+            } else {
+                $(".robot_discuss_package").addClass("disabled");
+            }
+        });
+        $(".enable_share").on('click', function () {
+            if ($(this).val() == 1) {
+                $(".share_wrap").removeClass("disabled");
+            } else {
+                $(".share_wrap").addClass("disabled");
+            }
+        });
+
+
+        /* $(".probability").on('keyup', function () {
+         var probability_coin = parseInt($(".probability_coin").val());
+         var limit = 100 - probability_coin;
+         if ($(this).val() > limit) {
+         $(this).val(limit);
+         }
+         }).on('change', function () {
+         var probability_coin = parseInt($(".probability_coin").val());
+         var limit = 100 - probability_coin;
+         if ($(this).val() > limit) {
+         $(this).val(limit);
+         }
+         });*/
+        /*  $(".probability_coin").on('keyup', function () {
+         var probability = parseInt($(".probability").val());
+         var limit = 100 - probability;
+         if ($(this).val() > limit) {
+         $(this).val(limit);
+         }
+         }).on('change', function () {
+         var probability = parseInt($(".probability").val());
+         var limit = 100 - probability;
+         if ($(this).val() > limit) {
+         $(this).val(limit);
+         }
+         });*/
+
+        $(".btnSave").on('click', function () {
+            var enable = $(".enable:checked").val();
+            var enable_discuss_recommend = $(".enable_discuss_recommend:checked").val();
+            var enable_share = $(".enable_share:checked").val();
+            var enable_robot_discuss_package = $(".enable_robot_discuss_package:checked").val();
+
+            var discuss_recommend = {
+                enable: $(".enable_discuss_recommend:checked").val(),
+                limit: parseInt($(".discuss_recommend .limit").val()),
+                start: parseInt($(".discuss_recommend .start").val()),
+                end: parseInt($(".discuss_recommend .end").val()),
+                probability: parseInt($(".discuss_recommend .probability").val())
+            };
+            var robot_discuss_package = {
+                enable: $(".enable_robot_discuss_package:checked").val(),
+                limit: parseInt($(".robot_discuss_package .limit").val()),
+                start: parseInt($(".robot_discuss_package .start").val()),
+                end: parseInt($(".robot_discuss_package .end").val()),
+                probability: parseInt($(".robot_discuss_package .probability").val())
+            };
+            var share = {
+                enable: parseInt($(".enable_share:checked").val()),
+                limit: parseInt($(".share .limit").val()),
+                start: parseInt($(".share .start").val()),
+                end: parseInt($(".share .end").val()),
+                coin_start: parseInt($(".share .coin_start").val()),
+                coin_end: parseInt($(".share .coin_end").val()),
+                probability: parseInt($(".share .probability").val()),
+                day_count: parseInt($(".share .day_count").val()),
+                //   probability_coin: parseInt($(".share .probability_coin").val())
+            };
+
+            if (enable_discuss_recommend == 1) {
+                if (isNaN(discuss_recommend.limit) || discuss_recommend.limit <= 0) {
+                    error("请填写正确的动态推荐限额");
+                    $(".discuss_recommend .limit").focus();
+                    return;
+                }
+                if (isNaN(discuss_recommend.start) || discuss_recommend.start <= 0) {
+                    error("请填写正确的动态推荐随机金额");
+
+                    $(".discuss_recommend .start").focus();
+                    return;
+                }
+                if (isNaN(discuss_recommend.end) || discuss_recommend.end <= 0) {
+                    error("请填写正确的动态推荐随机金额");
+
+                    $(".discuss_recommend .end").focus();
+                    return;
+                }
+                if (discuss_recommend.start > discuss_recommend.end) {
+                    error("随机金额起始应该小于结束");
+                    $(".discuss_recommend .start").focus();
+                    return;
+                }
+            }
+            if (enable_robot_discuss_package == 1) {
+                if (isNaN(robot_discuss_package.limit) || robot_discuss_package.limit <= 0) {
+                    error("请填写正确的红包每日限额");
+                    $(".robot_discuss_package .limit").focus();
+                    return;
+                }
+                if (isNaN(robot_discuss_package.start) || robot_discuss_package.start <= 0) {
+                    error("请填写正确的红包随机金额");
+
+                    $(".robot_discuss_package .start").focus();
+                    return;
+                }
+                if (isNaN(robot_discuss_package.end) || robot_discuss_package.end <= 0) {
+                    error("请填写正确的红包随机金额");
+
+                    $(".robot_discuss_package .end").focus();
+                    return;
+                }
+                if (robot_discuss_package.start > robot_discuss_package.end) {
+                    error("随机金额起始应该小于结束");
+                    $(".robot_discuss_package .start").focus();
+                    return;
+                }
+            }
+            if (enable_share == 1) {
+                if (isNaN(share.limit) || share.limit <= 0) {
+                    error("请填写正确的动态分享限额");
+                    $(".share .limit").focus();
+                    return;
+                }
+                if (isNaN(share.start) || share.start <= 0) {
+                    error("请填写正确的动态分享随机金额");
+                    tip.showTip("err", '请填写正确的动态分享随机金额', 1000);
+                    $(".share .start").focus();
+                    return;
+                }
+                if (isNaN(share.end) || share.end <= 0) {
+                    error("请填写正确动态分享随机金额");
+                    $(".share .end").focus();
+                    return;
+                }
+                if (share.coin_start != '') {
+                    if ((isNaN(share.coin_start) || share.coin_start < 0)) {
+                        error("请填写正确的龙豆随机数");
+                        tip.showTip("err", '请填写正确的龙豆随机数', 1000);
+                        $(".share .coin_start").focus();
+                        return;
+                    }
+                    if (share.coin_end === '' || isNaN(share.coin_end) || share.coin_end < 0 || share.coin_start > share.coin_end) {
+                        error("请填写正确的龙豆随机数");
+                        $(".share .coin_end").focus();
+                        return;
+                    }
+                }
+                if (share.coin_end != '') {
+                    if ((isNaN(share.coin_end) || share.coin_end < 0)) {
+                        error("请填写正确的龙豆随机数");
+                        $(".share .coin_end").focus();
+                        return;
+                    }
+                    if (share.coin_start === '' || isNaN(share.coin_start) || share.coin_start < 0 || share.coin_start > share.coin_end) {
+                        error("请填写正确的龙豆随机数");
+                        $(".share .coin_end").focus();
+                        return;
+                    }
+                }
+
+                if (isNaN(share.coin_end) || share.coin_end <= 0) {
+                    error("请填写正确的龙豆随机数");
+                    $(".share .coin_start").focus();
+                    return;
+                }
+                if (share.start > share.end) {
+                    error("随机金额起始应该小于结束");
+                    $(".share .start").focus();
+                    return;
+                }
+
+                if (share.day_count != '' && isNaN(share.day_count) || share.day_count <= 0) {
+                    error("请填写正确的次数限制");
+                    $(".share .day_count").focus();
+                    return;
+                }
+                if (share.probability === '' || isNaN(share.probability) || share.probability < 0 || share.probability > 100) {
+                    error("请填写正确的现金奖励概率");
+                    $(".share .probability").focus();
+                    return;
+                }
+                /*   if (share.probability_coin === '' || isNaN(share.probability_coin) || share.probability_coin < 0 || share.probability_coin > 100) {
+                 error("请填写正确的龙豆奖励概率");
+                 $(".share .probability_coin").focus();
+                 return;
+                 }*/
+                if (/*share.probability + */share.probability_coin > 100) {
+                    error("请填写正确奖励概率(概率必须小于或等于100)");
+                    $(".share .probability").focus();
+                    return;
+                }
+
+            }
+            var data = {
+                enable: enable,
+                discuss_recommend: discuss_recommend,
+                robot_discuss_package: robot_discuss_package,
+                share: share
+            };
+
+
+            api.requestApi('/api/site/rewardSetting', data, function (res) {
+                if (res.result == 1) {
+                    tip.showTip("ok", '保存成功', 1000, function () {
+                        window.location.reload();
+                    });
+                }
+            })
+
+        })
+    });
+    function error(msg) {
+        tip.showTip("err", msg, 1000);
+        $(".error-widget .error_msg").html(msg);
+        $(".error-widget").show();
+    }
+
+</script>

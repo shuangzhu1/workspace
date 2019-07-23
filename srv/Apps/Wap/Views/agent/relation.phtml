@@ -1,0 +1,240 @@
+<style>
+    .relation .first .user-info{
+        padding-left:3.5em;
+    }
+    .relation .second .user-info{
+        padding-left:5.5em;
+    }
+    .relation .third .user-info{
+        padding-left:8.5em;
+    }
+    .relation .user-info{
+        /*margin-bottom:1px;*/
+        position:relative;
+        line-height:55px;
+        height:55px;
+        padding-left:15px;
+        clear:both;
+        border-bottom:1px #f0f0f5 solid;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+    .relation .user-info .item{
+        float:left;
+    }
+    .relation .user-info .right{
+        /*margin-top:3px;
+        height:64px;*/
+        height:54px;
+        background-color:white;
+        position: absolute;
+        right:0;
+    }
+    .relation .active{
+        background-color:#f0f0f5;
+    }
+    .relation .user-info .active{
+        background-color:#f0f0f5;
+    }
+    .relation .user-info .username{
+        margin-left:10px;
+        font-size:16px;
+        color:#333
+    }
+    .relation .floor .user-info .username {
+        position:absolute;
+        left:0;
+        right:0;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+    }
+    .relation .user-info .username span{
+        /*margin-top:3px;
+        height:65px*/
+    }
+    .relation .user-info .arrow{
+        /*margin-left:10px;*/
+        margin-right:8px;
+    }
+    .relation .user-info .arrow img{
+        /*width:13px;*/
+        width:0
+    }
+    .relation .user-info .right span:first-child{
+        font-size:17px;
+        color:#838080;
+        /*padding-left:12px;*/
+    }
+    .hide{
+        visibility: hidden;
+    }
+    .collapse{
+        display: none;
+    }
+    .relation .user-info .avator img{
+        vertical-align: middle;
+        /*width:48px;
+        height:48px;*/
+        width:35px;
+        height:35px;
+        border-radius: 6px
+    }
+
+
+</style>
+<div class="relation">
+    <?php if(!$noData) {?>
+        <?php $owner = $this->request->get('uid'); ?>
+        <div class="user-info" >
+            <div class="item avator" data-uid="<?php echo $owner ?>">
+                <img src="<?php echo $userInfo[$owner]['avatar'] ?>?x-oss-process=image/resize,m_fill,h_50,w_50" alt="" >
+            </div>
+            <div class="item username" >
+                <span ><?php if( !\Util\GetClient::isKlg() ) echo ($userInfo[$owner]['true_name'] ?: $userInfo[$owner]['username']) . '(' . $owner .')' ?> <span class="red"> 自己</span></span>
+            </div>
+            <div class="right">
+                         <span  >
+                             <span class="red" style="font-size:15px">直推</span> <?php echo $firstCount = count($userTree) ?> 人
+                         </span>
+                        <span  class="arrow <?php echo $firstCount !== 0 ?: 'hide' ?>">
+                             <img src="/static/wap/images/arrow_up.png" alt="" style="">
+                        </span>
+            </div>
+
+        </div>
+         <div class="first floor">
+             <?php foreach( $userTree  as $k1 => $v1) :?>
+                 <div class="user-info ">
+                     <div class="item avator" data-uid="<?php echo $v1['uid'] ?>">
+                         <img src="<?php echo $userInfo[$v1['uid']]['avatar'] ?>?x-oss-process=image/resize,m_fill,h_50,w_50" alt="" >
+                     </div>
+                     <div class="item username">
+                         <?php echo $userInfo[$v1['uid']]['true_name'] ?: $userInfo[$v1['uid']]['username'] ?>
+                     </div>
+                     <div class="right">
+                         <span  >
+                             <span class="red" style="font-size:15px">直推</span> <?php echo $secondCount = count($v1['children']) ?> 人
+                         </span>
+                         <span  class="arrow <?php echo $secondCount !== 0 ?: 'hide' ?>">
+                             <img src="/static/wap/images/arrow_up.png" alt="" style="">
+                         </span>
+                     </div>
+
+                 </div>
+                 <?php if( $secondCount !== 0 ) {?>
+                     <div class="second floor " >
+                         <?php foreach ($v1['children'] as $k2 => $v2) :?>
+                             <div class="user-info " >
+                                 <div class="item avator" data-uid="<?php echo $v2['uid'] ?>">
+                                     <img src="<?php echo $userInfo[$v2['uid']]['avatar'] ?>?x-oss-process=image/resize,m_fill,h_50,w_50" alt="" >
+                                 </div>
+                                 <div class="item username">
+                                     <?php echo $userInfo[$v2['uid']]['true_name'] ?: $userInfo[$v2['uid']]['username'] ?>
+                                 </div>
+                                 <div class="right">
+                                     <span  >
+                                         <span class="red" style="font-size:15px">直推</span> <?php echo $thirdCount = count($v2['children']) ?> 人
+                                     </span>
+                                     <span  class="arrow <?php echo $thirdCount !== 0 ?: 'hide' ?>">
+                                         <img src="/static/wap/images/arrow_up.png" alt="" style="">
+                                     </span>
+                                 </div>
+                             </div>
+
+                         <?php if( $thirdCount !== 0 ) {?>
+                             <div class="third floor " >
+                                 <?php foreach( $v2['children'] as $k3 => $v3 ) :?>
+                                     <div class="user-info " >
+                                         <div class="item avator" data-uid="<?php echo $v3['uid'] ?>" >
+                                             <img src="<?php echo $userInfo[$v3['uid']]['avatar'] ?>?x-oss-process=image/resize,m_fill,h_50,w_50" alt="" >
+                                         </div>
+                                         <div class="item username">
+                                             <?php echo $userInfo[$v3['uid']]['true_name'] ?: $userInfo[$v3['uid']]['username'] ?>
+                                         </div>
+                                         <div class="right">
+                                             <span >
+                                                 <span class="red" style="font-size:15px">直推</span> <?php echo  count($v3['children']) ?> 人
+                                             </span>
+                                             <span  class="arrow hide">
+                                                 <img src="/static/wap/images/arrow_up.png" alt="" style="">
+                                             </span>
+                                         </div>
+                                     </div>
+                                 <?php endforeach; ?>
+                             </div>
+                         <?php } ?>
+                     <?php endforeach; ?>
+                     </div>
+                 <?php } ?>
+             <?php endforeach; ?>
+         </div>
+    <?php }else{ ?>
+        <div style="position:fixed;top:40%;left:50%;">
+            <span style="margin-left:-90px;width:180px;font-size:16px;color:#8d939e">未查询到该用户推广信息</span>
+        </div>
+    <?php } ?>
+</div>
+<a href="" id="bridge"></a>
+<script>
+    //样式
+    var $userInfo = $('.floor .user-info');
+    $userInfo.each(function(){
+        var width_right = $(this).find('.right').width();
+        var width_left = $(this).find('.avator').offset().left + $(this).find('.avator img').width();
+        $(this).find('.username').css({left:width_left,right:width_right});
+    });
+    //active样式初始化
+
+    $('.floor .user-info').each(function () {
+        if( $(this).next().hasClass('floor') )
+            $(this).addClass('active').find('.right').addClass('active');
+    });
+
+    //展开收缩
+    $userInfo.on('click',function () {
+        var _this = this;
+        if( $(_this).next('.floor').hasClass('collapse') )
+        {
+            $(_this).find('.right img').attr('src','/static/wap/images/arrow_down.png');
+        }else
+        {
+            $(_this).find('.right img').attr('src','/static/wap/images/arrow_up.png');
+        }
+        if( !$(_this).find('.right > span:eq(1)').hasClass('hide') )
+        {
+            $(_this).toggleClass('active');
+            $(_this).find('.right').toggleClass('active');
+        }
+        $(_this).next('.floor').toggleClass('collapse');
+    });
+    var APPCommon = {
+        iphoneSchema: "",
+        androidSchema: '',
+        params:"",
+        init: function (params) {
+            this.params = params;
+            var _this = this;
+            var params = _this.params;
+            _this.iphoneSchema = "DValleyNew://response_from_klg?" + params;
+            _this.androidSchema = "klg://klg.com?" + params;
+            var u = navigator.userAgent.toLowerCase();
+            if (u.toLowerCase().indexOf('iphone') > -1 || u.toLowerCase().indexOf('ipad') > -1) {
+                _this.openByAnchor(APPCommon.iphoneSchema);
+            } else if (navigator.userAgent.match(/android/i)) {
+                _this.openByAnchor(APPCommon.androidSchema);
+            }
+        },
+        openByAnchor:function(href){
+            $('#bridge').attr('href',href);
+            document.getElementById('bridge').click();
+        }
+    };
+
+    //app跳转内主页
+    $('.user-info .avator').on('click',function(e){
+        var uid = $(this).data('uid');
+        APPCommon.init('type=homepage&uid=' + uid);
+        e.stopPropagation();
+    });
+</script>

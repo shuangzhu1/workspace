@@ -1,0 +1,272 @@
+<link rel="stylesheet" href="/static/panel/css/badge.css?v=1.0.0">
+<style>
+    .total {
+        border: 1px solid #e4e4e4;
+        padding: 10px;
+        border-radius: 3px;
+    }
+</style>
+<form action="" method="get" style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px;">
+    <label for="name">用户id</label>
+    <input name="user_id" type="text" id="user_id" placeholder="申请者id" value="<?php echo $user_id ? $user_id : ''; ?>">
+    <label for="name">邀请码</label>
+    <input name="code" type="text" id="code" placeholder="邀请码" value="<?php echo $code ? $code : ''; ?>">
+    <label for="name">提交订单时间:</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd hh:ii"/>
+    - <input type="text" id="end" value="<?php echo $end; ?>" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd hh:ii"/>
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+    <section class="right">
+        <span class="total">已付款总人数:<b class="green"><?php echo $paid_user_count ?></b></span>
+        <span class="total">已付款总金额:<b class="green">￥<?php echo sprintf("%.2f", $total_money / 100) ?></b></span>
+
+    </section>
+</form>
+
+<div class="tabs">
+    <a href="<?php echo $this->uri->setUrl(['status' => -1], ['p']); ?>"
+       class="tab <?php echo $status == -1 ? 'active' : ''; ?>">全部</a>
+    <a href="<?php echo $this->uri->setUrl(['status' => 0], ['p']); ?>"
+       class="tab <?php echo $status == 0 ? 'active' : ''; ?>">待付款</a>
+    <a href="<?php echo $this->uri->setUrl(['status' => 1], ['p']); ?>"
+       class="tab <?php echo $status == 1 ? 'active' : ''; ?>">待审核</a>
+    <a href="<?php echo $this->uri->setUrl(['status' => 2], ['p']); ?>"
+       class="tab <?php echo $status == 2 ? 'active' : ''; ?>">审核通过</a>
+    <a href="<?php echo $this->uri->setUrl(['status' => 3], ['p']); ?>"
+       class="tab <?php echo $status == 3 ? 'active' : ''; ?>">审核失败</a>
+    <a href="<?php echo $this->uri->setUrl(['status' => 4], ['p']); ?>"
+       class="tab <?php echo $status == 4 ? 'active' : ''; ?>">系统已取消</a>
+</div>
+<table id="article-list" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style='width:80px'>用户id</th>
+        <th style="width:100px">手机号</th>
+        <th style='width:160px'>邮箱</th>
+        <th style='width:100px'>qq</th>
+        <th style='width:100px'>微信</th>
+        <th style='width:200px'>详细地址</th>
+        <!--        <th style='width:200px'>描述</th>-->
+        <!--        <th style='width:80px'>交易号</th>-->
+        <th style='width:100px'>需支付金额</th>
+        <th style='width:100px'>优惠金额</th>
+        <th style='width:150px'>创建时间</th>
+        <th style='width:150px'>支付时间</th>
+        <th style='width:100px'>邀请码</th>
+        <th style='width:180px'>邀请码所属用户id</th>
+        <th style='width:120px'>状态</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <th class='name'><?php echo $item['user_id']; ?></th>
+            <td>
+                <?php echo $item['phone']; ?>
+            </td>
+
+            <td>
+                <?php echo $item['email'] ?>
+            </td>
+            <td>
+                <?php echo $item['qq'] ?>
+            </td>
+            <td>
+                <?php echo $item['weixin'] ?>
+            </td>
+            <td>
+                <?php echo $item['address'] ?>
+            </td>
+            <!--            <td>-->
+            <!--                --><?php //echo $item['brief'] ?>
+            <!--            </td>-->
+            <!--            <td>-->
+            <!--                --><?php //echo $item['trade_no'] ?>
+            <!--            </td>-->
+
+            <td>
+                ￥<?php echo sprintf("%.2f", $item['money'] / 100) ?>
+            </td>
+            <td>
+                ￥<?php echo sprintf("%.2f", $item['favorable_money'] / 100) ?>
+            </td>
+            <td><?php echo date('Y-m-d H:i', $item['created']); ?></td>
+            <td><?php echo $item['paid_time'] ? date('Y-m-d H:i', $item['paid_time']) : ''; ?></td>
+            <td>
+                <?php echo $item['code']; ?>
+            </td>
+
+            <td>
+                <?php if ($item['code_owner']) {
+                    ?>
+                    <a href="javascript:;" class="newTarget" data-title="用户详情"
+                       data-href="/panel/users/detail/?user_id=<?php echo $item['code_owner'] ?>"><?php echo $item['code_owner'] . "【" . $users[$item['code_owner']]['username'] . "】"; ?></a>
+                <?php } ?>
+            </td>
+            <td>
+                <?php if ($item['status'] == \Services\Agent\AgentManager::STATUS_WAIT_PAY) { ?>
+                    <span class="badge-mine bg-blue-grey-600"> <i class='fa fa-circle-o-notch fa-spin'></i> 待支付</span>
+                <?php } elseif ($item['status'] == \Services\Agent\AgentManager::STATUS_HAS_CANCELED) { ?>
+                    <span class="badge badge-gray"> 支付超时-已取消</span>
+                <?php } elseif ($item['status'] == \Services\Agent\AgentManager::STATUS_WAIT_CHECK) { ?>
+                    <span class="badge-mine bg-green-600">  <i class='fa fa-circle-o-notch fa-spin'></i> 待审核</span>
+                <?php } elseif ($item['status'] == \Services\Agent\AgentManager::STATUS_CHECK_SUCCESS) { ?>
+                    <span class="badge-mine bg-light-green-700">审核通过</span>
+                <?php } elseif ($item['status'] == \Services\Agent\AgentManager::STATUS_CHECK_FAIL) { ?>
+                    <span class="badge-mine bg-red-600">审核失败</span>
+                <?php } ?>
+
+            </td>
+            <td>
+                <a href="JavaScript:;" class="newTarget btn btn-primary btn-sm" data-title="申请详情"
+                   data-href="/panel/agent/applyDetail?apply_id=<?php echo $item['id'] ?>">申请详情</a>
+                <?php if ($item['status'] == 1) { ?>
+                    <a href="JavaScript:;" data-id="<?php echo $item['id']; ?>"
+                       class="btn btn-success btn-sm checkBtn"><i class="fa fa-check"></i>通过</a>
+                    <a href="JavaScript:;" data-id="<?php echo $item['id']; ?>"
+                       class="btn btn-error btn-sm failBtn"><i class="fa fa-remove"></i> 不通过</a>
+                <?php } ?>
+            </td>
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="16">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <!--  <tr class="showpage">
+          <th class="name">操作</th>
+          <td colspan="13">
+                  <span>
+                      [ <a href="javascript:;" class="selectAll">全选</a> ]
+                      [ <a href="javascript:;" class="selectNone">全不选</a> ]
+                      [ <a href="javascript:;" class="selectInvert">反选</a> ]
+                      <a class="btn-light delAllSelected" href="javascript:;">批量屏蔽</a>
+                  </span>
+          </td>
+      </tr>-->
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="13">
+            <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+        </td>
+    </tr>
+</table>
+
+<div class="modal fade" id="checkModal">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">合伙人审核</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <div>
+                    <div class="form-group">
+                        <label for="form-field-11">失败原因:</label>
+                        <select name="reason_list" class="reason_list">
+                            <option value="0">无</option>
+                            <option value="1">信息不全</option>
+                            <option value="9">信息包含禁用敏感词语</option>
+                            <option value="10">其他</option>
+                        </select>
+                    </div>
+                    <textarea id="reason" placeholder="请填写具体原因" class=" form-control"
+                              style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 100px;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" value="0" id="apply_id"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-type="user" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script src="/srv/static/panel/js/tools/Url.js"></script>
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script>
+    $('#start').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+    $('#end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+</script>
+
+
+<script type="text/javascript">
+    $(function () {
+        seajs.use('app/panel/shop/agent.js', function (api) {
+            api.successCheck(".checkBtn");
+            api.failCheck();
+//            $(".reason_list").on('change', function () {
+//                var r_value = $(this).val();
+//                if (r_value != '0') {
+//                    $("#reason").val($(".reason_list option[value='" + r_value + "']").html());
+//                }
+//            })
+        });
+    })
+
+</script>
+<script src="/srv/static/ace/js/jquery.colorbox-min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        var colorbox_params = {
+            reposition: true,
+            scalePhotos: true,
+            scrolling: false,
+            previous: '<i class="fa fa-arrow-left"></i>',
+            next: '<i class="fa fa-arrow-right"></i>',
+            close: '&times;',
+            current: '{current}/{total}',
+            maxWidth: '100%',
+            maxHeight: '100%',
+            onOpen: function () {
+                document.body.style.overflow = 'hidden';
+            },
+            onClosed: function () {
+                document.body.style.overflow = 'auto';
+            },
+            onComplete: function () {
+                $.colorbox.resize();
+            }
+        };
+        $('.ace-thumbnails').each(function () {
+            $('.ace-thumbnails [data-rel="' + $(this).attr('data-id') + '"]').colorbox(colorbox_params);
+        });
+        $("#cboxLoadingGraphic").append("<i class='fa fa-spinner orange'></i>");//let's add a custom loading icon
+    })
+</script>

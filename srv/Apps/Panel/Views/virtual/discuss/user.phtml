@@ -1,0 +1,125 @@
+<style>
+    .user_list {
+
+    }
+
+    .user_list li {
+        width: 200px;
+        float: left;
+        /*  border: 1px solid #e4e4e4;*/
+        margin-right: 5px;
+        background-color: #e4e4e4;
+        border-radius: 5px;
+        padding: 5px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid #e4e4e4;
+        margin-bottom: 5px;
+    }
+
+    .avatar_list ul {
+        margin-left: 10px;
+        display: block;
+        overflow: hidden;
+    }
+
+    .avatar_list .user_item img {
+        width: 52px;
+        height: 52px;
+        border-radius: 100%
+    }
+
+    .avatar_list .user_item:hover {
+        background-color: #438eb9;
+    }
+
+    .avatar_list .user_item:hover, .avatar_list li:hover .user_id {
+        color: #fff;
+    }
+
+    .avatar_list li .user_info {
+        float: left;
+        margin-left: 10px;
+    }
+
+    .avatar_list li .user_info .username {
+        font-weight: bold;
+    }
+
+    .avatar_list li .user_info .user_id {
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .avatar_list li p {
+        line-height: 26px;
+        vertical-align: middle;
+        height: 26px;
+    }
+
+    .avatar_list li img {
+        float: left;
+    }
+
+    .avatar_list .checked {
+        background-color: #f6f6f6;
+    }
+
+    .avatar_list .checked .check_wrap, .avatar_list .checked .check_arrow {
+        display: block;
+    }
+
+    .check_wrap {
+        background-color: #438eb9;
+        position: absolute;
+        right: -30px;
+        top: -30px;
+        width: 50px;
+        height: 50px;
+        transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        display: none;
+    }
+
+    .check_arrow {
+        position: absolute;
+        width: 14px;
+        height: 10px;
+        right: 0;
+        top: 0;
+        color: white;
+        display: none;
+    }
+</style>
+<?php if ($users) { ?>
+    <div class="field set-field avatar_list">
+        <label for="" class="field-label" style="float:left;">发布人:</label>
+
+        <ul class="user_list">
+            <?php foreach ($users as $k => $item) { ?>
+                <li class="user_item <?php echo $k == 0 ? 'checked' : '' ?>" data-id="<?php echo $item['id'] ?>">
+                    <img style="width: 50px;height: 50px;border-radius: 100%"
+                         src="<?php echo $item['avatar'] ?>?x-oss-process=image/resize,m_fill,h_160,w_160"/>
+                    <div class="user_info">
+                        <p class="username"><?php echo $item['username'] ?></p>
+                        <p class="user_id"><?php echo $item['id'] ?></p>
+                    </div>
+
+                    <span class="check_wrap">
+                    </span>
+                    <span class="check_arrow">
+                          <i class="fa fa-check"></i>
+                    </span>
+
+                </li>
+            <?php } ?>
+        </ul>
+        <span class="tip"></span>
+    </div>
+
+<?php } ?>
+

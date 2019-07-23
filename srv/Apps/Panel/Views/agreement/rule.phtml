@@ -1,0 +1,21 @@
+<div class="col-sm-8" style="float: left">
+    <textarea class="message_box" id="txtContent"
+              style="min-height: 500px;width: 100%"><?php echo $content ?></textarea>
+    <span class="btn btn-primary btnSave"  style="margin-top: 10px"><i class="fa fa-send"></i> 立即保存</span>
+</div>
+<script>
+    seajs.use(['app/panel/panel.base', 'app/app.editor'], function (api, editor) {
+        editor.init('#txtContent');
+        $(".btnSave").on('click', function () {
+            var content = $.trim($("#txtContent").val());
+            if (content == '') {
+                tip.showTip('err', '内容不能为空', 1000);
+            }
+            api.requestApi("/api/agreement/save", {key: 'rule', 'content': content}, function (res) {
+                if (res.result == 1) {
+                    tip.showTip("ok", '保存成功', 1000)
+                }
+            })
+        })
+    })
+</script>

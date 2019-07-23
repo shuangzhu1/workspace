@@ -1,0 +1,258 @@
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/js/tools/datetimepicker/bootstrap-datetimepicker.min.css">
+<script src="/srv/static/panel/js/tools/Url.js"></script>
+
+<div class="tabs">
+    <a href="<?php echo $this->uri->setUrl(['type' => 'app'], ['p']); ?>"
+       class="tab <?php echo $type == 'app' ? 'active' : ''; ?>">app端</a>
+    <!-- <a href="<?php /*echo $this->uri->setUrl(['type' => 1], ['p']); */ ?>"
+       class="tab <?php /*echo $type == 1 ? 'active' : ''; */ ?>">pc</a>
+    <a href="<?php /*echo $this->uri->setUrl(['type' => 2], ['p']); */ ?>"
+       class="tab <?php /*echo $type == 2 ? 'active' : ''; */ ?>">H5</a>-->
+</div>
+<div>
+    <label for="ads_key_list">广告位置：</label>
+    <select  id="ads_key_list">
+        <?php foreach($ads_keys as $k => $v) : ?>
+            <option value="{{k}}" <?php if( $key === $k) echo 'selected' ?>>{{v}}</option>
+        <?php endforeach; ?>
+    </select>
+    <span class="list">
+
+    <a href="javascript:;" class="btn btn-xs btn-success add_btn" style="margin-left:15px">添加该类广告</a>
+    </span>
+</div>
+<hr class="hr-10">
+<table id="article-list" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style='width:36px'>ID</th>
+        <!--  <th style='width:56px'>批量</th>-->
+        <th style='width:150px'>标识</th>
+        <th style='width:150px'> 广告位置</th>
+        <th>图片标题</th>
+        <th style='width:200px'>图片预览</th>
+        <!-- <th style='width:60px'>内容模型</th>-->
+        <!--     <th style='width:60px'>广告内容</th>-->
+        <th style='width:80px'>是否发布</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <th class='name'><?php echo $item['id']; ?></th>
+            <!--   <td class="center"><input type="checkbox" class="chk" data-id="<?php /*echo $item['id']; */ ?>"/>
+            </td>-->
+            <td><?php echo $item['ads_key']; ?></td>
+            <td><?php echo $item['name']; ?></td>
+            <td>
+                <?php echo $item['content']['title']; ?>
+            </td>
+            <td style="width: 200px;word-break: break-all;">
+                <a href="<?php echo $item['content']['img']; ?>" data-lightbox="roadtrip">
+                    <img src="<?php echo $item['content']['img']; ?>" style="border-radius: 5px;max-height:90px" class="ads_img"/>
+                </a>
+            </td>
+            <!--   <td>
+                <?php /*echo \Services\Site\AdvertiseManager::$_type_name[$item['content_type']] */ ?>
+            </td>-->
+
+            <td>
+                <input type="checkbox"
+                       data-id="<?php echo $item['id'] ?>" <?php echo $item['status'] == 1 ? 'checked' : '' ?>
+                       class="ace ace-switch ace-switch-5 status"/>
+                <span class="lbl"></span>
+            </td>
+
+            <td>
+                <a href="javascript:;"
+                   data-title="<?php echo $item['content']['title'] ?>"
+                   data-img="<?php echo $item['content']['img'] ?>"
+                   data-sort="<?php echo $item['sort'] ?>"
+                   data-type="<?php echo isset($item['content']['type']) ? $item['content']['type'] : '' ?>"
+                   data-val="<?php echo isset($item['content']['value']) ? $item['content']['value'] : '' ?>"
+                   class="btn btn-success up_btn btn-sm" data-id="<?php echo $item['id'] ?>"><i class="fa fa-edit"></i>
+                    编辑</a>
+                <a href="javascript:;" class="btn  del_btn  btn-sm" data-id="<?php echo $item['id'] ?>"><i
+                        class="fa fa-trash"></i> 删除</a>
+            </td>
+
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="17">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <!--  <tr class="showpage">
+          <th class="name">操作</th>
+          <td colspan="17">
+                  <span>
+                      [ <a href="javascript:;" class="selectAll">全选</a> ]
+                      [ <a href="javascript:;" class="selectNone">全不选</a> ]
+                      [ <a href="javascript:;" class="selectInvert">反选</a> ]
+                      <a class="btn-light delAllSelected" href="javascript:;">批量屏蔽</a>
+                  </span>
+          </td>
+      </tr>-->
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+        </td>
+    </tr>
+</table>
+
+<div class="modal fade" id="adsModal">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">修改广告</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <div>
+                    <form class="form-horizontal" role="form" id="adsForm">
+                        <input type="hidden" id="ads_key" name="ads_key" value="">
+
+                        <div class="form-group">
+                            <label for="ruleName" class="col-sm-2 control-label">广告标题:</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control title" id="title" name="title"
+                                       placeholder="广告标题">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ruleName" class="col-sm-2 control-label">广告图片:</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" name="thumb" id="thumb"
+                                       value="" class="txt"
+                                       readonly/>
+                                <a class="btn btn-sm btn-success" id="uploadMainPic" href="javascript:;">广告图片</a>
+                                <img src="" alt="" id="thumbPreview"
+                                     style="height: 32px;"/>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ruleName" class="col-sm-2 control-label">广告模型:</label>
+
+                            <div class="col-sm-10">
+                                <label>
+                                    <input type="radio" class="txt content_type ace active" name="content_type"
+                                           data-name="链接"
+                                           data-type="link"
+                                           value="link" checked/>
+                                    <span class="lbl"> <b>普通链接</b></span>
+                                </label>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ruleName" class="col-sm-2 control-label">链接地址:</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="txt  content_type_link" data-type="link"
+                                       name="content_type_link" value=""
+                                       style="width: 100%"/>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ruleName" class="col-sm-2 control-label">权重:</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control sort" id="sort" name="sort"
+                                       value="50"
+                                       placeholder="权重【越大越靠前】">
+                            </div>
+                        </div>
+                        <p class="alert alert-danger error-widget" style="display: none"><i class="fa fa-warning"></i>
+                            <span class="error_msg"></span>
+                        </p>
+                        <p class="alert alert-success success-widget" style="display: none"><i class="fa fa-check"></i>
+                            <span class="success_msg"></span>
+                        </p>
+
+                        <div class="preview">
+                            <img src="" class="pic-preview" alt=""/>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" value="0" id="apply_id"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary submitBtn" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script type="text/javascript">
+    $('#ads_key_list').on('change',function(){
+        var key = $(this).val();
+        var url = new Url();
+        url.rmArgs(['p']);
+        url.setArgs({key:key});
+        window.location.href = url.getUrl();
+    });
+    seajs.use('app/panel/site/advertise.js?v=1.0.0', function (api) {
+        api.addAdvertiseApp();
+        api.upAppAdvertise();
+    });
+    $(function () {
+        $(".ads_img").each(function () {
+            var width = $(this).width();
+            var height = $(this).height();
+            //长条形
+            if (width > height) {
+                if (width > 200) {
+                    $(this).attr('width', 200);
+                }
+            }
+            //竖条形
+            else if (width < height) {
+                if (height > 200) {
+                    $(this).attr('height', 200);
+                }
+            }
+            //正方形
+            else {
+                $(this).attr('width', 200);
+            }
+        })
+    })
+
+</script>
+<link rel="stylesheet" href="/srv/static/panel/css/lightbox/lightbox.css"/>
+
+<script src="/srv/static/panel/js/jquery/lightbox/lightbox.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        lightbox.option({
+            albumLabel: '%1/%2',
+            'resizeDuration': 200,
+            "fadeDuration":0,
+            "imageFadeDuration":0
+        });
+    })
+
+</script>

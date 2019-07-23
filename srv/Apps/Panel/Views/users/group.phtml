@@ -1,0 +1,201 @@
+<?php use Components\User\UserManager; ?>
+<style>
+    .current {
+        color: #ff0000;
+    }
+
+    .txt.err {
+        border-color: #ff0000;
+    }
+
+    .txt.txtdiscount {
+        width: 36px;
+    }
+</style>
+<script>
+    seajs.use('app/users/users.group.js?v=1.0', function (api) {
+        api.init();
+    });
+</script>
+<section>
+    <form action="javascript:;" class="setGradeForm">
+        <table class='list' id="menuCats">
+            <thead>
+            <tr class="head">
+                <th style='width:24px;'></th>
+                <th style='width:60px;'>等级</th>
+                <th style='width:120px;'>头衔名称</th>
+                <th style='width:90px;'>起始经验值</th>
+                <th style='width:92px;'>结束经验值</th>
+<!--                <th style='width:120px;'>群聊最大成员数</th>-->
+                <th style='width:120px;'>免费置顶动态数</th>
+                <!--   <th style='width:200px;'>头衔图标</th>-->
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody class="listData">
+            <?php
+            if ($data) {
+                foreach ($data as $item) {
+                    ?>
+                    <tr class="item"
+                        data-id="<?php echo $item['id']; ?>"
+                        data-grade="<?php echo $item['grade'] < 10 ? '0' . $item['grade'] : $item['grade']; ?>"
+                        data-amount-start="<?php echo $item['amount_start']; ?>">
+                        <td></td>
+                        <td class="center"><span style="color: red;"><?php echo $item['grade']; ?></span>级</td>
+                        <td>
+                            <input class="txt txtName" type="text" data-id="<?php echo $item['id']; ?>"
+                                   data-old="<?php echo $item['name']; ?>"
+                                   value="<?php echo $item['name']; ?>" maxlength="20"/>
+                        </td>
+                        <td class="center">
+                            <input class="txt intPointStart" type="text" style="width: 80px;" maxlength="10"
+                                   data-id="<?php echo $item['id']; ?>"
+                                   data-grade="<?php echo $item['grade']; ?>"
+                                   data-amount-start="<?php echo $item['amount_start']; ?>"
+                                   data-old-start="<?php echo $item['amount_start']; ?>"
+                                   data-old-end="<?php echo $item['amount_end']; ?>"
+                                   data-old-group_limit="<?php echo $item['group_member_count']; ?>"
+                                   data-old-discuss_top="<?php echo $item['top_discuss']; ?>"
+                                   value="<?php echo $item['amount_start']; ?>"/>
+                        </td>
+                        <td>
+                            <input class="txt intPointEnd" type="text" style="width: 80px;" maxlength="10"
+                                   data-id="<?php echo $item['id']; ?>"
+                                   data-grade="<?php echo $item['grade']; ?>"
+                                   data-amount-start="<?php echo $item['amount_start']; ?>"
+                                   data-old-start="<?php echo $item['amount_start']; ?>"
+                                   data-old-end="<?php echo $item['amount_end']; ?>"
+                                   data-old-group_limit="<?php echo $item['group_member_count']; ?>"
+                                   data-old-discuss_top="<?php echo $item['top_discuss']; ?>"
+                                   value="<?php echo $item['amount_end']; ?>"/>
+                        </td>
+<!--                        <td>-->
+<!--                            <input class="txt memberLimit" type="text" style="width: 80px;" maxlength="4"-->
+<!--                                   data-id="--><?php //echo $item['id']; ?><!--"-->
+<!--                                   data-grade="--><?php //echo $item['grade']; ?><!--"-->
+<!--                                   data-amount-start="--><?php //echo $item['amount_start']; ?><!--"-->
+<!--                                   data-old-start="--><?php //echo $item['amount_start']; ?><!--"-->
+<!--                                   data-old-end="--><?php //echo $item['amount_end']; ?><!--"-->
+<!--                                   data-old-group_limit="--><?php //echo $item['group_member_count']; ?><!--"-->
+<!--                                   data-old-discuss_top="--><?php //echo $item['top_discuss']; ?><!--"-->
+<!--                                   value="--><?php //echo $item['group_member_count']; ?><!--"/>-->
+<!--                        </td>-->
+                        <td>
+                            <input class="txt topLimit" type="text" style="width: 80px;" maxlength="3"
+                                   data-id="<?php echo $item['id']; ?>"
+                                   data-grade="<?php echo $item['grade']; ?>"
+                                   data-amount-start="<?php echo $item['amount_start']; ?>"
+                                   data-old-start="<?php echo $item['amount_start']; ?>"
+                                   data-old-end="<?php echo $item['amount_end']; ?>"
+                                   data-old-group_limit="<?php echo $item['group_member_count']; ?>"
+                                   data-old-discuss_top="<?php echo $item['top_discuss']; ?>"
+                                   value="<?php echo $item['top_discuss']; ?>"/>
+                        </td>
+                        <!--    <td>
+                            <input type="hidden" name="icon"
+                                   value="<?php /*echo $item['badge']; */ ?>"
+                                   class="txt badgeField" data-old="<?php /*echo $item['badge']; */ ?>"/>
+                            <img src="<?php /*echo $item['badge']; */ ?>" alt="等级图标"
+                                 class="badge-img-previewer"
+                                 style="height: 32px;"/>
+                            <a class="btn btn-sm btn-success upload-badge" href="javascript:;">更改图标</a>
+                        </td>-->
+                        <td>
+                            <a href="javascript:;" data-grade="<?php echo $item['grade']; ?>"
+                               class="del-grade btn btn-danger btn-xs"><i class="fa fa-remove"></i> 删除</a>
+                        </td>
+                    </tr>
+                <?php }
+                reset($data);
+                $firstGrade = current($data);
+                $lastGrade = array_pop($data);
+                $maxEnd = $firstGrade['exp_end'];
+                $minStart = $lastGrade['exp_start'];
+                $newGrade = count($data) + 1;
+            } else { ?>
+                <tr>
+                    <td colspan="9" class="noData">
+                        <p style="margin: 20px;color:#f00;">
+                            会员等级尚未添加，请添加～！
+                        </p>
+                    </td>
+                </tr>
+                <?php
+                $newGrade = 1;
+                $maxEnd = UserManager::NEGATIVE_INFINITE;
+                $minStart = UserManager::POSITIVE_INFINITE;
+                ?>
+            <?php } ?>
+            </tbody>
+            <tr class="showpage">
+                <th class="name">操作</th>
+                <td colspan="7">
+                    <input type="submit" class="btn btn-success btn-sm" data-amount-start="<?php echo $minStart; ?>"
+                           value="更新设置" id="setGradeBtn"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</section>
+
+<section>
+    <form action="javascript:;" class="addGradeForm">
+        <table class='list'>
+            <tr class="head">
+                <th style='width:24px;'></th>
+                <th style='width:120px;'>头衔名称</th>
+                <th style='width:120px;'>起始经验值</th>
+                <th style='width:120px;'>结束经验值</th>
+<!--                <th style='width:120px;'>群聊成员数</th>-->
+                <th style='width:120px;'>免费置顶动态数</th>
+                <th></th>
+                <!-- <th style='width:200px;'>头衔图标</th>-->
+            </tr>
+            <tbody class="listData">
+            <tr class="addRow">
+                <th class="name"></th>
+                <td>
+                    <input class="txt txtName" type="text" maxlength="10"/>
+                </td>
+                <td class="center">
+                    <input class="txt addIntPointStart" type="text" maxlength="10"
+                           data-amount-start="<?php echo $maxEnd; ?>" placeholder="可以为负数，不填为负无穷"/>
+                </td>
+                <td>
+                    <input class="txt addIntPointEnd" type="text" maxlength="10"
+                           data-amount-start="<?php echo $minStart; ?>" placeholder="不填为正无穷"/>
+                </td>
+                <!-- <td>
+                     <input type="hidden" name="icon"
+                            value=""
+                            class="txt badgeField"/>
+                     <img src="" alt=""
+                          class="badge-img-previewer"
+                          style="height: 32px;"/>
+                     <a class="btn btn-sm btn-success upload-badge" href="javascript:;">更改图标</a>
+                 </td>-->
+<!--                <td>-->
+<!--                    <input class="txt groupMember" type="text" style="" value="10" maxlength="4"/>-->
+<!--                </td>-->
+                <td>
+                    <input class="txt topDiscuss" type="text" style="width: 80px;" value="0" maxlength="3"/>
+                </td>
+                <td></td>
+            </tr>
+            </tbody>
+            <tr class="showpage">
+                <th class="name">操作</th>
+                <td colspan="8"><input type="submit" class="btn btn-sm btn-primary"
+                                       data-amount-start="<?php echo $minStart; ?>"
+                                       data-amount-end="<?php echo $maxEnd; ?>"
+                                       value="添加等级" id="addGradeBtn"/></td>
+            </tr>
+        </table>
+    </form>
+</section>
+<section>
+
+
+</section>

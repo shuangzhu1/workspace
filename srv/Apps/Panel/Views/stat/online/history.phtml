@@ -1,0 +1,87 @@
+<script type="text/javascript" src="/srv/static/panel/js/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="/srv/static/panel/js/echarts/themes/blue.js"></script>
+
+<div class="tabbable">
+    <div id="main"
+         style="height:500px;width:1200px;overflow: hidden; border: 1px solid #e3e3e3;box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);border-radius: 5px;padding: 5px;"></div>
+</div>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        var myChart_week = echarts.init(document.getElementById('main'), 'blue');
+        var option = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: [<?php echo $week_date['labels']?>]
+            },
+            /* toolbox: {
+             show: true,
+             feature: {
+             mark: {show: true},
+             dataZoom: {show: true},
+             dataView: {show: true},
+             magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+             restore: {show: true},
+             saveAsImage: {show: true}
+             }
+             },*/
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true,
+            },
+            calculable: true,
+            dataZoom: {
+                show: true,
+                realtime: true,
+                start: 20,
+                end: 80
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: function () {
+                        var list = [];
+                        for (var i = 0; i <= 23; i++) {
+                            list.push('' + i + ':00');
+                        }
+                        return list;
+                    }()
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                <?php foreach($week_date['values'] as $k=>$item){
+                $val = '';
+                foreach ($item as $i) {
+                    $val .= ',' . $i['count'];
+                }
+                $val = substr($val, 1);
+                echo "{ " .
+                    "name:'" . $k . "'," .
+                    "type:'line'," .
+                    "data:[$val]" .
+                    "},"
+                ?>
+
+
+                <?php } ?>
+
+            ]
+        };
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart_week.setOption(option);
+    })
+
+
+</script>

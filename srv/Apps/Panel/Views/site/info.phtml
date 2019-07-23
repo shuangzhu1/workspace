@@ -1,0 +1,258 @@
+<div class="page-header">
+    <h1>
+        <i class="fa fa-newspaper-o"></i> 平台信息
+        <small>
+
+        </small>
+    </h1>
+</div>
+<style>
+    .form-group {
+        min-height: 30px;
+        overflow: hidden;
+    }
+
+    .form-group .control-label {
+        text-align: right;
+    }
+
+    .form-group select {
+        margin: 0;
+    }
+</style>
+<div class="tabs">
+    <a data-val="13" href="<?php echo $this->uri->setUrl(['account' => 13], ['p']); ?>"
+       class="tab <?php echo $account == 13 ? 'active' : ''; ?>">恐龙君</a>
+    <a data-val="17" href="<?php echo $this->uri->setUrl(['account' => 17], ['p']); ?>"
+       class="tab <?php echo $account == 17 ? 'active' : ''; ?>">新闻资讯</a>
+    <a data-val="18" href="<?php echo $this->uri->setUrl(['account' => 18], ['p']); ?>"
+       class="tab <?php echo $account == 18 ? 'active' : ''; ?>">红包君</a>
+</div>
+<main class="tab-content" style="border:none;">
+    <section id="home" class="tab-pane in active">
+        <div class="form-group">
+            <label for="name" class="col-sm-1 control-label">系统官方名称</label>
+
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="恐龙谷官方"
+                               value="<?php echo $official_info['name'] ?>" required
+                               data-error="">
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="logo" class="col-sm-1 control-label">官方头像</label>
+                <span class="col-sm-10">
+                    <span class="col-xs-4">
+                        <span class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-picture-o"></i></span>
+                            <input class="form-control img" name="logo" id="logo" type="text" readonly=""
+                                   value="<?php echo isset($official_info['logo']) ? $official_info['logo'] : '' ?>">
+                            <a class="input-group-addon" id="upSiteLogo" href="javascript:;">选择图片</a>
+                        </span>
+                    </span>
+                    <span class="col-xs-6 pic-review" id="picReviewer" data-list-item-id="12">
+                        <img src="<?php echo isset($official_info['logo']) ? $official_info['logo'] : '' ?>"
+                             class="preview-logo"
+                             style="height: 32px;" title="选择图片">
+                        <span class="help-block with-errors"></span>
+                    </span>
+                </span>
+        </div>
+        <div class="form-group">
+            <label for="background" class="col-sm-1 control-label">头像背景</label>
+
+            <div class="col-sm-10">
+                        <span class="col-xs-4">
+                            <span class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-picture-o"></i></span>
+                                <input type="text" class="form-control img" id="background" name="background"
+                                       placeholder="" readonly
+                                       value="<?php echo isset($official_info['background']) ? $official_info['background'] : '' ?>"
+                                       data-error="" maxlength="255">
+                                <a class="input-group-addon" id="upSiteBg" href="javascript:;">选择图片</a>
+                            </span>
+                        </span>
+                        <span class="col-xs-6 pic-review">
+                            <img class="preview-background" id="background-preview"
+                                 src="<?php echo isset($official_info['background']) ? $official_info['background'] : '' ?>"
+                                 alt="选择图片"
+                                 style="height: 32px;"/>
+                            <span class="help-block with-errors">
+
+                            </span>
+                        </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="telephone" class="col-sm-1 control-label">联系座机</label>
+
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                        <input type="text" class="form-control" id="telephone" name="telephone"
+                               value="<?php echo isset($official_info['telephone']) ? $official_info['telephone'] : '' ?>"
+                               placeholder="联系座机">
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="telephone" class="col-sm-1 control-label">官方qq群</label>
+
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                        <input type="text" class="form-control" id="qq" name="qq"
+                               value="<?php echo isset($official_info['qq']) ? $official_info['qq'] : '' ?>"
+                               placeholder="官方qq">
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="telephone" class="col-sm-1 control-label">邮箱地址</label>
+
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                        <input type="text" class="form-control" id="email" name="email"
+                               value="<?php echo isset($official_info['email']) ? $official_info['email'] : '' ?>"
+                               placeholder="邮箱">
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+        <!--  <div class="form-group">
+            <label class="col-sm-1 control-label">联系地址</label>
+
+            <div class="col-sm-10">
+                 <span class="col-sm-12">
+                <select name="province" id="province" class=""></select>
+                <select name="city" id="city" class=""></select>
+                <select name="town" id="town" class=""></select>
+                <script src="/static/panel/js/tools/region.select.js"></script>
+                <script type="text/javascript">
+                    new PCAS('province', 'city', 'town', '<?php /*echo isset($official_info['province']) ? $official_info['province'] : ''*/ ?>', '<?php /*echo isset($official_info['city']) ? $official_info['city'] : ''*/ ?>', '<?php /*echo isset($official_info['town']) ? $official_info['town'] : ''*/ ?>');
+                </script>
+                     </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label"></label>
+            <div class="col-sm-10">
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" id="address" name="address"
+                           value="<?php /*echo isset($official_info['address']) ? $official_info['address'] : '' */ ?>"
+                           placeholder="详细地址">
+                    <span class="help-block with-errors"></span>
+                </div>
+            </div>
+        </div>-->
+
+
+        <div class="form-group">
+            <label for="keywords" class="col-sm-1 control-label">简介</label>
+
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                        <textarea name="introduce" id="introduce"
+                                  style="width: 100%;height: 100px;"><?php echo isset($official_info['introduce']) ? $official_info['introduce'] : '' ?></textarea>
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="name" class="col-sm-1 control-label"></label>
+
+            <div class="col-sm-10" style="padding: 0 0 0 30px;">
+                <button type="submit" class="btn btn-primary btn-large btnSave" name="btn-base">
+                    <i class="fa fa-paper-plane"></i>立即保存
+                </button>
+            </div>
+        </div>
+    </section>
+
+</main>
+<script>
+    seajs.use('app/panel/panel.storage', function (s) {
+        s.getImg('#upSiteBg', function (res) {
+            $('#background').val(res.url);
+            $('.preview-background').attr('src', res.url);
+        }, false);
+    });
+    seajs.use('app/panel/panel.storage', function (s) {
+        s.getImg('#upSiteLogo', function (res) {
+            $('#logo').val(res.url);
+            $('.preview-logo').attr('src', res.url);
+        }, false);
+    });
+    seajs.use('app/panel/panel.base', function (api) {
+        $(".btnSave").on('click', function () {
+            var account = $(".tabs .tab.active").attr('data-val');
+            var name = $.trim($("#name").val());//名称
+            var logo = $.trim($("#logo").val());//头像
+            var background = $.trim($("#background").val());//背景
+            var telephone = $.trim($("#telephone").val());//联系电话
+            var email = $.trim($("#email").val());//邮箱
+            var qq = $.trim($("#qq").val());//qq
+            /* var province = $.trim($("#province").val());//省
+             var city = $.trim($("#city").val());//市
+             var town = $.trim($("#town").val());//区
+             var address = $.trim($("#address").val());//详细地址*/
+            var introduce = $.trim($("#introduce").val());//邮箱
+
+            if (name == '') {
+                tip.showTip("err", '请填写官方名称', 1000);
+                $("#name").focus();
+                return false;
+            }
+            if (logo == '') {
+                tip.showTip("err", '请选择官方头像', 1000);
+                return false;
+            }
+            if (background == '') {
+                tip.showTip("err", '请选择头像背景', 1000);
+                return false;
+            }
+            if (telephone == '') {
+                tip.showTip("err", '请填写座机号码', 1000);
+                $("#telephone").focus();
+                return false;
+            }
+//            if (email == '') {
+//                tip.showTip("err", '请填写邮箱地址', 1000);
+//                $("#email").focus();
+//                return false;
+//            }
+            if (introduce == '') {
+                tip.showTip("err", '请填写简介', 1000);
+                $("#introduce").focus();
+                return false;
+            }
+//            if (qq == '') {
+//                tip.showTip("err", '请填写qq信息', 1000);
+//                $("#qq").focus();
+//                return false;
+//            }
+            var data = {
+                name: name,
+                logo: logo,
+                background: background,
+                telephone: telephone,
+                email: email,
+                introduce: introduce,
+                qq: qq,
+                account: account
+            };
+            api.requestApi('/api/site/info', data, function (res) {
+                if (res.result == 1) {
+                    tip.showTip("ok", '保存成功', 1000);
+                }
+            })
+
+        })
+    });
+
+</script>

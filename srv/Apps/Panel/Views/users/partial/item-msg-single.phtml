@@ -1,0 +1,364 @@
+<?php if (isset($item['pre'])) { ?>
+    <?php if ($item['pre'] != date("YmdHi", $item['info']['send_time'] / 1000)) { ?>
+        <li class="tip" data-id="<?php echo $item['info']['id'] ?>"><p
+                class="tip"><?php echo date('Y-m-d H:i:s', $item['info']['send_time'] / 1000) ?></p></li>
+    <?php } ?>
+<?php } ?>
+<?php if (isset($item['next'])) { ?>
+    <?php if ($item['next'] != date("YmdHi", $item['info']['send_time'] / 1000)) { ?>
+        <li><p class="tip"><?php echo date('Y-m-d H:i:s', $item['info']['send_time'] / 1000) ?></p></li>
+    <?php } ?>
+<?php } ?>
+<li class="<?php echo ($from_uid == $item['info']['from_uid']) ? 'left' : 'right' ?>"
+    data-id="<?php echo $item['info']['id'] ?>">
+       <span class="avatar">
+           <img src="<?php echo $item['user_info']['avatar'] ?>?x-oss-process=image/resize,m_fill,h_160,w_160"/></span>
+    <div class="info">
+        <p class="name">
+            <a
+                href="javascript:;" data-title="用户详情" class="newTarget"
+                data-href="/panel/users/detail?user_id=<?php echo $item['info']['from_uid'] ?>"><?php echo $item['user_info']['username'] ?></a>
+        </p>
+        <div class="msg_info">
+            <div class="desc grey"><?php if ($item['info']['media_type'] == 'audio') {
+                    $body = json_decode($item['info']['body'], true);
+                    ?>
+                    <span class="dur"><?php echo round($body['dur'] / 1000, 1) . 's' ?></span>  <span class="voice"
+                                                                                                      data-id="<?php echo $item['info']['id'] ?>"
+                                                                                                      data-src="<?php echo $body['url'] ?>"
+                                                                                                      style="width: 16px;height: 16px;display:inline-block;background: url(/static/panel/images/admin/voice-left.png) no-repeat;"></span>
+                <?php } else if ($item['info']['media_type'] == 'picture') {
+
+                    $body = json_decode($item['info']['body'], true);
+                    $extend_json = json_decode($item['info']['extend_json'], true);
+                    if ($extend_json) {
+                        if ($extend_json['extend_type'] == \Services\Im\ImManager::TYPE_THIRD_LOCATION_IMAGE) {
+                            //var_dump($extend_json);
+                            //var_dump($body)
+                            ?>
+                            <div class="third_share">
+                                <div class="content">
+                                    <img src="<?php echo $body['url'] ?>"/>
+                                    <div class="body">
+                                        <p class="title"><?php echo $extend_json['title'] ?></p>
+                                        <p class="desc"><?php echo $extend_json['des'] ?></p>
+                                    </div>
+                                </div>
+                                <p class="platform"><label class="platform_name"><span class="point"></span>
+                                        <?php echo $extend_json['platform'] ?>
+                                    </label>
+                                    <a data-href="<?php echo $extend_json['link'] ?>" class="newTarget"
+                                       data-title="第三方链接"><i class="fa fa-link"></i> 跳转链接</a>
+                                </p>
+                            </div>
+                        <?php } else if ($extend_json['extend_type'] == \Services\Im\ImManager::TYPE_THIRD_IMAGE) {
+                            // var_dump($body);
+                            // var_dump($extend_json);
+                            ?>
+                            <div class="third_share_img">
+                                <div class="content">
+                                    <a href="<?php echo $body['url'] ?>" data-lightbox="roadtrip"> <img
+                                            src="<?php echo $body['url'] ?>"/></a>
+                                </div>
+                                <p class="platform"><label class="platform_name"><span class="point"></span>
+                                        <?php echo $extend_json['platform'] ?>
+                                    </label>
+                                    <?php if (isset($extend_json['link'])) { ?>
+                                        <a data-href="<?php echo $extend_json['link'] ?>" class="newTarget"
+                                           data-title="第三方链接"><i class="fa fa-link"></i> 跳转链接</a>
+                                    <?php } ?>
+
+                                </p>
+                            </div>
+                        <?php } else {
+                            var_dump($body);
+                            var_dump($extend_json);
+                            ?>
+                        <?php } ?>
+                    <?php } else { ?>
+                        <a href="<?php echo $body['url'] ?>" data-lightbox="roadtrip"> <img class="msg_img"
+                                                                                            src="<?php echo $body['url'] ?>"/></a>
+                    <?php } ?>
+
+                <?php } else if ($item['info']['media_type'] == 'custom') {
+                    $body = json_decode($item['info']['body'], true);
+                    //var_dump($body);
+                    //gif
+                    if ($body['extend_type'] == \Services\Im\ImManager::TYPE_SYSTEM_GIF) {
+                        // var_dump($body);
+
+
+//                        if (strpos($body['msg'], 'bird') > 0) {
+//                            $url = 'http://circleimg.klgwl.com/gif/2/' . $body['msg'] . '.gif';
+//                        } else if (strpos($body['msg'], 'f_') == 0) {
+//                            $url = 'http://circleimg.klgwl.com/gif/1/' . $body['msg'] . '.gif';
+//                        } else {
+//                            $url = '';
+//                        }
+                        ?>
+                        <?php if ($body['type'] == 1) { ?>
+                            <img class="sys_gif sys_gif_1"
+                                 src="http://circleimg.klgwl.com/gif/2/<?php echo $body['msg'] ?>.gif"/>
+                        <?php } else if ($body['type'] == 2 || $body['type'] == 0) { ?>
+                            <img class="sys_gif sys_gif_2"
+                                 src="http://circleimg.klgwl.com/gif/1/<?php echo $body['msg'] ?>.gif"/>
+                        <?php } else if ($body['type'] == 3) {
+                            $body['extend'] = is_array($body['extend']) ? $body['extend'] : json_decode($body['extend'], true);
+                            $body['extend']['dicecount'] = explode(',', $body['extend']['dicecount']);
+                            foreach ($body['extend']['dicecount'] as $img) {
+                                ?>
+                                <img class="sys_gif sys_gif_3"
+                                     src="/static/panel/images/chat_gif/shaizi/<?php echo $img ?>.png"/>
+                            <?php } ?>
+                        <?php } else if ($body['type'] == 4) {
+                            $body['extend'] = is_array($body['extend']) ? $body['extend'] : json_decode($body['extend'], true);
+                            $body['extend']['pokercount'] = explode(',', $body['extend']['pokercount']);
+                            foreach ($body['extend']['pokercount'] as $img) {
+                                ?>
+                                <img class="sys_gif sys_gif_4"
+                                     src="/static/panel/images/chat_gif/puke/<?php echo $img ?>.png"/>
+                            <?php } ?>
+                        <?php } else if ($body['type'] == 5) { ?>
+                            <?php if ($body['msg'] == 'dice_large') { ?>
+                                <img class="sys_gif"
+                                     src="/static/panel/images/chat_gif/compare/large.png"/>
+                            <?php } else { ?>
+                                <img class="sys_gif"
+                                     src="/static/panel/images/chat_gif/compare/small.png"/>
+                            <?php } ?>
+                        <?php } else { ?>
+
+                        <?php } ?>
+                        <!--                        <a href="--><?php //echo $url ?><!--" data-lightbox="roadtrip"> <img class="msg_img"-->
+                        <!--                                                                                    src="--><?php //echo $url ?><!--"/></a>-->
+                    <?php } else if ($body['extend_type'] == \Services\Im\ImManager::TYPE_USER) {
+
+                        //   echo '用户名片';
+                        //  print_r($body);
+                        ?>
+                        <a class="user_card newTarget" href="javascript:;" data-title="用户详情-<?php echo $body['uid'] ?>"
+                           data-href="/panel/users/detail/?user_id=<?php echo $body['uid']; ?>"
+                           style='display:block;background: url(<?php echo $body['avatar'] ?>?x-oss-process=image/resize,m_fill,h_300,w_200) no-repeat;background-size: cover'>
+                            <div class="user_info">
+
+                            </div>
+                            <div class="user_info_box">
+                                <p><?php echo $body['username'] ?>
+                                    &nbsp;<?php echo $body['sex'] == 1 ? '<i class="fa fa-mars blue bold"></i>' : '<i class="fa fa-venus pink bold"></i>' ?></p>
+                                <p>
+                                    <span
+                                        class="badge  <?php echo $body['sex'] == 1 ? "badge-primary" : "badge-pink" ?>"><?php echo $body['birthday'] ?></span>
+                                    <span class="badge badge-primary"><?php echo $body['constellation'] ?></span>
+                                </p>
+                            </div>
+                        </a>
+                    <?php } else if ($body['extend_type'] == \Services\Im\ImManager::TYPE_ACTIVITY_SHARE) {
+                        //  var_dump($body) ?>
+                        <div class="activity_share_box">
+                            <img class="user_avatar"
+                                 src="<?php echo $body['avatar'] ?>?x-oss-process=image/resize,m_fill,h_160,w_160"/>
+                            <p class="username"><?php echo $body['username'] ?></p>
+                            <p class="title">发起了一个游戏</p>
+                            <p class="activity_id"><?php echo $body['activityId'] ?></p>
+                        </div>
+                    <?php } else if ($body['extend_type'] == \Services\Im\ImManager::TYPE_NEW_RED_BAG) {
+                        //   echo '红包信息';
+                        $rid = number_format($body['rid'], 0, '.', '');
+                        $table = fmod(floatval($rid), 20);
+                        $table = $table > 10 ? 'redbag_00' . $table : 'redbag_000' . $table;
+                        // echo $table;
+                        //echo $rid;
+                        $detail = \Services\MiddleWare\Sl\Request::getPost(\Services\MiddleWare\Sl\Base::PACKAGE_DETAIL, ['uid' => intval($item['info']['from_uid']), 'redid' => $body['rid']]);
+                        if ($detail && $detail['curl_is_success']) {
+                            $content = json_decode($detail['data'], true);
+                            $package_info = $content['data'];
+                        }
+                        // print_r($detail);
+                        // $package_info = ($this->db_package->query("select money,random from `" . $table . "` where rid='" . $rid . "'")->fetch(PDO::FETCH_ASSOC));
+                        ?>
+                        <div class="package_box">
+                            <img src="/static/panel/images/admin/package.jpg"/>
+                            <?php if ($package_info) { ?>
+                                <div class="type"><?php echo $package_info['random'] == 1 ? '拼' : '普' ?></div>
+                            <?php } ?>
+                            <div class="msg">
+                                <p class="title"><?php echo $body['msg'] ?></p>
+                                <?php if ($package_info) { ?>
+                                    <p class="money">￥<?php echo sprintf('%.2f', $package_info['money'] / 100) ?></p>
+                                <?php } ?>
+                            </div>
+
+                        </div>
+                    <?php } else if ($body['extend_type'] == \Services\Im\ImManager::TYPE_DYNAMIC) {
+                        //echo '分享动态';
+                        //  var_dump($body);
+                        ?>
+                        <section class="dynamic">
+                            <header>
+                                <img class="user_avatar"
+                                     src="<?php echo isset($body['user_info']) ? $body['user_info']['avatar'] : $body['avatar'] ?>"/>
+                                <span><?php echo isset($body['user_info']) ? $body['user_info']['username'] : $body['username'] ?>
+                                    的动态</span>
+                            </header>
+                            <div class="body">
+                                <p class="title"><?php echo $body['msg'] ?></p>
+                                <?php if (isset($body['share_original_type'])) { ?>
+                                    <!--商品-->
+                                    <?php if ($body['share_original_type'] == \Services\Social\SocialManager::TYPE_GOOD) { ?>
+                                        <div class="goods_box">
+                                            <h4 class="name"><?php echo $body['original_info']['name'] ?></h4>
+                                            <h4 class="price"><?php echo $body['original_info']['price'] ?>
+                                                /<?php echo $body['original_info']['unit'] ?></h4>
+                                            <img src="<?php echo $body['picture'] ?>"/>
+                                        </div>
+                                        <!--动态-->
+                                    <?php } else if ($body['share_original_type'] == '') { ?>
+                                        <?php if ($body['media_type'] == \Services\Discuss\DiscussManager::TYPE_VIDEO) {
+                                            $media = explode('?', $body['media']);
+                                            $scale = explode('_s_', $media[0])[1];
+                                            $scale = explode('x', $scale);
+
+                                            ?>
+                                            <div class="video_box" data-id="<?php echo $item['info']['id'] ?>">
+                                                <!-- <video width="90" height="160" controls>
+                                                        <source src="<?php /*echo $body['url'] */ ?>" type="video/mp4">
+                                                        您的浏览器不支持Video标签。
+                                                    </video>-->
+                                                <video data-id="<?php echo $item['info']['id'] ?>"
+                                                       poster="<?php echo $media['0'] ?>" style="display: block"
+                                                       class="video video_<?php echo $item['info']['id'] ?>">
+                                                    <source src="<?php echo $media['1'] ?>"/>
+                                                </video>
+                                                <img src="<?php echo $media['0'] ?>" style="display: none"
+                                                     data-id="<?php echo $item['info']['id'] ?>"
+                                                     class="video_thumb video_thumb_<?php echo $item['info']['id'] ?>""/>
+                                                    <span class="play" style="width:180px;top:20px"><i
+                                                            class="fa fa-play-circle"></i></span>
+                                            </div>
+                                        <?php } else if ($body['media_type'] == \Services\Discuss\DiscussManager::TYPE_PICTURE) {
+                                            $media = explode(',', $body['media']);
+                                            ?>
+                                            <a href="<?php echo $body['url'] ?>" data-lightbox="roadtrip"> <img
+                                                    class="msg_img"
+                                                    src="<?php echo $media[0] ?>"/></a>
+                                        <?php } ?>
+                                    <?php } ?>
+
+                                <?php } else { ?>
+                                    <?php if ($body['media_type'] == \Services\Discuss\DiscussManager::TYPE_VIDEO) { ?>
+
+                                        <div class="video_box" data-id="<?php echo $item['info']['id'] ?>">
+                                            <!-- <video width="90" height="160" controls>
+                                                        <source src="<?php /*echo $body['url'] */ ?>" type="video/mp4">
+                                                        您的浏览器不支持Video标签。
+                                                    </video>-->
+                                            <video data-id="<?php echo $item['info']['id'] ?>" crossOrigin="anonymous"
+                                                   poster="<?php echo $body['cover'] ?>" style="display: block"
+                                                   class="video video_<?php echo $item['info']['id'] ?>">
+                                                <source src="<?php echo $body['vedioURL'] ?>"/>
+                                            </video>
+                                            <img src="<?php echo $body['cover'] ?>" style="display: none"
+                                                 data-id="<?php echo $item['info']['id'] ?>"
+                                                 class="video_thumb video_thumb_<?php echo $item['info']['id'] ?>""/>
+                                                    <span class="play" style="width:180px;top:20px"><i
+                                                            class="fa fa-play-circle"></i></span>
+                                        </div>
+                                    <?php } ?>
+
+                                <?php } ?>
+
+                            </div>
+                        </section>
+                    <?php } else if ($body['extend_type'] == \Services\Im\ImManager::TYPE_RENT) { ?>
+                        <div class="rent_box">
+                            租人业务信息:【<?php echo $body['msg'] ?>】
+                        </div>
+                    <?php } else if ($body['extend_type'] == \Services\Im\ImManager::TYPE_RENT_CHAT) {
+                        ?>
+                        <div class="rent_box">
+                            <p>租人订单信息</p>
+                            <p>订单号:【<?php echo $body['orderid'] ?>】</p>
+                            <p>订单金额:【￥<?php echo sprintf("%.2f", $body['money'] / 100) ?>】</p>
+                        </div>
+                    <?php } else if ($body['extend_type'] == \Services\Im\ImManager::TYPE_THIRD_SHARE_LINK) {
+                        // var_dump($body);
+                        ?>
+                        <div class="third_share">
+                            <div class="content">
+                                <img src="<?php echo $body['ico'] ?>"/>
+                                <div class="body">
+                                    <p class="title"><?php echo $body['title'] ?></p>
+                                    <p class="desc"><?php echo $body['des'] ?></p>
+                                </div>
+                            </div>
+                            <p class="platform">
+                                <label class="platform_name"><span class="point"></span>
+                                    <?php echo $body['platform'] ?>
+                                </label>
+                                <a data-href="<?php echo $body['link'] ?>" class="newTarget"
+                                   data-title="第三方链接"><i class="fa fa-link"></i> 跳转链接</a>
+                            </p>
+                        </div>
+                    <?php } else if ($body['extend_type'] == \Services\Im\ImManager::TYPE_VIDEO) { ?>
+                        <div class="video_box" data-id="<?php echo $item['info']['id'] ?>">
+                            <!-- <video width="90" height="160" controls>
+                                                        <source src="<?php /*echo $body['url'] */ ?>" type="video/mp4">
+                                                        您的浏览器不支持Video标签。
+                                                    </video>-->
+                            <video data-id="<?php echo $item['info']['id'] ?>"
+                                   poster="<?php echo $body['cover'] ?>" style="display: block"
+                                   class="video video_<?php echo $item['info']['id'] ?>">
+                                <source src="<?php echo $body['videoURL'] ?>"/>
+                            </video>
+                            <img src="<?php echo $body['cover'] ?>" style="display: none"
+                                 data-id="<?php echo $item['info']['id'] ?>"
+                                 class="video_thumb video_thumb_<?php echo $item['info']['id'] ?>""/>
+                                                    <span class="play" style="width:180px;top:20px"><i
+                                                            class="fa fa-play-circle"></i></span>
+                        </div>
+                    <?php } else {
+                        var_dump($item);
+                        ?>
+
+                    <?php } ?>
+
+                <?php } else if ($item['info']['media_type'] == 'file') {
+                    $body = json_decode($item['info']['body'], true);
+                    if ($body['ext'] != 'gif') {
+
+                    } else {
+                        ?>
+                        <a href="<?php echo $body['url'] ?>" data-lightbox="roadtrip"> <img
+                                class="msg_img"
+                                src="<?php echo $body['url'] ?>"/></a>
+                    <?php } ?>
+                <?php } else if ($item['info']['media_type'] == 'video') {
+                $body = json_decode($item['info']['body'], true);
+
+                ?>
+                <div class="video_box" data-id="<?php echo $item['info']['id'] ?>">
+                    <!-- <video width="90" height="160" controls>
+                                                        <source src="<?php /*echo $body['url'] */ ?>" type="video/mp4">
+                                                        您的浏览器不支持Video标签。
+                                                    </video>-->
+                    <video data-id="<?php echo $item['info']['id'] ?>" crossOrigin="anonymous"
+                           class="video video_<?php echo $item['info']['id'] ?>">
+                        <source src="<?php echo $body['url'] ?>">
+                    </video>
+                    <img src="" style="display: none" data-id="<?php echo $item['info']['id'] ?>"
+                         class="video_thumb video_thumb_<?php echo $item['info']['id'] ?>""/>
+                                                    <span class="play"><i
+                                                            class="fa fa-play-circle"></i></span>
+                </div>
+                <?php } else {
+                    if ($key) {
+                        echo preg_replace("/(" . $key . ")/", "<label class='match'>$1</label>", $item['info']['body']);
+                    } else {
+                        echo \Util\FilterUtil::parseContentUrl($item['info']['body']);
+                    }
+
+                } ?></p>
+                <span class="arrow"></span>
+            </div>
+        </div>
+</li>

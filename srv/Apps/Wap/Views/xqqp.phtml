@@ -1,0 +1,404 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星球棋牌分享</title>
+    <base href="http://wpssz.kl78.com/download/">
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/theme.css" rel="stylesheet">
+    <link href="css/bootstrap-reset.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="assets/revolution_slider/css/rs-style.css" media="screen">
+    <link rel="stylesheet" href="assets/revolution_slider/rs-plugin/css/settings.css"
+          media="screen">
+    <!-- Custom styles for this template -->
+    <link href="css/common.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet" />
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        .tips
+        {
+            top: 0px;
+            margin-top: 0px;
+            vertical-aligin: top;
+            position: absolute;
+            z-index: 20000000;
+            text-align: center;
+            display: none;
+            cursor: pointer;
+        }
+        .tips
+        {
+            margin-top: 0px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body onresize="bb()" click="closes()">
+<div class="tips" onclick="closes()">
+    <img class="imgtip" />
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="ngame_detail_box">
+                <div class="ngame_detail_info">
+                    <img src="/download/img/xqqpico.png" alt="" class="ng_d_i_img" />
+                    <div class="ng_d_info">
+                        <h2>
+                            星球棋牌
+                        </h2>
+                        <div class="g_d_t_sec">
+                            <div class="s_l_c_r_xing">
+                                <p style="width: 95%;">
+                                </p>
+                            </div>
+                            <div class="g_d_t_bq s_l_c_r_thr">
+                                <span class="g_d_t_nobac">9.5&nbsp;分</span>
+                            </div>
+                        </div>
+                        <p class="g_d_t_nums">
+                            游戏类型：棋牌游戏</p>
+                        <div class="s_l_c_r_thr">
+                            <span>安全无毒</span> <span>免费</span><!-- <span class="s_l_c_r_tan">权限：1</span>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" style="display: none">
+            <div class="ng_d_i_right">
+                <asp:literal id="list_pc" runat="server"></asp:literal>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="ng_l_left">
+                <!-- begin libao  -->
+                <!-- end libao  -->
+                <div class="ng_lb_box">
+                    <div class="ng_lb_b_details">
+                        <div class="def_menu_line">
+                            <div style="padding: 0px;">
+                                精彩图集</div>
+                        </div>
+                        <div class="span12 about-carousel">
+                            <div id="myCarousel" class="carousel slide">
+                                <!-- Carousel items -->
+                                <div class="carousel-inner">
+                                    <div class="item">
+                                        <img src="/download/img/xqqp1.jpg" alt="">
+                                        <div class="carousel-caption">
+                                            <p>
+                                                &nbsp;</p>
+                                        </div>
+                                    </div>
+                                    <div class="item active">
+                                        <img src="/download/img/xqqp2.jpg" alt="">
+                                        <div class="carousel-caption">
+                                            <p>
+                                                &nbsp;</p>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <img src="/download/img/xqqp3.jpg" alt="">
+                                        <div class="carousel-caption">
+                                            <p>
+                                                &nbsp;</p>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <img src="/download/img/xqqp4.jpg" alt="">
+                                        <div class="carousel-caption">
+                                            <p>
+                                                &nbsp;</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Carousel nav -->
+                                <a class="carousel-control left" href="#myCarousel" data-slide="prev"><i class="icon-angle-left">
+                                    </i></a><a class="carousel-control right" href="#myCarousel" data-slide="next"><i
+                                            class="icon-angle-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="def_menu_line">
+                            <div style="padding: 0px;">
+                                游戏详情</div>
+                        </div>
+                        <div class="ng_lb_b_d_conts">
+                            <div class="ng_lb_b_d_c_div" style="font-size: 16px; line-height: 33px;">
+                                视觉设计全面更新，交互体验升级，开房玩法自带定位，付费方式任由玩家选择
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="downloadbarpace">
+    </div>
+    <a onclick="checkWeixin(this)" id="app_d" target="_blank">
+        <div class="navbar-fixed-bottom downLoadBar" style="position: fixed; right: 0; left: 0;
+                border-width: 0 0 1px;">
+            立即下载安装
+        </div>
+    </a>
+</div>
+<script src="js/jquery.min.js"></script>
+
+<script>
+    var slider = {
+        //判断设备是否支持touch事件
+        touch: ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch,
+        slider: document.getElementById('slider'),
+
+        //事件
+        events: {
+            index: 0,     //显示元素的索引
+            slider: this.slider,     //this为slider对象
+            icons: document.getElementById('icons'),
+            icon: this.icons.getElementsByTagName('span'),
+            handleEvent: function(event) {
+                var self = this;     //this指events对象
+                if (event.type == 'touchstart') {
+                    self.start(event);
+                } else if (event.type == 'touchmove') {
+                    self.move(event);
+                } else if (event.type == 'touchend') {
+                    self.end(event);
+                }
+            },
+            //滑动开始
+            start: function(event) {
+                var touch = event.targetTouches[0];     //touches数组对象获得屏幕上所有的touch，取第一个touch
+                startPos = { x: touch.pageX, y: touch.pageY, time: +new Date };    //取第一个touch的坐标值
+                isScrolling = 0;   //这个参数判断是垂直滚动还是水平滚动
+                this.slider.addEventListener('touchmove', this, false);
+                this.slider.addEventListener('touchend', this, false);
+
+            },
+            //移动
+            move: function(event) {
+                //当屏幕有多个touch或者页面被缩放过，就不执行move操作
+                if (event.targetTouches.length > 1 || event.scale && event.scale !== 1) return;
+                var touch = event.targetTouches[0];
+                endPos = { x: touch.pageX - startPos.x, y: touch.pageY - startPos.y };
+                isScrolling = Math.abs(endPos.x) < Math.abs(endPos.y) ? 1 : 0;    //isScrolling为1时，表示纵向滑动，0为横向滑动
+                if (isScrolling === 0) {
+                    event.preventDefault();      //阻止触摸事件的默认行为，即阻止滚屏
+                    this.slider.className = 'cnt';
+                    this.slider.style.left = -this.index * 600 + endPos.x + 'px';
+                }
+            },
+            //滑动释放
+            end: function(event) {
+                var duration = +new Date - startPos.time;    //滑动的持续时间
+                if (isScrolling === 0) {    //当为水平滚动时
+                    this.icon[this.index].className = '';
+                    if (Number(duration) > 10) {
+                        //判断是左移还是右移，当偏移量大于10时执行
+                        if (endPos.x > 10) {
+                            if (this.index !== 0) this.index -= 1;
+                        } else if (endPos.x < -10) {
+                            if (this.index !== this.icon.length - 1) this.index += 1;
+                        }
+                    }
+                    this.icon[this.index].className = 'curr';
+                    this.slider.className = 'cnt f-anim';
+                    this.slider.style.left = -this.index * 600 + 'px';
+                }
+                //解绑事件
+                this.slider.removeEventListener('touchmove', this, false);
+                this.slider.removeEventListener('touchend', this, false);
+            }
+        },
+
+        //初始化
+        init: function() {
+            var self = this;     //this指slider对象
+            if (!!self.touch) self.slider.addEventListener('touchstart', self.events, false);    //addEventListener第二个参数可以传一个对象，会调用该对象的handleEvent属性
+        }
+    };
+
+    slider.init();
+</script>
+
+<script type="text/javascript">
+    window.onload = function() {
+        $(".imgtip").css("width", $(window).width())
+        var openIframe = createIframe();
+
+//            var url = location.href;
+//            var params = url.split('?');
+//            if (params.length > 2) {
+//                location.href = params[0] + params[1];
+//            }
+
+        var u = navigator.userAgent;
+
+        if (isWeiXin()) {
+            if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+                $(".imgtip").attr("src", "img/androdtips.png");
+                $(".tips").css("display", "block");
+                showdiv();
+                return;
+
+            } else if (u.indexOf('iPhone') > -1 || u.indexOf('iPad')) {//苹果手机
+                $(".imgtip").attr("src", "img/appletips.png");
+                $(".tips").css("display", "block");
+                showdiv();
+                return;
+            }
+        }
+
+        var scheme = getUrlParam("scheme");
+        var host = getUrlParam("host");
+        var open = getUrlParam("open");
+        var GameID = getUrlParam("GameID");
+        var RoomID = getUrlParam("RoomID");
+        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+            if (u.indexOf("Chrome") > -1) {
+                if (scheme != '') {
+                    //chrome浏览器用iframe打不开得直接去打开，算一个坑
+                    //window.location.href = scheme + '://' + host + '/' + open + '?GameID=' + GameID + '&RoomID=' + RoomID;
+                }
+            }
+            else {
+                if (scheme != '') {
+                    //openIframe.src = scheme + '://' + host + '/' + open + '?GameID=' + GameID + '&RoomID=' + RoomID;
+                }
+            }
+            setTimeout(function() {
+                //window.location.href = '<%=apkurl %>';
+            }, 1000);
+
+
+        } else if (u.indexOf('iPhone') > -1 || u.indexOf('iPad') > -1) {//
+
+            if (scheme != '') {
+                window.location.href = scheme + '://GameID=' + GameID + '&RoomID=' + RoomID;
+            }
+            var loadDateTime = Date.now();
+            setTimeout(function() {
+                var timeOutDateTime = Date.now();
+                if (timeOutDateTime - loadDateTime < 1000) {
+
+                }
+            }, 25);
+        }
+    }
+
+    var  createIframe=(function(){
+        var iframe;
+        return function(){
+            if(iframe){
+                return iframe;
+            }else{
+                iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+                return iframe;
+            }
+        }
+    })()
+
+    function checkWeixin(o) {
+        //        var apple = document.getElementById("apple");src="img/appletips.png"imgtip
+
+        var u = navigator.userAgent;
+
+        if (isWeiXin()) {
+            o.href = "javascript:void()";
+
+            if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+                $(".imgtip").attr("src", "img/androdtips.png");
+                $(".tips").css("display", "block");
+                showdiv();
+                return;
+
+            } else if (u.indexOf('iPhone') > -1||u.indexOf('iPad')) {//苹果手机
+                $(".imgtip").attr("src", "img/appletips.png");
+                $(".tips").css("display", "block");
+                showdiv();
+                return;
+            }
+        }
+
+
+        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+
+            o.href = "http://wpssz.kl78.com/download/xqqps.apk";
+
+        } else if (u.indexOf('iPhone') > -1||u.indexOf('iPad')) {//苹果手机
+            o.href ="https://itunes.apple.com/cn/app/keynote/id1290026771?mt=8";
+
+        }
+
+
+    }
+
+    function isWeiXin() {
+        var ua = window.navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == 'micromessenger' || ua.match(/MicroMessenger/i) == 'klg') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function showdiv(){
+
+        var div_obj =$(".tips");
+        //窗口宽度,高度
+        var winWidth = $(window).width();
+        var winHeight = $(window).height();
+        //弹出的div的宽度,高度
+        var popHeight = 0;
+        var popWidth = 0;
+        //div窗口居中显示加滚动条的位置top(滚动后div的居中高度)(winHeight - popHeight) / 2 + $(document).scrollTop()
+        div_obj.animate({ opacity: "show", left: 0, top:  $(document).scrollTop(), width: winWidth, height: winHeight }, 300);
+
+
+
+    }
+
+    function bb() {
+        $(".imgtip").css("width", $(window).width());
+
+    }
+    //获取url中的参数
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg); //匹配目标参数
+        if (r != null) return unescape(r[2]); return null; //返回参数值
+    }
+
+    function closes() {
+
+        $(".tips").css("display", "none");
+
+    }
+    window.onscroll=function(){
+
+        $(".tips").css("display", "none");
+
+    }
+</script>
+
+<!--内容部分-->
+<!--在页面底部加载js可以加快页面的加载速度-->
+
+<script src="js/bootstrap.min.js"></script>
+
+</body>
+</html>
+

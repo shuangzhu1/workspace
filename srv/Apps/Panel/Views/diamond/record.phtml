@@ -1,0 +1,208 @@
+<link rel="stylesheet" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="/srv/static/panel/js/tools/Url.js"></script>
+
+<style>
+    table tr td{
+        vertical-align: middle !important;
+    }
+</style>
+
+
+<div style="">
+
+
+    <label for="uid" style="margin-left:10px">用户ID:</label>
+    <input type="text" id="uid" placeholder="请输入用户ID" value="<?php echo $this->request->get('uid')?>">
+    <label for="date" style="margin-left:10px">日期:</label>
+    <input type="text" id="start" placeholder="请选择日期" value="<?php echo $this->request->get('start','string',date('Y/m/d',time()));?>"> -
+    <input type="text" id="end" placeholder="请选择日期" value="<?php echo $this->request->get('end','string',date('Y/m/d',time()));?>">
+    <a href="javascript:;" class="btn btn-xs btn-primary" id="search">搜索</a>
+    <a href="javascript:;" class="btn btn-xs btn-primary" id="reset">重置</a>
+
+    <!--<span style="margin-left:100px;font-weight:bold;font-size:15px">
+        <span class="red">当前龙钻个数：</span>
+        <span style="margin-left:10px" class="green">
+            <?php /*echo sprintf('%.2f',$remain / 100) */?>
+            元
+        </span>
+    </span>-->
+    <!--<span style="margin-left:50px;font-weight:bold;font-size:15px">
+        <span class="red">累计转出：</span>
+        <span style="margin-left:10px" class="green">
+            <?php /*echo sprintf('%.2f',$remain_total / 100) */?>
+            元
+        </span>
+    </span>-->
+
+</div>
+
+
+
+
+<hr class="hr-10">
+<table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th class="center" style="width:120px">#</th>
+        <th class="center">用户</th>
+        <th class="center <?php if(strpos($sort,'coin') !== false) echo 'blue'?>" id="sort-coin" style="cursor: pointer;user-select: none">
+            龙钻个数
+            <i class="fa fa-sort <?php if( $sort == 'coin desc' ) echo "fa-sort-down blue";elseif($sort == 'coin') echo 'fa-sort-up blue'?>" data-order="coin"></i>
+        </th>
+        <th class="center">充值/消费：
+            <select  id="type">
+                <option value=-1 <?php echo $type ? 'selected' :'' ?>>全部</option>
+                <option value=0 <?php echo $type == 0 ? 'selected' :'' ?>>充值</option>
+                <option value=1 <?php echo $type == 1 ? 'selected' :'' ?>>消费</option>
+            </select>
+        </th>
+        <th class="center">交易描述</th>
+        <th class="center">交易后龙钻个数</th>
+        <th class="center <?php if(strpos($sort,'created') !== false) echo 'blue'?>" id="sort-created" style="cursor: pointer;user-select: none" >交易时间
+            &nbsp;
+            <i class="fa fa-sort <?php if( $sort == 'created desc' ) echo "fa-sort-down blue";elseif($sort == 'created') echo 'fa-sort-up blue'?>" data-order="created">
+
+            </i>
+        </th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <?php if($list) {?>
+        <?php foreach($list as $item) : ?>
+            <tr>
+                <td class="center">{{item['id']}}</td>
+                <td style="text-align: left">
+                    <div style="height:50px">
+                        <div style="float:left">
+                            <img class="pull-left" alt="" src="<?php echo $user_info[$item['uid']]['avatar'] ?>?x-oss-process=image/resize,m_fill,h_200,w_200" style="border: 2px solid #c9d6e5;border-radius: 100%;max-width: 40px;margin-right: 10px;margin-left: 0;box-shadow: none;">
+                        </div>
+
+                        <div style="float:left">
+                            <a href="javascirpt:;" style="vertical-align: unset;" class="user-info" data-uid="<?php echo $item['uid'] ?>" title="" style="font-weight:normal;"><?php echo $item['uid'] ?></a>
+
+                            <a href="javascirpt:;" style="display: block;vertical-align: unset;" class="user-info" data-uid="<?php echo $item['uid'] ?>" title=""><?php echo $user_info[$item['uid']]['username'] ?></a>
+
+
+                        </div>
+                    </div>
+                </td>
+                <td class="center">
+                    <?php if($item['type'] == 0) {?>
+                        <span class="green" style="font-weight:bold"> + <?php echo $item['coin'] ?></span>
+                    <?php }else {?>
+                        <span class="red" style="font-weight:bold"> - <?php echo $item['coin'] ?></span>
+                    <?php } ?>
+                </td>
+                <td class="center">
+                    <?php $way_arr = [1=> 'iOS内购','支付宝购买','微信购买','余额购买','转赠','系统赠送'] ?>
+
+
+                    <?php if($item['type'] == 0) {?>
+                        <span class="green" style="font-weight:bold">充值 <span style="color:#aaa;font-weight:normal">(<?php echo $way_arr[$item['way']] ?>)</span></span>
+                    <?php }else {?>
+                        <span class="red" style="font-weight:bold"> 消费</span>
+                    <?php } ?>
+                </td>
+                <td class="center">
+                    <span class="blue" >{{item['_desc'] }}</span>
+                </td>
+                <td class="center">
+                    <span class="red" style="font-weight:bold" >
+                        <?php echo $item['remain'] ?>
+                    </span>
+                </td>
+                <td class="center">
+                    <span class="" ><?php echo date('Y/m/d H:i:s',$item['created']) ?></span>
+                </td>
+
+
+
+            </tr>
+        <?php endforeach; ?>
+    <?php }else{ ?>
+        <tr>
+            <td colspan="6" class="center"><span class="red" style="font-weight:bold">暂无数据</span></td>
+        </tr>
+    <?php } ?>
+
+    </tbody>
+</table>
+<?php \Util\Pagination::instance($this->view)->display($this->view) ?>
+
+
+<script>
+    $('#start,#end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y/m/d",
+        allowBlank: true,
+        maxDate:0,
+        timepicker: false,
+        onChangeDateTime: function (e) {
+
+        }
+    });
+    seajs.use('app/panel/panel.base',function (api) {
+        //搜索
+        $('#search').on('click',function(){
+            var uid = $.trim($('#uid').val()),
+                start = $.trim($('#start').val()),
+                end = $.trim($('#end').val());
+            var url = new Url();
+            url.rmArgs(['p']);
+            url.setArgs({uid:uid,start:start,end:end});
+            window.location.href = url.getUrl();
+        });
+        //充值、消费筛选
+        $('#type').on('change',function () {
+            var type = $(this).val();
+            console.log(type);
+            var url = new Url();
+            url.rmArgs(['p']);
+            url.setArgs({type:type});
+            window.location.href = url.getUrl();
+        });
+        //重置
+        $('#reset').on('click',function () {
+            var loca = window.location;
+            window.location.href = loca.origin + loca.pathname + '?uid=<?php echo $this->request->get('uid')?>&start=&end=';
+        });
+        //排序
+        $('#sort-coin,#sort-created').on('click',function () {
+            var _this = this;
+            var $i = $(_this).find('i');
+            var url = new Url();
+            var sort = '';
+            if($(_this).attr('id') === 'sort-coin')
+            {
+                $('#sort-created').removeClass('blue');
+                $('#sort-created').find('i').attr('class','fa fa-sort');
+            }else
+            {
+                $('#sort-coin').removeClass('blue');
+                $('#sort-coin').find('i').attr('class','fa fa-sort');
+            }
+            if($i.hasClass('blue'))//已加入排序
+            {
+                $i.toggleClass('fa-sort-up');
+                $i.toggleClass('fa-sort-down');
+                if($i.hasClass('fa-sort-down'))
+                    sort =  $i.data('order') + ' desc';
+                else
+                    sort = $i.data('order');
+            }else
+            {
+                $(_this).addClass('blue');
+                $i.removeClass('fa-sort');
+                $i.addClass('fa-sort-down blue');
+                sort = $i.data('order') + ' desc';
+            }
+            url.rmArgs(['p']);
+            url.setArgs({sort:sort});
+            window.location.href = url.getUrl();
+        });
+
+    });
+</script>

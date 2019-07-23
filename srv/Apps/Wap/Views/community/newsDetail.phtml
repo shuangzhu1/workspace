@@ -1,0 +1,246 @@
+<link href="/static/panel/js/tools/video/video-js.min.css?v=1.2" rel="stylesheet">
+<script src="/static/panel/js/tools/video/video.min.js?v=1.2"></script>
+<style>
+    .main {
+        padding: 1rem
+    }
+
+    .main .title {
+        font-size: 1rem;
+        color: #333;
+        line-height: 1.5rem;
+        margin-bottom: 0.75rem
+    }
+
+    .main .info {
+        clear: both;
+        height: auto;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .main .info .avatar_wrap {
+        float: left
+    }
+
+    .main .info .avatar_wrap .avatar {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 100%;
+    }
+
+    .main .info .username_wrap {
+        float: left;
+        margin-left: 0.5rem;
+    }
+
+    .main .info .username_wrap .username {
+        font-size: 0.7rem;
+        color: #666;
+        line-height: 1rem
+    }
+
+    .main .info .username_wrap .username .role {
+        background-color: #4A9CFF;
+        color: #fff;
+        display: inline-block;
+        padding: 0.05rem 0.2rem;
+        border-radius: 0.1rem;
+        margin-left: 0.2rem;
+        font-size: 0.4rem
+    }
+
+    .main .info .username_wrap .time {
+        font-size: 0.7rem;
+        color: #9c9c9c;
+        line-height: 1rem
+    }
+
+    .main .info .view_cnt {
+        float: right;
+        border: 1px solid #d6d6d6;
+        border-radius: 0.2rem;
+        padding: 0.1rem 1.5rem;
+        color: #727272;
+        text-align: center
+    }
+
+    .main .info .view_cnt .cnt {
+        font-size: 0.7rem;
+        letter-spacing: 0.05rem
+    }
+
+    .main .info .view_cnt .tip {
+        font-size: 0.5rem
+    }
+
+    .main .media .image img {
+        width: 100%;
+        height: auto;
+        margin-bottom: 1rem;
+    }
+
+    .main .content {
+        margin-top: 1rem;
+        font-size: 0.8rem;
+        color: #666;
+        line-height: 1.6rem;
+        margin-bottom: 1rem
+    }
+
+    .dymaic_reship_video {
+        width: 100%;
+        position: relative;
+    }
+
+    .dymaic_video video {
+        width: 100%;
+        height: 100%;
+    }
+
+    .dymaic_video img {
+        position: absolute;
+        top: -1rem;
+        right: -0.7rem;
+        width: 3.75rem;
+        height: 2rem;
+    }
+
+    .dymaic_reship_video video {
+        width: 100%;
+        height: 100%;
+    }
+
+    .dymaic_reship_video .live_bg {
+        width: 2rem;
+        height: 2rem;
+        position: absolute;
+        top: 40%;
+        left: 40%;
+    }
+</style>
+<title><?php echo $item['title'] ?></title>
+<div class="main">
+    <h1 class="title">
+        <?php echo $item['title'] ?>
+    </h1>
+    <section class="info">
+        <div class="avatar_wrap">
+            <img class='avatar'
+                 src="<?php echo $item['user_info']['avatar'] ?>?x-oss-process=image/resize,m_fill,h_160,w_160"
+                 style="">
+        </div>
+        <div class="username_wrap" style="">
+            <p class="username" style=""><?php echo $item['user_info']['username'] ?>
+                <?php if ($item['role']) { ?>
+                    <label class="role"><?php echo $item['role'] ?></label>
+                <?php } ?>
+            </p>
+            <p class="time"><?php echo date('m-d H:i', $item['created']) ?></p>
+        </div>
+        <div class="view_cnt">
+            <p class="cnt"><?php echo $item['view_cnt'] ?></p>
+            <p class="tip">阅读</p>
+        </div>
+    </section>
+    <p class="content">
+        <?php echo $item['content'] ?>
+    </p>
+    <div class="media">
+        <?php if ($item['media_type'] == 2) {
+            $media = explode('?', $item['media']);
+
+            ?>
+            <div class="dymaic_reship_video">
+                <div class="dymaic_video">
+                    <video id="my-video" class="video-js" playsinline webkit-playsinline x5-video-player-type="h5"
+                           x5-video-player-fullscreen="true"
+
+                           poster="<?php echo $media[0] ?>"
+                           preload="auto"
+                           src="<?php echo $media[1] ?>">
+                    </video>
+                </div>
+            </div>
+        <?php } else if ($item['media_type'] == 3) {
+            $media = explode(',', $item['media']);
+            ?>
+            <ul class="image">
+                <?php foreach ($media as $img) { ?>
+                    <li><img src="<?php echo $img ?>"/></li>
+                <?php } ?>
+            </ul>
+        <?php } ?>
+    </div>
+</div>
+<script>
+    var vjs = videojs('my-video', {
+            controls: true,
+            bigPlayButton: true,
+        }
+        , function onPlayerReady() {
+            var v_width = 0,
+                v_height = 0,
+                duration = 0,
+                m = false;
+            var _player = this;
+            var isPlaying = false;
+            this.on('loadedmetadata', function () {
+                var $video = $('#my-video');
+                v_width = $video.width();
+                v_height = $video.height();
+
+
+            });
+
+            this.on('play', function () {
+                isPlaying = true;
+            });
+            this.on('timeupdate', function () {
+                duration = this.duration();
+                var s_time = 0.8 * duration;
+                if (m) {
+                    this.isFullscreen() && this.exitFullscreen();
+                    this.pause();
+                }
+                if (this.currentTime() > s_time && !m) {
+                    this.pause();
+                    $('#my-video').before(
+                        '<div style="position:absolute;width:' + '100%' + ';height:' + '100%' + ';background:rgba(0,0,0,0.7);z-index:99;text-align:center">\n' +
+                        '<div style="width:8.35rem;height:100%;margin:0 auto;font-size:0.85rem;color:#fff;display: -webkit-flex;align-items: center">\n' +
+                        '<div style="width:100%;">\n' +
+                        '<span >观看完整视频</span>\n' +
+                        '<div style="margin-top:1rem;background: #0AD09F;width:100%;height:1.85rem;border-radius:1.85rem;line-height:1.85rem"><a style="color:#fff" href="javascript:;" onclick="APPCommon.init()">请下载恐龙谷 >></a></div>\n' +
+                        '</div>\n' +
+                        '</div>\n' +
+                        '</div>'
+                    );
+                    m = true;
+                }
+            });
+
+            this.on('pause', function () {
+                isPlaying = false;
+            });
+            this.on('ended', function () {
+                isPlaying = false;
+            });
+            /*this.on('touchend',function () {
+             if(isPlaying)
+             {
+             _player.pause();
+             $('.vjs-big-play-button').show();
+             }
+             else
+             {
+             _player.play();
+             $('.vjs-big-play-button').hide();
+             }
+             });*/
+        });
+
+    var thumb = $('#my-video').attr('poster');
+    var tmp = thumb.split('_');
+    var scale = tmp[tmp.length - 1].split('.')[0].split('x');
+    $('#my-video').closest('div').css('height', ($('#my-video').width() / (scale[0] / scale[1])) + 'px');
+</script>

@@ -1,0 +1,67 @@
+<link rel="stylesheet" type="text/css" href="/static/wap/css/share.css"/>
+<link rel="stylesheet" type="text/css" href="/static/wap/css/share_detail.css"/>
+<script type="text/javascript" src="/static/wap/js/app/hotcss.js"></script>
+<script type="text/javascript" src="/static/wap/js/app/layer.js"></script>
+<section>
+
+    <div class="content_box">
+        <div class="dynamic_detail">
+            <div class="container">
+                <dl class="clearfix">
+                    <dt><a href="<?php echo $this->uri->baseUrl('user?to=' . $user_info['uid']); ?>"><img src="<?php echo $user_info['avatar']; ?>"/></a></dt>
+                    <dd>
+                        <p>
+                            <span class="dynamic_name"><?php echo $user_info['username']; ?></span>
+									<span class="dynamic_level <?php echo $user_info['sex'] == 1 ? 'boy' : 'girl'; ?>">
+										<i>V<?php echo $user_info['grade'] ?></i>
+										<em class="<?php echo $user_info['sex'] == 1 ? 'man' : 'woman'; ?>"></em>
+									</span>
+                        </p>
+                        <p>
+                            <span class="dy_time"><?php echo \Util\Time::formatHumaneTime($item['created']); ?></span>
+                        </p>
+                        <a href="javascript:;" class="detail_like comment_like" data-type="comment"
+                           data-item-id="<?php echo $item['comment_id']; ?>">
+                            <em class="<?php echo $item['is_like'] == 1 ? 'vLike' : ''; ?>"></em>
+                            <label class="reply_cnt"><?php echo $item['like_cnt']; ?></label>
+                        </a>
+                    </dd>
+                </dl>
+                <div class="dymaic_matter">
+                    <p><?php echo $item['content']; ?></p>
+                </div>
+            </div>
+        </div>
+        <div class="dynamic_people">
+            <div class="container">
+                <div class="dynamic_people_about">
+                    <ul class="clearfix">
+                        <?php foreach ($item['like_users'] as $u) { ?>
+                            <li><img src="<?php echo $u['avatar']; ?>" alt=""/></li>
+                        <?php } ?>
+                    </ul>
+                    <span class="dy_people_name"><?php echo $item['like_cnt']; ?>人赞过</span>
+                </div>
+            </div>
+        </div>
+        <div class="dynamic_all_box">
+            <div class="container">
+                <div class="dynamic_all_con">
+                    <h1>全部评论</h1>
+                    <ul id="dataWrap02">
+                        <li class="item"></li>
+                        <a href="javascript:;" class="get_more"></a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="p_b"></div>
+</section>
+
+<script type="text/javascript">
+    seajs.use('app/discuss', function (api) {
+        api.more(<?php echo $item['comment_id']?>, '/api/comment/replyList');
+    });
+</script>

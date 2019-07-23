@@ -1,0 +1,53 @@
+<script type="text/javascript">
+    seajs.use('app/admin/admin.manager', function (api) {
+        api.setGroup();
+    });
+</script>
+<div class="" id='groups'>
+    <form action="javascript:;" id="groupForm">
+        <table class='list'>
+            <caption>
+                <b class="captitle">管理组列表</b>
+            </caption>
+            <tr class="head">
+                <th style='width:36px;'>ID</th>
+                <th style='width:194px;'>管理组名</th>
+                <th>管理组描述</th>
+                <th>真实姓名</th>
+            </tr>
+            <tbody class="listData">
+            <?php
+            foreach ($groups as $group) {
+                ?>
+                <tr class="row" data-id="<?php echo $group['id']; ?>">
+                    <th class='name'><?php echo $group['id']; ?></th>
+                    <td><input class="txt group_name" type="text" value="<?php echo $group['name']; ?>"
+                               data-old-name="<?php echo $group['name']; ?>"/></td>
+                    <td><input class="txt group_desc" type="text" value="<?php echo $group['desc']; ?>"
+                               data-old-desc="<?php echo $group['desc']; ?>"/></td>
+                    <td>
+                        <a
+                            href="<?php echo $this->uri->controllerUrl('groupPerm?gid=' . $group['id']); ?>">修改权限</a>
+                    </td>
+                </tr>
+            <?php } ?>
+            <tr class="showpage" id="addOption">
+                <th class="name">分割线</th>
+                <td colspan="3">
+                    <a href="javascript:;" class="addGroupBtn">添加管理组</a>
+                </td>
+            </tr>
+            <tr class="row">
+                <th class='name'></th>
+                <td><input class="txt group_name" type="text" value=""/></td>
+                <td><input class="txt group_desc" type="text" value=""/></td>
+                <td></td>
+            </tr>
+            </tbody>
+            <tr class="showpage">
+                <th class="name">操作</th>
+                <td colspan="3"><input type="submit" value="提交" class="btn-gray" id="setGroupBtn"/></td>
+            </tr>
+        </table>
+    </form>
+</div>

@@ -1,0 +1,15 @@
+<tr class="folder_item">
+    <td><label>
+            <input type="checkbox" class="chk ace check_item" data-type="folder" data-id="<?php echo $item ?>"/>
+            <span class="lbl"></span>
+        </label></td>
+    <td style="line-height: 40px;font-size: 14px;">
+        <a href="javascript:;" class="folder" data-id="<?php echo $item ?>">
+            <i class="fa fa-folder" style="color: #FFCB03;font-size: 24px;"></i>
+            &nbsp;&nbsp; <?php echo substr_count($item, '/') != 1 ? (substr($item, strrpos(substr($item, 0, -1), '/') + 1)) : $item ?>
+        </a>
+    </td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>

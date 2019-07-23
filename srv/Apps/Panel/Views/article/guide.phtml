@@ -1,0 +1,122 @@
+<style>
+    div#editor:focus{
+        outline:none;
+    }
+    div#editor img{
+        max-width:90%;
+    }
+</style>
+<a href="javascript:;" class="btn btn-sm btn-success" id="add">添加新问题</a>
+<hr class="hr-10">
+<table class="table table-bordered table-striped">
+    <thead class="thin-border-bottom">
+    <tr>
+        <th style="width:200px;">
+            问题
+        </th>
+
+        <th >
+            类别
+        </th>
+        <th >
+            创建时间
+        </th>
+        <th style="width:180px;">
+            操作
+        </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <?php if( $list ) {?>
+        <?php foreach ( $list as $item) {?>
+        <tr
+            data-id="{{item['id']}}"
+            data-ques="{{item['question']}}"
+            data-type="{{item['type']}}"
+        >
+            <td  style="vertical-align: middle">
+                {{item['question']}}
+            </td>
+
+
+
+            <td  style="vertical-align: middle">
+                {{cate[item['type']]}}
+
+            </td>
+            <td  style="vertical-align: middle">
+                <?php echo date('Y/m/d H:i:s',$item['created']) ?>
+            </td>
+            <td style="vertical-align: middle">
+                <a href="javascript:;" class="btn btn-xs view" >查看</a>
+                <a href="javascript:;" class="btn btn-xs btn-primary edit">编辑</a>
+                <a href="javascript:;" class="btn btn-xs btn-danger del">删除</a>
+                <div class="answer hide" >
+                    {{item['answer']}}
+                </div>
+            </td>
+
+        </tr>
+        <?php } ?>
+    <?php }else {?>
+        <tr>
+            <td colspan="4" class="center" style="color:red">暂无数据</td>
+        </tr>
+    <?php } ?>
+    </tbody>
+</table>
+<?php \Util\Pagination::instance($this->view)->display($this->view) ?>
+<?php $this->view->partial('article/addGuide'); ?>
+
+<script>
+    //查看
+    $('.view').on('click',function(){
+        var $modal = $('#myModal');
+        $modal.find('#ques').val($(this).closest('tr').data('ques'));
+        $modal.find('#type').val($(this).closest('tr').data('type'));
+        $modal.find('#id').val($(this).closest('tr').data('id'));
+        $modal.find('#editor').html($(this).siblings('div').html());
+        $modal.modal('show');
+    });
+    //编辑
+    $('.edit').on('click',function(){
+        var $modal = $('#myModal');
+        $modal.find('#ques').val($(this).closest('tr').data('ques'));
+        $modal.find('#type').val($(this).closest('tr').data('type'));
+        $modal.find('#id').val($(this).closest('tr').data('id'));
+        $modal.find('#editor').html($(this).siblings('div').html());
+        $modal.modal('show');
+    });
+    //添加
+    $('#add').on('click',function(){
+        var $modal = $('#myModal');
+        $modal.find('#ques').val('');
+        $modal.find('#type').val(0);
+        $modal.find('#id').val(0);
+        $modal.find('#editor').html('');
+        $modal.modal('show');
+    });
+    seajs.use('app/panel/panel.base',function (api) {
+        //删除
+        $('.del').on('click',function(){
+            var id = $(this).closest('tr').data('id')
+            $(this).confirm("确定删除?", {
+                ok: function () {
+                    api.requestApi('/api/article/delGuide', {id: id}, function (res) {
+                        if (res.result === 1) {
+                            tip.showTip('ok', '删除成功', 1000,function () {
+                                window.location.reload();
+                            });
+
+                        }
+                    })
+                },
+                cancel: function () {
+                    return false;
+                }
+            });
+        });
+    });
+
+</script>

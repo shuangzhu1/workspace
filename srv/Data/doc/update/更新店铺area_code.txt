@@ -1,0 +1,15 @@
+ $shop = Shop::findList(['', 'columns' => 'lng,lat,id']);
+         foreach ($shop as $s) {
+             $address_info = LatLng::init()->getAddress($s['lng'], $s['lat']);
+             if ($address_info) {
+                 $data['province'] = $address_info['province'];
+                 $data['city'] = $address_info['city'];
+                 $data['county'] = $address_info['district'];
+                 if ($area_code = AreaManager::getInstance()->getCityByName($address_info['city'], 'area_code')) {
+                     $data['area_code'] = $area_code;
+                 };
+                 Shop::updateOne($data, 'id=' . $s['id']);
+             }
+         }
+         echo "更新完成";
+         exit;

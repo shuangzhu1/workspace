@@ -1,0 +1,29 @@
+  set_time_limit(0);
+        $p = 1;
+        $limit = 1000;
+        $tag = true;
+        $repeat_name = [];
+        $end = 0;
+        while ($tag) {
+            $users = Users::findList(['columns' => 'id,username', 'order' => 'id asc', 'offset' => ($p - 1) * $limit, 'limit' => $limit]);
+            if (!$users) {
+                $tag = false;
+            } else {
+                foreach ($users as $item) {
+                    $end = $item['id'];
+                    if (Users::exist("id<" . $end . " and username='" . $item['username'] . "'")) {
+                        if (key_exists($item['username'], $repeat_name)) {
+                            $repeat_name[$item['username']] = $repeat_name[$item['username']] + 1;
+                        } else {
+                            $repeat_name[$item['username']] = 2;
+                        }
+                        $username = $item['username'] . $repeat_name[$item['username']];
+                        UserStatus::getInstance()->editInfo($item['id'], ['username' => $username]);
+                    }
+                }
+            }
+            $p++;
+        }
+        print_r($repeat_name);
+        echo "完成";
+        exit;

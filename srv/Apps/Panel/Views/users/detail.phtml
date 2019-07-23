@@ -1,0 +1,1081 @@
+<style>
+    .row {
+        overflow: hidden
+    }
+
+    .profile-info-row {
+        min-height: 30px;
+    }
+</style>
+<link rel="stylesheet" type="text/css" href="/static/panel/ali_iconfont/iconfont.css?v=1.1">
+
+<?php if (!$item) { ?>
+    <p class="noData">用户不存在</p>
+<?php } ?>
+<div class="page-header">
+    <h1><i class="fa fa-th-list"></i> 基本信息
+        <span class="pull-right">
+            <?php if ($admin['level'] == 1) { ?>
+                <a class="btn btn-primary btn-sm newTarget"
+                   href="javascript:;"
+                   data-href="/panel/users/message?user_id=<?php echo $this->request->get('user_id') ?>"
+                   data-title="聊天记录-<?php echo $this->request->get('user_id') ?>">
+                    <i class="fa fa-commenting"></i> 聊天记录
+                </a>
+            <?php } ?>
+
+            <a class="btn btn-primary btn-sm newTarget"
+               href="javascript:;"
+               data-href="/panel/users/loginLog?user_id=<?php echo $this->request->get('user_id') ?>"
+               data-title="登录日志">
+                <i class="fa fa-paw"></i> 登录日志
+            </a>
+             <a class="btn btn-success btn-sm newTarget"
+                href="javascript:;"
+                data-href="/panel/users/online?user_id=<?php echo $this->request->get('user_id') ?>"
+                data-title="在线日志">
+                 <i class="fa fa-calendar"></i> 在线日志
+             </a>
+                </span>
+    </h1>
+    <!-- /.col-lg-12 -->
+</div>
+<input type="hidden" value="<?php echo $this->request->get('user_id'); ?>" id="user_id"/>
+<div class="row">
+    <div class="col-xs-12">
+        <!-- PAGE CONTENT BEGINS -->
+
+        <!--   <div class="clearfix">
+
+
+               <div class="pull-right">
+
+
+                   <div class="btn-toolbar inline middle no-margin">
+                       <div data-toggle="buttons" class="btn-group no-margin">
+                           <label class="btn btn-sm btn-yellow active">
+                               <span class="bigger-110">基本信息</span>
+
+                               <input type="radio" value="1"/>
+                           </label>
+                           <label class="btn btn-sm btn-yellow">
+                               <span class="bigger-110">登录日志</span>
+
+                               <input type="radio" value="2"/>
+                           </label>-->
+        <!--  <label class="btn btn-sm btn-yellow">
+              <span class="bigger-110">动态列表</span>
+
+              <input type="radio" value="3"/>
+          </label>-->
+        <!--   <label class="btn btn-sm btn-yellow">
+               <span class="bigger-110">经验值日志</span>
+
+               <input type="radio" value="3"/>
+           </label>
+           <label class="btn btn-sm btn-yellow">
+               <span class="bigger-110">龙豆日志</span>
+
+               <input type="radio" value="3"/>
+           </label>
+           <label class="btn btn-sm btn-yellow">
+               <span class="bigger-110">举报记录</span>
+
+               <input type="radio" value="3"/>
+           </label>-->
+        <!--
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+
+        <!--      <div class="hr dotted"></div>-->
+
+        <div>
+            <div id="user-profile-1" class="user-profile row ">
+                <div class="col-xs-12 col-sm-3 center">
+                    <div>
+												<span class="profile-picture">
+													<img id="avatar" class="editable img-responsive"
+                                                         style="max-width: 80px;max-height: 80px" alt="Alex's Avatar"
+                                                         src="<?php echo $item['avatar']; ?>"/>
+												</span>
+
+                        <div class="space-4"></div>
+
+                        <div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+                            <div class="inline position-relative">
+                                <a href="#" class="user-title-label dropdown-toggle" data-toggle="dropdown">
+
+                                    <span class="white"><?php echo $item['username']; ?>【<?php echo $item['user_id']; ?>
+                                        】</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-6"></div>
+
+                    <div class="profile-contact-info">
+
+                        <div class="space-6"></div>
+
+                        <div class="profile-social-links center">
+                            <?php if ($item['weixin']) { ?>
+                                <a href="#" class="tooltip-info" title="" data-original-title="Visit my Facebook">
+                                    <!--                                    <i class="middle fa fa-wechat" style="font-size: 25px;color: #058100"></i>-->
+                                    <i class="iconfont icon-weixin1" style="font-size: 36px;color: #058100"></i>
+
+                                    <!--                                    --><?php //echo $item['weixin']; ?>
+                                </a>
+                            <?php } ?>
+
+                            <?php if ($item['qq']) { ?>
+                                <a href="#" class="tooltip-info" title="" data-original-title="Visit my Twitter">
+                                    <i class="middle fa fa-qq" style="font-size: 22px;color:#6FA1E5"></i>
+                                    <?php echo $item['qq']; ?>
+                                </a>
+                            <?php } ?>
+                            <a href="#" class="tooltip-info" title="" data-original-title="Visit my Twitter">
+                                <?php if ($item['agent_info'] && $item['agent_info']['is_merchant']) { ?>
+                                    <i class="iconfont icon-shangjiarenzheng" style="font-size: 36px"></i>
+                                <?php } ?>
+                                <?php if ($item['agent_info'] && $item['agent_info']['is_partner']) { ?>
+                                    <i class="iconfont icon-wodehezuo" style="font-size: 36px"></i>
+                                <?php } ?>
+                                <a href="#" class="tooltip-error" title="" data-original-title="Visit my P
+                            </a>interest">
+                                    <i class="middle icon-pinterest-sign icon-2x red"></i>
+                                </a>
+                        </div>
+                    </div>
+
+                    <div class="hr hr12 dotted"></div>
+
+                    <div class="clearfix">
+                        <div class="left">
+                            <a class="btn btn-app btn-sm btn-primary no-hover newTarget" target="_blank"
+                               data-title="用户动态"
+                               data-id="discuss_count"
+                               href="javascript:;"
+                               data-href="/panel/discuss/list?key=<?php echo $uid ?>">
+                                                <span class="line-height-1 bigger-170">
+                                                    <?php echo $item['discuss_count']; ?>
+                                                </span>
+                                <br/>
+                                <span class="line-height-1 smaller-90"> 动态数 </span>
+                            </a>
+                            <a class="btn btn-app btn-sm btn-yellow no-hover newTarget" target="_blank"
+                               data-title="用户粉丝"
+                               data-id="fans_count"
+                               href="javascript:;"
+                               data-href="/panel/contact/fans?user_id=<?php echo $uid ?>">
+													<span
+                                                        class="line-height-1 bigger-170"> <?php echo $item['followers_count']; ?> </span>
+
+                                <br/>
+                                <span class="line-height-1 smaller-90"> 粉丝数 </span>
+                            </a>
+
+                            <a class="btn btn-app btn-sm btn-pink no-hover newTarget" target="_blank"
+                               data-title="用户关注"
+                               data-id="attention_count"
+                               href="javascript:;"
+                               data-href="/panel/contact/followers?user_id=<?php echo $uid ?>">
+													<span
+                                                        class="line-height-1 bigger-170"> <?php echo $item['attention_count']; ?></span>
+
+                                <br/>
+                                <span class="line-height-1 smaller-90"> 关注数 </span>
+                            </a>
+
+                            <a class="btn btn-app btn-sm btn-success no-hover newTarget" target="_blank"
+                               data-title="用户好友"
+                               data-id="friends_count"
+                               href="javascript:;"
+                               data-href="/panel/contact/friends?user_id=<?php echo $uid ?>">
+													<span
+                                                        class="line-height-1 bigger-170">  <?php echo $item['friend_count']; ?>  </span>
+
+                                <br/>
+                                <span class="line-height-1 smaller-90"> 好友数 </span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="hr hr12 dotted"></div>
+
+                    <div class="clearfix">
+                        <div class="left">
+                            <a class="btn btn-app btn-sm btn-grey no-hover newTarget" target="_blank"
+                               data-title="黑名单用户"
+                               data-id="blacklist_count"
+                               href="javascript:;"
+                               data-href="/panel/contact/blacklist?user_id=<?php echo $uid ?>">
+									<span
+                                        class="line-height-1 bigger-170"> <?php echo $item['blacklist_count']; ?> </span>
+                                <br/>
+                                <span class="line-height-1 smaller-90"> 黑名单用户 </span>
+                            </a>
+                            <a class="btn btn-app btn-sm btn-warning no-hover newTarget" target="_blank"
+                               data-title="黑名单用户"
+                               data-id="blacklist_count"
+                               href="javascript:;"
+                               data-href="/panel/contact/blacklist?to_user_id=<?php echo $uid ?>">
+									<span
+                                        class="line-height-1 bigger-170"> <?php echo $item['to_blacklist_count']; ?> </span>
+                                <br/>
+                                <span class="line-height-1 smaller-90"> 拉黑TA </span>
+                            </a>
+                            <a class="btn btn-app btn-sm btn-success no-hover newTarget" target="_blank"
+                               data-title="创建群聊数"
+                               data-id="group_count"
+                               href="javascript:;"
+                               data-href="/panel/group/list?key=<?php echo $uid ?>">
+									<span
+                                        class="line-height-1 bigger-170"> <?php echo $item['group_count']; ?> </span>
+                                <br/>
+                                <span class="line-height-1 smaller-90"> 创建群聊数 </span>
+                            </a>
+                            <a class="btn btn-app btn-sm btn-purple no-hover newTarget" target="_blank"
+                               data-title="加入群聊数"
+                               data-id="joinList_count"
+                               href="javascript:;"
+                               data-href="/panel/group/joinList?user_id=<?php echo $uid ?>">
+													<span
+                                                        class="line-height-1 bigger-170"> <?php echo $item['join_group_count']; ?> </span>
+                                <br/>
+                                <span class="line-height-1 smaller-90"> 加入群聊数 </span>
+                            </a>
+
+                        </div>
+                    </div>
+                    <div class="hr hr16 dotted"></div>
+                    <div class="btn_group listData" style="text-align: left">
+                        <?php if ($item['status'] == 0) { ?>
+                            <!--  <a href="javascript:;" class='recoveryBtn'
+                                               data-id="<?php /*echo $item['user_id'] */ ?>">解封</a> |-->
+                        <?php } else if ($item['status'] == 1) { ?>
+                            <a href="javascript:;" class='delBtn btn btn-sm btn-danger'
+                               data-id="<?php echo $item['user_id'] ?>">永久封号</a> |
+                            <a href="javascript:;" class='forbidBtn btn btn-sm'
+                               data-id="<?php echo $item['user_id'] ?>">临时禁用</a> |
+                        <?php } else if ($item['status'] == 2) { ?>
+                            <a href="javascript:;" class='unForbidBtn btn btn-sm btn-primary'
+                               data-id="<?php echo $item['user_id'] ?>">取消禁用</a> |
+                        <?php } ?>
+                        <p style="position: relative;border: 1px solid #e4e4e4;width:100%;overflow:hidden;margin-top:10px;box-sizing: content-box;overflow: hidden;height: 120px;width: 100%;"><textarea
+                                class="msgValue" type="text"
+                                style="width: 100%;border:none;min-height: 80px"
+                                placeholder="根据您的动态信息，有人身攻击或骚扰行为，请规范自己的发言，否则将做禁言处理">根据您的动态信息，有人身攻击或骚扰行为，请规范自己的发言，否则将做禁言处理</textarea>
+                        <div style="position: absolute;left: 20px;right:100px;bottom: 5px;overflow: hidden">
+                            <select style="width: 100%" class="warningSuggest">
+                                <option value="1">根据您的动态信息，有人身攻击或骚扰行为，请规范自己的发言，否则将做禁言处理</option>
+                                <option value="2">您好，您被其他用户举报涉嫌发布垃圾营销信息，根据规定，该动态将受到处理！</option>
+                                <option value="3">您的动态被多人举报涉黄，污染网络空间，一经查实将被封号，请注意言行</option>
+                                <option value="4">您的信息可能涉及血腥暴力内容，一经查实将被删帖或永久封号，请规范自身言行</option>
+                                <option value="5">您的动态被多人举报为虚假信息，请删除动态，营造一个和谐的交友环境</option>
+                                <option value="6">您好，您被举报在平台有诽谤侮辱他人行为，请文明发言，否则一经查实，将有封号风险。</option>
+                                <option value="7">您好，您的账号存在涉嫌赌博行为，国家法律规定禁止利用网络从事赌博活动，一经证实将被永久封号。</option>
+                                <option value="8">您好，您发布的内容可能存在违法行为，恐龙谷严厉打击一切违法行为，一经查实将做封号处理，情节严重者，递交有关部门处理</option>
+
+                            </select>
+                        </div>
+                            <span
+                                class="btn btn-warning btn-sm warningBtn" data-id="<?php echo $item['user_id'] ?>"
+                                style="position: absolute;bottom:2px;right: 13px"><i
+                                    class="fa fa-exclamation"></i>发送警告</span></p>
+                    </div>
+                </div>
+
+                <div class="col-xs-6 col-sm-4">
+
+
+                    <div class="profile-user-info profile-user-info-striped">
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 用户名</div>
+
+                            <div class="profile-info-value">
+                                <span class="editable"
+                                      id="username"><?php echo $item['username'] ? $item['username'] : '无'; ?></span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 手机号</div>
+
+                            <div class="profile-info-value">
+                                <i class="icon-map-marker light-orange bigger-110"></i>
+                                <?php echo $item['phone'] ? $item['phone'] : '无'; ?>
+                                <!-- <span class="editable" id="country">Netherlands</span>
+                                 <span class="editable" id="city">Amsterdam</span>-->
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 性别</div>
+
+                            <div class="profile-info-value">
+                                <?php if ($item['sex'] == 1) { ?>
+                                    男 <i class="fa fa-mars blue bold"></i>
+                                <?php } else if ($item['sex'] == 2) { ?>
+                                    女 <i class="fa fa-venus pink bold"></i>
+                                <?php } else { ?>
+                                    保密
+                                <?php }; ?>
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 魅力值</div>
+
+                            <div class="profile-info-value">
+                                <span class="editable"
+                                      id="signup"><?php echo $item['charm']; ?></span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 注册时间</div>
+
+                            <div class="profile-info-value">
+                                <span class="editable"
+                                      id="signup"><?php echo date('Y-m-d H:i', $item['created']); ?></span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 注册设备</div>
+
+                            <div class="profile-info-value">
+                                <span class="editable"
+                                      id="signup"><?php echo $item['platform']; ?></span>
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 设备号</div>
+
+                            <div class="profile-info-value">
+                                <span class="editable"
+                                      id="signup"><?php echo $item['last_device_id']; ?></span>
+                            </div>
+                        </div>
+                        <?php if ($item['third_party']) {
+                            $item['third_party'] = array_values($item['third_party']);
+                            ?>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name">open_id</div>
+
+                                <div class="profile-info-value">
+                                <span class="editable"
+                                      id="signup"><?php echo $item['third_party'][0]['open_id']; ?></span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name">union_id</div>
+
+                                <div class="profile-info-value">
+                                <span class="editable"
+                                      id="signup"><?php echo $item['third_party'][0]['union_id']; ?></span>
+                                </div>
+                            </div>
+                        <?php } ?>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 注册方式</div>
+
+                            <div class="profile-info-value">
+                                <span class="editable"
+                                      id="signup"><?php echo $item['third_type']; ?></span>
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name">地区</div>
+
+                            <div class="profile-info-value">
+                                <span class="editable"
+                                      id="login"><?php echo $item['province_name'] ? $item['province_name'] . $item['city_name'] : '无'; ?></span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 用户等级</div>
+
+                            <div class="profile-info-value">
+                                <span class="editable" id="about"><?php echo 'V' . $item['grade']; ?></span>
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 龙豆</div>
+
+                            <div class="profile-info-value">
+                                <span class="editable" id="about"><?php echo $item['coins']; ?></span>
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 经验值</div>
+
+                            <div class="profile-info-value">
+                                <span class="editable" id="about"><?php echo $item['points']; ?></span>
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 用户状态</div>
+
+                            <div class="profile-info-value">
+                                <span class="editable"
+                                      id="about"><?php echo \Services\User\UserStatus::$user_status[$item['status']]; ?></span>
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 上次登录时间</div>
+
+                            <div class="profile-info-value">
+                                <span class="editable"
+                                      id="about"><?php echo date('Y-m-d H:i', $item['last_login_time']); ?></span>
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 上次登录设备</div>
+
+                            <div class="profile-info-value">
+                                <span class="editable"
+                                      id="about"><?php echo $item['last_login_device'] . '-' . $item['last_phone_model']; ?></span>
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 上次登录ip</div>
+
+                            <div class="profile-info-value">
+                                <span class="editable"
+                                      id="about"><?php
+
+                                    echo $item['address']['country'] . $item['address']['province'] . $item['address']['city'];
+                                    ?>
+                                    <?php echo '(' . $item['last_login_ip'] . ")"; ?></span>
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 个性签名</div>
+
+                            <div class="profile-info-value">
+                                <span class="editable"
+                                      id="about"><?php echo $item['signature'] ? $item['signature'] : '无'; ?></span>
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 被举报次数</div>
+
+                            <div class="profile-info-value">
+                                <span class="editable"
+                                      id="about"><?php echo $item['report_count']; ?></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4">
+                    <div class="profile-user-info profile-user-info-striped">
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 认证状态</div>
+                            <div class="profile-info-value">
+                                <span class="editable" id="username">
+                                    <?php if ($item['auth_status'] == 0) { ?>
+                                        未认证
+                                    <?php } elseif ($item['auth_status'] == 1) { ?>
+                                        <span class="badge badge-success">已认证</span> <span
+                                            data-id="<?php echo $item['user_id']; ?>"
+                                            class="btn btn-danger btn-sm cancelAuth">取消认证</span>
+                                        <span data-id="<?php echo $item['user_id']; ?>"
+                                              class="btn btn-success btn-sm modifyAuth"
+                                              data-info="<?php echo base64_encode(json_encode(['uid' => $item['user_id'], 'true_name' => $item['true_name'],
+                                                  'auth_type' => \Services\User\AuthManager::$auth_type_name[$item['auth_type']],
+                                                  'company' => $item['company'],
+                                                  'job' => $item['job'],
+                                                  'introduce' => $item['introduce'],
+                                                  'auth_desc' => $item['auth_desc'],
+                                                  'website' => $item['website'],
+                                              ], JSON_UNESCAPED_UNICODE)) ?>">修改认证信息</span>
+                                    <?php } elseif ($item['auth_status'] == 2) { ?>
+                                        已认证,已提交重新认证
+                                    <?php } elseif ($item['auth_status'] == 3) { ?>
+                                        已认证,重新认证失败
+                                        <span data-id="<?php echo $item['user_id']; ?>"
+                                              class="btn btn-danger btn-sm cancelAuth">取消认证</span>
+                                    <?php } elseif ($item['auth_status'] == 5) { ?>
+                                        未认证,认证请求已提交
+                                    <?php } elseif ($item['auth_status'] == 6) { ?>
+                                        未认证,认证失败
+                                    <?php } ?>
+                                </span>
+                            </div>
+                            <?php if ($item['is_auth']) { ?>
+
+                                <?php if ($item['auth_type'] == \Services\User\AuthManager::AUTH_TYPE_JOBBER) { ?>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> 认证详情</div>
+
+                                        <div class="profile-info-value">
+                                      <span class="editable"
+                                            id="about"><a href="/panel/auth/list?key=<?php echo $item['user_id']; ?>">点击查看详情</a></span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> 行业</div>
+
+                                        <div class="profile-info-value">
+                                      <span class="editable"
+                                            id="about"><?php echo $item['industry'] ? $item['industry'] : '无'; ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> 公司</div>
+
+                                        <div class="profile-info-value">
+                                      <span class="editable"
+                                            id="about"><?php echo $item['company'] ? $item['company'] : '无'; ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> 职位</div>
+
+                                        <div class="profile-info-value">
+                                      <span class="editable"
+                                            id="about"><?php echo $item['job'] ? $item['job'] : '无'; ?></span>
+                                        </div>
+                                    </div>
+                                <?php } elseif ($item['auth_type'] == \Services\User\AuthManager::AUTH_TYPE_ENTERTAINER) { ?>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> 职业</div>
+
+                                        <div class="profile-info-value">
+                                      <span class="editable"
+                                            id="about"><?php echo $item['job'] ? $item['job'] : '无'; ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> 经济公司</div>
+
+                                        <div class="profile-info-value">
+                                      <span class="editable"
+                                            id="about"><?php echo $item['company'] ? $item['company'] : '无'; ?></span>
+                                        </div>
+                                    </div>
+                                <?php } elseif ($item['auth_type'] == \Services\User\AuthManager::AUTH_TYPE_SPORTS) { ?>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> 职业</div>
+
+                                        <div class="profile-info-value">
+                                      <span class="editable"
+                                            id="about"><?php echo $item['job'] ? $item['job'] : '无'; ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> 所属运动队</div>
+
+                                        <div class="profile-info-value">
+                                      <span class="editable"
+                                            id="about"><?php echo $item['company'] ? $item['company'] : '无'; ?></span>
+                                        </div>
+                                    </div>
+                                <?php } elseif ($item['auth_type'] == \Services\User\AuthManager::AUTH_TYPE_GOVERNMENT) { ?>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> 职位</div>
+
+                                        <div class="profile-info-value">
+                                      <span class="editable"
+                                            id="about"><?php echo $item['job'] ? $item['job'] : '无'; ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> 机构/组织</div>
+
+                                        <div class="profile-info-value">
+                                      <span class="editable"
+                                            id="about"><?php echo $item['company'] ? $item['company'] : '无'; ?></span>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name"> 认证说明</div>
+
+                                    <div class="profile-info-value">
+                                      <span class="editable"
+                                            id="about"><?php echo $item['auth_desc'] ? $item['auth_desc'] : '无'; ?></span>
+                                    </div>
+                                </div>
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name"> 个人网址</div>
+
+                                    <div class="profile-info-value">
+                                <span class="editable"
+                                      id="about"><?php echo ($item['website']) ? $item['website'] : '无'; ?></span>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> 真实姓名</div>
+
+                                <div class="profile-info-value">
+                                <span class="editable"
+                                      id="about"><?php echo $item['true_name'] ? $item['true_name'] : '无'; ?></span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> 身份证</div>
+
+                                <div class="profile-info-value">
+                                <span class="editable"
+                                      id="about"><?php echo isset($item['apply_info']) ? $item['apply_info']['id_card'] : '无'; ?></span>
+                                </div>
+                            </div>
+
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> 生日</div>
+
+                                <div class="profile-info-value">
+                                <span class="editable"
+                                      id="about"><?php echo $item['birthday'] ? $item['birthday'] : '无'; ?></span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> 星座</div>
+
+                                <div class="profile-info-value">
+                                <span class="editable"
+                                      id="about"><?php echo $item['constellation'] ? \Services\User\UserStatus::$constellation[$item['constellation']] : '无'; ?></span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> 收到的礼物</div>
+
+                                <div class="profile-info-value">
+                                <span class="editable"
+                                      id="about">
+                                    <a href="javascript:;" class=" newTarget"
+                                       data-title="秀场详情"
+                                       title="点击查看"
+                                       data-href="/panel/gift/record?user_id=<?php echo $item['user_id'] ?>"><?php echo $item['own_gift_count']; ?></a>
+                                </span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> 送出的礼物</div>
+
+                                <div class="profile-info-value">
+                                <span class="editable"
+                                      id="about">
+                                    <a href="javascript:;" class="newTarget"
+                                       data-title="秀场详情"
+                                       title="点击查看"
+                                       data-href="/panel/gift/record?owner_id=<?php echo $item['user_id'] ?>"><?php echo $item['use_gift_count']; ?></a>
+                                </span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> TA的秀场</div>
+
+                                <div class="profile-info-value">
+                                <span class="editable"
+                                      id="about">
+                                    <?php if ($item['show']) { ?>
+                                        <?php echo $item['show']['enable'] == 1 ? "已开启" : "已关闭"; ?>
+                                        <a href="javascript:;" class="btn btn-sm btn-primary newTarget"
+                                           data-title="秀场详情"
+                                           data-href="/panel/show/detail?user_id='<?php echo $item['user_id'] ?> '">查看详情</a>
+                                    <?php } else { ?>
+                                        未开启
+                                    <?php } ?>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> TA的标签</div>
+
+                                <div class="profile-info-value">
+                                <span class="editable"
+                                      id="about">
+                                   <?php if ($tags) {
+                                       $tags = explode(',', $tags);
+                                       foreach ($tags as $t) {
+                                           ?>
+                                           <span class="badge badge-primary"><?php echo $t ?></span>
+                                       <?php } ?>
+                                   <?php } else { ?>
+                                       未设置
+                                   <?php } ?>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hide">
+            <div id="user-profile-2" class="user-profile">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="table-header">
+                            登录日志
+                        </div>
+                        <div class="table-responsive">
+                            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>登录时间</th>
+                                    <th>终端类型</th>
+                                    <th class="hidden-480">APP版本号</th>
+                                    <th>手机系统版本号</th>
+                                    <th>手机型号</th>
+                                    <th class="hidden-480">终端ip</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hide">
+            <div id="user-profile-3" class="user-profile list">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="table-header">
+                            动态列表
+                        </div>
+                        <div class="table-responsive">
+                            <table id="sample-table-3" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>发布时间</th>
+                                    <th>标签</th>
+                                    <th>类型</th>
+                                    <th>状态</th>
+                                    <th>点赞数</th>
+                                    <th>收藏数</th>
+                                    <th>评论数</th>
+                                    <th>转发数</th>
+                                    <th>阅读数</th>
+                                    <th>举报数</th>
+                                    <th>是否置顶</th>
+                                    <th>位置</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE CONTENT ENDS -->
+    </div><!-- /.col -->
+</div><!-- /.row -->
+<div class="modal fade" id="authModal">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">认证信息修改</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <div class="form form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">真实姓名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="col-sm-10" readonly name="true_name" id="true_name" value=""/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">认证类型</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="auth_type" class="col-sm-10" readonly id="auth_type" value=""/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">公司/组织</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="company" readonly class="col-sm-10" id="company" value=""/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">职位</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="job" readonly class="col-sm-10" id="job" value=""/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">个人网址</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="website" class="col-sm-10" id="website" value="http://"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">认证说明</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="auth_desc" class="col-sm-10" id="auth_desc" value=""
+                                   placeholder="认证说明"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">人物介绍</label>
+                        <div class="col-sm-10">
+                            <textarea type="text" name="introduce" class="col-sm-10" id="introduce" placeholder="人物介绍"
+                                      style="min-height: 100px;"></textarea>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" value="0" id="uid"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="sureBtn">确定</button>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <script type="text/javascript">
+        seajs.use(['app/users/users.bind.js?v=2.2.3.2'], function (e) {
+            e.deleteUsers('.delBtn');
+            e.recoveryUsers('.recoveryBtn');
+            e.forbidUsers('.forbidBtn');
+            e.unForbidUsers('.unForbidBtn');
+            e.sendWarning();
+            // base.pageList({'url': '/api/user/list'});
+        });
+        $('[data-toggle="buttons"] .btn').on('click', function (e) {
+            var target = $(this).find('input[type=radio]');
+            var which = parseInt(target.val());
+            $('.user-profile').parent().addClass('hide');
+            $('#user-profile-' + which).parent().removeClass('hide');
+        });
+        /*   $(function () {
+         //提示信息
+         var lang = {
+         "sProcessing": "处理中...",
+         "sLengthMenu": "每页 _MENU_ 项",
+         "sZeroRecords": "没有匹配结果",
+         "sInfo": "当前显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项。",
+         "sInfoEmpty": "当前显示第 0 至 0 项，共 0 项",
+         "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+         "sInfoPostFix": "",
+         "sSearch": "搜索:",
+         "sUrl": "",
+         "sEmptyTable": "表中数据为空",
+         "sLoadingRecords": "载入中...",
+         "sInfoThousands": ",",
+         "oPaginate": {
+         "sFirst": "首页",
+         "sPrevious": "上页",
+         "sNext": "下页",
+         "sLast": "末页",
+         "sJump": "跳转"
+         },
+         "oAria": {
+         "sSortAscending": ": 以升序排列此列",
+         "sSortDescending": ": 以降序排列此列"
+         }
+         };
+         $('#sample-table-2').dataTable({
+         "oLanguage": lang,  //提示信息
+         "aoColumns": [
+         {"mData": "time"},
+         {"bSortable": false, "mData": "client_type"},
+         {"bSortable": false, "mData": "os"},
+         {"bSortable": false, "mData": "app_version"},
+         {"bSortable": false, "mData": "phone_model"},
+         {"bSortable": false, "mData": "client_ip"},
+         ],
+         "aaSorting": [[0, "desc"]],
+         "bFilter": false,
+         "iDisplayLength": 10,
+         "bServerSide": true,//这个用来指明是通过服务端来取数据
+         "sAjaxSource": "/api/user/loginLog",//这个是请求的地址
+         "fnServerData": retrieveData, // 获取数据的处理函数
+         }
+         );
+         $('#sample-table-3').dataTable({
+         "oLanguage": lang,  //提示信息
+         "aoColumns": [
+         {"mData": "created"},
+         {"bSortable": false, "mData": "tags_name"},
+         {
+         "mData": "media_type", "mRender": function (val) {
+         if (val == 1) {
+         return "纯文本";
+         } else if (val == 2) {
+         return "小视频";
+         }
+         else {
+         return "图片";
+         }
+         }
+         },
+         {
+         "mData": "status", "mRender": function (val) {
+         if (val == 0) {
+         return "被系统屏蔽";
+         } else if (val == 1) {
+         return "正常";
+         }
+         else if (val == 2) {
+         return "用户已删除";
+         }
+         }
+         },
+         {"mData": "like_cnt"},
+         {"mData": "fav_cnt"},
+         {"mData": "comment_cnt"},
+         {"mData": "forward_cnt"},
+         {"mData": "view_cnt"},
+         {"mData": "report_cnt"},
+         {
+         "mData": "is_top", "mRender": function (val) {
+         if (val == 0) {
+         return "否";
+         } else {
+         return "是";
+         }
+
+         }
+         },
+         {"bSortable": false, "mData": "address"},
+         {
+         "bSortable": false, "mData": "address", "mRender": function (val, type, full) {
+         var html = "<a class='btn btn-sm btn-primary' href='/panel/discuss/detail/" + full.id + "'>查看</a>&nbsp;";
+         if (full.status == 1) {
+         html += "<a  href='javascript:;' data-id='" + full.id + "' class='btn btn-sm delBtn'>屏蔽动态</a>"
+         } else if (full.status == 0) {
+         html += "<a href='javascript:;' data-id='" + full.id + "'  class='btn btn-sm btn-success recoveryBtn'>恢复正常</a>"
+         } else if (full.status == 2) {
+         }
+         return html;
+         }
+         },
+
+         ],
+         "aaSorting": [[0, "desc"]],
+         "bFilter": false,
+         "iDisplayLength": 10,
+         "bServerSide": true,//这个用来指明是通过服务端来取数据
+         "sAjaxSource": "/api/user/discuss",//这个是请求的地址
+         "fnServerData": retrieveData, // 获取数据的处理函数
+         }
+         );
+         // 3个参数的名字可以随便命名,但必须是3个参数,少一个都不行
+         function retrieveData(sSource111, aoData111, fnCallback111) {
+         $.ajax({
+         url: sSource111,//这个就是请求地址对应sAjaxSource
+         data: {"aoData": JSON.stringify(aoData111), 'user_id': $("#user_id").val()},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+         type: 'post',
+         dataType: 'json',
+         async: false,
+         success: function (result) {
+         fnCallback111(result);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的
+         },
+         error: function (msg) {
+         }
+         });
+         }
+
+         $('table th input:checkbox').on('click', function () {
+         var that = this;
+         $(this).closest('table').find('tr > td:first-child input:checkbox')
+         .each(function () {
+         this.checked = that.checked;
+         $(this).closest('tr').toggleClass('selected');
+         });
+
+         });
+
+
+         $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+         function tooltip_placement(context, source) {
+         var $source = $(source);
+         var $parent = $source.closest('table')
+         var off1 = $parent.offset();
+         var w1 = $parent.width();
+
+         var off2 = $source.offset();
+         var w2 = $source.width();
+
+         if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2)) return 'right';
+         return 'left';
+         }
+         })*/
+    </script>
+
+    <script>
+        seajs.use('app/panel/discuss/discuss.edit', function (api) {
+            api.del();
+
+        });
+        seajs.use('app/panel/panel.base', function (api) {
+            //取消认证
+            $(".cancelAuth").on('click', function () {
+                var id = $(this).data('id');
+                $(this).confirm("确认要取消认证?", {
+                    ok: function () {
+                        api.requestApi('/api/user/cancelAuth', {id: id}, function (res) {
+                            if (res.result == 1) {
+                                tip.showTip('ok', '取消成功', 1000);
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 1000)
+                            }
+                        })
+                    },
+                    cancel: function () {
+                        return false;
+                    }
+                });
+            });
+            $(".modifyAuth").on('click', function () {
+                var info = JSON.parse(base64.decode($(this).attr('data-info')));
+                var model = $("#authModal");
+                model.find("#uid").val(info.uid);
+                model.find("#true_name").val(info.true_name);
+                model.find("#auth_type").val(info.auth_type);
+                model.find("#auth_desc").val(info.auth_desc);
+                model.find("#company").val(info.company);
+                model.find("#job").val(info.job);
+                model.find("#introduce").val(info.introduce);
+                model.find("#website").val(info.website);
+                model.modal("show");
+            });
+            $("#authModal").on('click', '#sureBtn', function () {
+                var model = $("#authModal");
+                var uid = model.find("#uid").val();
+                var website = model.find("#website").val();
+                var introduce = model.find("#introduce").val();
+                var auth_desc = model.find("#auth_desc").val();
+                api.requestApi('/api/user/editAuth', {
+                    uid: uid,
+                    website: website,
+                    introduce: introduce,
+                    auth_desc: auth_desc
+                }, function (res) {
+                    if (res.result == 1) {
+                        tip.showTip('ok', '编辑成功', 1000);
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1000)
+                    }
+                })
+            })
+        });
+    </script>
+    <!-- page specific plugin scripts -->
+
+    <script src="/static/ace/js/jquery.dataTables.min.js"></script>
+    <script src="/static/ace/js/jquery.dataTables.bootstrap.js"></script>
+
+    <!-- ace scripts -->
+

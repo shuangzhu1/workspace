@@ -1,0 +1,41 @@
+<!--第一条数据-->
+
+<div class="album_list_item ">
+    <div class="album_date" style="font-size:24px">
+        <?php echo $key; ?>
+        <h1><span class="album_month"><?php echo substr($key, 4, 2); ?></span><i>/</i><span
+                class="album_year"><?php echo substr($key, 6, 4); ?></span></h1>
+    </div>
+    <ul class="gallery" >
+        <?php foreach ($item as $i) :?>
+            <!--视频格式-->
+            <?php if ($i['media_type'] == 2) {
+                $media = explode('?', $i['media']);
+                ?>
+
+                    <li data-type="video" data-src="<?php echo $media[1];  ?>" >
+
+                        <video controls="" id="my-video" class="video-js" poster="<?php echo $media[0]; ?>?x-oss-process=image/resize,m_fill,h_200,w_200" preload="auto" data-setup="{}" src="<?php echo $media[1]; ?>">
+                        </video>
+                    </li>
+
+                <!--图片格式-->
+            <?php }
+            elseif ($i['media_type'] == 3){
+                $media = explode(',', $i['media']);
+            ?>
+                <?php foreach ($media as $m) {
+                    if ( !strpos($m,'|porn') === false ){
+                    ?>
+                        <li  data-src="/static/wap/images/pornhold/no_2x.png" data-size="200x200">
+                            <img src="/static/wap/images/pornhold/no_2x.png"/>
+                        </li>
+                        <?php }else{ ?>
+                    <li  data-src="<?php echo $m; ?>" data-size="<?php echo \Util\ImgSize::getSizeFromUrl($m) ?>">
+                        <img src="<?php echo $m; ?>?x-oss-process=image/resize,m_fill,h_200,w_200"/>
+                    </li>
+                    <?php } ?>
+                <?php } ?>
+                <?php } ?>
+        <?php endforeach; ?>
+</div>

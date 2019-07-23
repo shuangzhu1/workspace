@@ -1,0 +1,43 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="/static/ace/js/jquery-1.10.2.min.js"></script>
+    <title>获取Token</title>
+</head>
+<body >
+    <div style="margin-top:30px">
+        点击按钮调用getCurrentUser：
+        <input type="button" value="调用" id="getToken">
+    </div>
+
+    <div style="text-align: center;margin-top:30px">
+        结果如下：<br><br>
+        <textarea id="result"  style="width:96%;height:300px">
+
+    </textarea>
+    </div>
+
+
+</body>
+</html>
+<script>
+    $('#getToken').on('click',function () {
+        var u = navigator.userAgent.toLowerCase();
+        var data = {};
+        if (u.indexOf('iphone') > -1 || u.toLowerCase().indexOf('ipad') > -1) {
+            data = window.webkit.messageHandlers.getCurrentUser.postMessage('5');
+        }
+
+        if (u.indexOf('android') > -1 ) {
+            data = window.android.getCurrentUser('5');
+        }
+        $('#result').text(JSON.stringify(data,null,2));
+    });
+
+    function callback(data) {
+        $('#result').text(JSON.stringify(JSON.parse(data),null,2));
+    }
+</script>

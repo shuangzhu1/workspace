@@ -1,0 +1,70 @@
+<?php
+use Components\Order\OrderManager;
+use Components\Product\TransactionManager;
+
+?>
+<div class="page-header">
+    <h1>
+        推广产生订单列表
+        <small>
+            <i class="icon-double-angle-right"></i>
+        </small>
+    </h1>
+</div><!-- /.page-header -->
+<?php echo $this->view->getContent(); ?>
+
+<div class="col-xs-12" style="margin-top: 10px;">
+
+    <div class="widget-box">
+        <div class="widget-header widget-header-flat widget-header-small">
+            <h5>
+                <i class="icon-signal"></i>
+                订单列表
+            </h5>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main">
+
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="center">订单编号</th>
+                        <th class="center">下单时间</th>
+                        <th class="center">订单状态</th>
+                        <th class="center">推广返现金额</th>
+                        <th class="center">返现状态</th>
+                        <th class="center">返现时间</th>
+
+                        <!--<th>管理</th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    if ($order) {
+                    foreach ($order as $item) {
+                    ?>
+                    <tr>
+                        <td class="center">
+                            <a target="_blank"
+                               href="/panel/order/detail/<?php echo $item['order_number'] ?>"><?php echo $item['order_number'] ?></a>
+
+                        </td>
+                        <td class="center"><?php echo date('Y-m-d H:i', $item['created']) ?></td>
+                        <td class="center"><?php echo \Components\Product\TransactionManager::$orderStatusMap[$item['order_detail']['status']]; ?></td>
+                        <td class="center">&yen;<?php echo $item['cash']; ?></td>
+                        <td class="center">
+                            <?php echo $item['is_back'] == 1 ? '已返现' : '未返现'; ?>
+                        </td>
+                        <td class="center"><?php echo $item['back_time'] > 0 ? date('Y-m-d H:i', $item['back_time']) : '未返现'; ?></td>
+                        <?php
+                        }
+                        } ?>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /widget-main -->
+        </div>
+        <!-- /widget-body -->
+    </div>
+

@@ -1,0 +1,21 @@
+<li class="item">
+    <dl>
+        <dt>
+            <a href="<?php echo $this->uri->baseUrl('user?to=' . $item['uid']); ?>"><img
+                    src="<?php echo $item['avatar']; ?>?x-oss-process=image/resize,m_fill,h_100,w_100"/></a>
+            <?php if ($item['is_auth'] == 1 || $item['is_auth'] == 2) { ?>
+                <span></span>
+            <?php } ?>
+        </dt>
+        <dd>
+            <h1>
+                <span class="attention_name"><?php echo $item['username']; ?></span>
+										<span class="dynamic_level <?php echo $item['sex'] == 1 ? 'boy' : 'girl'; ?>">
+											<i>V<?php echo $item['grade'] ?></i>
+											<em class="<?php echo $item['sex'] == 1 ? 'man' : 'woman'; ?>"></em>
+										</span>
+            </h1>
+            <p><?php echo $item['signature'] ? $item['signature'] : '此人很懒什么也没有留下'; ?></p>
+        </dd>
+    </dl>
+</li>

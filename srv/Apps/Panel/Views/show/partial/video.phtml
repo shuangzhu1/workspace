@@ -1,0 +1,62 @@
+<tr class="item" data-id="<?php echo $item['id']; ?>">
+    <td class="center">
+        <label>
+            <input type="checkbox" class="chk ace" data-id="<?php echo $item['id']; ?>"/>
+            <span class="lbl"></span>
+        </label>
+    </td>
+    <th class='name'><?php echo $item['id']; ?></th>
+    <td><?php echo $item['user_id'] . '【' . $item['username'] . '】'; ?></td>
+    <td><a href="<?php echo explode('?', $item['url'])[0]; ?>" data-lightbox="roadtrip"><img
+                src="<?php echo explode('?', $item['url'])[0]; ?>?x-oss-process=image/resize,m_fill,h_160,w_160"
+                style="width: 40px; height: 40px;"/></a>
+        <a href="javascript:;" class="btn btn-sm btn-primary btnScan" data-url="<?php echo $item['url'] ?>"><i
+                class="fa fa-video-camera"></i> 查看视频</a>&nbsp;
+    </td>
+    <td><?php echo $item['title'] ?></td>
+    <td>
+        <?php if( $item['qid'] != 0 ) { ?>是
+        <i  class="fa fa-commenting-o grey tooltip-info pull-right" data-rel="tooltip" data-placement="top" data-original-title="<?php echo $quesList[$item['qid']] ?>"></i>
+        <?php }else{ ?>
+            否
+        <?php } ?>
+    </td>
+    <td><?php echo $item['like_cnt'] ?></td>
+    <td><?php echo $item['view_cnt'] ?></td>
+    <td><?php echo $item['comment_cnt'] ?></td>
+    <td><?php echo $item['reward_cnt'] ?></td>
+    <td>
+        <?php if ($item['report_cnt'] > 0) { ?>
+            <a href="javascript:;"
+               data-href="/panel/report/video?video_id=<?php echo $item['id'] ?>"
+               class="newTarget"
+               data-title="视频举报-<?php echo $item['id'] ?>"
+            > <?php echo $item['report_cnt'] ?></a>
+        <?php } else { ?>
+            <?php echo $item['report_cnt'] ?>
+        <?php } ?>
+    </td>
+    <td>  <?php if ($item['status'] == 0) {
+            echo "<label class='badge badge-danger'>已被系统屏蔽</label>";
+        } else if ($item['status'] == 1) {
+            echo "<label class='badge badge-success'>正常</label>";
+        } else if ($item['status'] == 2) {
+            echo "<label class='badge badge-gray'><i class='fa fa-trash'></i> 用户已删除</label>";
+        }; ?></td>
+    <td><?php echo date('Y-m-d H:i', $item['created']); ?></td>
+
+    <td>
+        <?php if ($item['status'] == \Services\User\VideoManager::STATUS_NORMAL) { ?>
+            <?php if( $item['is_recommend'] == 0 ) {?>
+                <span class="btn btn-sm btn-success recommendBtn" data-id="<?php echo $item['id'] ?>"><i class="fa fa-thumbs-up"></i> 推荐</span>
+            <?php }else{  ?>
+                <span class="btn btn-sm btn-success unRecommendBtn" data-id="<?php echo $item['id'] ?>"><i class="fa fa-thumbs-up"></i> 取消推荐</span>
+            <?php } ?>
+            <span class="btn btn-sm btn-danger delBtn" data-id="<?php echo $item['id'] ?>"><i class="fa fa-trash"></i> 屏蔽</span>
+        <?php } else if ($item['status'] == \Services\User\VideoManager::STATUS_SHIELD) { ?>
+            <span class="btn btn-sm btn-success recoveryBtn" data-id="<?php echo $item['id'] ?>"><i
+                    class="fa fa-exchange"></i> 恢复正常</span>
+        <?php } ?>
+
+    </td>
+</tr>

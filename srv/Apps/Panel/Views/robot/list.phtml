@@ -1,0 +1,231 @@
+<?php
+$gender = array(
+    '0' => '保密',
+    '1' => '男',
+    '2' => '女',
+);
+$status = array(
+    '0' => '永久封号',
+    '1' => '正常',
+    '2' => '待解封',
+);
+?>
+<style>
+    .item_0 {
+        background-color: #e4e4e4
+    }
+
+    thead tr th {
+        height: 50px;
+    }
+
+
+</style>
+
+    <span class="">
+            <a href="javascript:;" class="btn btn-success btn-sm addBtn"><i class="fa fa-plus"></i> 添加账号</a>
+    </span>
+<hr class="hr-10">
+
+<div class="width-50">
+<table class="list listData">
+    <thead>
+    <tr class="head">
+        <th style="width:15%" class="center">会员ID</th>
+        <th style="width: 10%;" class="center">头像</th>
+        <th style="width: 25%;" class="center">昵称</th>
+        <th style="width: 10%;" class="center">性别</th>
+        <th class="center">签名</th>
+        <th style="width:10%" class="center">状态</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php
+    if ($list) {
+        foreach ($list as $k => $item) {
+            ?>
+            <tr class="item item_<?php echo $item['status'] ?>" data-id="<?php echo $item['uid']; ?>">
+                <th class="name"><?php echo $item['uid']; ?></th>
+                <input type="hidden" class="ID" value="{{item['id']}}">
+                <!--                <td class="center"><input type="checkbox" class="chk" data-id="<?php /*echo $item['user_id']; */ ?>"/></td>
+-->
+                <td><a href="<?php echo $item['avatar']; ?>" data-lightbox="roadtrip"><img
+                            src="<?php echo $item['avatar']; ?>?x-oss-process=image/resize,m_fill,h_160,w_160"
+                            style="width: 40px; height: 40px;"/></a></td>
+                <td><?php echo $item['name']; ?></td>
+                <td class="center"><?php echo isset($gender[$item['sex']]) ? $gender[$item['sex']] : "保密"; ?></td>
+                <td class="center"> <?php echo $item['signature']?></td>
+                <td class="center">
+                    <?php if ($item['status'] == 0) { ?>
+                        <a href="javascript:;"  data-id="<?php echo $item['uid'] ?>" class="unForbid" >已禁用</a>
+                    <?php } else if ($item['status'] == 1) { ?>
+                        <a href="javascript:;"  data-id="<?php echo $item['uid'] ?>" class="forbid" >禁用</a>
+                    <?php }  ?>
+
+
+                </td>
+            </tr>
+        <?php } ?>
+        <tr class="showpage">
+            <td colspan="16" id="dataTables-example_paginate" colspan="3" class="center">
+                <ul class="pagination">
+                    <li>
+                        <a href="javascript:;" onclick="page('prev')">
+                            <i class="fa fa-angle-double-left"></i>
+                            上一页
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" onclick="page('next')">
+                            下一页
+                            <i class="fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        <?php
+    } else {
+        ?>
+        <tr class="even gradeC">
+            <td colspan="16">
+                <p class="noData">没有用户数据</p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+</table>
+</div>
+
+<link rel="stylesheet" href="/srv/static/panel/css/lightbox/lightbox.css"/>
+
+<script src="/srv/static/panel/js/jquery/lightbox/lightbox.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        lightbox.option({
+            albumLabel: '%1/%2',
+            'resizeDuration': 200,
+            "fadeDuration":0,
+            "imageFadeDuration":0
+        });
+    })
+    seajs.use('app/panel/account/account.robot', function (api) {
+        api.saveRobot()
+    });
+</script>
+
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script>
+    seajs.use('app/panel/panel.base.js',function(api){
+        $('.forbid').on('click',function(){
+            var uid = $(this).data('id');
+            api.requestApi("<?php echo $this->url->get('panel/robot/forbid')?>",{uid:uid,status:0},function (res) {
+                if( res.result == 1)
+                {
+                    tip.showTip('ok','操作成功',1500,function(){
+                        window.location.reload()
+                    });
+
+                }
+            })
+        });
+
+        $('.unForbid').on('click',function(){
+            var uid = $(this).data('id');
+            api.requestApi("<?php echo $this->url->get('panel/robot/forbid')?>",{uid:uid,status:1},function (res) {
+                if( res.result == 1)
+                {
+                    tip.showTip('ok','操作成功',1500,function(){
+                        window.location.reload()
+                    });
+                }
+            })
+        });
+
+    });
+    $('#start').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        },
+
+    });
+    $('#end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        allowBlank: true,
+        timepicker: false,
+        onChangeDateTime: function () {
+        }
+    });
+
+    $(function () {
+            $('#select').on('click',function(){
+                $('#avator').click();
+            });
+    })
+
+    function page(action)
+    {
+        var firstId = $('.ID').first().val();
+        var lastId = $('.ID').last().val();
+        if( action == 'prev')
+        {
+            window.location.href = "?lastId=" + (firstId-11)
+        }else
+        {
+            window.location.href = "?lastId=" + lastId
+        }
+    }
+</script>
+
+<main class="popup-wrap" id="optionPopup">
+    <section class="popup-widget" id="optionWidget" style="width:500px;margin-left:-250px;top:50px">
+        <header class="popup-head">添加机器人<span class="popup-close">x</span></header>
+        <main class="popup-content">
+            <div class="field set-field">
+                <label for="" class="field-label">用户昵称：</label>
+                <input type="text" name='name' id="name" value="">
+                <span class="help-inline"><i class="red">*</i> (字母、数字、下划线)</span>
+            </div>
+            <div class="field set-field">
+                <label for="" class="field-label">签名：</label>
+                <input type="text" name='signature' id="signature" value="">
+                <span class="help-inline"> </span>
+            </div>
+            <div class="field set-field">
+                <label for="" class="field-label">头像：</label>
+                <input class="btn btn-sm btn-primary" id="select" type="button" value="选择头像" style="padding:0"/>
+                <input type="file" class="hidden" id="avator">
+                <a href="" data-lightbox="roadtrip" ><img src="" id="preview" class="hide" style="display: inline-block;width:50px;margin-left:10px;border:1px solid white;border-radius: 5px"></a>
+                <span class="help-inline"></span>
+            </div>
+            <div class="field set-field">
+                <label for="" class="field-label">性别：</label>
+                <label>
+                    <input type="radio" name="sex" class="ace active" value="1" >
+                    <span class="lbl"> <b>男</b></span>
+                </label>
+                <label>
+                    <input type="radio" name="sex" class="ace active" value="0" checked>
+                    <span class="lbl"> <b>女</b></span>
+                </label>
+                <span class="help-inline"></span>
+            </div>
+
+            <div class="field res-area center">
+                <input class="btn btn-sm btn-success res-btn "  type="button" value="注册"/>
+            </div>
+        </main>
+    </section>
+</main>
+
+
+

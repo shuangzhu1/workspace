@@ -1,0 +1,130 @@
+<link rel="stylesheet" type="text/css" href="/static/panel/js/tools/datetimepicker/bootstrap-datetimepicker.min.css">
+
+<form action="" method="get" style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px;">
+    <label for="name">关键字：</label>
+    <input name="key" type="text" id="key" placeholder="动作" value="<?php echo $key; ?>">
+    &nbsp;
+    <label for="name">操作类型：</label>
+    <select name="type">
+        <option value="0" <?php echo $type == 0 ? 'selected' : ''; ?>>全部</option>
+        <?php foreach (Services\Admin\AdminLog::$type_name as $k => $item) { ?>
+            <option
+                value="<?php echo $k; ?>" <?php echo $k == $type ? 'selected' : ''; ?>><?php echo $item; ?></option>
+        <?php } ?>
+    </select>
+    &nbsp;<label for="name">管理员：</label>
+    <select name="admin">
+        <option value="0" <?php echo $media_type == 0 ? 'selected' : ''; ?>>全部</option>
+        <?php foreach ($admins as $j => $item) { ?>
+            <option
+                value="<?php echo $j; ?>" <?php echo $j == $admin_id ? 'selected' : ''; ?>><?php echo $item; ?></option>
+        <?php } ?>
+    </select>
+    &nbsp;<label for="name">时间:</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd hh:ii:ss"/>
+    - <input type="text" id="end" value="<?php echo $end; ?>" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd hh:ii:ss"/>
+    <span><input type="submit" class="btn btn-primary btn-sm" value="搜索">
+</form>
+<table id="article-list" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style='width:100px'>管理员ID</th>
+        <th style='width:150px'>管理员名</th>
+        <th style="width:150px">操作时间</th>
+        <!--    <th style='width:300px'>审核</th>-->
+        <th style='width:150px'>动作</th>
+        <th style='width:100px'>api</th>
+        <th style='width:100px'>数据id</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <td class='name'><?php echo $item['uid']; ?></td>
+            <td class="center"><?php echo $item['user_name']; ?></td>
+            <td class="center"><?php echo date('Y-m-d H:i', $item['created']); ?></td>
+            <td>
+                <?php echo $item['action']; ?>
+            </td>
+            <td>
+                <?php echo $item['api']; ?>
+            </td>
+            <td>
+                <?php echo $item['item_id']; ?>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="7">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <tr class="showpage">
+        <th class="name">操作</th>
+        <td colspan="7">
+                <span>
+                    [ <a href="javascript:;" class="selectAll">全选</a> ]
+                    [ <a href="javascript:;" class="selectNone">全不选</a> ]
+                    [ <a href="javascript:;" class="selectInvert">反选</a> ]
+                    <a class="btn-light delAllSelected" href="javascript:;">批量屏蔽</a>
+                </span>
+        </td>
+    </tr>
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="7">
+            <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+        </td>
+    </tr>
+</table>
+
+<script type="text/javascript" src="/static/panel/js/tools/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+
+
+<script>
+    seajs.use('app/panel/discuss/discuss.edit', function (api) {
+        api.del();
+    });
+    var receive_start_val;
+    $('#start').datetimepicker({
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        minView: 'day',
+        endDate: new Date()
+    }).on('changeDate', function (ev) {
+        receive_start_val = ev.date.valueOf();
+    });
+    $('#end').datetimepicker({
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        minView: 'day',
+        endDate: new Date()
+    }).on('changeDate', function (ev) {
+        receive_start_val = ev.date.valueOf();
+    });
+</script>

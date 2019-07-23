@@ -1,0 +1,22 @@
+<li>
+    <dl class="clearfix">
+        <dt><a href="<?php echo $this->uri->baseUrl('user?to=' . $reply['uid']); ?>"><img src="<?php echo $reply['avatar']; ?>?x-oss-process=image/resize,m_fill,h_100,w_100"/></a></dt>
+        <dd>
+            <p>
+                <span class="comment_name"><?php echo $reply['username']; ?></span>
+				<span
+                    class="dynamic_level <?php echo $reply['sex'] == 1 ? 'boy' : 'girl' ?>">
+					<i>v<?php echo $reply['grade'] ?></i>
+					<em class="<?php echo $reply['sex'] == 1 ? 'man' : 'woman'; ?>"></em>
+				</span>
+            </p>
+            <p>
+                <span class="dy_time"><?php echo $reply['show_time']; ?></span>
+            </p>
+            <a href="javascript:;" data-type="reply" data-item-id="<?php echo $reply['reply_id']; ?>"
+               class="comment_like"><em class="<?php echo $reply['is_like'] == 1 ? 'vLike' : ''; ?>"></em><label
+                    class="reply_cnt"><?php echo $reply['like_cnt']; ?></label></a>
+        </dd>
+    </dl>
+    <p class="des"><?php echo $reply['content']; ?></p>
+</li>

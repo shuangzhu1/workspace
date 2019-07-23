@@ -1,0 +1,147 @@
+<style>
+    div#editor:focus{
+        outline:none;
+    }
+    div#editor img{
+        max-width: 90%;
+        margin:0 auto;
+    }
+</style>
+<a href="javascript:;" class="btn btn-sm btn-success" id="add">添加新动态</a>
+<hr class="hr-10">
+<table class="table table-bordered table-striped">
+    <thead class="thin-border-bottom">
+    <tr>
+        <th style="width:200px;">
+            标题
+        </th>
+        <th style="width:200px;">
+            网页关键词
+        </th>
+        <th style="width:200px;">
+            网页描述
+        </th>
+        <th style="width:200px;">
+            概要
+        </th>
+        <!--<th >
+            内容
+        </th>-->
+        <th >
+            创建时间
+        </th>
+        <th style="width:180px;">
+            操作
+        </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <?php if( $list ) {?>
+        <?php foreach ( $list as $item) {?>
+        <tr
+            data-id="{{item['id']}}"
+            data-title="{{item['title']}}"
+            data-html_kw="{{item['html_kw']}}"
+            data-html_desc="{{item['html_desc']}}"
+
+        >
+            <td  style="vertical-align: middle">
+                {{item['title']}}
+            </td>
+
+            <td  style="vertical-align: middle">
+                {{item['html_kw']}}
+            </td>
+            <td  style="vertical-align: middle">
+                {{item['html_desc']}}
+            </td>
+            <td  style="vertical-align: middle">
+                {{item['biref']}}
+            </td>
+
+            <!--<td  style="vertical-align: middle;display:inline-block;height:200px;overflow-y: hidden">
+
+                {{item['content']}}
+
+            </td>-->
+            <td  style="vertical-align: middle">
+                <?php echo date('Y/m/d H:i:s',$item['created']) ?>
+            </td>
+            <td style="vertical-align: middle">
+                <!--<a href="javascript:;" class="btn btn-xs view" >查看</a>-->
+                <a href="javascript:;" class="btn btn-xs btn-primary edit">编辑</a>
+                <a href="javascript:;" class="btn btn-xs btn-danger del">删除</a>
+
+            </td>
+
+        </tr>
+        <?php } ?>
+    <?php }else {?>
+        <tr>
+            <td colspan="4" class="center" style="color:red">暂无数据</td>
+        </tr>
+    <?php } ?>
+    </tbody>
+</table>
+<?php \Util\Pagination::instance($this->view)->display($this->view) ?>
+<?php $this->view->partial('article/addDynamic'); ?>
+
+<script>
+
+
+
+    //添加
+    $('#add').on('click',function(){
+        var $modal = $('#myModal');
+        $modal.find('#ques').val('');
+        $modal.find('#id').val('');
+        $modal.find('#html_desc').val('');
+        $modal.find('#html_kw').val('');
+        $modal.find('#editor-brief').html('');
+        $modal.find('#editor').html('');
+        $modal.modal('show');
+    });
+    seajs.use('app/panel/panel.base',function (api) {
+        //删除
+        $('.del').on('click',function(){
+            var id = $(this).closest('tr').data('id')
+            $(this).confirm("确定删除?", {
+                ok: function () {
+                    api.requestApi('/api/article/delDynamic', {id: id}, function (res) {
+                        if (res.result === 1) {
+                            tip.showTip('ok', '删除成功', 1000,function () {
+                                window.location.reload();
+                            });
+
+                        }
+                    })
+                },
+                cancel: function () {
+                    return false;
+                }
+            });
+        });
+
+        //编辑
+        $('.edit').on('click',function(){
+            var id=$(this).closest('tr').data('id');
+            api.requestApi('/api/article/getDynamicInfo',{id:id},function (res) {
+                if( res.result ===1 )
+                {
+                    var $modal = $('#myModal');
+                    $modal.find('#ques').val(res.data.title);
+                    $modal.find('#id').val(res.data.id);
+                    $modal.find('#html-desc').val(res.data.html_desc);
+                    $modal.find('#html-kw').val(res.data.html_kw);
+                    $modal.find('#editor-brief').html(res.data.biref);
+                    $modal.find('#editor').html(res.data.content);
+                    $modal.modal('show');
+                }
+            },true,true)
+
+        });
+
+    });
+
+</script>

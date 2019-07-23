@@ -1,0 +1,406 @@
+<link rel="stylesheet" type="text/css" href="/static/wap/css/share.css"/>
+<link rel="stylesheet" type="text/css" href="/static/wap/css/share_detail.css"/>
+<link rel="stylesheet" type="text/css" href="/static/wap/css/person.css?v=1.0.12"/>
+<link rel="stylesheet" type="text/css" href="/static/wap/css/footer.css?v=1.0.12"/>
+<!--<link rel="stylesheet" type="text/css" href="/static/wap/css/lightgallery.css"/>-->
+<link rel="stylesheet" href="/static/wap/js/swiper/swiper.css">
+<link rel="stylesheet" href="/static/ace/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/static/wap/css/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/static/wap/css/photoswipe/default-skin.css">
+<!--<script type="text/javascript" src="/static/wap/js/tools/lightgallery1.2.min.js"></script>-->
+<script type="text/javascript" src="/static/wap/js/swiper/swiper.js"></script>
+<script type="text/javascript" src="/static/wap/js/app/photoswipe/photoswipe.min.js"></script>
+<script type="text/javascript" src="/static/wap/js/app/photoswipe/photoswipe-ui-default.min.js"></script>
+<style>
+    html, body {
+        position: relative;
+        height: 100%;
+    }
+
+    .photo-imgs {
+        display: none;
+    }
+
+    .swiper-container {
+        width: 100%;
+        height: auto;
+    }
+
+    .swiper-slide {
+        text-align: center;
+        font-size: 24px;
+        background: #000;
+        /*display: -ms-flex ;
+        display: -webkit-flex ;
+        display: flex ;
+        -ms-flex-align: center;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        align-items: center;*/
+    }
+
+    .swiper-slide img {
+        display: inline-block;
+        z-index: 101;
+    }
+
+    .swiper-btn {
+        position: absolute;
+        bottom: 3.5rem;
+        left: 1rem;
+    }
+
+    .swiper-btn a {
+        display: inline-block;
+        width: 3rem;
+        height: 1.2rem;
+        line-height: 1.2rem;
+        text-align: center;
+        color: #fff;
+        font-size: 0.6rem;
+        border-radius: 0.25rem;
+        -webkit-border-radius: 0.25rem;
+        border: 1px solid #fff;
+        margin-right: 0.25rem;
+        background: #f00;
+    }
+
+    /*.swiper-pagination {*/
+        /*position: absolute;*/
+        /*top: 2.5rem;*/
+        /*width: 3rem;*/
+        /*height: 3rem;*/
+        /*left: 0;*/
+        /*right: 0;*/
+        /*margin: 0 auto;*/
+    /*}*/
+
+    /*.swiper-pagination span {*/
+        /*color: #fff;*/
+        /*font-size: 1rem;*/
+    /*}*/
+
+    #person-photos .swiper-pagination{
+        bottom:1.9rem;
+        text-align: left;
+        left:1rem
+    }
+    #person-photos .swiper-pagination-bullet{
+        width:0.35rem;
+        height:0.35rem
+    }
+    .Vplay {
+        background: url("/static/wap/images/person/voice_playing_n.png") no-repeat center !important;
+        background-size: 100% 100%;
+        -webkit-animation: play 2s linear infinite;
+        -moz-animation: play 2s linear infinite;
+        animation: play 2s linear infinite;
+    }
+
+    @-webkit-keyframes play {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+        25% {
+            -webkit-transform: rotate(90deg);
+        }
+        50% {
+            -webkit-transform: rotate(180deg);
+        }
+        75% {
+            -webkit-transform: rotate(270deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @-moz-keyframes play {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+        25% {
+            -webkit-transform: rotate(90deg);
+        }
+        50% {
+            -webkit-transform: rotate(180deg);
+        }
+        75% {
+            -webkit-transform: rotate(270deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @keyframes play {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+        25% {
+            -webkit-transform: rotate(90deg);
+        }
+        50% {
+            -webkit-transform: rotate(180deg);
+        }
+        75% {
+            -webkit-transform: rotate(270deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+
+</style>
+<header>
+    <?php $this->partial('base/footer') ?>
+</header>
+<script>
+
+APPCommon.setParams("type=homepage&id=<?php echo $to?>")
+    var browser = {
+        versions: function () {
+            var u = navigator.userAgent, app = navigator.appVersion;
+            return {//移动终端浏览器版本信息
+                trident: u.indexOf('Trident') > -1, //IE内核
+                presto: u.indexOf('Presto') > -1, //opera内核
+                webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+                iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者QQHD浏览器
+                iPad: u.indexOf('iPad') > -1, //是否iPad
+                webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+            };
+        }()
+    }
+    //                pc
+    if (!browser.versions.mobile) {
+        $('body').addClass("share-pc");
+        $(".public-header").addClass("share-pc-header");
+    }
+
+
+</script>
+<div class="content">
+    <div class="person">
+        <!--背景图像-->
+        <div class="perosn_top" >
+            <!--<img src="<?php /*echo "http://" . WAP_DOMAIN_DS . "." . MAIN_DOMAIN */?>/static/wap/images/person/yonghuxiangqing_pic.png"/>-->
+            <!--<div class="person_share_style">
+                <ul>
+                    <?php /*if ($user_info['is_star']) { */ ?>
+                        <li class="collect_icon"></li>
+                    <?php /*} */ ?>
+                    <?php /*if (!$user_info['look_his_discuss']) { */ ?>
+                        <li class="no_person"></a></li>
+                    <?php /*} */ ?>
+                    <?php /*if ($user_info['is_contact']) { */ ?>
+                        <li class="no_his"></a></li>
+                    <?php /*} */ ?>
+
+                </ul>
+            </div>-->
+            <div id="person-photos" class="swiper-container" >
+                <div class="swiper-wrapper">
+                    <?php
+                        $photos = explode(',',$user_info['photos']);
+                        foreach ($photos as $photo) :
+                    ?>
+                    <div class="swiper-slide" style="background-image:url(<?php echo $photo ?>) !important;background-size: cover !important;background-repeat: no-repeat !important;height:15rem">
+<!--                        <img src="--><?php //echo $photo ?><!--" >-->
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+            <ul style="position: absolute;bottom:0.75rem;left:0.75rem;font-size:0.6rem;color:#fff;z-index: 105;">
+                <li style="float:left">关注 <span style="font-weight:bold"><?php echo $user_info['attention_count']; ?></span></li>
+                <span style="float:left">&nbsp;|&nbsp;</span>
+                <li style="float:left">粉丝 <span style="font-weight:bold"> <?php echo $user_info['fans_count']; ?></span></li>
+            </ul>
+        </div>
+        <div class="person_datum clearfix">
+
+            <!--<div class="person_datum_head">
+                <div class="person_head">
+                    <img src="<?php /*echo $user_info['avatar']; */?>?x-oss-process=image/resize,m_fill,h_100,w_100"/>
+                </div>
+                <?php /*if ($user_info['is_auth'] == 1 || $user_info['is_auth'] == 2) { */?>
+                    <span class="approve_icon"></span>
+                <?php /*} */?>
+            </div>
+            <?php /*if ($user_info['voice_introduce']) {
+                $voice_introduce = explode('_t_', $user_info['voice_introduce']);
+                $time = '';
+                if (count($voice_introduce) == 2) {
+                    $time = explode('.', $voice_introduce[1])[0];
+                } else {
+                    $time = intval(explode('--', $user_info['voice_introduce'])[1]);
+                }
+                */?>
+                <div class="person_voice">
+                    <h1>
+                        <em></em><span><?php /*echo $time; */?>''</span>
+                    </h1>
+                </div>
+            <?php /*} */?>
+            <ul class="person_show_fans">
+                <li>
+                    <a href="javascript:;<?php /*echo $this->uri->baseUrl('user/attentions?to=' . $user_info['uid']);  */?>">关注<span><?php /*echo $user_info['attention_count']; */?></span></a>
+                </li>
+                <li>
+                    <a href="javascript:;<?php /*echo $this->uri->baseUrl('user/fans?to=' . $user_info['uid']);  */?>">粉丝<span><?php /*echo $user_info['fans_count']; */?></span></a>
+                </li>
+                <li>
+                    <a href="javascript:;">魅力<span><?php /*echo $user_info['charm']; */?></span></a>
+                </li>
+            </ul>
+            <div class="person_introduct">
+                <p><?php /*if ($user_info['is_auth'] == 1 || $user_info['is_auth'] == 2) { */?>
+                        恐龙谷认证：<?php /*echo $user_info['company'] . $user_info['job'] . $user_info['true_name']; */?>
+                    <?php /*} */?></p>
+            </div>-->
+            <ul class="person_show_list tab_list">
+                <li class="on" data-id="1" style="width:50%"> <a href="javascript:;">资料</a></li>
+                <li data-id="2" style="display:none"><a href="javascript:;">动态</a></li>
+                <!--<li data-id="3"><a href="javascript:;">相册</a></li>-->
+                <li data-id="4" style="width:50%"><a href="javascript:;">视频</a></li>
+            </ul>
+        </div>
+        <?php echo $this->partial("user/user_center/profile"); ?>
+        <?php echo $this->partial("user/user_center/discuss"); ?>
+        <?php echo $this->partial("user/user_center/album"); ?>
+        <?php echo $this->partial("user/user_center/show"); ?>
+    </div>
+
+</div>
+
+
+<!--ps DOM start-->
+
+<div id="gallery" class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="pswp__bg"></div>
+
+    <div class="pswp__scroll-wrap">
+
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <div class="pswp__counter" style="font-size:0.625rem;font-weight: bold"></div>
+
+                <!--<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>-->
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- <div class="pswp__loading-indicator"><div class="pswp__loading-indicator__line"></div></div> -->
+
+            <!--<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip">
+                     <a href="#" class="pswp__share--facebook"></a>
+                    <a href="#" class="pswp__share--twitter"></a>
+                    <a href="#" class="pswp__share--pinterest"></a>
+                    <a href="#" download class="pswp__share--download"></a>
+                </div>
+            </div>-->
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--ps DOM end-->
+<audio id='audioPlay' src='<?php echo $user_info['voice_introduce'] ?>'></audio>
+<script type="text/javascript">
+
+
+    seajs.use(['/static/wap/js/app/user/app.user.js?v=1.1.32', 'app/ps.init.js?v=1.0.23'], function (api, ps) {
+        $(function () {
+            api.user_center(<?php echo $to?>);
+            var audio = document.getElementById("audioPlay");
+            audio.addEventListener('ended', function () {
+                $(".person_voice em").removeClass("Vplay")
+            }, false);
+            audio.addEventListener('play', function () {
+                $(".person_voice em").addClass("Vplay")
+            }, false);
+
+            $(".person_voice").on('click', function () {
+                if ($(".person_voice em").hasClass("Vplay")) {
+                    audio.pause();
+                    $(".person_voice em").removeClass("Vplay")
+                } else {
+                    audio.play();
+                }
+            });
+            ps.init();
+
+        });
+        //照片墙
+        new Swiper('#person-photos', {
+            autoplay: 2000,
+            pagination: '.swiper-pagination',
+            paginationType : 'bullets',
+            loop:true
+        });
+
+
+
+
+    });
+    window.onload = function () {
+        //下载bar
+        //APPCommon.init("type=homepage&uid=<?php echo $this->request->get('to')?>");
+        $(window).scroll(function () {
+            if ($(this).scrollTop() <= 0) {
+                $(".public-header").removeClass("navout navin");
+            } else {
+                $(".public-header").removeClass("navin").addClass("navout");
+                $('body').on('touchend', function () {
+                    setTimeout(function () {
+                        $(".public-header").removeClass("navout").addClass("navin");
+                    }, 1200);
+                })
+            }
+        });
+
+        APPCommon.init();
+
+    }
+
+
+</script>
+
+
+
+
+

@@ -1,0 +1,12 @@
+ set_time_limit(0);
+        $i = 0;
+        while ($location = UserLocation::findList(['city<>""', 'columns' => 'user_id,city,id', 'limit' => 1000, 'offset' => $i * 1000])) {
+            foreach ($location as $l) {
+                if ($area_code = AreaManager::getInstance()->getCityByName($l['city'], 'area_code')) {
+                    UserLocation::updateOne(['area_code' => $area_code], 'id=' . $l['id']);
+                };
+            }
+            $i++;
+        }
+        echo "更新完成";
+        exit;

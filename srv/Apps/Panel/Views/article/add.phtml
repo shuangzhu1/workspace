@@ -1,0 +1,134 @@
+<style>
+    .form-group {
+        min-height: 30px;
+        overflow: hidden;
+    }
+
+    .form-group .control-label {
+        text-align: right;
+    }
+
+    .form-group select {
+        margin: 0;
+    }
+</style>
+<main class="tab-content" style="border:none">
+    <section id="home" class="tab-pane in active">
+        <?php if (isset($article)) { ?>
+            <div class="form-group">
+                <label for="name" class="col-sm-1 control-label">链接地址</label>
+
+                <div class="col-sm-10">
+                    <span class="col-sm-5">
+                        <input type="text" class="form-control" id="url"
+                               name="url" placeholder="链接地址"
+                               value="<?php echo $this->uri->appUrl() . 'article/detail/' . $article['param'] ?>"
+                               required readonly
+                               data-error="">
+                    </span>
+                       <span class="help-block with-errors">
+                    <a href="javascript:;" class="copyBtn miBtn"
+                       data-clipboard-text="<?php echo $this->uri->appUrl() . 'article/detail/' . $article['param'] ?>">复制地址</a>
+                    <a href="javascript:;" class="miBtn btnScan "
+                       data-url="<?php echo $this->uri->appUrl() . 'article/detail/' . $article['param'] ?>">预览文章</a>
+                    </span>
+                    <span class="help-block with-errors"></span>
+                </div>
+            </div>
+        <?php } ?>
+        <div class="form-group">
+            <label for="name" class="col-sm-1 control-label">文章标题</label>
+
+            <div class="col-sm-10">
+                    <span class="col-sm-5">
+                        <input type="text" style="height: 40px;line-height: 40px" class="form-control" id="title"
+                               name="title" placeholder="文章标题"
+                               value="<?php echo isset($article) ? $article['title'] : '' ?>" required
+                               data-error="">
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="keywords" class="col-sm-1 control-label">文章内容</label>
+
+            <div class="col-sm-10">
+                    <span class="col-sm-10">
+                        <textarea class="message_box" id="txtContent"
+                                  style="min-height: 500px;width: 100%"><?php echo isset($article) ? $article['content'] : '' ?></textarea>
+                    </span>
+                <span class="help-block with-errors"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="name" class="col-sm-1 control-label"></label>
+
+            <div class="col-sm-10" style="padding: 0 0 0 30px;">
+                <button type="submit" class="btn btn-primary btn-large btnSave"
+                        data-id="<?php echo isset($article) ? $article['id'] : '' ?>" name="btn-base">
+                    <i class="fa fa-paper-plane"></i>立即保存
+                </button>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<div class="" id="app-frame" style=" background-color:white; position: fixed;right: 0;z-index: 99999;top:0;
+       /* box-shadow:0 0 5px rgba(0,0,0,0.3);*/
+        display: none;">
+    <p style="background: #fff;height: 36px;line-height: 36px;padding: 0 8px;">
+        <a href="javascript:;" class="close-app">关闭预览</a> | <a href="javascript:;" class="refresh-app">重新预览</a>
+    </p>
+    <iframe name="appFrame" id="appFrame"
+            src=""
+            style="width: 400px;height: 600px;margin: 0;padding: 0;border: 2px solid #e4e4e4;border-top: 1px solid #e4e4e4;border-radius:0 0 10px 10px;"></iframe>
+</div>
+<script type="text/javascript" src="/srv/static/panel/js/tools/clipboard/clipboard.min.js"></script>
+
+<script>
+    seajs.use(['app/panel/panel.base', 'app/app.editor'], function (api, editor) {
+        editor.init('#txtContent');
+        $(".btnSave").on('click', function () {
+            var content = $.trim($("#txtContent").val());
+            var title = $.trim($("#title").val());
+            var id = $(this).data('id');
+            if (content == '') {
+                tip.showTip('err', '内容不能为空', 1000);
+            }
+            if (title == '') {
+                tip.showTip('err', '标题不能为空', 1000);
+            }
+            api.requestApi("/api/article/save", {title: title, 'content': content, id: id}, function (res) {
+                if (res.result == 1) {
+                    tip.showTip("ok", '保存成功', 1000);
+                    $(".btnSave").attr('data-id', res.data);
+                }
+            })
+        })
+    })
+    $(".btnScan").on('click', function () {
+        var url = $(this).attr('data-url');
+        $('#appFrame').attr('src', url);
+        $('#app-frame').show();
+    })
+    $("#app-frame .close-app").click(function () {
+        $('#app-frame').hide();
+    });
+
+    $("#app-frame .refresh-app").click(function () {
+        $('#appFrame').attr('src', $('#appFrame').attr('src'));
+    });
+//    seajs.use('app/app.copyboard', function (copy) {
+    //        copy.copyBoard('.copyBtn');
+    //    });
+    var clipboard = new Clipboard('.copyBtn', {});
+    clipboard.on('success', function (e) {
+        alert("复制成功");
+        /* var sel = "#" + e.text;
+         $(sel).tooltip('show');
+         setTimeout(function () {
+         // $(sel).tooltip('hide');
+         }, 1500);*/
+    });
+</script>

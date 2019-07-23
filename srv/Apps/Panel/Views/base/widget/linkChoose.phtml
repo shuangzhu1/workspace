@@ -1,0 +1,79 @@
+<main class="popup-wrap" id="linkPopup">
+    <section class="popup-widget" id="linkWidget">
+        <header class="popup-head">设置链接<span class="popup-close">x</span></header>
+        <main class="popup-content">
+            <div class="field">
+                <label class="field-label">链接类型：</label>
+
+                <select class="select-link-type selc" name="type">
+                    <option value="0">请选择</option>
+                    <option value="link">链接</option>
+                    <option value="tel">电话</option>
+                    <option value="web">微官网</option>
+                    <option value="shop">微商城</option>
+                    <option value="activity">活动</option>
+                    <option value="business">业务模块</option>
+                    <!--                <option value="map">地图</option>-->
+                </select>
+            </div>
+
+            <section class="rock-area">
+                <!-- 链接 -->
+                <div id="module-link" class="link-module" style="display: none;">
+                    <h4 class="module-title">新建链接</h4>
+
+                    <div class="field set-field">
+                        <label for="" class="field-label">页面URL：</label>
+                        <input type="text" id="source_url" value="http://" class="input-xlarge">
+                        <span class="help-inline"><i class="red">*</i> (必须是正确的URL格式)</span>
+                    </div>
+                </div>
+
+                <!-- 电话 -->
+                <div id="module-tel" class="link-module" style="display: none;">
+                    <h4 class="module-title">电话设置</h4>
+
+                    <div class="field set-field">
+                        <label for="" class="field-label">电话号码：</label>
+                        <input type="text" id="tel_number" value="" class="input-small" style="width: 120px;">
+                        <span class="red">*</span><span
+                            class="help-inline">格式：[手机]1xxxxxxxxxx，[座机]0755-xxxxxxx，[400]400-xxx-xxxx</span>
+                    </div>
+                </div>
+
+                <!-- 活动 -->
+                <?php $this->partial('base/widget/linkChoose/activity'); ?>
+
+
+                <!-- 地图 -->
+                <div id="module-map" class="link-module" style="display: none;">
+                    <h4 class="module-title">设置地图</h4>
+
+                    <div class="field set-field">
+                        即将推出，敬请期待！
+                    </div>
+                </div>
+
+
+                <!-- 微官网 -->
+                <?php $this->partial('base/widget/linkChoose/web'); ?>
+
+                <!-- 微商城 -->
+                <?php $this->partial('base/widget/linkChoose/shop'); ?>
+
+                <!-- 活动 -->
+                <?php $this->partial('base/widget/linkChoose/activity'); ?>
+
+                <!-- 业务模块 -->
+                <?php $this->partial('base/widget/linkChoose/business'); ?>
+
+            </section>
+
+            <div class="field res-area">
+                <input type="hidden" value="" class="res-val"/>
+                <input class="btn btn-sm btn-success res-btn" type="button" value="确认"/>
+                <span class="help-inline"></span>
+            </div>
+        </main>
+    </section>
+</main>

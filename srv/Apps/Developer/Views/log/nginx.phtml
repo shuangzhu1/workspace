@@ -1,0 +1,160 @@
+<style>
+    .read-area {
+        width: 75%;
+        height: 640px;
+        /*  margin-left: 200px;*/
+        /* border-radius: 0 5px 5px 0;*/
+        line-height: 28px;
+        background-color: #141414;
+        border: 1px solid #d0dbe7;
+        color: #999;
+        position: relative;
+        z-index: 0;
+        padding: 6px 8px;
+        /*  margin-top: 7px;*/
+        float: left;
+        border-left: none;
+        border-right: none;
+        margin-top: 50px;
+    }
+
+    .read-area {
+        overflow-y: auto;
+        font-size: 11px;
+    }
+
+    .read-area li {
+        list-style-type: none;
+        background-color: #141414;
+        height: auto;
+        width: 100%;
+        overflow: hidden;
+
+    }
+
+    .read-area li .line {
+        margin-right: 10px;
+        background-color: #141414;
+    }
+
+    .read-area li .line-left {
+        min-width: 60px;
+        display: inline-block;
+        float: left;
+    }
+
+    .read-area li .content {
+        color: #d4d4d4;
+        display: inline-block;
+        float: left;
+        width: 830px;;
+        word-break: break-all;
+    }
+
+    .page-content {
+        padding: 0
+    }
+</style>
+<form action="javascript:;" method="get" class="form"
+      style=" line-height: 50px;position: fixed;top:85px;background-color: #fff;z-index: 100;padding-left: 20px;width:100%;max-width: 100%;">
+    <label class="total_line_count"></label> &nbsp;
+    <label for="name">关键字</label>
+    <input name="key" type="text" id="key" placeholder="多关键字以 | 分开" value="<?php echo $key; ?>">
+    &nbsp;<label for="name">行数筛选:</label>
+    <input type="text" id="start_line" value="" placeholder="起始行" name="start_line"/>
+    - <input type="text" id="end_line" value="" placeholder="结束行" name="end_line"/>
+    &nbsp;<label for="name">末尾行:</label>
+    <input type="text" id="end_row" value="" placeholder="末尾行" name="end_row"/>
+    <input type="submit" class="btn btn-primary btn-sm btnSearch" value="搜索">
+    <span class="btn btn-primary btn-sm right btnFull" style="margin-right: 200px;margin-top: 10px;"><i
+            class="fa fa-expand"></i>全屏显示</span>
+</form>
+<div style="min-height: 600px;width: 100%;border: 1px solid #e4e4e4;border-radius: 5px;position: relative"
+     class="read-area" id="readArea">
+    <div style="position: absolute;width:100%;text-align:center;height: 50px;top: 260px;display: none" class="loading">
+        <img
+            src="/srv/static/panel/images/admin/loading.gif"/></div>
+    <div class="read_content" style="width: 100%;height: 100%;overflow-y: scroll;"></div>
+</div>
+
+
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+
+<script>
+    seajs.use('app/panel/log/nginx.log', function (e) {
+        e.log();
+    });
+    window.onresize = function () {
+        if (!checkFull()) {
+            exitFullAct();
+        }
+    };
+    function checkFull() {
+        var isFull = document.fullscreenEnabled || window.fullScreen || document.webkitIsFullScreen || document.msFullscreenEnabled;
+        //to fix : false || undefined == undefined
+        if (isFull === undefined) isFull = false;
+        return isFull;
+    }
+    $(".btnFull").on('click', function () {
+        if (!$(this).hasClass('full')) {
+            fullAct();
+            $(this).addClass("full");
+        } else {
+            exitFullAct();
+            exitFull();
+        }
+    });
+    function fullAct() {
+        var window_height = $(window).height();
+        var height = window_height;
+        $(".page-content").css({'margin-top': '0', 'min-height': height});
+        $("#readArea").css({'height': height, 'margin-top': '-10px'});
+        $(".tree-panel").css({'height': height});
+        $(".tool-panel").css({'height': height});
+        $(".form").css({'top': 0});
+        $(".btnFull").html("<i class='fa fa-compress'></i> 退出全屏").css({'margin-right': '10px'});
+        requestFullScreen(document.getElementsByClassName("page-content")[0]);
+    }
+    function exitFullAct() {
+        $(".page-content").css({'margin-top': '85px', 'min-height': '640px'});
+        $("#readArea").css({'height': '640px', 'margin-top': '50px'});
+        $(".tree-panel").css({'height': '640px'});
+        $(".tool-panel").css({'height': '640px'});
+        $(".form").css({'top': '85px', 'margin-right': '200px'});
+        $(".btnFull").html("<i class='fa fa-expand'></i> 全屏显示").removeClass("full").css({'margin-right': '200px'});
+    }
+    function requestFullScreen(element) {
+        // 判断各种浏览器，找到正确的方法
+        var requestMethod = element.requestFullScreen || //W3C
+            element.webkitRequestFullScreen ||  //Chrome等
+            element.mozRequestFullScreen || //FireFox
+            element.msRequestFullScreen; //IE11
+        if (requestMethod) {
+            requestMethod.call(element);
+        }
+        else if (typeof window.ActiveXObject !== "undefined") {//for Internet Explorer
+            var wscript = new ActiveXObject("WScript.Shell");
+            if (wscript !== null) {
+                wscript.SendKeys("{F11}");
+            }
+        }
+
+    }
+    function exitFull() {
+        // 判断各种浏览器，找到正确的方法
+        var exitMethod = document.exitFullscreen || //W3C
+            document.mozCancelFullScreen ||  //Chrome等
+            document.webkitExitFullscreen || //FireFox
+            document.webkitExitFullscreen; //IE11
+        if (exitMethod) {
+            exitMethod.call(document);
+        }
+        else if (typeof window.ActiveXObject !== "undefined") {//for Internet Explorer
+            var wscript = new ActiveXObject("WScript.Shell");
+            if (wscript !== null) {
+                wscript.SendKeys("{F11}");
+            }
+        }
+    }
+</script>

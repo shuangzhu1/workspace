@@ -1,0 +1,374 @@
+<link rel="stylesheet" href="/srv/static/panel/css/stat.css"/>
+<link rel="stylesheet" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<style>
+    .stat_component .filters {
+        padding-bottom: 10px;
+    }
+
+    .stat_component .filter {
+        margin-left: 15px;
+        display: inline-block;
+        overflow: hidden;
+    }
+
+    .stat_component .control-bar-wrapper {
+        position: relative;
+        padding-top: 20px;
+        padding-bottom: 15px;
+        color: #323437;
+        padding-left: 20px;
+    }
+
+    .stat_component .stat_label {
+        display: inline-block;
+        height: 26px;
+        padding-right: 5px;
+        line-height: 26px;
+        color: #787a7d;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar {
+        border: 1px solid #e1e3e4;
+        border-radius: 2px;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar a {
+        display: inline-block;
+        float: left;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 10px;
+        color: #323437;
+        background-color: #fff;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar a {
+        display: inline-block;
+        float: left;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 10px;
+        color: #323437;
+        background-color: #fff;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar a:last-child.cur {
+        border-radius: 0 2px 2px 0;
+        right: -1px;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar .cur {
+        position: relative;
+        bottom: -1px;
+        margin-top: -2px;
+        padding-top: 1px;
+        height: 25px;
+        background-color: #438eb9;
+        color: #fff;
+    }
+
+    .stat_component .filter .group {
+        float: left;
+        background-color: #fff;
+        border-radius: 2px;
+        margin: 0;
+    }
+
+    .stat_component .filter .group li:first-child {
+        margin-left: 0;
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+    }
+
+    .stat_component .filter .group .cur {
+        position: relative;
+        z-index: 1;
+        border: 1px solid #438eb9;
+        color: #fff;
+    }
+
+    .stat_component .filter .group li:hover {
+        background-color: #f3f4f4;
+    }
+
+    .stat_component .filter .group .cur, .filter .group li.cur:hover {
+        background-color: #438eb9;
+    }
+
+    .stat_component .filter .group li {
+        cursor: pointer;
+        padding: 0 12px;
+        border: 1px solid #e1e3e4;
+        margin-left: -1px;
+    }
+
+    .stat_component .filter .group li, .filter label {
+        height: 24px;
+        line-height: 24px;
+        float: left;
+    }
+
+    .stat_component .time {
+        width: 80px;
+        height: 24px;
+        line-height: 24px;
+        margin: 0 0 0 7px;
+        padding: 0 0 0 6px;
+        border: 1px solid #e1e3e4;
+        border-right: none;
+        text-indent: 0;
+        color: #323437;
+        cursor: pointer;
+        float: left;
+        border-top-left-radius: 2px !important;
+        border-bottom-left-radius: 2px !important;
+    }
+
+    .stat_component .time_picker {
+        width: 24px;
+        height: 24px;
+        display: inline-block;
+        float: left;
+        border: 1px solid #e4e4e4;
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+        text-align: center;
+        color: #666;
+        cursor: pointer;
+    }
+
+    .stat_component .split_line {
+        display: inline-block;
+        float: left;
+        margin-left: 7px;
+        font-size: 16px;
+        color: #666
+    }
+
+    .stat_component .control-bar-wrapper .select-bar-item {
+        position: relative;
+        margin-left: 5px;
+        height: 24px;
+        line-height: 24px;
+    }
+
+    .stat_component .filter .group li:last-child {
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+    }
+</style>
+<!--<div >-->
+    <!--<label for="ac_type" style="font-weight:bold;margin-left:10px">请选择活动类型：</label>
+    <select name="" id="ac_type">
+        <option value=0 >全部</option>
+        <option value=1 >红包雨</option>
+        <option value=2 >知识问答</option>
+    </select>-->
+
+    <!--<label for="ac_type" style="font-weight:bold;margin-left:20px">请选择统计时段：</label>
+    <input type="text" class="start" value="{{begin}}" style="width:100px"> - <input type="text" class="end" value="{{end}}" style="width:100px">
+    <input type="button" class="btn btn-xs btn-primary" value="查询" style="margin-left:10px" id="query">-->
+<!--</div>-->
+
+
+<div class="hr hr8" ></div>
+<div class="stat_component">
+
+
+
+    <div class="content_wrap left" style="height: 450px;"><!--参与用户数-->
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">参与用户数<span
+                        class="total_count total"></span></b></div>
+        <div id="filters" class="filters">
+            <div class="control-bar-wrapper clearfix" id="control-bar-wrapper">
+                <div class="control-bar bg-iframe l" id="control-bar">
+                    <span class="l stat_label">时间：</span>
+                    <div class="l date-select-bar" id="date-select-bar" data-type="join_user">
+                        <a href="javascript:;" data-id="7" data-type="total" class="trackable cur">最近7天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="30" data-type="total" class="trackable">最近30天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="custom" data-type="total" class="trackable">自定义</a>
+                    </div>
+                    <div class="select-bar-item l time_filter" style="display: none" data-type="join_user">
+                        <input type="text" class="time start"  data-id="start" readonly style="border-radius: 10px;">
+                        <span class="time_picker" data-id="start"><i class="fa fa-calendar-check-o"></i></span>
+                        <span class="split_line">-</span>
+                        <input type="text" data-id="end" class="time end" readonly>
+                        <span class="time_picker" data-id="end"> <i class="fa fa-calendar-check-o"></i></span>
+                        <input type="button" class="btn btn-xs btn-primary custom-date-ok" value="确定" style="margin-left:10px" >
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="main" id="join_user" style="width: 100%; height: 320px"></div>
+    </div>
+
+    <div class="content_wrap left" style="height: 450px;"><!--平台收益-->
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">平台收益(<span style="color:gray">官方从用户回收 - 用户从官方领取</span>)<span
+                        class="total_count total"></span></b></div>
+        <div id="filters" class="filters">
+            <div class="control-bar-wrapper clearfix" id="control-bar-wrapper">
+                <div class="control-bar bg-iframe l" id="control-bar">
+                    <span class="l stat_label">时间：</span>
+                    <div class="l date-select-bar" id="date-select-bar" data-type="platform_income">
+                        <a href="javascript:;" data-id="7" data-type="total" class="trackable cur">最近7天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="30" data-type="total" class="trackable">最近30天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="custom" data-type="total" class="trackable">自定义</a>
+                    </div>
+                    <div class="select-bar-item l time_filter" style="display: none" data-type="platform_income">
+                        <input type="text" class="time start"  data-id="start" readonly style="border-radius: 10px;">
+                        <span class="time_picker" data-id="start"><i class="fa fa-calendar-check-o"></i></span>
+                        <span class="split_line">-</span>
+                        <input type="text" data-id="end" class="time end" readonly>
+                        <span class="time_picker" data-id="end"> <i class="fa fa-calendar-check-o"></i></span>
+                        <input type="button" class="btn btn-xs btn-primary custom-date-ok" value="确定" style="margin-left:10px" >
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="main" id="platform_income" style="width: 100%; height: 320px"></div>
+    </div>
+
+    <div class="content_wrap left" style="height: 450px;"><!--活动发起数-->
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">活动发起数(<span class="red">用户</span>)<span
+                        class="total_count total"></span></b></div>
+        <div id="filters" class="filters">
+            <div class="control-bar-wrapper clearfix" id="control-bar-wrapper">
+                <div class="control-bar bg-iframe l" id="control-bar">
+                    <span class="l stat_label">时间：</span>
+                    <div class="l date-select-bar" id="date-select-bar" data-type="ac_count">
+                        <a href="javascript:;" data-id="7" data-type="total" class="trackable cur">最近7天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="30" data-type="total" class="trackable">最近30天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="custom" data-type="total" class="trackable">自定义</a>
+                    </div>
+                    <div class="select-bar-item l time_filter" style="display: none" data-type="ac_count">
+                        <input type="text" class="time start"  data-id="start" readonly style="border-radius: 10px;">
+                        <span class="time_picker" data-id="start"><i class="fa fa-calendar-check-o"></i></span>
+                        <span class="split_line">-</span>
+                        <input type="text" data-id="end" class="time end" readonly>
+                        <span class="time_picker" data-id="end"> <i class="fa fa-calendar-check-o"></i></span>
+                        <input type="button" class="btn btn-xs btn-primary custom-date-ok" value="确定" style="margin-left:10px" >
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="main" id="ac_count" style="width: 100%; height: 320px"></div>
+    </div>
+
+    <div class="content_wrap left" style="height: 450px;"><!--活动金额-->
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">活动金额(<span class="red">用户</span>)<span
+                        class="total_count total"></span></b></div>
+        <div id="filters" class="filters">
+            <div class="control-bar-wrapper clearfix" id="control-bar-wrapper">
+                <div class="control-bar bg-iframe l" id="control-bar">
+                    <span class="l stat_label">时间：</span>
+                    <div class="l date-select-bar" id="date-select-bar" data-type="ac_money">
+                        <a href="javascript:;" data-id="7" data-type="total" class="trackable cur">最近7天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="30" data-type="total" class="trackable">最近30天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="custom" data-type="total" class="trackable">自定义</a>
+                    </div>
+                    <div class="select-bar-item l time_filter" style="display: none" data-type="ac_money">
+                        <input type="text" class="time start"  data-id="start" readonly style="border-radius: 10px;">
+                        <span class="time_picker" data-id="start"><i class="fa fa-calendar-check-o"></i></span>
+                        <span class="split_line">-</span>
+                        <input type="text" data-id="end" class="time end" readonly>
+                        <span class="time_picker" data-id="end"> <i class="fa fa-calendar-check-o"></i></span>
+                        <input type="button" class="btn btn-xs btn-primary custom-date-ok" value="确定" style="margin-left:10px" >
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="main" id="ac_money" style="width: 100%; height: 320px"></div>
+    </div>
+
+    <div class="content_wrap left" style="height: 450px;"><!--活动发起数-->
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">活动发起数(<span class="red">平台</span>)<span
+                        class="total_count total"></span></b></div>
+        <div id="filters" class="filters">
+            <div class="control-bar-wrapper clearfix" id="control-bar-wrapper">
+                <div class="control-bar bg-iframe l" id="control-bar">
+                    <span class="l stat_label">时间：</span>
+                    <div class="l date-select-bar" id="date-select-bar" data-type="ac_count_platform">
+                        <a href="javascript:;" data-id="7" data-type="total" class="trackable cur">最近7天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="30" data-type="total" class="trackable">最近30天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="custom" data-type="total" class="trackable">自定义</a>
+                    </div>
+                    <div class="select-bar-item l time_filter" style="display: none" data-type="ac_count_platform">
+                        <input type="text" class="time start"  data-id="start" readonly style="border-radius: 10px;">
+                        <span class="time_picker" data-id="start"><i class="fa fa-calendar-check-o"></i></span>
+                        <span class="split_line">-</span>
+                        <input type="text" data-id="end" class="time end" readonly>
+                        <span class="time_picker" data-id="end"> <i class="fa fa-calendar-check-o"></i></span>
+                        <input type="button" class="btn btn-xs btn-primary custom-date-ok" value="确定" style="margin-left:10px" >
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="main" id="ac_count_platform" style="width: 100%; height: 320px"></div>
+    </div>
+
+    <div class="content_wrap left" style="height: 450px;"><!--活动金额-->
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">活动金额(<span class="red">平台</span>)<span
+                        class="total_count total"></span></b></div>
+        <div id="filters" class="filters">
+            <div class="control-bar-wrapper clearfix" id="control-bar-wrapper">
+                <div class="control-bar bg-iframe l" id="control-bar">
+                    <span class="l stat_label">时间：</span>
+                    <div class="l date-select-bar" id="date-select-bar" data-type="ac_money_platform">
+                        <a href="javascript:;" data-id="7" data-type="total" class="trackable cur">最近7天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="30" data-type="total" class="trackable">最近30天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="custom" data-type="total" class="trackable">自定义</a>
+                    </div>
+                    <div class="select-bar-item l time_filter" style="display: none" data-type="ac_money_platform">
+                        <input type="text" class="time start"  data-id="start" readonly style="border-radius: 10px;">
+                        <span class="time_picker" data-id="start"><i class="fa fa-calendar-check-o"></i></span>
+                        <span class="split_line">-</span>
+                        <input type="text" data-id="end" class="time end" readonly>
+                        <span class="time_picker" data-id="end"> <i class="fa fa-calendar-check-o"></i></span>
+                        <input type="button" class="btn btn-xs btn-primary custom-date-ok" value="确定" style="margin-left:10px" >
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="main" id="ac_money_platform" style="width: 100%; height: 320px"></div>
+    </div>
+
+
+
+
+
+</div>
+
+<script src="/static/panel/js/echarts/echart-all.2.2.7.min.js"></script>
+<script src="/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script >
+
+    $('.start,.end').datetimepicker({
+        format:'Y/m/d',
+        lang:'ch',
+        minDate:'<?php echo $begin?>',
+        maxDate:'<?php echo $end?>',
+        timepicker:false
+    });
+    seajs.use('app/panel/activity/trend.js?1.0.0',function (api) {
+
+    });
+
+</script>

@@ -1,0 +1,32 @@
+<tr class="file_item">
+    <td><label>
+            <input type="checkbox" class="chk ace check_item" data-type="file" data-id="<?php echo $item['name'] ?>"/>
+            <span class="lbl"></span>
+        </label></td>
+    <td style="line-height: 40px;font-size: 14px;">
+        <a href="javascript:;" class="file" data-id="<?php echo $item['name'] ?>"
+           data-detail="<?php echo json_encode($item) ?>">
+            <?php if (strpos($item['name'], "resolved")) { ?>
+                <i class="fa fa-file-text" style="color: #2CB044;font-size: 24px;"></i>
+            <?php } else { ?>
+                <i class="fa fa-file-text" style="color: #FFCB03;font-size: 24px;"></i>
+            <?php } ?>
+            &nbsp;&nbsp; <?php echo substr($item['name'], strrpos($item['name'], '/') + 1) ?>
+        </a>
+    </td>
+    <td><?php echo $item['size'] ?></td>
+    <td><?php echo date('Y-m-d H:i', strtotime($item['time'])) ?></td>
+    <td><a href="http://file.common.klgwl.com/<?php echo $item['name'] ?>" class="btn btn-primary btn-sm"><i
+                class="fa fa-download"></i> 下载</a>
+        <a href="javascript:;"
+           data-href="http://developer.klgwl.com/log/fileDetail?path=http://file.common.klgwl.com/<?php echo $item['name'] ?>"
+           class="btn btn-primary btn-sm btnScan"><i
+                class="fa fa-eye"></i> 在线预览</a>
+        <?php if (!strpos($item['name'], "resolved")) { ?>
+            <a href="javascript:;"
+               class="btn btn-success btn-sm btnSolve" data-id="<?php echo $item['name'] ?>"><i
+                    class="fa fa-check"></i> 标记为已解决</a>
+        <?php } ?>
+
+    </td>
+</tr>

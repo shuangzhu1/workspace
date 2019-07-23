@@ -1,0 +1,24 @@
+<?php if ($list) { ?>
+    <?php foreach ($list as $item) { ?>
+        <tr>
+            <td><?php echo $item['uid'] ?></td>
+            <td><?php echo $item['username'] ?></td>
+            <td><?php echo $day ?></td>
+            <td><?php echo $item['count'] ?></td>
+            <td>￥<?php echo sprintf("%.2f", $item['money'] / 100) ?></td>
+            <td><?php echo round($item['count'] / $day) ?></td>
+            <td>￥<?php echo sprintf("%.2f", ($item['money'] / 100 / $day)) ?></td>
+        </tr>
+    <?php } ?>
+<?php } else { ?>
+    <tr>
+        <td colspan='12'><span class="left">暂无数据</span></td>
+    </tr>
+<?php } ?>
+
+<tr class="showpage">
+    <th class="name">分页</th>
+    <td colspan="6">
+        <div class="pageBar"><?php echo $bar ?></div>
+    </td>
+</tr>

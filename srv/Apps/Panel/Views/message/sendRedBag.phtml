@@ -1,0 +1,458 @@
+<link rel="stylesheet" href="/static/ace/css/select2.css">
+<link rel="stylesheet" href="/static/panel/css/sweetalert.css">
+<script src="/static/ace/js/select2.min.js"></script>
+<script src="/static/panel/js/sweetalert/sweetalert.min.js"></script>
+<style>
+.view-item{
+    width:200px;
+    border-radius: 5px;
+    padding: 5px 5px 5px 5px;
+    background-color: #EDEEEE;
+    margin-bottom:5px;
+}
+.view-item .view-avator {
+    display:inline-block;
+}
+.view-item .view-avator img{
+    width:50px;
+    height:50px;
+    border-radius: 5px;
+}
+.view-item .view-profile {
+    display:inline-block;
+    vertical-align: middle;
+    width:135px;
+}
+.view-item .view-profile div{
+    text-align: center;
+    padding:3px;
+    color:#428bca;
+}
+.view-item .view-profile .view-username{
+    width:130px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
+}
+.img-list{
+    border:1px solid #ccc;
+    border-radius: 5px;
+    min-height:100px;
+    padding:3px;
+}
+.img-list img{
+    margin-left:3px;
+    margin-top:3px;
+    border-radius:5px;
+    width:56px;
+    height:56px;
+
+}
+</style>
+<form class="form-horizontal">
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label blue" style="font-weight:bold;font-size:16px">基本信息 >>&nbsp;&nbsp;&nbsp;&nbsp;</label>
+
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">发起人：</label>
+        <div class="col-sm-2" style="position:relative">
+            <input type="hidden" name="uid">
+            <div class="view-item" data-uid="1007227">
+                <div class="view-avator">
+                    <img src="http://avatorimg.klgwl.com/register/13587558011_1524106277_s_750x750.png?x-oss-process=image/resize,m_fill,h_80,w_80">
+                </div>
+
+                <div class="view-profile">
+                    <div class="view-uid"></div>
+                    <div class="view-username"></div>
+                </div>
+            </div>
+            <div style="margin-bottom:10px;">
+                <a href="javascript:;" class="btn btn-xs btn-success" style="position: relative;top:3px;" id="account-random">官方普通账号</a>
+                <!--<a href="javascript:;" class="btn btn-xs btn-warning" style="position: relative;top:3px;" id="account-special">特殊账号列表</a>-->
+                <!--<a href="javascript:;" class="btn btn-xs btn-primary" style="position: relative;top:3px;" id="account-defined">自定义</a>-->
+                <span class="dropdown" style="position:relative;top:3px;">
+                    <button class="btn btn-xs bigger btn-yellow dropdown-toggle" type="button" data-toggle="dropdown" id="account-special">
+                            <i class="fa fa-chevron-down "></i>
+                            特殊账号列表
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-yellow  dropdown-caret dropdown-close" style="top:26px">
+                        <?php foreach( $account_special_info as $item) :?>
+                            <li data-uid="{{item['user_id']}}">
+                                    <a href="javascript:;" style="line-height: 30px;display: block">
+                                        <img src="{{item['avatar']}}?x-oss-process=image/resize,m_fill,h_30,w_30" alt="" style="width:30px;">
+                                        {{item['username']}}
+                                    </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </span>
+                <a href="javascript:;" class="btn btn-xs btn-primary" style="position: relative;top:3px;" id="account-defined">自定义</a>
+            </div>
+
+            <div style="display:none" id="account-choose" class="clearfix">
+                <input type="text" placeholder="请输入用户ID"> <a href="javascript:;" class="btn btn-xs">添加</a>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">红包金额(元)：</label>
+        <div class="col-sm-2">
+            <input type="text" name="money" value="1" class="form-control" placeholder="请输入红包金额">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">红包个数：</label>
+        <div class="col-sm-2">
+            <input type="text" name="num" value="10" class="form-control" placeholder="请输入红包个数">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-3">
+            <hr class="hr-10">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label blue" style="font-weight:bold;font-size:16px">推广内容 >>&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">文字：</label>
+        <div class="col-sm-2">
+            <textarea class="form-control" name="content" placeholder="请输入推广文案"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">图片：</label>
+        <div class="col-sm-2">
+            <input type="hidden" name="images">
+            <div style="margin-bottom:10px;">
+                <a href="javascript:;" class="btn btn-xs btn-primary" id="img-choose">添加图片</a>
+            </div>
+            <div class="img-list" style="">
+
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">链接：</label>
+        <div class="col-sm-2">
+            <input class="form-control" name="url" placeholder="点击推广图片跳转的URL">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-3">
+            <hr class="hr-10">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label blue" style="font-weight:bold;font-size:16px">筛选条件 >>&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">性别：</label>
+        <div class="col-sm-2">
+            <label class="radio-inline">
+                <input type="radio" name="sex" value="0" checked> 全部
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="sex" value="1"> 男
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="sex"  value="2"> 女
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">最小年龄：</label>
+        <div class="col-sm-2">
+            <input type="text" name="min_age" value="0" placeholder="输入 0 表示不限制">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">最大年龄：</label>
+        <div class="col-sm-2">
+            <input type="text" name="max_age" value="0" placeholder="输入 0 表示不限制">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">区域：</label>
+        <div class="col-sm-2">
+            <select name="region" id="region" style="width:170px;">
+                <?php foreach( $cities['provices'] as $city)  :?>
+                    <option value="{{city['code']}}">{{city['name']}}</option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <a class="btn btn-default" id="next">下一步</a>
+        </div>
+    </div>
+
+</form>
+<!--安全验证-->
+<div class="modal fade" id="check-perm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">安全验证</h4>
+            </div>
+            <div class="modal-body">
+                <form action="" class="col-md-8 col-md-offset-2">
+                    <div style="margin-bottom:15px;color:red;font-size:18px;font-weight:bold">
+                        发送该红包，需完成以下验证：
+                    </div>
+                    <div class="form-group ">
+                        <label for="" class="control-label">安全密码：</label>
+                        <div>
+                            <input type="password" id="pwd" class="form-control" style="width:200px;display:inline-block" >
+                            <a href="javascript:;" class="btn btn-xs btn-success" id="getSmsCode" style="border-width:5px;border-radius:0">获取验证码</a>
+
+                        </div>
+                        <span class="help-inline" style="color:#aaa;">
+                            <i class="fa fa-info-circle" aria-hidden="true"></i>
+                            <span>输入安全密码以获取短信验证码</span>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="control-label">短信验证码：</label>
+                        <input type="text" id="sms-code" class="form-control" style="width:200px;">
+                        <span class="help-inline red" ">
+                            <i class="fa fa-info-circle" aria-hidden="true"></i>
+                            <span>接受短信验证码手机号为：<?php echo substr($phone,0,3) . '****' . substr($phone,7) ?></span>
+                        </span>
+                    </div>
+                </form>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer" style="border-bottom-left-radius: 3px;border-bottom-right-radius: 3px">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="send">发送</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<script src="/static/ace/js/jquery.cookie.js"></script>
+<script>
+    //初始化下拉框
+    $('#region').select2();
+
+    seajs.use('app/panel/panel.base',function(api){
+        //获取发起人概要信息
+        function getUserInfo(uid)
+        {
+            api.requestApi('/api/message/getUserInfo',{uid:uid},function (res) {
+                if( res.result === 1 )
+                {
+                    var $user = $('.view-item');
+                    $user.find('.view-avator img').attr('src',res.data.avatar);
+                    $user.find('.view-profile .view-uid').text(res.data.uid);
+                    $user.find('.view-profile .view-username').text(res.data.username);
+                    $('#account-choose').slideUp();
+                    $('input[name="uid"]').val(res.data.uid);
+
+                }else{
+                    tip.showTip('err',res.error.more,2000)
+                }
+            },true,true)
+        }
+        //显示发送红包前检查安全密码是否已设置
+        function securityPasswordIsSet()
+        {
+
+        }
+        //验证安全密码
+        function checkPwd()
+        {
+            var $modal = $('#check-perm');
+            $modal.modal('show');
+            $modal.find('#getSmsCode').on('click',function(){
+                var _this = this;
+                var pwd = $modal.find('#pwd').val();
+                var cookie = $.cookie('PHPSESSID');
+                if( $.trim(pwd) === '' )
+                {
+                    tip.showTip('err','请输入登录密码',1000);
+                    return ;
+                }
+                api.requestApi('/api/message/checkPwd',{pwd:pwd,PHPSESSID:cookie},function(res){
+                   if(res.result === 1)
+                   {
+                       //按钮一分钟内失效
+
+                       $(_this).hide();
+                       $(_this).after('<a class="btn btn-xs " id="countdown" style="border-width:3px;border-radius:0;width:80px;text-align: center">60 s</a>');
+                       var interval = setInterval(function(){
+                           var cur_val = parseInt($(_this).next().text());
+                           if( cur_val > 0)
+                           {
+                               $(_this).next().text(cur_val - 1 + ' s');
+                           }else
+                           {
+                               $(_this).next().remove();
+                               clearInterval(interval);
+                               $(_this).show();
+                           }
+
+                       },1000);
+                       tip.showTip('ok','短信验证码已发送，请注意查收',2000);
+                   }
+                })
+            });
+
+
+        }
+        $('#account-random').on('click',function(){
+            var $choose = $('#account-choose');
+            if( $choose.is(':visible') )
+                $choose.slideUp();
+            api.requestApi('/api/message/getUidRandom',{},function(res){
+                if( res.result === 1 )
+                {
+                    var $user = $('.view-item');
+                    $user.find('.view-avator img').attr('src',res.data.avatar);
+                    $user.find('.view-profile .view-uid').text(res.data.uid);
+                    $user.find('.view-profile .view-username').text(res.data.username);
+                    $('input[name="uid"]').val(res.data.uid);
+                }
+            },true,true);
+        });
+        //随机一个发送者
+        $('#account-random').get(0).click();
+        //自定义发送者
+        $('#account-defined').on('click',function () {
+            var $choose = $('#account-choose');
+            if( $choose.is(':visible') )
+            {
+                $choose.slideUp();
+                return;
+            }
+            $choose.slideDown();
+        });
+        //确认使用用户输入的uid
+        $('#account-choose').on('click','a',function () {
+            var uid = $(this).closest('div').find('input').val();
+            getUserInfo(uid);
+        });
+        $('#account-choose').closest('div').find('input').on('keyup',function (e) {
+            if(e.keyCode === 13)
+                $('#account-choose a').get(0).click();
+        });
+        //下一步
+        $('#next').on('click',function(){
+            //图片
+            var image = [];
+            $('.img-list img').each(function () {
+                image.push($(this).data('src'));
+            });
+            var images = image.join(',');
+            if( images === '')
+            {
+                tip.showTip('err','请至少上传一张图片',1500);
+                return;
+            }
+            $('input[name="images"]').val(images);
+            //检查安全密码是否已经设置
+            var cookie = $.cookie('PHPSESSID');
+            api.requestApi('/api/message/securityPasswordIsSet',{PHPSESSID:cookie},function(res){
+                if( res.data !== 1)//未设置，提示去设置
+                {
+                    swal({
+                        title: "发送该红包需要安全密码！",
+                        text: "检测到您还未设置安全密码，现在去设置？",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "去设置",
+                        cancelButtonText: "取消",
+                        closeOnConfirm: false
+                    }, function(){
+                        setTimeout(function(){
+                            parent.$(".ace-nav").find('#setSecurityPassword').get(0).click();
+                        },0);
+                        swal.close();
+                    });
+                }else// 已设置进入下一步
+                {
+                    checkPwd();
+                }
+
+            })
+
+
+
+
+        });
+        //发送
+        $('#check-perm').find('#send').on('click',function () {
+            var data = {};
+            data.code = $('#check-perm').find('#sms-code').val();
+            data.PHPSESSID = $.cookie('PHPSESSID');
+            data.uid = $('input[name="uid"]').val();
+            data.money = $('input[name="money"]').val() * 100;
+            data.num = $('input[name="num"]').val();
+            data.content = $('textarea[name="content"]').val();
+            data.url = $('input[name="url"]').val();
+            data.sex = $('input[name="sex"]').val();
+            data.min_age = $('input[name="min_age"]').val();
+            data.max_age = $('input[name="max_age"]').val();
+            data.region = $('select[name="region"]').val();
+            data.images = $('input[name="images"]').val();
+            if( $.trim( data.code ) === '')
+            {
+                tip.showTip('err','请输入短信验证码',1500);
+                return;
+            }
+
+            api.requestApi('/api/message/sendPromoteRB',data,function (res) {
+                if( res.result === 1 )
+                {
+                    tip.showTip('ok','发送成功',1000,function () {
+                        $('#check-perm').modal('hide');
+                        window.location.reload();
+                    })
+                }
+            });
+        });
+        //特殊账号选择
+        $('#account-special').next().find('li').on('click',function () {
+            var uid = $(this).data('uid');
+            getUserInfo(uid);
+        });
+    });
+    //删除图片
+    var $img_container = $('.img-list');
+    $img_container.on('mouseover','img',function () {
+        $('.img-list').find('.btn-del').remove();
+        //var ele_close = '<i class="fa fa-times-circle-o btn-del" aria-hidden="true" style="position:absolute;right:-5px;top:-5px;color:#3a87ad"></i>';
+        var ele_close = '<div class="btn-del" style="display:none;position:absolute;bottom:0;border-radius:5px;width:56px;height:56px;line-height:56px;background-color:rgba(0, 0, 0, 0.55);text-align:center;color:white;font-size:14px;cursor:pointer;margin-left:3px;">删除</div>';
+        $(this).after(ele_close);
+        $('.btn-del').fadeIn('fast');
+    });
+    $img_container.on('mouseleave',function () {
+        $(this).find('.btn-del').remove();
+    });
+    $img_container.on('click','.btn-del',function () {
+        $(this).parent().remove();
+    });
+    //选择图片
+    seajs.use('app/panel/panel.storage',function (storage) {
+        storage.getImg('#img-choose',function (res) {
+            var item = '<div style="position:relative;display:inline-block">' +
+                            '<img src="">' +
+                        '</div>';
+            var $item = $(item);
+            $item.find('img').attr('src',(res.url + '?x-oss-process=image/resize,m_fill,h_56,w_56') ).attr('data-src',res.url);
+            $('.img-list').append($item.get(0));
+        });
+    });
+
+
+</script>

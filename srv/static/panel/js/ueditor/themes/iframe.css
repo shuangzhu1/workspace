@@ -1,0 +1,11 @@
+/*可以在这里添加你自己的css*/
+body
+img{
+    max-width:100%;
+}
+.view{
+    padding:15px 30px;
+}
+.edui-upload-video{
+    width:90%;
+}

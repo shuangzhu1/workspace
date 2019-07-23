@@ -1,0 +1,59 @@
+<?php
+$status = array(
+    '0' => '永久封号',
+    '1' => '正常',
+    '2' => '待解封',
+);
+?>
+<tr class="item item_<?php echo $item['status'] ?>" data-id="<?php echo $item['user_id']; ?>">
+    <th class="name"><?php echo $item['user_id']; ?></th>
+    <!--                <td class="center"><input type="checkbox" class="chk" data-id="<?php /*echo $item['user_id']; */ ?>"/></td>
+-->
+    <td><a href="<?php echo $item['avatar']; ?>" data-lightbox="roadtrip"><img
+                src="<?php echo $item['avatar']; ?>?x-oss-process=image/resize,m_fill,h_160,w_160"
+                style="width: 40px; height: 40px;"/></a></td>
+    <td><?php echo $item['username']; ?></td>
+    <td><?php echo $item['true_name']; ?></td>
+    <td><?php echo $item['sex'] == 1 ? '男' : ($item['sex'] == 2 ? '女' : "保密"); ?></td>
+    <td><?php echo $item['province_name'] . $item['city_name'] . $item['county_name']; ?></td>
+<!--    <td>--><?php //echo $item['phone'] ?><!--</td>-->
+    <td><?php echo $item['coins']; ?></td>
+    <td><?php echo $item['points'] ?></td>
+    <td><?php echo $item['charm'] ?></td>
+    <td><?php echo $item['is_auth'] == 1 ? '<i class="fa fa-vimeo purple"></i> 是' : '否' ?></td>
+    <td><?php echo $item['is_vip'] == 1 ? '是' : '否' ?></td>
+    <td><?php echo $item['platform'] ?></td>
+    <td><?php echo $item['third_type'] ?></td>
+    <td><?php echo date('Y-m-d H:i', $item['created']) ?></td>
+    <td><?php echo $item['last_login_time'] ? date('Y-m-d H:i', $item['last_login_time']) : '' ?></td>
+    <td><?php echo $status[$item['status']] ?></td>
+    <td>
+<!--        --><?php //if ($item['status'] == 0) { ?>
+<!--            <!--  <a href="javascript:;" class='recoveryBtn'-->
+<!--                           data-id="--><?php ///*echo $item['user_id'] */ ?><!--">解封</a> |-->
+<!--        --><?php //} else if ($item['status'] == 1) { ?>
+<!--            <a href="javascript:;" class='delBtn'-->
+<!--               data-id="--><?php //echo $item['user_id'] ?><!--">永久封号</a> |-->
+<!--            <a href="javascript:;" class='forbidBtn'-->
+<!--               data-id="--><?php //echo $item['user_id'] ?><!--">临时禁用</a> |-->
+<!--        --><?php //} else if ($item['status'] == 2) { ?>
+<!--            <a href="javascript:;" class='unForbidBtn'-->
+<!--               data-id="--><?php //echo $item['user_id'] ?><!--">取消禁用</a> |-->
+<!--        --><?php //} ?>
+        <!--  <a href="/panel/users/accountLog/<?php /*echo $item['user_id']; */ ?>"
+                    >龙豆记录</a> |-->
+        <a href="javascript:;" data-href="/panel/users/detail/?user_id=<?php echo $item['user_id']; ?>"
+           data-id="user_detail_<?php echo $item['user_id']; ?>"
+           data-title="用户详情" class="newTarget" target="_blank"
+        >用户详情</a>
+        <?php if ($item['user_type'] == 3) { ?>
+            <a class="item-edit editBtn" href="javascript:;"
+               data-detail="<?php echo base64_encode(json_encode($item)) ?>"><i class="icon icon-pencil"></i>编辑</a>
+        <?php } ?>
+        <!--
+         <a class="item-edit"><i class="icon icon-pencil"></i>编辑</a>
+        <a class="item-edit"><i class="icon icon-eye"></i>详情</a>
+        <a class="item-remove"><i class="icon icon-trash"></i>删除</a>
+        -->
+    </td>
+</tr>

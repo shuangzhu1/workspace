@@ -1,0 +1,760 @@
+<meta name="referrer" content="never"/>
+<div class="page-header">
+    <h1>音频裁剪
+    </h1>
+
+    <!-- /.col-lg-12 -->
+</div>
+<style>
+    @keyframes play {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @-webkit-keyframes play {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @-moz-keyframes play {
+        0% {
+            -moz-transform: rotate(0deg);
+        }
+        100% {
+            -moz-transform: rotate(360deg);
+        }
+    }
+
+    @-o-keyframes play {
+        0% {
+            -o-transform: rotate(0deg);
+        }
+        100% {
+            -o-transform: rotate(360deg);
+        }
+    }
+
+    @-ms-keyframes play {
+        0% {
+            -ms-transform: rotate(0deg);
+        }
+        100% {
+            -ms-transform: rotate(360deg);
+        }
+    }
+
+    .playing {
+        position: fixed;
+        right: 0;
+        top: 50%;
+        margin-top: -30px;
+        height: 60px;
+        line-height: 60px;
+        vertical-align: middle;
+        width: 360px;
+        border: 1px solid #f2f2f2;
+        padding: 0 10px;
+        /*  right: -300px*/;
+    }
+
+    .playing .thumb {
+        display: inline-block;
+        overflow: hidden;
+        width: 50px;
+        height: 50px;
+        float: left;
+    }
+
+    .playing .thumb img {
+        width: 40px;
+        border-radius: 100%;
+    }
+
+    .playing .thumb img.rounding {
+        -webkit-animation: play 3s linear infinite;
+        -moz-animation: play 3s linear infinite;
+        -o-animation: play 3s linear infinite;
+        animation: play 3s linear infinite;
+    }
+
+    .playing_handle {
+        font-size: 20px;
+        color: #e4e4e4;
+        margin-left: 10px;
+        display: inline-block;
+        float: left;
+        cursor: pointer;
+    }
+
+    .playing_handle.playBtn, .playing_handle.pauseBtn {
+        font-size: 30px;
+    }
+
+    .playing_handle.forwardBtn {
+        margin-right: 10px;
+    }
+
+    .playing_handle.pauseBtn {
+        display: none;
+    }
+
+    .playing {
+        background: #2D3C4F;
+        color: #e4e4e4;
+        vertical-align: middle;
+        border-radius: 10px;
+        display: none;
+        z-index: 1500;
+
+    }
+
+    .playing .name {
+        width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-left: 10px;
+    }
+
+    .playing .time {
+        width: 80px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-left: 10px;
+    }
+
+    .music_handle .handle_item {
+        font-size: 20px;
+        opacity: 0.8;
+        margin-right: 10px;
+        font-weight: normal;
+        cursor: pointer;
+    }
+</style>
+<style>
+    .cut_panel {
+        width: 100%;
+        min-height: 300px;
+        padding: 30px;
+        border: 1px solid #e4e4e4;
+        border-radius: 8px;
+        background: url("/static/panel/images/admin/music_bg.jpg");
+    }
+
+    .play_btn_wrap {
+       /* width: 200px;*/
+        height: 100%;
+        /*float: left*/
+    }
+
+    .play_right {
+        width: 100%;
+        min-height: 130px;
+        border: 1px solid #e4e4e4;
+        border-radius: 5px;
+        position: relative;
+        /*  box-shadow: 1px -2px 5px;*/
+        float: left;
+        background-color: #fff;
+    }
+
+    #shadow {
+        height: 100%;
+        background-color: #4F95D9;
+        border-left: 1px solid #000;
+        border-right: 1px solid #000;
+        position: absolute;
+        left: 0;
+        top: 0;
+        /*  right: 300px;*/
+        opacity: 0.8;
+        display: none;
+        z-index: 99;
+        cursor: move;
+    }
+
+    .cut_left_drag {
+        position: absolute;
+        width: 16px;
+        height: 50px;
+        bottom: -48px;
+        left: -8px
+    }
+
+    .cut_left_drag .top {
+        border-style: solid;
+        display: block;
+        border-width: 0 8px 7px 8px;
+        border-color: #000 transparent;
+    }
+
+    .cut_left_drag .bottom {
+        width: 16px;
+        height: 20px;
+        background-color: #000;
+        display: block
+    }
+
+    .cut_right_drag {
+        position: absolute;
+        width: 16px;
+        height: 50px;
+        bottom: -48px;
+        right: -8px
+    }
+
+    .dragBtn {
+        cursor: pointer;
+    }
+
+    .dragBtn:hover .top {
+        border-color: #0d70b7 transparent;
+    }
+
+    .dragBtn:hover .bottom {
+        background-color: #0d70b7;
+    }
+
+    .cut_right_drag .top {
+        border-style: solid;
+        display: block;
+        border-width: 0 8px 7px 8px;
+        border-color: #000 transparent;
+    }
+
+    .cut_right_drag .bottom {
+        width: 16px;
+        height: 20px;
+        background-color: #000;
+        display: block
+    }
+
+    .duration_top {
+        position: absolute;
+        top: 0;
+        left: -30px;
+        width: 60px;
+        height: 40px;
+        z-index: 100;
+        text-align: center;
+        display: none;
+    }
+
+    .duration_time {
+        position: absolute;
+        width: 60px;
+        min-height: 26px;
+        background-color: #2c6aa0;
+        line-height: 26px;
+        color: #fff;
+        padding: 0 5px;
+        border-radius: 5px
+    }
+
+    .duration_top .arrow {
+        border-style: solid;
+        position: absolute;
+        top: 30px;
+        left: 22px;
+        display: block;
+        border-width: 8px 8px 0 8px;
+        border-color: #2c6aa0 transparent;
+    }
+
+    .duration_ms {
+        font-size: 12px;
+    }
+
+    .tag {
+        font-size: 15px;
+        color: #444;
+        border: 1px solid #e4e4e4;
+        height: 40px;
+        line-height: 40px;
+        padding: 0 10px;
+        border-radius: 5px;
+        background-color: #fff;
+        display: block;
+        width: 300px;
+        margin-bottom: 10px;
+
+    }
+
+    .tag .tag_name {
+        color: #2679b5;
+        font-weight: bold;
+    }
+
+    .long {
+        position: absolute;
+        width: 60px;
+        height: 30px;
+        top: -46px;
+        background-color: green;
+        color: #fff;
+        line-height: 30px;
+        text-align: center;
+        left: 50%;
+        margin-left: -30px;
+        border-radius: 5px
+    }
+
+    .long .arrow {
+        border-style: solid;
+        position: absolute;
+        top: 30px;
+        left: 50%;
+        margin-left: -8px;
+        display: block;
+        border-width: 8px 8px 0 8px;
+        border-color: green transparent;
+    }
+</style>
+<link rel="stylesheet" type="text/css" href="/static/panel/ali_iconfont/iconfont.css?v=1.0">
+
+<section>
+    <style>
+
+
+        .switch label {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: block;
+        }
+
+        .switch input {
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            opacity: 0;
+            z-index: 100;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .switch#playBtn, .switch#pauseBtn {
+            width: 80px;
+            height: 80px;
+        }
+
+        .switch#playBtn label, .switch#pauseBtn label {
+            border-radius: 50%;
+            background: #b2ac9e;
+            background: -moz-linear-gradient(#f7f2f6, #b2ac9e);
+            background: -ms-linear-gradient(#f7f2f6, #b2ac9e);
+            background: -o-linear-gradient(#f7f2f6, #b2ac9e);
+            background: -webkit-gradient(linear, 0 0, 0 100%, from(#f7f2f6), to(#b2ac9e));
+            background: -webkit-linear-gradient(#f7f2f6, #b2ac9e);
+            background: linear-gradient(#f7f2f6, #b2ac9e);
+            position: relative;
+            color: #9abb82;
+            font-size: 30px;
+            text-align: center;
+            line-height: 80px;
+            -webkit-transition: all 0.3s ease-out;
+            -moz-transition: all 0.3s ease-out;
+            -ms-transition: all 0.3s ease-out;
+            -o-transition: all 0.3s ease-out;
+            transition: all 0.3s ease-out;
+
+            text-shadow: 0 2px 1px rgba(0, 0, 0, 0.25);
+
+            box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.13),
+            0 5px 8px rgba(0, 0, 0, 0.3),
+            0 10px 10px 4px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        .switch#playBtn label:after, .switch#pauseBtn label:afte {
+            content: "";
+            position: absolute;
+            left: -20px;
+            right: -20px;
+            top: -20px;
+            bottom: -20px;
+            z-index: -2;
+            border-radius: inherit;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            0 1px 2px rgba(0, 0, 0, 0.3),
+            0 0 10px rgba(0, 0, 0, 0.15);
+
+        }
+
+        .switch#playBtn label:before, .switch#pauseBtn label:before {
+            content: "";
+            position: absolute;
+            left: -10px;
+            right: -10px;
+            top: -10px;
+            bottom: -10px;
+            z-index: -1;
+            border-radius: inherit;
+            box-shadow: inset 0 10px 10px rgba(0, 0, 0, 0.13);
+            -webkit-filter: blur(1px);
+            -moz-filter: blur(1px);
+            -ms-filter: blur(1px);
+            -o-filter: blur(1px);
+            filter: blur(1px);
+        }
+
+        .switch#playBtn .fa-play:after, .switch#pauseBtn .fa-stop:after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 70%;
+            height: 70%;
+            left: 50%;
+            top: 50%;
+            z-index: -1;
+            margin: -35% 0 0 -35%;
+            border-radius: 50%;
+            background: #d2cbc3;
+            background: -moz-linear-gradient(#cbc7bc, #d2cbc3);
+            background: -ms-linear-gradient(#cbc7bc, #d2cbc3);
+            background: -o-linear-gradient(#cbc7bc, #d2cbc3);
+            background: -webkit-gradient(linear, 0 0, 0 100%, from(#cbc7bc), to(#d2cbc3));
+            background: -webkit-linear-gradient(#cbc7bc, #d2cbc3);
+            background: linear-gradient(#cbc7bc, #d2cbc3);
+            box-shadow: 0 -2px 5px rgba(255, 255, 255, 0.05),
+            0 2px 5px rgba(255, 255, 255, 0.1);
+        }
+    </style>
+    <div class="cut_panel" style="">
+
+        <div class="play_right"
+             style="">
+
+            <div id="waveform">
+                <div class="progress progress-striped loading active" style="margin: 50px 20px 0 20px">
+                    <div class="progress-bar progress-bar-purple  loading_percent" style="width: 1%"></div>
+                </div>
+            </div>
+            <div id="shadow" style="">
+                <div class="cut_left_drag dragBtn" id="cut_left_drag" title="按住拖动">
+                    <span class="top" style=""></span>
+                    <span class="bottom" style="">
+                    </span>
+                </div>
+                <div class="cut_right_drag dragBtn" id="cut_right_drag" title="按住拖动">
+                    <span class="top" style=""></span>
+                    <span class="bottom" style="">
+                    </span>
+                </div>
+                <div class="long" style="">
+                    <label class="cut_time">20.00</label>
+                     <span class="arrow" style=" ">
+                </div>
+            </div>
+            <div class="duration_top"
+                 style="">
+                <div class="duration_time" data-time="0" style=" ">
+                    <label class="duration_s">00:00.</label>
+                    <label class="duration_ms">0</label>
+                </div>
+                <span class="arrow" style=" "></span>
+            </div>
+        </div>
+        <div style="clear: both;height: 20px;width: 100%"></div>
+      <!--  <hr style="background-color:#4F95D9;border-color: #e4e4e4;"/>-->
+        <div class="btnWrap" style="width: 100%;text-align:center;height: auto;display: none;margin: auto">
+            <span class="btn btn-inverse" id="btnBackward"><i class="fa fa-backward"></i> 后退</span>
+            <div class="play_btn_wrap" style="display: inline-block">
+                <!--  <div style="border: 1px solid #e4e4e4;width:80px;height:80px;background-color: #e2e2e2; display: block;
+                  border-radius: 100%;overflow: hidden;text-align: center;vertical-align: middle;line-height: 80px;cursor: pointer"
+                       id="playBtn">
+                      <i class="fa fa-play-circle" style="font-size: 80px"></i></div>-->
+                <div class="switch" id="playBtn" style="cursor: pointer;margin-left: 20px;margin-right: 20px">
+                    <label>&nbsp;<i class='fa fa-play'></i></label>
+                </div>
+                <div class="switch" id="pauseBtn" style="cursor: pointer;display: none;margin-left: 20px;margin-right: 20px">
+                    <label><i class='fa fa-stop' style="color:#a5a39d"></i></label>
+                </div>
+
+                <!--     <div style="border: 1px solid #e4e4e4;width:80px;height:80px;background-color: #e2e2e2;
+                     border-radius: 100%;overflow: hidden;text-align: center;vertical-align: middle;line-height: 80px;cursor: pointer;display: none"
+                          id="pauseBtn">
+                         <i class="fa fa-stop-circle" style="font-size: 80px"></i></div>-->
+
+
+            </div>
+            <span class="btn btn-inverse" id="btnForward">前进 <i class="fa fa-forward"></i></span>
+            <span class="btn btn-primary" id="btnCut"><i class="fa fa-cut"></i> 剪切</span>
+        </div>
+        <hr style="background-color:#4F95D9;border-color: #e4e4e4;"/>
+        <p class="">
+
+
+  <span class="tag">
+                 <label class="tag_name"><i class="iconfont icon-music"></i> 歌名：</label>
+               <label style=""><?php echo $item['name'] ?></label>
+           </span>
+            <span class="tag">
+                 <label class="tag_name"> <i class="fa fa-clock-o"></i> 时长：</label> <?php
+                $time = $item['time'];
+                if ($time > 60) {
+                    $m = ceil($time / 60);
+                    $m = $m > 10 ? $m : '0' . $m;
+                    $s = $time % 60;
+                } else {
+                    $m = 00;
+                    $s = $time % 60;
+                }
+                $res = $m . ':' . ($s > 10 ? $s : '0' . $s);
+                echo $res;
+                ?></span>
+
+           <span class="tag">
+                <label class="tag_name"><i class="iconfont icon-singer"></i>歌手：</label>
+               <label style=""><?php echo $item['singer'] ?></label>
+           </span>
+                <span class="tag">
+                 <label class="tag_name"> <i class="iconfont icon-album"></i> 专辑：</label>
+               <label style=""><?php echo $item['album'] ?></label>
+           </span>
+           <span class="tag">
+                     <label class="tag_name"> <i class="fa fa-link"></i> 下载地址：</label>
+           <a href="<?php echo $item['mp3'] ?>" download="下载" title="下载">点击下载</a>
+                                                                           </span>
+
+
+        </p>
+    </div>
+</section>
+<div class="playing" style="">
+    <span class="thumb"><img class="rounding" src=""/></span>
+    <span class="playing_handle playBtn" data-song="" data-src=""><i class="fa fa-play-circle"></i> </span>
+    <span class="playing_handle pauseBtn" data-song=""><i class="fa fa-pause-circle"></i> </span>
+    <span class="name left"></span>
+    <span class="time left"></span>
+
+</div>
+<audio src="" id="voice_box">
+</audio>
+<div class="modal fade" id="addModal">
+    <div class="modal-dialog" style="width: 800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-music"></i> 添加音乐</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">音乐分类:</label>
+
+                        <div class="col-sm-9">
+
+                            <!--  <select class="cat">-->
+                            <?php foreach ($category as $k => $cat) { ?>
+                                <!--<option value="<?php /*echo $k */ ?>"><?php /*echo $cat */ ?></option>-->
+                                <a style="display: inline-block;margin-right: 5px;width: 80px">
+                                    <label>
+                                        <input type="checkbox" class="chk ace cat" data-id="<?php echo $k; ?>"/>
+                                        <span class="lbl"></span>
+                                    </label>
+                                    <?php echo $cat ?>
+                                </a>
+                            <?php } ?>
+                            <!--  </select>-->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">音乐名称:</label>
+
+                        <div class="col-sm-9">
+                            <input type="text" value="<?php echo $item['name'] ?>" class="form-control" id="name"
+                                   placeholder="音乐名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">歌手姓名:</label>
+
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" value="<?php echo $item['singer'] ?>" id="singer"
+                                   placeholder="歌手姓名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">专辑名称:</label>
+
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" value="<?php echo $item['album'] ?>" id="album"
+                                   placeholder="专辑名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">排序大小:</label>
+
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="sort_num" value="50"
+                                   placeholder="排序大小【越小越靠前】">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="logo" class="col-sm-3 control-label">封面图：</label>
+                        <div class="col-sm-9">
+                            <div class="col-xs-8" style="padding-left: 0">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-picture-o"></i></span>
+                                    <input class="form-control img" name="thumb" id="thumb" type="text" readonly=""
+                                           value="<?php echo $item['thumb'] ?>">
+                                    <a class="input-group-addon" id="upThumb" href="javascript:;">选择图片</a>
+                                </div>
+                            </div>
+                    <span class="col-xs-4 pic-review" id="picReviewer" data-list-item-id="12">
+                        <img src="<?php echo $item['thumb'] ?>"
+                             class="preview-thumb"
+                             style="height: 32px;" title="选择图片">
+                        <label class="help-block with-errors"></label>
+                    </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">音乐源文件:</label>
+                        <div class="col-sm-9">
+                            <div class="field set-field fileSection">
+                                <span class="mp3Url"></span>
+                                <a href="javascript:;" class="listenBtn"><i class="fa fa-volume-up"></i></a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="form-group submit_yunpian">
+                        <label for="ruleName" class="col-sm-3 control-label">是否下架:</label>
+                        <div class="col-sm-9">
+                            <input id="enable" type="checkbox"
+                                   class="ace ace-switch ace-switch-5"/>
+                            <span class="lbl"></span>
+                        </div>
+
+                    </div>
+                    <div class="form-group submit_yunpian">
+                        <label for="ruleName" class="col-sm-3 control-label">是否推荐:</label>
+                        <div class="col-sm-9">
+                            <input id="is_hot" type="checkbox"
+                                   class="ace ace-switch ace-switch-5"/>
+                            <span class="lbl"></span>
+                        </div>
+
+                    </div>
+                    <p class="alert alert-danger error-widget" style="display: none"><i class="fa fa-warning"></i>
+                        <span class="error_msg"></span>
+                    </p>
+                    <p class="alert alert-success success-widget" style="display: none"><i class="fa fa-check"></i>
+                        <span class="success_msg"></span>
+                    </p>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <input type="hidden" value="0" id="song_id"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-original="" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script src="/static/panel/js/tools/wavesurfer/wavesufer.min.js?v=1.1"></script>
+<script>
+    $(function () {
+        seajs.use('app/panel/music/music.cut.js?v=1.3.5', function (api) {
+            api.cut("<?php echo $item['mp3']?>", "<?php echo $music?>");
+            api.add();
+        })
+    })
+    ;
+</script>
+<!--<audio id="voice" src="<?php /*echo $item['mp3'] */ ?>"></audio>
+--><!--<script>
+    var dogBarkingBuffer = null;
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    var context = new AudioContext();
+    function playSound(buffer) {
+
+        var source = context.createBufferSource();//创建一个音频源 相当于是装音频的容器
+        var analyser = context.createAnalyser();
+        var distortion = context.createWaveShaper();
+
+        source.connect(analyser);// 连接到输出源
+        source.connect(analyser);// 连接到输出源
+
+        analyser.connect(distortion);
+        analyser.connect(context.destination);// 连接到输出源
+        source.buffer = buffer;//  告诉音频源 播放哪一段音频
+       // source.start(0);//开始播放*/
+        context.speed=
+console.log(context.createWaveShaper());
+
+        //开始绘制频谱图
+        function drawSpectrum() {
+            var canvas = document.getElementById('canvas'),
+                cwidth = canvas.width,
+                cheight = canvas.height - 2,
+                meterWidth = 10,//能量条的宽度
+                gap = 2,//能量条的间距
+                meterNum = 800 / (10 + 2),//计算当前画布上能画多少条
+                ctx = canvas.getContext('2d');
+            var capHeight = 2;//
+            var array = new Uint8Array(analyser.frequencyBinCount);
+            analyser.getByteFrequencyData(array);
+         //   console.info(array);
+            var step = Math.round(array.length / meterNum);//计算从analyser中的采样步长
+
+            //清理画布
+            ctx.clearRect(0, 0, cwidth, cheight);
+            //定义一个渐变样式用于画图
+            var gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(1, '#0f0');
+            gradient.addColorStop(0.5, '#ff0');
+            gradient.addColorStop(0, '#f00');
+            ctx.fillStyle = gradient;
+            //对信源数组进行抽样遍历，画出每个频谱条
+            for (var i = 0; i < meterNum; i++) {
+                var value = array[i * step];
+                ctx.fillRect(i * 12/*频谱条的宽度+条间距*/, cheight - value + capHeight,
+                    meterWidth, cheight);
+            }
+            requestAnimationFrame(drawSpectrum)
+        }
+        requestAnimationFrame(drawSpectrum)
+    }
+
+
+    function loadDogSound(url) {
+        var request = new XMLHttpRequest();
+        request.open('GET', url, true);
+        request.responseType = 'arraybuffer';
+
+
+//下面就是对音频文件的异步解析
+        request.onload = function () {
+            context.decodeAudioData(request.response, function (buffer) {
+                console.log(1)
+                playSound(buffer)
+            }, function (e) {
+                console.log(e)
+            });
+        };
+        request.send();
+
+    }
+    loadDogSound("/api/music/getBuffer?url=<?php /*echo $item['mp3'] */ ?>")
+
+</script>-->

@@ -1,0 +1,147 @@
+<?php if (isset($item['pre'])) { ?>
+    <?php if ($item['pre'] != date("YmdHi", floor($item['info']['send_time']/1000))) { ?>
+        <li class="tip" data-id="<?php echo $item['info']['id'] ?>"><p
+                class="tip"><?php echo date('Y-m-d H:i:s', floor($item['info']['send_time']/1000)) ?></p></li>
+    <?php } ?>
+<?php } ?>
+<?php if (isset($item['next'])) { ?>
+    <?php if ($item['next'] != date("YmdHi", floor($item['info']['send_time']/1000))) { ?>
+
+        <li><p class="tip"><?php echo date('Y-m-d H:i:s', floor($item['info']['send_time']/1000)) ?></p></li>
+    <?php } ?>
+<?php } ?>
+<?php if ($item['info']['from_uid'] == \Services\Im\ImManager::ACCOUNT_SYSTEM) {
+    ?>
+    <li class="right" data-id="<?php echo $item['info']['id'] ?>">
+       <span class="avatar">
+           <img src="/static/panel/images/logo.png"/></span>
+        <div class="info">
+            <p class="name"><a href="javascript:;">恐龙君</a></p>
+            <div class="msg_info">
+                <p class="desc grey"><?php if ($item['info']['media_type'] == 'audio') {
+                        $body = json_decode($item['info']['body'], true);
+                        ?>
+                        <span class="dur"><?php echo round($body['dur'] / 1000, 1) . 's' ?></span>
+                        <span class="voice" data-id="<?php echo $item['info']['id'] ?>"
+                              data-src="<?php echo $body['url'] ?>"
+                              style="width: 16px;height: 16px;display:inline-block;background: url(/static/panel/images/admin/voice-right.png) no-repeat;"></span>
+                    <?php } else if ($item['info']['media_type'] == 'picture') {
+                        $body = json_decode($item['info']['body'], true);
+                        ?>
+                        <a href="<?php echo $body['url'] ?>" data-lightbox="roadtrip"> <img class="msg_img"
+                                                                                            src="<?php echo $body['url'] ?>"/></a>
+                    <?php } else if ($item['info']['media_type'] == 'picture') {
+                        $body = json_decode($item['info']['body'], true);
+                        ?>
+                        <a href="<?php echo $body['url'] ?>" data-lightbox="roadtrip"> <img class="msg_img"
+                                                                                            src="<?php echo $body['url'] ?>"/></a>
+                    <?php } else if ($item['info']['media_type'] == 'file') {
+                        $body = json_decode($item['info']['body'], true);
+                        if ($body['ext'] != 'gif') {
+
+                        } else {
+                            ?>
+                            <a href="<?php echo $body['url'] ?>" data-lightbox="roadtrip"> <img
+                                    class="msg_img"
+                                    src="<?php echo $body['url'] ?>"/></a>
+                        <?php } ?>
+                    <?php } else if ($item['info']['media_type'] == 'video') {
+                    $body = json_decode($item['info']['body'], true);
+                    ?>
+                <div class="video_box" data-id="<?php echo $item['info']['id'] ?>">
+                    <!-- <video width="90" height="160" controls>
+                                                <source src="<?php /*echo $body['url'] */ ?>" type="video/mp4">
+                                                您的浏览器不支持Video标签。
+                                            </video>-->
+                    <video data-id="<?php echo $item['info']['id'] ?>" crossOrigin="anonymous"
+                           class="video video_<?php echo $item['info']['id'] ?>">
+                        <source src="<?php echo $body['url'] ?>">
+                    </video>
+                    <img src="" style="display: none" data-id="<?php echo $item['info']['id'] ?>"
+                         class="video_thumb video_thumb_<?php echo $item['info']['id'] ?>""/>
+                                            <span class="play"><i
+                                                    class="fa fa-play-circle"></i></span>
+                </div>
+                <?php } else { ?>
+                <?php echo $item['info']['body'];
+                } ?></p>
+                <span class="arrow"></span>
+            </div>
+        </div>
+    </li>
+<?php } else { ?>
+    <li class="left" data-id="<?php echo $item['info']['id'] ?>">
+       <span class="avatar">
+           <img src="<?php echo $item['user_info']['avatar'] ?>?x-oss-process=image/resize,m_fill,h_160,w_160"/></span>
+        <div class="info">
+            <p class="name">
+                <a
+                    href="javascript:;" data-title="用户详情" class="newTarget"
+                    data-href="/panel/users/detail?user_id=<?php echo $item['info']['from_uid'] ?>"><?php echo $item['user_info']['username'] ?></a>
+                </p>
+            <div class="msg_info">
+                <p class="desc grey"><?php if ($item['info']['media_type'] == 'audio') {
+                        $body = json_decode($item['info']['body'], true);
+                        ?>
+                        <span class="dur"><?php echo round($body['dur'] / 1000, 1) . 's' ?></span>  <span class="voice"
+                                                                                                          data-id="<?php echo $item['info']['id'] ?>"
+                                                                                                          data-src="<?php echo $body['url'] ?>"
+                                                                                                          style="width: 16px;height: 16px;display:inline-block;background: url(/static/panel/images/admin/voice-left.png) no-repeat;"></span>
+                    <?php } else if ($item['info']['media_type'] == 'picture') {
+
+                        $body = json_decode($item['info']['body'], true);
+                        ?>
+                        <a href="<?php echo $body['url'] ?>" data-lightbox="roadtrip"> <img class="msg_img"
+                                                                                            src="<?php echo $body['url'] ?>"/></a>
+                    <?php } else if ($item['info']['media_type'] == 'custom') {
+                        $body = json_decode($item['info']['body'], true);
+                        //gif
+                        if ($body['extend_type'] == 'system_klgGif') {
+                            if (strpos($body['msg'], 'bird') > 0) {
+                                $url = 'http://circleimg.klgwl.com/gif/2/' . $body['msg'].'.gif';
+                            } else if (strpos($body['msg'], 'f_') == 0) {
+                                $url = 'http://circleimg.klgwl.com/gif/1/' . $body['msg'].'.gif';
+                            } else {
+                                $url = '';
+                            }
+                            ?>
+                            <a href="<?php echo $url ?>" data-lightbox="roadtrip"> <img class="msg_img"
+                                                                                        src="<?php echo $url ?>"/></a>
+                        <?php } ?>
+
+                    <?php } else if ($item['info']['media_type'] == 'file') {
+                        $body = json_decode($item['info']['body'], true);
+                        if ($body['ext'] != 'gif') {
+
+                        } else {
+                            ?>
+                            <a href="<?php echo $body['url'] ?>" data-lightbox="roadtrip"> <img
+                                    class="msg_img"
+                                    src="<?php echo $body['url'] ?>"/></a>
+                        <?php } ?>
+                    <?php } else if ($item['info']['media_type'] == 'video') {
+                    $body = json_decode($item['info']['body'], true);
+
+                    ?>
+                <div class="video_box" data-id="<?php echo $item['info']['id'] ?>">
+                    <!-- <video width="90" height="160" controls>
+                                                <source src="<?php /*echo $body['url'] */ ?>" type="video/mp4">
+                                                您的浏览器不支持Video标签。
+                                            </video>-->
+                    <video data-id="<?php echo $item['info']['id'] ?>" crossOrigin="anonymous"
+                           class="video video_<?php echo $item['info']['id'] ?>">
+                        <source src="<?php echo $body['url'] ?>">
+                    </video>
+                    <img src="" style="display: none" data-id="<?php echo $item['info']['id'] ?>"
+                         class="video_thumb video_thumb_<?php echo $item['info']['id'] ?>""/>
+                                            <span class="play"><i
+                                                    class="fa fa-play-circle"></i></span>
+                </div>
+                <?php } else {
+                    echo $item['info']['body'];
+                } ?></p>
+                <span class="arrow"></span>
+            </div>
+        </div>
+    </li>
+<?php } ?>

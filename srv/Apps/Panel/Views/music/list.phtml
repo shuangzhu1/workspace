@@ -1,0 +1,602 @@
+<meta name="referrer" content="no-referrer"/>
+<form action="" method="get"
+      style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px; line-height: 50px;">
+    <label for="name">关键字</label>
+    <input name="key" type="text" id="key" placeholder="音乐/歌手/专辑" value="<?php echo $key; ?>">
+    &nbsp;<label for="name">分类</label>
+    <select name="cat_id">
+        <option value="0" <?php echo $cat == 0 ? 'selected' : ''; ?>>全部</option>
+        <?php foreach ($category as $k => $item) { ?>
+            <option value="<?php echo $k ?>" <?php echo $cat == $k ? 'selected' : ''; ?>><?php echo $item ?></option>
+        <?php } ?>
+    </select>
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+    <span class="right btn btn-primary btn-sm btnAdd"><i class="fa fa-plus"></i> 添加音乐</span>
+    <a class="right btn btn-inverse btn-sm newTarget" href="javascript:;" data-title="网络音乐"
+       data-href="/panel/music/online" style="margin-right: 5px"><i class="fa fa-search"></i>
+        搜索网络音乐</a>
+</form>
+<div class="tabs">
+    <a href="<?php echo $this->uri->setUrl(['type' => 1], ['p']); ?>"
+       class="tab <?php echo $type == 1 ? 'active' : ''; ?>">在线音乐</a>
+    <a href="<?php echo $this->uri->setUrl(['type' => 0], ['p']); ?>"
+       class="tab <?php echo $type == 0 ? 'active' : ''; ?>">下架音乐</a>
+</div>
+<style>
+    #musicModal ul {
+        margin: 0;
+        padding: 10px 0 0 0
+    }
+
+    #musicModal .music_thumb {
+        width: 50px;
+    }
+
+    #musicModal .music_thumb img {
+        width: 40px;
+        border-radius: 100%;
+    }
+
+    #musicModal .music_item {
+        border-bottom: 1px dotted #f2f2f2;
+        padding: 4px 0;
+    }
+
+    #musicModal .music_item span {
+        display: inline-block;
+    }
+
+    #musicModal .music_name {
+        width: 200px;
+        margin-left: 10px;
+    }
+
+    #musicModal .singer_name {
+        width: 150px;
+    }
+
+    #musicModal .music_album {
+        width: 150px;
+    }
+
+    #musicModal .singer_time {
+        width: 80px;
+    }
+
+    .music_head {
+        line-height: 34px;
+        border-top: 1px solid #e4e4e4;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    .music_head span {
+        display: inline-block;
+    }
+
+    .music_head .thumb {
+        width: 60px;
+    }
+
+    .music_head .name {
+        width: 200px;
+    }
+
+    .music_head .album {
+        width: 150px;
+    }
+
+    .music_head .singer {
+        width: 150px;
+    }
+
+    .music_head .time {
+        width: 80px;
+    }
+
+    .music_head .handle {
+
+    }
+
+    .music_platform {
+        padding: 5px 5px;
+        border: 1px solid #e2e2e2;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+
+    .music_platform.active {
+        background-color: #4cb329;
+        border: 1px solid #4cb329;
+        color: white;
+    }
+
+    #musicModal .pageBar .pagination {
+        padding-top: 5px;
+    }
+
+    #musicModal .limitBar {
+        padding-top: 8px;
+    }
+
+    .music_handle .handle_item {
+        font-size: 20px;
+        opacity: 0.8;
+        margin-right: 10px;
+        font-weight: normal;
+        cursor: pointer;
+    }
+
+    @keyframes play {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @-webkit-keyframes play {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @-moz-keyframes play {
+        0% {
+            -moz-transform: rotate(0deg);
+        }
+        100% {
+            -moz-transform: rotate(360deg);
+        }
+    }
+
+    @-o-keyframes play {
+        0% {
+            -o-transform: rotate(0deg);
+        }
+        100% {
+            -o-transform: rotate(360deg);
+        }
+    }
+
+    @-ms-keyframes play {
+        0% {
+            -ms-transform: rotate(0deg);
+        }
+        100% {
+            -ms-transform: rotate(360deg);
+        }
+    }
+
+    .playing {
+        position: fixed;
+        right: 0;
+        top: 50%;
+        margin-top: -30px;
+        height: 60px;
+        line-height: 60px;
+        vertical-align: middle;
+        width: 360px;
+        border: 1px solid #f2f2f2;
+        padding: 0 10px;
+        /*  right: -300px*/;
+    }
+
+    .playing .thumb {
+        display: inline-block;
+        overflow: hidden;
+        width: 50px;
+        height: 50px;
+        float: left;
+    }
+
+    .playing .thumb img {
+        width: 40px;
+        border-radius: 100%;
+    }
+
+    .playing .thumb img.rounding {
+        -webkit-animation: play 3s linear infinite;
+        -moz-animation: play 3s linear infinite;
+        -o-animation: play 3s linear infinite;
+        animation: play 3s linear infinite;
+    }
+
+</style>
+<table id="article-list" class='list'>
+    <thead>
+    <tr class="head">
+        <th style='width:36px'>ID</th>
+        <th style='width:80px'>歌曲封面</th>
+        <th style='width:150px'>歌曲名称</th>
+        <th style='width:150px'>
+            <span class="text">歌手</span>
+        </th>
+        <th style="width: 200px">所属专辑</th>
+        <th style='width:120px'>所属分类</th>
+        <th style='width:120px'>
+            <span class="text">音乐时长</span>
+        </th>
+        <th style='width:100px'>
+            <span class="text">使用次数</span>
+        </th>
+        <th style='width:100px'>
+            <span class="text">排序大小</span>
+        </th>
+        <th style='width:150px'>
+            <span class="text">添加时间</span>
+        </th>
+        <th style='width:100px'>
+            <span class="text">是否推荐</span>
+        </th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        ?>
+        <tr class="item music_<?php echo $item['id'] ?>" data-id="<?php echo $item['id']; ?>">
+            <th class='name'><?php echo $item['id'] ?></th>
+            <!--   <td class="center"><label>
+                    <input type="checkbox" class="chk ace" data-id="<?php /*echo $item['id']; */ ?>"/>
+                    <span class="lbl"></span>
+                </label>
+            </td>-->
+            <td>
+                <a href="<?php echo $item['thumb']; ?>" data-lightbox="roadtrip"><img
+                        src="<?php echo $item['thumb']; ?>?x-oss-process=image/resize,m_fill,h_160,w_160"
+                        style="width: 40px; height: 40px;"/></a>
+            </td>
+            <td><?php echo $item['name'] ?>&nbsp;<a href="javascript:;" data-src="<?php echo $item['mp3'] ?>"
+                                                    class="listenBtn" data-id="<?php echo $item['id'] ?>"><i
+                        class="fa fa-volume-up"></i></a>&nbsp;<span class="time_percent"></span></td>
+            <td><?php echo $item['singer']; ?></td>
+            <td>
+                <?php echo $item['album']; ?>
+            </td>
+
+            <td>
+                <?php $cat_id = explode(',', $item['cat_id']);
+                foreach ($cat_id as $cat) { ?>
+                    <?php echo $category[$cat] ?>
+                <?php } ?>
+
+            </td>
+            <td>
+                <?php
+                $time = $item['time'];
+                if ($time > 60) {
+                    $m = ceil($time / 60);
+                    $s = $time % 60;
+                } else {
+                    $m = 0;
+                    $s = $time % 60;
+                }
+                $res = $m . ':' . ($s > 10 ? $s : '0' . $s);
+                echo $res;
+                ?>
+            </td>
+            <td>
+                <?php echo $item['use_count'] ?>
+            </td>
+            <td>
+                <?php echo $item['sort_num'] ?>
+            </td>
+            <td>
+                <?php echo date('Y-m-d H:i', $item['created']); ?>
+            </td>
+            <td>
+                <?php echo $item['is_hot']==1 ? '是':'否'; ?>
+            </td>
+            <td>
+                <span class="btn btn-sm btn-primary btnEdit"
+                      data-id="<?php echo $item['id'] ?>"
+                      data-thumb="<?php echo $item['thumb'] ?>"
+                      data-singer="<?php echo strip_tags($item['singer']) ?>"
+                      data-name="<?php echo strip_tags($item['name']) ?>"
+                      data-album="<?php echo strip_tags($item['album']) ?>"
+                      data-mp3="<?php echo $item['mp3'] ?>"
+                      data-cat_id="<?php echo $item['cat_id'] ?>"
+                      data-time="<?php echo $item['time'] ?>"
+                      data-is_hot="<?php echo $item['is_hot'] ?>"
+                      data-enable="<?php echo $item['enable'] ?>"
+                      data-sort_num="<?php echo $item['sort_num'] ?>">
+
+
+                    <i class="fa fa-edit"></i> 编辑</span>
+
+                <?php if ($item['enable'] == 1) { ?>
+                    <span class="btn btn-sm btn-danger btnDown" data-id="<?php echo $item['id'] ?>">
+                        <i class="fa fa-remove"></i> 下架</span>
+                <?php } else { ?>
+                    <span class="btn btn-sm btn-primary btnUp" data-id="<?php echo $item['id'] ?>">
+                        <i class="fa fa-unlock"></i> 上架</span>
+                <?php } ?>
+                <?php if ($item['is_hot'] == 1) { ?>
+                    <span class="btn btn-sm btn-grey btnNotHot" data-id="<?php echo $item['id'] ?>">
+                        <i class="fa fa-fire"></i> 取消推荐</span>
+                <?php } else { ?>
+                    <span class="btn btn-sm btn-purple btnHot" data-id="<?php echo $item['id'] ?>">
+                        <i class="fa fa-fire"></i> 设为推荐</span>
+                <?php } ?>
+            </td>
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="14">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+        </td>
+    </tr>
+</table>
+<div class="modal fade" id="musicModal">
+    <div class="modal-dialog" style="width: 900px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-search"></i> 音乐搜索</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <p>
+                    <span data-id="qq" class="music_platform active">QQ音乐</span>
+                    <span data-id="163" class="music_platform">网易云音乐</span>
+                    <span data-id="baidu" class="music_platform">百度音乐</span>
+                    <input type="text" class="music_search" style="width: 300px;height: 30px;line-height: 30px"
+                           placeholder="歌曲/歌手名称"/>
+                    <span class="btn btn-inverse btn-xs searchBtn" style="line-height: 20px"><i
+                            class="fa fa-search"></i> 搜索</span>
+
+                </p>
+                <p class="music_head">
+                    <span class="thumb">封面</span>
+                    <span class="name">歌曲名称</span>
+                    <span class="album">专辑</span>
+                    <span class="singer">歌手</span>
+                    <span class="time">时长</span>
+                    <span class="handle">操作</span>
+                </p>
+                <ul class="result">
+                </ul>
+                <p class="pageBar"></p>
+            </div>
+
+            <!--   <div class="modal-footer">
+                   <input type="hidden" value="0" id="cat_id"/>
+                   <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                   <button type="button" class="btn btn-primary" data-original="" id="sureBtn">确定</button>
+               </div>-->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="addModal">
+    <div class="modal-dialog" style="width: 800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-music"></i> 添加音乐</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">音乐分类:</label>
+
+                        <div class="col-sm-9">
+
+                            <!--  <select class="cat">-->
+                            <?php foreach ($category as $k => $cat) { ?>
+                                <!--<option value="<?php /*echo $k */ ?>"><?php /*echo $cat */ ?></option>-->
+                                <a style="display: inline-block;margin-right: 5px;width: 80px">
+                                    <label>
+                                        <input type="checkbox" class="chk ace cat" data-id="<?php echo $k; ?>"/>
+                                        <span class="lbl"></span>
+                                    </label>
+                                    <?php echo $cat ?>
+                                </a>
+                            <?php } ?>
+                            <!--  </select>-->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">音乐名称:</label>
+
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="name" placeholder="音乐名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">歌手姓名:</label>
+
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="singer" placeholder="歌手姓名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">专辑名称:</label>
+
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="album" placeholder="专辑名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">排序大小:</label>
+
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="sort_num" value="50"
+                                   placeholder="排序大小【越小越靠前】">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="logo" class="col-sm-3 control-label">封面图：</label>
+                        <div class="col-sm-9">
+                            <div class="col-xs-8" style="padding-left: 0">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-picture-o"></i></span>
+                                    <input class="form-control img" name="thumb" id="thumb" type="text" readonly=""
+                                           value="">
+                                    <a class="input-group-addon" id="upThumb" href="javascript:;">选择图片</a>
+                                </div>
+                            </div>
+                    <span class="col-xs-4 pic-review" id="picReviewer" data-list-item-id="12">
+                        <img src=""
+                             class="preview-thumb"
+                             style="height: 32px;" title="选择图片">
+                        <label class="help-block with-errors"></label>
+                    </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-3 control-label">音乐源文件:</label>
+                        <div class="col-sm-9">
+                            <div class="field set-field fileSection">
+
+            <span class="upload-widget" id="upload-widget" data-unique="2"><a
+                    class="btn btn-sm btn-success browse-button"
+                    href="javascript:;">选择音乐文件</a></span>
+                                <input type="hidden" id="file_ID" value=""/>
+                                <span id="fileUrl" data-original_url="" style="height: 32px;"></span>
+                                <span class="help-inline red"></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="form-group submit_yunpian">
+                        <label for="ruleName" class="col-sm-3 control-label">是否下架:</label>
+                        <div class="col-sm-9">
+                            <input id="enable" type="checkbox"
+                                   class="ace ace-switch ace-switch-5"/>
+                            <span class="lbl"></span>
+                        </div>
+
+                    </div>
+                    <div class="form-group submit_yunpian">
+                        <label for="ruleName" class="col-sm-3 control-label">是否推荐:</label>
+                        <div class="col-sm-9">
+                            <input id="is_hot" type="checkbox"
+                                   class="ace ace-switch ace-switch-5"/>
+                            <span class="lbl"></span>
+                        </div>
+
+                    </div>
+                    <p class="alert alert-danger error-widget" style="display: none"><i class="fa fa-warning"></i>
+                        <span class="error_msg"></span>
+                    </p>
+                    <p class="alert alert-success success-widget" style="display: none"><i class="fa fa-check"></i>
+                        <span class="success_msg"></span>
+                    </p>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <input type="hidden" value="0" id="song_id"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-original="" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="msgModal">
+    <div class="modal-dialog" style="width: 300px;">
+        <div class="modal-content" style="padding: 10px; border-radius: 5px !important;">
+            <p><img src="/srv/static/panel/images/admin/loading.gif"/>&nbsp;正在提交数据 <span class="percent"></span></p>
+        </div>
+    </div>
+</div>
+<audio src="" id="voice_box">
+</audio>
+<audio style="display:none;" controls="controls" id="audio" data-duration="0"></audio>
+
+<style>
+
+    .playing_handle {
+        font-size: 20px;
+        color: #e4e4e4;
+        margin-left: 10px;
+        display: inline-block;
+        float: left;
+        cursor: pointer;
+    }
+
+    .playing_handle.playBtn, .playing_handle.pauseBtn {
+        font-size: 30px;
+    }
+
+    .playing_handle.forwardBtn {
+        margin-right: 10px;
+    }
+
+    .playing_handle.pauseBtn {
+        display: none;
+    }
+
+    .playing {
+        background: #2D3C4F;
+        color: #e4e4e4;
+        vertical-align: middle;
+        border-radius: 10px;
+        display: none;
+        z-index: 1500;
+
+    }
+
+    .playing .name {
+        width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+</style>
+<div class="playing" style="">
+    <span class="thumb"><img class="rounding" src=""/></span>
+    <span class="playing_handle backwardBtn"><i class="fa fa-step-backward"></i> </span>
+    <span class="playing_handle playBtn" data-song="" data-src=""><i class="fa fa-play-circle"></i> </span>
+    <span class="playing_handle pauseBtn" data-song=""><i class="fa fa-pause-circle"></i> </span>
+    <span class="playing_handle forwardBtn"><i class="fa fa-step-forward"></i></span>
+    <span class="name left"></span>
+</div>
+<audio src="" id="voice_box">
+</audio>
+<script>
+    seajs.use('app/panel/music/music.search.js?v=1.3', function (api) {
+        // api.search();
+        api.add();
+    });
+
+</script>
+<link rel="stylesheet" href="/srv/static/panel/css/lightbox/lightbox.css"/>
+
+<script src="/srv/static/panel/js/jquery/lightbox/lightbox.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        lightbox.option({
+            albumLabel: '%1/%2',
+            'resizeDuration': 200,
+            "fadeDuration":0,
+            "imageFadeDuration":0
+        });
+    })
+
+</script>

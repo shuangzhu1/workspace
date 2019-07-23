@@ -1,0 +1,23 @@
+<link rel="stylesheet" type="text/css" href="/static/wap/css/share.css"/>
+<link rel="stylesheet" type="text/css" href="/static/wap/css/person.css"/>
+<style>
+    body{background-color: #fff;}
+</style>
+<div class="life">
+    <div class="container">
+            <div class="life_list">
+                <ul id="dataWrap02">
+                    <li class="item">
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    seajs.use('app/more', function (api) {
+        api.more('/api/user/fansList', {to:<?php echo $to?>}, function () {
+        });
+    });
+</script>

@@ -1,0 +1,95 @@
+<style>
+    img {
+        background: none;
+    }
+</style>
+<div
+    style="width: 100%;height: auto;overflow: hidden;position: relative;border-radius: 5px;border: 5px solid rgba(0, 0, 0, 0.6);overflow: hidden">
+    <div class="map" id="map" style="width: 100%;height: 800px">
+
+    </div>
+    <!--    <div-->
+    <!--        style="position: absolute;right:100px;top:100px;width:210px;height: 110px;background-color: #000;opacity:0.5;z-index: 1;border-radius: 5px">-->
+    <!---->
+    <!--    </div>-->
+    <!--    <div-->
+    <!--        style="position: absolute;right:110px;top:110px;width:200px;height: 100px;z-index: 2;background-color: #fff;padding: 10px;border-radius: 5px;border-top-left-radius: 0;border-bottom-right-radius: 0;">-->
+    <!--        <div>-->
+    <!--            <div style="width: 50px; height: 50px;float: left">-->
+    <!--                <img-->
+    <!--                    src="http://avatorimg.klgwl.com/151151515967084_s_1020x900.jpg?x-oss-process=image/resize,m_fill,h_160,w_160"-->
+    <!--                    style="width: 50px;height: 50px;border-radius: 100%;"/>-->
+    <!--            </div>-->
+    <!--            <div style="width: 100px;height: 50px;float: left;padding: 10px;font-size: 13px">-->
+    <!--                <p>用户ID:99999</p>-->
+    <!--                <p>昵称:轻风来客</p>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+</div>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=MWkGH8HcEfA5nbdkiYXp67VmxbgL4iGe"></script>
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.base64.js"></script>
+<script type="text/javascript" src="/srv/static/panel/js/tools/Bmap/src/TextIconOverlay_min.js"></script>
+<script type="text/javascript" src="/srv/static/panel/js/tools/Bmap/src/MarkerClusterer_min.js"></script>
+<script>
+    $(function () {
+        var list = "<?php echo base64_encode(json_encode($list))?>";
+        list = eval(JSON.parse($.base64.decode(list)));
+        // 百度地图API功能
+        var map = new BMap.Map("map");
+        map.centerAndZoom(new BMap.Point(113.944354, 22.553968), 5);
+        map.enableScrollWheelZoom();
+        var MAX = 10;
+        var markers = [];
+        var pt = null;
+        // var i = 0;
+
+        for (var item in list) {
+            pt = new BMap.Point(list[item][0], list[item][1]);
+
+            //  addMarker(pt, 1, info);
+            var marker = new BMap.Marker(pt);
+//            var info =
+//                '<div style="background-color: #e4e4e4;width: 100%;height: auto;overflow: hidden;padding: 10px">' +
+//                '<div style="width: 50px; height: 50px;float: left">' +
+//                '<img src="http://avatorimg.klgwl.com/151151515967084_s_1020x900.jpg?x-oss-process=image/resize,m_fill,h_160,w_160" style="width: 50px;height: 50px;border-radius: 100%;"/>' +
+//                '</div>' +
+//                '<div style="width: 150px;height: 50px;float: left;font-size: 13px;padding: 0 10px 0;line-height: 30px ">' +
+//                '<p>用户ID:99999</p>' +
+//                '<p>昵称:轻风来客</p>' +
+//                '</div>' +
+//                '<p>红包金额：￥90</p>' +
+//                '</div>';
+//            marker.addEventListener("click", function (e) {
+//                console.log(e);
+//                var opts = {width: 200, height: 150, title: "红包信息"};
+//                var infoWindow = new BMap.InfoWindow(info, opts);
+//                map.openInfoWindow(infoWindow, new BMap.Point(e.point.lng, e.point.lat));
+//
+//            });
+//
+           markers.push(marker);
+        }
+        //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
+        var markerClusterer = new BMapLib.MarkerClusterer(map, {markers: markers});
+
+
+        function addMarker(point, index, s) {
+            var fIcon = new BMap.Icon("http://avatorimg.klgwl.com/151151515967084_s_1020x900.jpg", new BMap.Size(55, 43), {});
+            var sIcon = new BMap.Icon("http://avatorimg.klgwl.com/151151515967084_s_1020x900.jpg", new BMap.Size(55, 43), {});
+            var myIcon = "";
+// 创建标注对象并添加到地图
+            if (index == 20140508)
+                myIcon = fIcon;
+            else
+                myIcon = sIcon;
+            var marker = new BMap.Marker(point, {icon: myIcon});
+            map.addOverlay(marker);
+            marker.addEventListener("click", function () {
+                var opts = {width: 450, height: 500, title: "详细信息"};
+                var infoWindow = new BMap.InfoWindow(s, opts);
+                map.openInfoWindow(infoWindow, point);
+            });
+        }
+    })
+</script>

@@ -1,0 +1,34 @@
+<?php
+if ($topMenuCatAll) {
+    ?>
+    <?php
+    foreach ($topMenuCatAll as $cat) {
+        if ($cat['parent_id'] == 0) {
+            ?>
+            <li class="<?php echo $topMenuCatId == $cat['id'] ? 'active' : ''; ?>">
+
+                <a href="javascript:;" class="dropdown-toggle">
+                    <i class="fa <?php echo $cat['icon']; ?>"></i>
+                    <span class="menu-text"><?php echo $cat['title'] ?></span>
+                    <span class="arrow fa  fa-angle-down"></span>
+                </a>
+
+                <ul class="submenu <?php echo 'active open'; ?>">
+                    <?php foreach ($secMenuCatAll as $sec) {
+                        if ($sec['parent_id'] == $cat['id']) {
+                            ?>
+                            <li class="<?php echo $curMenuCatId == $sec['id'] ? 'active' : ''; ?>"
+                                style="<?php echo (isset($sec['hide']) && $sec['hide']) ? 'display:none' : ''; ?>">
+                                <a href="<?php echo $sec['url']; ?>" class="dropdown-toggle">
+                                    <i class="fa <?php echo $sec['icon'] ?>"></i> <?php echo $sec['title'] ?>
+                                </a>
+                            </li>
+                        <?php
+                        }
+                    }
+                    ?>
+                </ul>
+            </li>
+        <?php }
+    } ?>
+<?php } ?>

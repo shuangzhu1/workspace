@@ -1,0 +1,283 @@
+<?php
+$gender = array(
+    '0' => '保密',
+    '1' => '男',
+    '2' => '女',
+);
+
+?>
+<style>
+    .item_0 {
+        background-color: #e4e4e4
+    }
+
+    thead tr th {
+        height: 50px;
+    }
+
+
+</style>
+<form action="javascript:;" method="get" style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px;">
+    <label for="name">会员ID:</label>
+    <input name="id" type="text" id="id" value="">
+    <label for="name">用户昵称:</label>
+    <input name="name" type="text" id="name" value="">
+    <label for="name">手机号:</label>
+    <input name="phone" type="text" id="phone" value="">
+    <label for="name">状态:</label>
+    <select name="status" id="status">
+        <option value="-1" selected>全部</option>
+        <option value="0">被封号</option>
+        <option value="1">正常</option>
+        <option value="2">临时锁定</option>
+    </select>
+
+    &nbsp;<label for="name">注册时间:</label>
+    <input type="text" id="start" value="" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd"/>
+    - <input type="text" id="end" value="" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd"/>
+    <input type="submit" class="btn btn-primary btn-sm btnSearch" value="搜索">
+</form>
+<div class="tabs">
+    <a data-key="type" data-val="1" href="javascript:;"
+       class="tab <?php echo $type == 0 ? 'active' : '' ?>">全部</a>
+    <a data-key="type" data-val="3" href="javascript:;"
+       class="tab <?php echo $type == 3 ? 'active' : '' ?>">企业用户</a>
+    <!--  <a data-key="type" data-val="1" href="javascript:;"
+         class="tab active">普通用户</a>-->
+    <!--   <a data-key="type" data-val="2" href="javascript:;"
+          class="tab">机器人</a>-->
+    <a data-key="auth" data-val="1" href="javascript:;"
+       class="tab <?php echo $type == 1 ? 'active' : '' ?>">认证用户</a>
+
+</div>
+<table class="list">
+    <thead>
+    <tr class="head">
+        <th>会员ID</th>
+        <th style="width: 60px;">头像</th>
+        <th style="width: 100px;">昵称</th>
+        <th style="width: 100px;">真实姓名</th>
+        <th style="width: 60px;">性别</th>
+        <th style="width: 100px;">所在地点</th>
+<!--        <th style="width: 100px;">电话</th>-->
+        <th style="width: 70px" class="arrow" data-sort="" data-order="coins">
+            <span class="text">龙豆</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span></th>
+        <th style="width: 80px" class="arrow" data-sort="" data-order="points">
+            <span class="text">经验值</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span></th>
+        <th style="width: 80px" class="arrow" data-sort="" data-order="charm">
+            <span class="text">魅力值</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span></th>
+        <th>认证</th>
+        <th>vip</th>
+        <th>注册设备</th>
+        <th>注册方式</th>
+        <th class="arrow" data-sort="" data-order="created">
+            <span class="text">注册时间</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span>
+        </th>
+
+        <th class="arrow" data-sort="" data-order="last_login_time">
+            <span class="text">最后登录时间</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span></th>
+        <th>状态</th>
+        <th>管理</th>
+    </tr>
+    </thead>
+    <tbody class="listData">
+    <tr>
+        <td colspan="17" style="height: 100px;line-height: 100px" class="center">
+            <img
+                style="width: 40px" src="/srv/static/panel/images/admin/loading2.gif">
+        </td>
+    </tr>
+    </tbody>
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <div class="pageBar"></div>
+        </td>
+    </tr>
+</table>
+
+
+<link rel="stylesheet" href="/srv/static/panel/css/lightbox/lightbox.css"/>
+
+<script src="/static/panel/js/jquery/lightbox/lightbox.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        lightbox.option({
+            albumLabel: '%1/%2',
+            'resizeDuration': 200,
+            "fadeDuration": 0,
+            "imageFadeDuration": 0
+        });
+    })
+
+</script>
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border-radius:5px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                        style="font-size:15px">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">编辑用户信息</h4>
+            </div>
+
+            <div class="modal-body" style="position: relative">
+                <form class="form-horizontal" role="form">
+                    <input type="hidden" id="uid" value="">
+
+                    <div class="form-group"><!--头像-->
+                        <div class=""
+                             style="margin-left:30%;width:90px;height:90px;overflow:hidden;border:2px solid #ccc;border-radius:50%"
+                             id="selectAvator">
+                            <img src="/static/panel/images/avatar.png" alt="" style="height:90px;cursor: pointer;">
+                            <input type="file" name="avator" id="fileAvator" class="hide"
+                                   accept="image/gif,image/png,image/jpeg">
+                             <span class="upload-widget" data-unique="1" style="display: none"><a
+                                     class="btn btn-sm btn-success  browse-button"
+                                     href="javascript:;">选择图片</a></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 昵称 </label>
+
+                        <div class="col-sm-9 ">
+                            <input type="text" name="username" placeholder="" class="col-xs-10 col-sm-5">
+                            <span class="help-inline col-xs-12 col-sm-7 red hide">
+                                <span class="middle">昵称5-16位字符</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="form-field-2"> 性别 </label>
+
+                        <div class="col-sm-9">
+                            <label>
+                                <input name="sex" type="radio" class="ace" value="1">
+                                <span class="lbl"> 男</span>
+                            </label>
+                            <label>
+                                <input name="sex" type="radio" class="ace" value="2" checked>
+                                <span class="lbl"> 女</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+                </form>
+            </div>
+            <p class="alert alert-success success-widget" style="display: none"><!--<i class="fa fa-loading"></i>-->
+                <span class="success_msg"></span>
+            </p>
+            <div class="modal-footer" style="border-radius:0 0 5px 5px">
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" data-id="0" id="save">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!--头像裁剪-->
+<div class="modal fade" id="crop-avator" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width:1000px">
+        <div class="modal-content" style="border-radius:5px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                        style="font-size:15px">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">请裁剪头像</h4>
+            </div>
+            <div class="modal-body">
+                <div style="float:left;padding-right:40px;border-right:2px dotted #ccc;">
+                    <img src="" alt="" id="crop-source" style="max-width:100%;">
+                </div>
+                <div style="float:left;height:400px;padding-left:15px">
+                    <div><h4 style="font-weight:bold">预览:</h4></div>
+                    <div style="padding-left:25px;padding-top:30px"><img src="" alt="" id="preview"
+                                                                         style="width:250px;height:250px;border:1px solid #ccc;border-radius:5px">
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div style="padding-top:20px;color:red">方向键"↑"、”↓“、”←“、”→“可移动图片，鼠标、滚轮可移动、放大或缩小裁剪框</div>
+
+            </div>
+            <div class="modal-footer" style="border-radius:0 0 5px 5px">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary " id="complete-crop">裁剪</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<link rel="stylesheet" href="/srv/static/panel/js/tools/cropper/cropper.min.css">
+<script src="/srv/static/panel/js/tools/cropper/cropper.min.js"></script>
+<script>
+    function dataURLtoBlob(dataurl) {
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], {type: mime});
+    }
+    seajs.use(['app/users/users.bind.js?v=2.2.3.1'], function (e) {
+        e.page({type: '<?php echo $type?>'});
+        e.deleteUsers('.delBtn');
+        e.recoveryUsers('.recoveryBtn');
+        e.forbidUsers('.forbidBtn');
+        e.unForbidUsers('.unForbidBtn');
+        e.edit();
+        // base.pageList({'url': '/api/user/list'});
+    });
+    $('#start').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        },
+
+    });
+    $('#end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        allowBlank: true,
+        timepicker: false,
+        onChangeDateTime: function () {
+        }
+    });
+
+</script>
+
+
+
+

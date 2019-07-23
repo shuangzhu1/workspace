@@ -1,0 +1,1485 @@
+<style>
+    img {
+        background: #fff;
+    }
+
+    .con_wrap {
+        border-right: 1px solid #e4e4e4;
+        height: 100%;
+        overflow-y: scroll;
+    }
+
+    .con_list {
+        margin: 0;
+        padding: 10px;
+        height: auto;
+        overflow: hidden;
+        width: 100%;
+        background-color: #fff;
+        border-bottom: 1px solid #f5f5f5;
+        color: #444;
+
+    }
+
+    .con_list li {
+        /*  margin-bottom: 10px;*/
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        border-bottom: 1px solid #f5f5f5;
+        padding: 5px;
+        cursor: pointer;
+        float: left;
+        background-color: #fff;
+        border-left: 5px solid #fff;
+
+    }
+
+    /*  .con_list li:nth-child(2n) {
+          float: right;
+      }
+
+      .con_list li:nth-child(2n+1) {
+          float: left;
+  !*
+          margin-right: 5px;
+  *!
+      }*/
+
+    .con_list li:nth-child(2n):last-child, .con_list li:nth-child(2n+1):last-child {
+        border-bottom: none;
+    }
+
+    .con_list li:hover {
+        /*  background-color: #438ea7;
+          border-bottom: 1px solid #438ea7;*/
+        border-left: 5px solid purple;
+        background-color: #eee;
+    }
+
+    .con_list li.current {
+        border-left: 5px solid purple;
+        background-color: #eee;
+    }
+
+    .con_list li .avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+        float: left
+    }
+
+    .con_list li .sys_gif {
+        width: 30px;
+    }
+
+    .con_list li .info {
+        float: left;
+        max-width: 50%;
+        display: block;
+        margin-left: 10px
+    }
+
+    .con_list li .info .username {
+        height: 30px;
+        line-height: 30px;
+        vertical-align: middle;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .con_list li .info .msg {
+        height: 30px;
+        line-height: 30px;
+        vertical-align: middle;
+        width: 100%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .con_list li .right_content {
+        float: right;
+        width: 120px;
+        display: block;
+        margin-left: 10px
+    }
+
+    .con_list li .right_content .time {
+        height: 30px;
+        line-height: 30px;
+        vertical-align: middle;
+    }
+
+    .con_list li .right_content .unread_count {
+        height: 30px;
+        line-height: 30px;
+        vertical-align: middle
+    }
+
+    .con_list li .right_content .unread_count .count {
+        width: 26px;
+        height: 26px;
+        line-height: 26px;
+        vertical-align: middle;
+        text-align: center;
+        display: inline-block;
+        border-radius: 100%;
+        color: #f6f6f6;
+        background-color: #FC3F3B;
+        font-size: 12px;
+
+    }
+
+    .list {
+        width: 99%;
+    }
+
+    .list td, .list th {
+        border: none;
+        height: 40px;
+        line-height: 40px;
+        vertical-align: middle;
+    }
+
+    #content_wrap {
+        width: 99%;
+        margin: auto;
+        min-height: 500px;
+        background-color: #ececec;
+        border: 1px solid #ececec;
+        margin-top: 90px;
+    }
+
+    /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+        background-color: #F5F5F5;
+    }
+
+    /*定义滚动条轨道 内阴影+圆角*/
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        background-color: #F5F5F5;
+    }
+
+    /*定义滑块 内阴影+圆角*/
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+        background-color: #555;
+    }
+
+    #scroller {
+        position: absolute;
+        z-index: 1;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        width: 100%;
+        -webkit-transform: translateZ(0);
+        -moz-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        -o-transform: translateZ(0);
+        transform: translateZ(0);
+        /*-webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;*/
+        -webkit-text-size-adjust: none;
+        -moz-text-size-adjust: none;
+        -ms-text-size-adjust: none;
+        -o-text-size-adjust: none;
+        text-size-adjust: none;
+    }
+
+    #scroller-pullDown, #scroller-pullUp {
+        background: #fff;
+        height: 40px;
+        line-height: 40px;
+        padding: 5px 10px;
+        border-bottom: 1px solid #ccc;
+        font-weight: bold;
+        font-size: 14px;
+        color: #888;
+        text-align: center;
+        position: absolute;
+        left: 0px;
+        width: 100%;
+    }
+
+    #scroller-pullDown {
+        top: -40px;
+    }
+
+    #scroller-pullUp {
+        bottom: -40px;
+    }
+
+    #scroller-pullDown .pull-up-msg, #scroller-pullUp .pull-down-msg {
+        padding-left: 20px;
+    }
+
+    #scroller-pullDown .pull-down-icon, #scroller-pullUp .pull-up-icon {
+        display: inline-block;
+        color: dodgerblue;
+        font-size: 1.4em;
+        -webkit-transform: rotate(0deg);
+        -webkit-transition-property: -webkit-transform;
+        -webkit-transition-duration: 500ms;
+    }
+
+    #scroller-pullDown .pull-down-icon.reverse_icon, #scroller-pullUp .pull-up-icon.reverse_icon {
+        -webkit-transform: rotate(-180deg);
+    }
+
+    #wrapper {
+        position: relative;
+        max-width: 100%;
+        background: #fff;
+        overflow: hidden;
+        height: 682px;
+    }
+
+    #wrapper ul {
+        width: 100%;
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    #wrapper ul li {
+        clear: both;
+        width: 90%;
+        margin-bottom: 10px;
+    }
+
+    #wrapper ul li .tip {
+        width: 100%;
+        text-align: center;
+        /*  margin: 20px;*/
+        font-size: 13px;
+        height: 30px;
+        line-height: 30px;
+        vertical-align: middle;
+    }
+
+    #wrapper ul li .tip:first-child {
+        margin-top: 0;
+    }
+
+    #wrapper ul li .avatar {
+        width: 50px;
+        height: 50px;
+        display: inline-block;
+        margin-top: 10px;
+
+    }
+
+    #wrapper ul li .info {
+        display: inline-block;
+        min-width: 80px;
+    }
+
+    #wrapper ul li .info .msg_info {
+        border: 1px solid #ececec;
+        padding: 8px 10px 8px;
+        position: relative;
+        border-radius: 5px;
+        max-width: 600px;
+        min-height: 30px;
+        word-break: break-all;
+    }
+
+    #wrapper ul li .info .dur {
+        float: left;
+        margin-right: 5px;;
+    }
+
+    #wrapper ul li .info .right .dur {
+        float: right;
+    }
+
+    #wrapper ul li .info .voice {
+        cursor: pointer;
+        float: left;
+    }
+
+    #wrapper ul li .info .right .voice {
+        float: right;
+    }
+
+    #wrapper ul li .info .name {
+        margin-bottom: 5px;;
+    }
+
+    #wrapper ul li .info .desc {
+    }
+
+    #wrapper ul li .avatar img {
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+    }
+
+    #wrapper ul li.right .avatar {
+        float: right;
+    }
+
+    #wrapper ul li.left .avatar {
+        float: left;
+    }
+
+    #wrapper ul li .info .msg_img {
+        max-width: 100px;
+        border-radius: 5px;
+    }
+
+    #wrapper ul li.right .info {
+        float: right;
+        text-align: right;
+        max-width: 600px;
+        margin-right: 10px;
+    }
+
+    #wrapper ul li.left .info {
+        max-width: 600px;
+        margin-left: 10px;
+        float: left;
+    }
+
+    #wrapper ul li.right .info .arrow {
+        position: absolute;
+        right: -6px;
+        height: 10px;
+        width: 10px;
+        background-color: #fff;
+        border: 1px solid #e4e4e4;
+        top: 10px;
+        border-left: none;
+        border-bottom: none;
+        transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+    }
+
+    #wrapper ul li.left .info .arrow {
+        position: absolute;
+        left: -5px;
+        height: 10px;
+        width: 10px;
+        background-color: #fff;
+        border: 1px solid #ececec;
+        top: 10px;
+        border-top: none;
+        border-right: none;
+        transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+    }
+
+    /*动态分享*/
+    #wrapper li .dynamic header {
+        border-bottom: 1px solid #e4e4e4;
+        padding: 10px 0;
+    }
+
+    #wrapper li .dynamic .title {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    #wrapper li .dynamic .user_avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+    }
+
+    #wrapper li .goods_box {
+        width: 99%;
+        border: 1px solid #e4e4e4;
+        margin: auto;
+        padding: 10px;
+        margin-top: 10px;
+        background-color: #f4f4f4;
+        border-radius: 5px;
+        text-align: left;
+
+    }
+
+    #wrapper li .goods_box .name {
+        line-height: 30px;
+        margin: 0;
+        padding: 0;
+    }
+
+    #wrapper li .goods_box .price {
+        line-height: 30px;
+        margin: 0;
+        padding: 0;
+        color: red;
+        padding-bottom: 10px;
+
+    }
+
+    #wrapper li .goods_box img {
+        width: 200px;
+        background-color: #e4e4e4;
+    }
+
+    /*红包*/
+    #wrapper li .package_box {
+        position: relative;
+        border-radius: 5px;
+    }
+
+    #wrapper li .package_box img {
+        width: 200px;
+    }
+
+    #wrapper li .package_box .msg {
+        position: absolute;
+        top: 60%;
+        left: 22px;
+        color: #eee;
+        width: 150px;
+        font-size: 14px;
+        text-align: center;
+        padding: 0 10px;
+    }
+
+    #wrapper li .package_box .type {
+        position: absolute;
+        top: 40%;
+        left: 22px;
+        width: 156px;
+        font-size: 18px;
+        text-align: center;
+        line-height: 40px;
+        color: #666;
+        font-weight: bold;
+    }
+
+    #wrapper li .package_box .msg .title {
+        font-size: 15px;
+        line-height: 30px;
+        width: 100%;
+        border-bottom: 1px solid #B70A14;
+    }
+
+    #wrapper li .package_box .msg .money {
+        line-height: 30px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #e4e4e4;
+    }
+
+    /*名片*/
+
+    #wrapper li .user_card {
+        width: 200px;
+        height: 300px;
+        border-radius: 5px;
+        position: relative;
+    }
+
+    #wrapper li .user_card .user_info {
+        width: 200px;
+        position: absolute;
+        bottom: 0;
+        padding: 10px;
+        background-color: #000;
+        opacity: 0.5;
+        z-index: 1;
+        height: 80px;
+        border-radius: 0 0 5px 5px;
+    }
+
+    /*--系统gif--*/
+    .sys_gif {
+        background-color: transparent;
+    }
+
+    .sys_gif_3, .sys_gif_4 {
+        width: 60px;
+    }
+
+    .sys_gif_1, .sys_gif_2 {
+        width: 100px;
+    }
+
+    #wrapper li .user_card .user_info_box {
+        width: 200px;
+        position: absolute;
+        bottom: 0;
+        padding: 10px;
+        z-index: 2;
+        line-height: 30px;
+        color: #e4e4e4;
+        border-radius: 0 0 5px 5px;
+    }
+
+    /*第三方分享*/
+    #wrapper li .third_share {
+        width: auto;
+        height: auto;
+        overflow: hidden;
+        border: 1px solid #e4e4e4;
+        border-radius: 5px;
+        padding: 5px;
+    }
+
+    #wrapper li .third_share img {
+        float: left;
+        width: 80px;
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+
+    #wrapper li .third_share .body {
+        float: left;
+        width: 300px;
+    }
+
+    #wrapper li .third_share .title {
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 26px;
+    }
+
+    #wrapper li .third_share .desc {
+        font-size: 12px;
+    }
+
+    #wrapper li .third_share .content {
+        margin-bottom: 10px;
+        height: auto;
+        width: auto;
+        overflow: hidden;
+    }
+
+    #wrapper li .third_share .platform_name {
+        float: left;
+    }
+
+    #wrapper li .third_share .newTarget {
+        float: right;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    #wrapper li .third_share .platform {
+        clear: both;
+        border-top: 1px solid #e4e4e4;
+    }
+
+    #wrapper li .third_share .platform .point {
+        width: 8px;
+        height: 8px;
+        border-radius: 100%;
+        background-color: green;
+        display: inline-block;
+        margin-right: 2px;
+    }
+
+    /*第三方分享图片*/
+    #wrapper li .third_share_img {
+        width: auto;
+        height: auto;
+        overflow: hidden;
+        border: 1px solid #e4e4e4;
+        border-radius: 5px;
+        padding: 5px;
+    }
+
+    #wrapper li .third_share_img img {
+        float: left;
+        max-width: 300px;
+        border-radius: 5px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    #wrapper li .third_share_img .platform_name {
+        float: left;
+    }
+
+    #wrapper li .third_share_img .newTarget {
+        float: right;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    #wrapper li .third_share_img .platform {
+        clear: both;
+        border-top: 1px solid #e4e4e4;
+    }
+
+    #wrapper li .third_share_img .platform .point {
+        width: 8px;
+        height: 8px;
+        border-radius: 100%;
+        background-color: green;
+        display: inline-block;
+        margin-right: 2px;
+    }
+
+    /*正则匹配到的内容*/
+    .match {
+        font-weight: bold;
+        color: red;
+    }
+
+    /*活动分享*/
+    .activity_share_box {
+        border-radius: 5px;
+        padding: 5px;
+        height: auto;
+        width: auto;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .activity_share_box .user_avatar {
+        width: 50px;
+        display: block;
+        clear: both;
+        margin: auto;
+    }
+
+    .activity_share_box .username {
+        display: block;
+        clear: both;
+        line-height: 30px;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .activity_share_box .title {
+        line-height: 30px;
+        border-bottom: 1px solid #e4e4e4;
+    }
+
+    .activity_share_box .activity_id {
+        line-height: 30px;
+    }
+
+    /*视频*/
+    .msg_content {
+        width: 1100px;
+        resize: none;
+        height: 50px;
+        border: 1px solid #ececec;
+        border-top: none;
+        border-radius: 0 0 0 5px !important;
+        margin: 0 !important;
+        float: left;
+        line-height: 30px;
+        vertical-align: middle;
+        font-size: 16px;
+    }
+
+    .send_btn {
+        width: 98px;
+        height: 49px;
+        line-height: 49px;
+        text-align: center;
+        vertical-align: middle;
+        display: inline-block;
+        background-color: #438eb9;
+        font-size: 18px;
+        color: #fff;
+        float: left;
+        border-radius: 0 0 5px 0;
+        cursor: pointer;
+
+    }
+
+    .disabled {
+        background-color: #ddd;
+    }
+
+    .video_box {
+        max-width: 360px;
+        min-width: 80px;
+        min-height: 100px;
+        height: auto;
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+    }
+
+    .video_box .video {
+        max-width: 180px;
+        max-height: 320px;
+        border-radius: 5px;
+        display: none;
+    }
+
+    .video_box .video_thumb {
+        display: none;
+        max-width: 180px;
+        max-height: 320px;
+        border-radius: 5px;
+    }
+
+    .video_box .play {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        z-index: 10;
+        left: 0;
+        top: 0;
+        font-size: 40px;
+        line-height: 100%;
+        vertical-align: middle;
+        text-align: center;
+        cursor: pointer;
+        color: #000;
+    }
+
+    .video_box .play i {
+        height: 50px;
+    }
+
+    .loading {
+        top: -80px;
+        z-index: 9;
+    }
+
+    @keyframes loading {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @-webkit-keyframes loading {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @-moz-keyframes loading {
+        0% {
+            -moz-transform: rotate(0deg);
+        }
+        100% {
+            -moz-transform: rotate(360deg);
+        }
+    }
+
+    @-o-keyframes loading {
+        0% {
+            -o-transform: rotate(0deg);
+        }
+        100% {
+            -o-transform: rotate(360deg);
+        }
+    }
+
+    @-ms-keyframes loading {
+        0% {
+            -ms-transform: rotate(0deg);
+        }
+        100% {
+            -ms-transform: rotate(360deg);
+        }
+    }
+
+    .loading img {
+        -webkit-animation: loading 3s linear infinite;
+        -moz-animation: loading 3s linear infinite;
+        -o-animation: loading 3s linear infinite;
+        animation: loading 3s linear infinite;
+    }
+
+    .avatar img {
+        cursor: pointer;
+    }
+</style>
+
+<?php if ($admin['level'] == 1) { ?>
+    <div style="float:left;width: 30%"><!--管理员布局-->
+        <section id="product-base" class="product-widget sm widget-box left" style="width: 100%;">
+            <h3 class="widget-tit"><img
+                    src="<?php echo $user_info['avatar']; ?>?x-oss-process=image/resize,m_fill,h_160,w_160"
+                    style="width: 35px;height:35px;border-radius: 100%;"
+                    alt="">&nbsp;群主信息<span class="right widget-toolbar">
+            <label class="collapse" data-action="collapse"> <i class="fa fa-chevron-circle-up"></i></label></span></h3>
+
+
+            <article class="widget-cont widget-body">
+                <div class="tr " style="height: auto;">
+                    <label class="sm">
+                        <span class="title">群主ID:</span>
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><?php echo $item['user_id']; ?></span>
+                    </label>
+                    <label class="sm">
+                        <span class="title">群主昵称: </span>
+                        <span class="content"><?php echo $user_info['username'] ?></span>
+                    </label>
+                </div>
+                <div class="tr tr_json" style="height: auto;">
+                    <label class="sm">
+                        <span class="title">是否已认证: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $user_info['is_auth'] == 1 ? '是' : '否'; ?></span>
+                    </label>
+                    <label class="sm">
+                        <span class="title">真实姓名: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $user_info['true_name']; ?></span>
+                    </label>
+
+                </div>
+                <div class="tr">
+                    <label class="sm">
+                        <span class="title">创建群组数: </span>
+                        <span
+                            class="content"><?php echo $user_info['group_cnt'] ?></span>
+                    </label>
+                    <label class="sm">
+                        <span class="title">粉丝数: </span>
+                        <span
+                            class="content json_content"><?php echo $user_info['follower_cnt']; ?></span>
+
+                    </label>
+                    <label class="sm">
+                        <span class="title">关注数: </span>
+                        <span
+                            class="content"
+                            data-content=""><?php echo $user_info['attention_cnt']; ?></span>
+                    </label>
+                </div>
+                <div class="tr">
+                    <label class="md">
+                        <span class="title">被举报数: </span>
+                        <span
+                            class="content"
+                            data-content=""><?php echo $user_info['report_cnt']; ?></span>
+                    </label>
+                </div>
+            </article>
+        </section>
+        <section id="product-base" class="product-widget sm  widget-box collapsed left" style="width: 100%;">
+            <h3 class="widget-tit">&nbsp;管理员操作日志<span class="right"><span class="right widget-toolbar">
+            <label class="collapse" data-action="collapse"> <i class="fa fa-chevron-circle-up"></i></label></span></h3>
+
+            <article class="widget-cont  widget-body">
+                <?php if ($logs) { ?>
+                    <?php foreach ($logs as $log) {
+                        $param = $log['param'];
+                        $param = json_decode($param, true);
+                        ?>
+                        <div class="tr " style="height: auto;">
+                            <label class="lg">
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><b><?php echo date('Y-m-d H:i', $log['created']); ?></b> &nbsp;-
+                            【<?php echo isset($log['admin_info']['name']) ? $log['admin_info']['name'] : $log['user_name']; ?>
+                            】-
+                            <?php echo $log['action'] . (isset($param['reason']) ? ' 原因:' . $param['reason'] : ''); ?></span>
+                            </label>
+                        </div>
+                    <?php } ?>
+                <?php } ?>
+
+
+            </article>
+        </section>
+        <section id="product-base" class="product-widget sm widget-box left" style="width: 100%">
+            <h3 class="widget-tit">&nbsp;群组详情&nbsp;<b
+                    class=" label-info arrowed-right">【<?php echo \Services\User\GroupManager::$status[$item['status']]; ?>
+                    】</b>
+            <span class="right widget-toolbar">
+            <label class="collapse" data-action="collapse"> <i class="fa fa-chevron-circle-up"></i></label>
+        </span>
+
+
+            </h3>
+
+            <article class="widget-cont widget-body">
+                <div class="tr " style="height: auto;">
+                    <label class="sm">
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><img
+                                style="border-radius: 100%;margin-top: 5px;max-width: 80px;max-height: 80px;"
+                                src="<?php echo $item['avatar'] ? $item['avatar'] : $item['default_avatar']; ?>?x-oss-process=image/resize,m_fill,h_160,w_160" </span>
+                    </label>
+                </div>
+                <div class="tr " style="height: auto;">
+                    <label class="xs">
+                        <span class="title">创建时间:</span>
+                    <span class="content tr_json link_address_content"
+                          style="word-break: break-all"><?php echo date('Y-m-d H:i', $item['created']); ?></span>
+                    </label>
+                </div>
+                <div class="tr " style="height: auto;">
+                    <label class="xs">
+                        <span class="title">更新时间:</span>
+                    <span class="content tr_json link_address_content"
+                          style="word-break: break-all"><?php echo $item['modify'] ? date('Y-m-d H:i', $item['modify']) : "暂无更新"; ?></span>
+                    </label>
+                </div>
+                <div class="tr">
+                    <label class="md">
+                        <span class="title">群介绍: </span>
+                        <span
+                            class="content"><?php echo $item['introduce'] ? $item['introduce'] : "群主很懒，啥也没留下" ?></span>
+                    </label>
+                </div>
+                <div class="tr tr_json" style="height: auto;">
+                    <label class="md">
+                        <span class="title">群ID: </span>
+                    <span
+                        class="content json_content">
+                           <?php echo $item['id'] ?></span>
+                    </label>
+                </div>
+                <!--转让记录-->
+                <?php if ($item['transfer_record']) { ?>
+                    <div class="tr tr_json" style="height: auto;">
+                        <label class="md">
+                            <span class="title">转让记录: </span>
+                        <span
+                            class="content json_content">
+                    <?php
+                    $transfer_record = explode(',', $item['transfer_record']);
+                    foreach ($transfer_record as $k2 => $i) {
+                        $transfer_record[$k2] = explode(':', $i);
+                    }
+                    $record_count = count($transfer_record);
+                    foreach ($transfer_record as $k => $r) {
+                        if ($k == $record_count - 1) {
+                            echo "<label class='badge badge-primary'>" . $transfer_record[$k][0] . "->" . $item["user_id"] . "【" . date('Y-m-d H:i', $transfer_record[$k][1]) . "】</label><br>";
+                        } else {
+                            echo "<label class='badge badge-primary'>" . $transfer_record[$k][0] . "->" . $transfer_record[$k + 1][0] . "【" . date('Y-m-d H:i', $transfer_record[$k][1]) . "】</label><br>";
+                        }
+                    }
+                    ?>
+                      </span>
+                        </label>
+                    </div>
+                <?php } ?>
+
+
+                <div class="tr tr_json" style="height: auto;">
+                    <label class="sm">
+                        <span class="title">群被举报数: </span>
+                    <span
+                        class="content json_content">
+                           <?php echo $item['report_cnt']; ?></span>
+                    </label>
+
+                </div>
+                <div class="tr tr_json" style="height: auto;">
+                    <label class="lg">
+                        <span class="title">邀请方式: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['invite_mode'] == 0 ? '管理员' : '所有人'; ?></span>
+                    </label>
+
+                </div>
+                <div class="tr tr_json" style="height: auto;">
+                    <label class="lg">
+                        <span class="title">加入方式: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['join_mode'] == 0 ? '允许任何人加群' : ($item['join_mode'] == 1 ? "需要验证" : "不允许加入群聊"); ?></span>
+                    </label>
+
+                </div>
+
+                <div class="tr tr_json list" style="height: auto;">
+                    <label class="sm">
+                        <span class="title">操作: </span>
+                    <span class="content json_content">
+                        <?php if ($item['status'] == 0) { ?>
+                            <label class="btn btn-sm btn-success recoveryBtn"
+                                   data-id="<?php echo $item['id']; ?>">恢复正常</label>
+                        <?php } else if ($item['status'] == 1) { ?>
+                            <label class="btn btn-sm btn-danger delBtn"
+                                   data-id="<?php echo $item['id']; ?>">封杀该群</label>
+                        <?php } ?>
+                        </span>
+
+
+                    </label>
+                </div>
+                <div class="tr tr_json list" style="height: auto;width: 100%">
+                    <label class="lg">
+                        <span class="content json_content">
+                       <div class=" widget-container-span ui-sortable">
+                           <div class="widget-box" style="opacity: 1;">
+                               <div class="widget-header header-color-blue">
+                                   <h5 class="bigger lighter">
+                                       <i class="icon-table"></i>
+                                       群成员列表【<?php echo $item['member_count']; ?>】
+                                   </h5>
+                               </div>
+
+                               <div class="widget-body">
+                                   <div class="widget-main no-padding">
+                                       <table class="table table-striped table-bordered table-hover ">
+                                           <thead class="thin-border-bottom">
+                                           <tr>
+                                               <th style="width: 80px">
+                                                   <i class="icon-user"></i>
+                                                   用户头像
+                                               </th>
+                                               <th style="width: 80px">
+                                                   用户ID
+                                               </th>
+                                               <th>
+                                                   用户昵称
+                                               </th>
+                                               <th>
+                                                   群昵称
+                                               </th>
+                                               <th class="hidden-480">备注</th>
+                                           </tr>
+                                           </thead>
+
+                                           <tbody class="page_content">
+                                           </tbody>
+                                           <tr>
+                                               <td colspan="5">
+                                                   <span class="left">共<?php echo $item['member_count'] ?>条数据</span>
+                                                   <span class="right">
+                                                       <div class="pagination" data-gid="<?php echo $item['id']; ?>"
+                                                            data-total="<?php echo $item['member_count']; ?>"></div>
+                                                   </span>
+                                               </td>
+                                           </tr>
+
+                                       </table>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                        </span>
+                    </label>
+                </div>
+            </article>
+        </section>
+    </div>
+    <div class="right"
+         style="width: 68%;height:750px;box-sizing: border-box;margin-left:20px;background: #fff;padding:0 10px;border: 1px double #a5b6c8;border-radius:10px">
+        <p style="line-height: 30px;padding: 10px;border-bottom: 1px dotted #e4e4e4;display: " class="filter">
+            <label>搜索：</label>
+        <span>
+                <input type="text" id="search_key" name="search_key" placeholder="搜索关键字">
+                <input type="text" id="start" value="" placeholder="开始时间" name="start"
+                       data-date-format="yyyy-mm-dd hh:ii"/>
+                - <input type="text" id="end" value="" placeholder="结束时间" name="end"
+                         data-date-format="yyyy-mm-dd hh:ii"/>
+                每页:<input type="text" id="limit" value="50" placeholder="每页显示的条数" name="limit" style="width: 50px"
+            />条数据;
+
+                <label class="btn btn-inverse btn-xs btnMsgSearch"><i class="fa fa-search"></i> 搜索</label></span>
+            共【<label class="total_count" style="font-weight: bold;color: green">0</label>】条数据
+        </p>
+        <div id="wrapper" style="position: relative;z-index: 10">
+            <div id="scroller"
+                 style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
+
+                <div id="scroller-pullDown" style="display: none">
+                    <span id="down-icon" class=" fa fa-angle-double-down pull-down-icon reverse_icon"></span>
+                    <span id="pullDown-msg" class="pull-down-msg">下拉加载</span>
+                </div>
+                <div id="scroller-content" style="/*padding: 20px*/">
+                    <ul></ul>
+                </div>
+                <div id="scroller-pullUp" style="display: none">
+                    <span id="up-icon" class=" fa fa-angle-double-up"></span>
+                    <span id="pullUp-msg" class="pull-up-msg">上拉刷新</span>
+                </div>
+                <!--<div style="height: 250px;width: 100%;"></div>-->
+            <span style="width: 100%;text-align: center;display: none;height: auto;overflow: hidden">
+                       <img style="margin-top: 200px" src="/srv/static/panel/images/13915.png"/>
+                   </span>
+            </div>
+            <div class="loading"
+                 style="position: absolute; width: 50px;height: 50px;background-color: #fff;left: 50%;margin-left: -50px;text-align: center;line-height: 50px">
+                <img src="/static/panel/images/loading.png" style="background-color: #fff;width: 32px;"/>
+
+            </div>
+        </div>
+
+    </div>
+    <script type="text/javascript" src="/static/panel/js/tools/iscroll.js"></script>
+    <script>
+        seajs.use('app/panel/users/user.group.conversation.js?v=1.0.3', function (api) {
+            api.conversation(<?php echo $item['id'] ?>);
+        })
+    </script>
+<?php } else { ?>
+    <div style="float:left;width: 30%"><!--普通成员布局-->
+        <section id="product-base" class="product-widget sm widget-box left" style="width: 100%;">
+            <h3 class="widget-tit"><img
+                    src="<?php echo $user_info['avatar']; ?>?x-oss-process=image/resize,m_fill,h_160,w_160"
+                    style="width: 35px;height:35px;border-radius: 100%;"
+                    alt="">&nbsp;群主信息<span class="right widget-toolbar">
+            <label class="collapse" data-action="collapse"> <i class="fa fa-chevron-circle-up"></i></label></span></h3>
+
+
+            <article class="widget-cont widget-body">
+                <div class="tr " style="height: auto;">
+                    <label class="sm">
+                        <span class="title">群主ID:</span>
+                            <span class="content tr_json link_address_content"
+                                  style="word-break: break-all"><?php echo $item['user_id']; ?></span>
+                    </label>
+                    <label class="sm">
+                        <span class="title">群主昵称: </span>
+                        <span class="content"><?php echo $user_info['username'] ?></span>
+                    </label>
+                </div>
+                <div class="tr tr_json" style="height: auto;">
+                    <label class="sm">
+                        <span class="title">是否已认证: </span>
+                            <span
+                                class="content json_content">
+                           <?php echo $user_info['is_auth'] == 1 ? '是' : '否'; ?></span>
+                    </label>
+                    <label class="sm">
+                        <span class="title">真实姓名: </span>
+                            <span
+                                class="content json_content">
+                           <?php echo $user_info['true_name']; ?></span>
+                    </label>
+
+                </div>
+                <div class="tr">
+                    <label class="sm">
+                        <span class="title">创建群组数: </span>
+                            <span
+                                class="content"><?php echo $user_info['group_cnt'] ?></span>
+                    </label>
+                    <label class="sm">
+                        <span class="title">粉丝数: </span>
+                            <span
+                                class="content json_content"><?php echo $user_info['follower_cnt']; ?></span>
+
+                    </label>
+                    <label class="sm">
+                        <span class="title">关注数: </span>
+                            <span
+                                class="content"
+                                data-content=""><?php echo $user_info['attention_cnt']; ?></span>
+                    </label>
+                </div>
+                <div class="tr">
+                    <label class="md">
+                        <span class="title">被举报数: </span>
+                            <span
+                                class="content"
+                                data-content=""><?php echo $user_info['report_cnt']; ?></span>
+                    </label>
+                </div>
+                <div class="tr">
+                    <label class="md">
+                        <span class="title">被举报数: </span>
+                            <span
+                                class="content"
+                                data-content=""><?php echo $user_info['report_cnt']; ?></span>
+                    </label>
+                </div>
+
+            </article>
+        </section>
+        <section id="product-base" class="product-widget sm  widget-box collapsed left" style="width: 100%;">
+            <h3 class="widget-tit">&nbsp;管理员操作日志<span class="right"><span class="right widget-toolbar">
+            <label class="collapse" data-action="collapse"> <i class="fa fa-chevron-circle-up"></i></label></span></h3>
+
+            <article class="widget-cont  widget-body">
+                <?php if ($logs) { ?>
+                    <?php foreach ($logs as $log) {
+                        $param = $log['param'];
+                        $param = json_decode($param, true);
+                        ?>
+                        <div class="tr " style="height: auto;">
+                            <label class="lg">
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><b><?php echo date('Y-m-d H:i', $log['created']); ?></b> &nbsp;-
+                            【<?php echo isset($log['admin_info']['name']) ? $log['admin_info']['name'] : $log['user_name']; ?>
+                            】-
+                            <?php echo $log['action'] . (isset($param['reason']) ? ' 原因:' . $param['reason'] : ''); ?></span>
+                            </label>
+                        </div>
+                    <?php } ?>
+                <?php } ?>
+
+
+            </article>
+        </section>
+
+    </div>
+    <section id="product-base" class="product-widget sm widget-box right" style="width: 65%">
+        <h3 class="widget-tit">&nbsp;群组详情&nbsp;<b
+                class=" label-info arrowed-right">【<?php echo \Services\User\GroupManager::$status[$item['status']]; ?>
+                】</b>
+                <span class="right widget-toolbar">
+            <label class="collapse" data-action="collapse"> <i class="fa fa-chevron-circle-up"></i></label>
+        </span>
+
+
+        </h3>
+
+        <article class="widget-cont widget-body">
+            <div class="tr " style="height: auto;">
+                <label class="sm">
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><img
+                                style="border-radius: 100%;margin-top: 5px;max-width: 80px;max-height: 80px;"
+                                src="<?php echo $item['avatar'] ? $item['avatar'] : $item['default_avatar']; ?>?x-oss-process=image/resize,m_fill,h_160,w_160" </span>
+                </label>
+            </div>
+            <div class="tr " style="height: auto;">
+                <label class="xs">
+                    <span class="title">创建时间:</span>
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><?php echo date('Y-m-d H:i', $item['created']); ?></span>
+                </label>
+            </div>
+            <div class="tr " style="height: auto;">
+                <label class="xs">
+                    <span class="title">更新时间:</span>
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><?php echo $item['modify'] ? date('Y-m-d H:i', $item['modify']) : "暂无更新"; ?></span>
+                </label>
+            </div>
+            <div class="tr">
+                <label class="md">
+                    <span class="title">群介绍: </span>
+                    <span class="content"><?php echo $item['introduce'] ? $item['introduce'] : "群主很懒，啥也没留下" ?></span>
+                </label>
+            </div>
+            <div class="tr tr_json" style="height: auto;">
+                <label class="md">
+                    <span class="title">群ID: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['id'] ?></span>
+                </label>
+            </div>
+            <!--转让记录-->
+            <?php if ($item['transfer_record']) { ?>
+                <div class="tr tr_json" style="height: auto;">
+                    <label class="md">
+                        <span class="title">转让记录: </span>
+                            <span
+                                class="content json_content">
+                    <?php
+                    $transfer_record = explode(',', $item['transfer_record']);
+                    foreach ($transfer_record as $k2 => $i) {
+                        $transfer_record[$k2] = explode(':', $i);
+                    }
+                    $record_count = count($transfer_record);
+                    foreach ($transfer_record as $k => $r) {
+                        if ($k == $record_count - 1) {
+                            echo "<label class='badge badge-primary'>" . $transfer_record[$k][0] . "->" . $item["user_id"] . "【" . date('Y-m-d H:i', $transfer_record[$k][1]) . "】</label><br>";
+                        } else {
+                            echo "<label class='badge badge-primary'>" . $transfer_record[$k][0] . "->" . $transfer_record[$k + 1][0] . "【" . date('Y-m-d H:i', $transfer_record[$k][1]) . "】</label><br>";
+                        }
+                    }
+                    ?>
+                      </span>
+                    </label>
+                </div>
+            <?php } ?>
+
+
+            <div class="tr tr_json" style="height: auto;">
+                <label class="sm">
+                    <span class="title">群被举报数: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['report_cnt']; ?></span>
+                </label>
+
+            </div>
+            <div class="tr tr_json" style="height: auto;">
+                <label class="sm">
+                    <span class="title">邀请模式: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['invite_mode'] == 0 ? '管理员' : '所有人'; ?></span>
+                </label>
+
+            </div>
+            <div class="tr tr_json list" style="height: auto;">
+                <label class="sm">
+                    <span class="title">操作: </span>
+                        <span class="content json_content">
+                        <?php if ($item['status'] == 0) { ?>
+                            <label class="btn btn-sm btn-success recoveryBtn"
+                                   data-id="<?php echo $item['id']; ?>">恢复正常</label>
+                        <?php } else if ($item['status'] == 1) { ?>
+                            <label class="btn btn-sm btn-danger delBtn"
+                                   data-id="<?php echo $item['id']; ?>">封杀该群</label>
+                        <?php } ?>
+                        </span>
+
+
+                </label>
+            </div>
+            <div class="tr tr_json list" style="height: auto;width: 100%">
+                <label class="lg">
+                        <span class="content json_content">
+                       <div class=" widget-container-span ui-sortable">
+                           <div class="widget-box" style="opacity: 1;">
+                               <div class="widget-header header-color-blue">
+                                   <h5 class="bigger lighter">
+                                       <i class="icon-table"></i>
+                                       群成员列表【<?php echo $item['member_count']; ?>】
+                                   </h5>
+                               </div>
+
+                               <div class="widget-body">
+                                   <div class="widget-main no-padding">
+                                       <table class="table table-striped table-bordered table-hover ">
+                                           <thead class="thin-border-bottom">
+                                           <tr>
+                                               <th style="width: 80px">
+                                                   <i class="icon-user"></i>
+                                                   用户头像
+                                               </th>
+                                               <th style="width: 80px">
+                                                   用户ID
+                                               </th>
+                                               <th>
+                                                   用户昵称
+                                               </th>
+                                               <th>
+                                                   群昵称
+                                               </th>
+                                               <th class="hidden-480">备注</th>
+                                           </tr>
+                                           </thead>
+
+                                           <tbody class="page_content">
+                                           </tbody>
+                                           <tr>
+                                               <td colspan="5">
+                                                   <span class="left">共<?php echo $item['member_count'] ?>条数据</span>
+                                                   <span class="right">
+                                                       <div class="pagination" data-gid="<?php echo $item['id']; ?>"
+                                                            data-total="<?php echo $item['member_count']; ?>"></div>
+                                                   </span>
+                                               </td>
+                                           </tr>
+
+                                       </table>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                        </span>
+                </label>
+            </div>
+        </article>
+    </section>
+
+
+<?php } ?>
+<audio src="" id="voice_box"></audio>
+<script src="/srv/static/ace/js/jquery.colorbox-min.js"></script>
+<script src="/srv/static/panel/js/jquery/jquery.pagination.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var colorbox_params = {
+            reposition: true,
+            scalePhotos: true,
+            scrolling: false,
+            previous: '<i class="fa fa-arrow-left"></i>',
+            next: '<i class="fa fa-arrow-right"></i>',
+            close: '&times;',
+            current: '{current}/{total}',
+            maxWidth: '100%',
+            maxHeight: '100%',
+            onOpen: function () {
+                document.body.style.overflow = 'hidden';
+            },
+            onClosed: function () {
+                document.body.style.overflow = 'auto';
+            },
+            onComplete: function () {
+                $.colorbox.resize();
+            }
+        };
+
+        $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
+        $("#cboxLoadingGraphic").append("<i class='fa fa-spinner orange'></i>");//let's add a custom loading icon
+        seajs.use('app/panel/group/panel.group', function (api) {
+            api.del();
+            setTimeout(function () {
+                api.refreshPagination();
+            }, 2000);
+
+
+        });
+    });
+    $(function () {
+
+    })
+</script>
+
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script>
+    $(function () {
+        $('#start').datetimepicker({
+            lang: "ch",
+            step: 6,
+            format: "Y-m-d H:i",
+            maxDate: 0,
+            timepicker: true,
+            allowBlank: true,
+            onChangeDateTime: function () {
+            }
+        });
+        $('#end').datetimepicker({
+            lang: "ch",
+            step: 6,
+            format: "Y-m-d H:i",
+            maxDate: 0,
+            timepicker: true,
+            allowBlank: true,
+            onChangeDateTime: function () {
+            }
+        });
+    });
+
+</script>  <link rel="stylesheet" href="/srv/static/panel/css/lightbox/lightbox.css"/>
+
+<script src="/srv/static/panel/js/jquery/lightbox/lightbox.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        lightbox.option({
+            albumLabel: '%1/%2',
+            'resizeDuration': 200,
+            "fadeDuration": 0,
+            "imageFadeDuration": 0
+        });
+    })
+
+</script>
+

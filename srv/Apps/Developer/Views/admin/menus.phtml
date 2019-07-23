@@ -1,0 +1,209 @@
+<style type="text/css" xmlns="http://www.w3.org/1999/html">
+    .expand {
+        text-decoration: none;
+        padding: 0 8px 0 0;
+        font-family: 'Courier New';
+    }
+
+    .operate {
+        text-align: right;
+    }
+
+    .operate .add {
+        cursor: pointer;
+        display: none;
+    }
+
+    .isHide, .sort {
+        width: 36px;
+    }
+
+    .level1 {
+        /*background: #FCFAFE;*//*font-weight: bold;*/
+    }
+
+    .level2 {
+        display: none;
+    }
+
+    .catUrl {
+        width: 300px;
+    }
+
+    .catLevel .current {
+        color: #ff0000;
+    }
+
+    .module, .controller, .action {
+        width: 120px;
+    }
+
+    .catLevel td {
+        padding: 6px;
+        line-height: 240%;
+        font-size: 14px;
+        font-family: 'Microsoft Yahei';
+    }
+
+    .secCats a {
+        display: inline-block;
+        margin: 0 4px;
+    }
+</style>
+<script type="text/javascript">
+    seajs.use('app/admin/admin.manager', function (api) {
+        api.setMenus();
+        api.mvMenus('.mvMenusBtn');
+    });
+</script>
+<?php
+$curPid = $topCat;
+$curCid = intval($this->request->get('cid'));
+?>
+<section>
+    <form action="javascript:;">
+        <table class='list' id="menus">
+            <caption>
+                <b class="captitle">后台导航菜单</b>
+            </caption>
+            <tr class="catLevel">
+                <th class="name">一级</th>
+                <td colspan="8">
+                    <?php
+                    foreach ($menuCats as $k => $cat) {
+                        if (0 == $cat['parent_id']) {
+                            // set current for first time
+                            $current = $curPid == $cat['id'] ? 'current' : '';
+                            echo ' [ <a href="javascript:;" class="menuCat ' . $current . '" data-id="' . $cat['id'] . '">' . $cat['title'] . '</a> ] ';
+                        }
+                    }
+                    ?>
+                </td>
+            </tr>
+            <tr class="catLevel">
+                <th class="name">二级</th>
+                <td colspan="8">
+                    <p class="secCats">
+                        <?php
+                        foreach ($menuCats as $k => $cat2) {
+                            if (0 != $cat2['parent_id']) {
+                                $show = $curPid == $cat2['parent_id'] ? '' : 'style="display:none"';
+                                $current2 = $curCid == $cat2['id'] ? 'current' : '';
+                                echo ' <a href="' . $this->uri->actionUrl('?cid=' . $cat2['id']) . '" class="menuCat2 ' . $current2 . '" data-pid="' . $cat2['parent_id'] . '" data-id="' . $cat2['id'] . '" ' . $show . '>' . $cat2['title'] . '</a> ';
+                            }
+                        }
+                        ?>
+                    </p>
+
+                </td>
+            </tr>
+            <tr class="head">
+                <th style='width:24px;'>ID</th>
+                <th style='width: 36px;'>批量</th>
+                <th style='width:46px;' title="显示顺序">排序</th>
+                <th style='width:46px;'>隐藏</th>
+                <th style='width:144px;'>模块</th>
+                <th style='width:144px;'>控制器</th>
+                <th style='width:144px;'>方法</th>
+                <th>标题</th>
+            </tr>
+            <tbody class="listData">
+            <?php
+            if ($curPid) {
+            ?>
+            <?php
+            if ($data) {
+                foreach ($data as $menu) {
+                    // show current cat's menu
+                    ?>
+                    <tr class="row " data-id="<?php echo $menu['id']; ?>" data-cid="<?php echo $curCid; ?>">
+                        <th class='name'><?php echo $menu['id']; ?></th>
+                        <td class="center"><input type="checkbox" class="chk" data-id="<?php echo $menu['id']; ?>"/>
+                        </td>
+                        <td><input class="txt sort" type="text" data-old="<?php echo $menu['sort']; ?>"
+                                   value="<?php echo $menu['sort']; ?>"></td>
+                        <td><input class="txt isHide" type="text" value="<?php echo $menu['is_hide']; ?>"
+                                   data-old="<?php echo $menu['is_hide']; ?>"/></td>
+                        <td><input class="txt module" type="text" value="<?php echo $menu['module']; ?>"
+                                   data-old="<?php echo $menu['module']; ?>"/></td>
+                        <td><input class="txt controller" type="text" value="<?php echo $menu['controller']; ?>"
+                                   data-old="<?php echo $menu['controller']; ?>"/></td>
+                        <td><input class="txt action" type="text" value="<?php echo $menu['action']; ?>"
+                                   data-old="<?php echo $menu['action']; ?>"/></td>
+                        <td><input class="txt menuTitle" type="text" value="<?php echo $menu['title']; ?>"
+                                   data-old="<?php echo $menu['title']; ?>"/></td>
+                    </tr>
+                <?php
+                }
+            } else {
+                ?>
+                <tr>
+                    <td colspan="12">
+                        <p class="red">暂无数据</p>
+                    </td>
+                </tr>
+            <?php } ?>
+            <tr class="showpage" id="addOption">
+                <th class="name">分割线</th>
+                <td colspan="8"><a href="javascript:;" class="addMenuBtn" data-cid="<?php echo $curCid; ?>">添加菜单</a>
+                    (说明：上面的一级二级属于后台导航栏目名称，设置请都相应的“后台导航栏目”，接着是当前二级栏目下已经存在的菜单，你也可以通过按钮“添加菜单”添加)
+                </td>
+            </tr>
+            <tr id="" class="row addMenuRow current" data-cid="<?php echo $curCid; ?>">
+                <th class='name'></th>
+                <td></td>
+                <td><input class="txt sort" type="text" value="0"></td>
+                <td><input class="txt isHide" type="text" value="0"/></td>
+                <td><input class="txt module" type="text" value="panel"/></td>
+                <td><input class="txt controller" type="text" value=""/></td>
+                <td><input class="txt action" type="text" value=""/></td>
+                <td><input class="txt menuTitle" type="text" value=""/></td>
+            </tr>
+            </tbody>
+            <tr class="showpage">
+                <th class="name">操作</th>
+                <td colspan="8">
+                    <input type="submit" class="miBtn btn-gray" value="设置" id="setMenuBtn"/>
+                    <span style="float: right;">
+                        <span>
+                        [ <a href="javascript:;" class="selectAll">全选</a> ]
+                        [ <a href="javascript:;" class="selectNone">全不选</a> ]
+                        [ <a href="javascript:;" class="selectInvert">反选</a> ]
+                    </span>
+                    <select name="" class="selc mvMenusCat">
+                        <?php
+                        foreach ($menuCats as $k => $cat) {
+                            if (0 == $cat['parent_id']) {
+                                ?>
+                                <option value="">【 <?php echo $cat['title']; ?> 】</option>
+                                <?php
+                                foreach ($menuCats as $cat2) {
+                                    if ($cat['id'] == $cat2['parent_id']) {
+                                        ?>
+                                        <option value="<?php echo $cat2['id']; ?>">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;|— <?php echo $cat2['title']; ?></option>
+
+                                    <?php
+                                    }
+                                }
+                                ?>
+                            <?php
+                            }
+                        }
+                        ?>
+                    </select>
+                    <input type="button" value="确认移动" class="miBtn btn-light mvMenusBtn"
+                           data-cid="<?php echo $cat2['id']; ?>">
+                    </span>
+                </td>
+            </tr>
+            <?php } else { ?>
+                <tr>
+                    <td colspan="12">
+                        <p class="red noData">请选择正确的二级栏目</p>
+                    </td>
+                </tr>
+            <?php } ?>
+        </table>
+    </form>
+</section>

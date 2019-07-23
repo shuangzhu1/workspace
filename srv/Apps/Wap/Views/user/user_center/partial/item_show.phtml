@@ -1,0 +1,26 @@
+<?php
+$v = explode('?', $video['url']);
+?>
+<!--<div class="show_bar">
+    <span class="title">秀场展示</span> <span class="content">(赞：<span class="num"
+                                                                   style="margin-right: 34px"><?php /*echo $info['like_cnt'] */?></span>踩：<span
+            class="num"><?php /*echo $info['dislike_cnt'] */?></span>)</span>
+</div>-->
+<!--<div class="item">
+        <video controls id="my-video" class="video-js" controls
+               poster="<?php /*echo $video[0]; */?>"
+               preload="auto" data-setup="{}"
+               src="<?php /*echo $video[1]; */?>" style="width:100%">
+        </video>
+</div>-->
+
+    <div class="item" style="background-image:url(<?php echo $v[0]?>);background-size:cover;position:relative" data-url="<?php echo $v[1] ?>">
+        <span style="color:white;position: absolute;left:1.5rem;bottom:0.5rem;font-size:0.6rem">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            <?php echo $video['view_cnt'] ?>
+        </span>
+        <span style="color:white;position: absolute;right:1.5rem;bottom:0.5rem;font-size:0.6rem">
+            <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+            <?php echo $video['like_cnt'] ?>
+        </span>
+    </div>

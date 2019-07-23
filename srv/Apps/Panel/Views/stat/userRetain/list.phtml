@@ -1,0 +1,18 @@
+<tr class="head">
+    <th colspan="2"></th>
+    <?php foreach ($data['label'] as $i => $l) { ?>
+        <th><?php echo $l ?></th>
+    <?php } ?>
+</tr>
+
+<?php foreach ($data['data'] as $day => $item) {
+
+    ?>
+    <tr>
+        <td><?php echo $day ?></td>
+        <td><?php echo $item['count'] ?></td>
+        <?php foreach ($item['list'] as $j) { ?>
+            <td><?php echo $j ?></td>
+        <?php } ?>
+    </tr>
+<?php } ?>

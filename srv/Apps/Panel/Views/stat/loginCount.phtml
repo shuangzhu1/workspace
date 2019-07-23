@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script src="/srv/static/panel/js/echarts/echart-all.2.2.7.min.js"></script>
+<script src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<div class="col-xs-12 " >
+    <label for="ac_type" style="font-weight:bold;">请选择统计时段：</label>
+    <input type="text" class="start" value="{{begin}}" > - <input type="text" class="end" value="{{end}}" >
+    <input type="button" class="btn btn-xs btn-primary" value="查询" style="margin-left:10px" id="query">
+</div>
+<div class="col-xs-12" style="margin-top:20px">
+    <div class="data-map col-xs-8">
+        <div id="myChart-map"  style="height:700px;"></div>
+    </div>
+    <div class="proportion-user col-xs-4">
+        <div id="myChart-pie" style="height:500px;"></div>
+    </div>
+</div>
+
+<script>
+    $('.start,.end').datetimepicker({
+        format:'Y/m/d',
+        lang:'ch',
+        minDate:'2017/01/25',
+        maxDate:"<?php echo date('Y/m/d',strtotime('-1 day'))?>",
+        timepicker:false,
+        allowBlank:true
+    });
+
+    seajs.use('app/panel/stat/panel.loginCount.js?1.0.1')
+</script>

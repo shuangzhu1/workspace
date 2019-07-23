@@ -1,0 +1,255 @@
+<form action="javascript:;" method="get"
+      style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px; line-height: 50px;">
+    <label for="name">关键字</label>
+    <input name="key" type="text" id="key" placeholder="礼物名称" value="<?php /*echo $key; */ ?>">
+    &nbsp;
+    <label for="name">vip</label>
+    <select name="is_vip" id="is_vip">
+        <option value="-1" selected>全部</option>
+        <option value="1">是</option>
+        <option value="0">否</option>
+    </select>
+    <label for="name">状态</label>
+    <select name="enable" id="enable">
+        <option value="-1" selected>全部</option>
+        <option value="1">正常</option>
+        <option value="0">禁用</option>
+    </select>
+    <input type="submit" class="btn btn-primary btn-sm btnSearch" value="搜索">
+    <span class="btn btn-primary btn-sm btnAdd right"><i class="fa fa-plus"></i> 添加礼物</span>
+</form>
+<table id="article-list" class='list'>
+    <thead>
+    <tr class="head">
+        <th style='width:80px'>礼物ID</th>
+        <th style='width:100px'>礼物名称</th>
+        <th style='width:80px'>显示图</th>
+        <th style='width:150px'>是否带动效</th>
+        <!-- <th style='width:150px' class="arrow" data-sort="" data-order="sort_num">
+             <span class="text">排序大小 <a href="javascript:;" class="fa fa-question-circle blue tooltip-info"
+                                        data-rel="tooltip"
+                                        data-placement="top" data-original-title="越小显示越靠前"></a>
+             </span>
+             <span class="arrow_wrap">
+                 <i class="fa fa-caret-down arrow-down"></i>
+                 <i class="fa fa-caret-up arrow-up"></i>
+             </span>
+         </th>-->
+
+        <th style='width:120px' class="arrow" data-sort="" data-order="coins">
+            <span class="text">龙豆值</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span>
+        </th>
+        <th style='width:150px' class="arrow" data-sort="" data-order="is_vip">
+            <span class="text">是否vip</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up"></i>
+            </span>
+        </th>
+        <th style='width:150px' class="arrow" data-sort="" data-order="enable">
+            <span class="text">状态</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up"></i>
+            </span>
+        </th>
+        <th style='width:120px' class="arrow" data-sort="" data-order="use_count">
+            <span class="text">使用次数</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up"></i>
+            </span>
+        </th>
+        <th style='width:120px' class="arrow" data-sort="" data-order="is_recommend">
+            <span class="text">是否推荐</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up"></i>
+            </span>
+        </th>
+        <th style='width:120px' class="arrow" data-sort="" data-order="charm">
+            <span class="text">魅力值</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up"></i>
+            </span>
+        </th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody class="listData">
+    <tr>
+        <td colspan="12">
+            <li class="loading"
+                style="text-align: center;display:none;width: 100%;line-height: 100px;height: 100px;vertical-align: middle">
+                <img
+                    style="width: 40px" src="/srv/static/panel/images/admin/loading2.gif"></li>
+        </td>
+    </tr>
+    </tbody>
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <div class="pageBar"></div>
+        </td>
+    </tr>
+    <tr class="showpage">
+        <th class="name">操作</th>
+        <td colspan="13">
+            <span class="btn btn-xs btn-inverse btnAdd"><i class="fa fa fa-plus"></i> 添加礼物</span>
+        </td>
+    </tr>
+</table>
+<div class="modal fade" id="tagModal">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">礼物编辑</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">礼物名称:</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name"
+                                   placeholder="礼物名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">龙豆值:</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="coins" placeholder="龙豆值为0为免费">
+                        </div>
+                    </div>
+                    <!--  <div class="form-group">
+                          <label for="ruleName" class="col-sm-2 control-label">排序:</label>
+
+                          <div class="col-sm-10">
+                              <input type="text" class="form-control" id="sort_num" placeholder="排序越小越靠前">
+                          </div>
+                      </div>-->
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">魅力值:</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="charm" placeholder="魅力值为整数">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="logo" class="col-sm-2 control-label">显示图：</label>
+                        <div class="col-sm-10">
+                            <div class="col-xs-8" style="padding-left: 0">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-picture-o"></i></span>
+                                    <input class="form-control img" name="thumb" id="thumb" type="text" readonly=""
+                                           value="">
+                                    <a class="input-group-addon" id="upTagThumb" href="javascript:;">选择图片</a>
+                                </div>
+                            </div>
+                    <span class="col-xs-4 pic-review" id="picReviewer" data-list-item-id="12">
+                        <img src=""
+                             class="preview-thumb"
+                             style="height: 32px;" title="选择图片">
+                        <label class="help-block with-errors"></label>
+                    </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">动效文件:</label>
+                        <div class="col-sm-9">
+                            <div class=" set-field fileSection">
+
+            <span class="upload-widget" id="upload-widget" data-unique="2"><a
+                    class="btn btn-sm btn-success browse-button"
+                    href="javascript:;">选择zip文件</a></span>
+                                <input type="hidden" id="file_ID" value=""/>
+                                <span id="fileUrl" data-original_url="" style="height: 32px;"></span>
+                                <span class="help-inline red"></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="form-group submit_yunpian">
+                        <label for="ruleName" class="col-sm-2 control-label">可用:</label>
+                        <div class="col-sm-10">
+                            <input id="enable" type="checkbox"
+                                   class="ace ace-switch ace-switch-5"/>
+                            <span class="lbl"></span>
+                        </div>
+
+                    </div>
+                    <div class="form-group submit_yunpian">
+                        <label for="ruleName" class="col-sm-2 control-label">是否vip:</label>
+                        <div class="col-sm-10">
+                            <input id="is_vip" type="checkbox"
+                                   class="ace ace-switch ace-switch-5"/>
+                            <span class="lbl"></span>
+                        </div>
+                    </div>
+                    <div class="form-group submit_yunpian">
+                        <label for="ruleName" class="col-sm-2 control-label">是否推荐:</label>
+                        <div class="col-sm-10">
+                            <input id="is_recommend" type="checkbox"
+                                   class="ace ace-switch ace-switch-5"/>
+                            <span class="lbl"></span>
+                        </div>
+
+                    </div>
+                    <p class="alert alert-danger error-widget" style="display: none"><i class="fa fa-warning"></i>
+                        <span class="error_msg"></span>
+                    </p>
+                    <p class="alert alert-success success-widget" style="display: none"><i class="fa fa-check"></i>
+                        <span class="success_msg"></span>
+                    </p>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <input type="hidden" value="0" id="gift_id"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-original="" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="msgModal">
+    <div class="modal-dialog" style="width: 300px;">
+        <div class="modal-content" style="padding: 10px; border-radius: 5px !important;">
+            <p><img src="/srv/static/panel/images/admin/loading.gif"/>&nbsp;正在提交数据 <span class="percent"></span></p>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="/srv/static/panel/css/lightbox/lightbox.css"/>
+
+<script src="/srv/static/panel/js/jquery/lightbox/lightbox.js"></script>
+
+<script type="text/javascript">
+
+    $('[data-rel=tooltip]').tooltip();
+    seajs.use(['app/panel/site/gift.js?v=1.2.1', 'app/panel/panel.base'], function (api, base) {
+        api.edit();
+
+    });
+    $(document).ready(function () {
+        lightbox.option({
+            albumLabel: '%1/%2',
+            'resizeDuration': 200,
+            "fadeDuration": 0,
+            "imageFadeDuration": 0
+        });
+    })
+
+</script>
+
+

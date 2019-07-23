@@ -1,0 +1,146 @@
+<link rel="stylesheet" type="text/css" href="/static/wap/css/user.css?v=1.1.14"/>
+<style>
+
+</style>
+<form class="regForm">
+
+
+    <div class="step-1" id="page-1" style="display: "><!--显示-->
+        <!--<div class="logo">
+            <img src="/static/wap/images/register/logo.png" alt="" >
+        </div>-->
+        <div class="avator_from" style="top:3.5rem;left:7.4rem;">
+            <img src="<?php echo $userinfo['avator'] ?>?x-oss-process=image/resize,m_fill,h_400,w_400" alt="">
+        </div>
+        <div class="name_from" style="left:4.6rem;top:9.275rem;">
+        <span class="username" style="color:#884d00;font-weight:bold">
+            <?php echo $userinfo['name'] ?>
+        </span>
+            邀请你加入恐龙谷
+        </div>
+        <div class="next-1" style="bottom:11.825rem">
+            <img src="/static/wap/images/register/icon_zhuce.png" alt=""  style="width:7.625rem;margin-right:1.2rem">
+            <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.hn.d.valley" style="-webkit-tap-highlight-color: transparent">
+                <img src="/static/wap/images/register/icon_xiazai.png" alt="下载恐龙谷" style="width:7.625rem">
+            </a>
+        </div>
+        <div class="" style="position:absolute;top:20rem;text-align:center;width:100%">
+
+        </div>
+
+    </div>
+    <div class="step-2" id="page-2" style="display:none;">
+        <div class="items">
+            <div class="item">
+                <span>+86</span><input type="text" class="phone" name='tel' id="phone" placeholder="请输入手机号码" maxlength="11">
+            </div>
+            <div class="item" style="position: relative;" >
+                <div >
+                    <span>验证码</span><input type="text" name="code" id='code' placeholder="请输入验证码" style="width:4.5rem">
+                </div>
+                <div class="code" id="sendCodeBtn" >
+                    获取验证码
+                </div>
+            </div>
+            <div class="item">
+                <span>密码</span><input type="password" name="pwd" id="pwd" placeholder="请设置密码 (6-16位数字字母)">
+                <div  id="eye_toggle">
+                    <img src="/static/wap/images/register/biyan_icon.png" data-stat="close" alt=""
+                         style="width:1.35rem;">
+                    <img src="/static/wap/images/register/kaiyan_icon.png" alt="" data-stat="open"
+                         style="width:1.275rem" class="hide">
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="err" >
+
+        </div>
+        <div class="next-2">
+            下一步
+        </div>
+        <div class="agree">
+            <input type="checkbox" checked> &nbsp;&nbsp;我已阅读并同意用户 <a href="http://wap.klgwl.com/agreement/rule/user">《注册协议》</a>
+        </div>
+
+    </div>
+    <div class="step-3" id="page-3" style="display:none"><!--display:none-->
+        <div class="avator">
+           <span class="dis_logo">
+                 <span class="upload-widget" data-unique="1" >
+                     <a class="browse-button"  href="javascript:;">
+                         <img src="/static/wap/images/register/touxiang_img@2x.png" id="upload_btn" >
+                     </a>
+                 </span>
+                <img id="avatar" />
+            </span>
+        </div>
+        <div style="margin-top:6.35rem;margin-left:3.15rem">
+            <div class="items">
+                <div class="item">
+                    <span><img src="/static/wap/images/register/yonghuming@2x.png" alt=""></span>
+                    <input  maxlength="20" type="text" class="username" name="username"
+                           id="username"
+                           value=""
+                           placeholder="用户名(2-8位)"/>
+                </div>
+            </div>
+            <div class="items">
+                <div class="item">
+                    <span><img src="/static/wap/images/register/chushengnianyueri@2x.png" alt=""></span>
+                    <input  type="date" class="birthday" name="birthday"
+                           id="birthday"
+                           value="1995-01-01"
+                           placeholder="生日"/>
+                </div>
+            </div>
+            <div class="items">
+                <div class="item">
+                    <span><img src="/static/wap/images/register/xingbie@2x.png" alt=""></span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" style="width: 0.8rem;float: left;margin-top: 0.25rem;" class="sex" name="sex"
+                           checked value="1"/>
+                    <span style="float: left;margin-right: 0.8rem">&nbsp;男</span>
+                    <input type="radio" style="width: 0.8rem;;margin-top: 0.25rem;float: left" class="sex" name="sex"
+                           value="2"/>
+                    <span style="float: left">&nbsp;女 </span>
+                </div>
+            </div>
+        </div>
+        <div class="err" >
+        </div>
+        <div class="next-3 regBtn">
+            下一步
+        </div>
+    </div>
+
+    <!--引导页-->
+    <div class="step-4 guide" id="page-4" style="background: url(/static/wap/images/register/lc.png) 0 -2rem;background-size:100%;display: none"><!--display:none-->
+        <div class="download" id="download" style="position:absolute;bottom:4rem">
+            下载恐龙谷
+        </div>
+    </div>
+</form>
+<img src="/static/wap/images/download_v3/appletips.png" id="imgtip" alt="" style="display: none;position:absolute;top:0;width:100%">
+<script>
+    seajs.use('/static/wap/js/app/user/app.user.js?v=1.2.55', function (api) {
+        api.register()
+    });
+    $(function () {
+        var height = $(window).height();
+        var width = $(window).width();
+        $(".step-1").css({'height': $(window).height()})
+        $(".guide").css({'height': $(window).height()})
+    })
+    $("#imgtip").on("click",function(){
+        event.stopPropagation();
+        $("#imgtip").hide();
+    });
+    $('#download').on('click',function () {
+        window.location.href = "http://wap.klgwl.com/Downloads/share";
+    });
+
+
+</script>

@@ -1,0 +1,59 @@
+<div class="col-xs-4">
+    <table  class="table table-striped table-bordered table-hover ">
+        <thead>
+        <tr >
+            <th class="center" style="width:50px">ID</th>
+            <th class="center">题库</th>
+
+        </tr>
+        </thead>
+
+        <tbody>
+        <?php foreach( $classify as $item) :?>
+            <tr style="border:1px solid red">
+                <td class="center">{{item['id']}}</td>
+                <td  >
+                    <input  data-id="{{item['id']}}" class="bank-name" type="text" value="{{item['type_name']}}">
+                    <button class="btn btn-xs btn-success save-name " style="display:none" data-operate="2" >保存</button>
+                    <button class="btn btn-xs btn-danger save-name" style="display:none" data-operate="3" >删除</button>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    <a href="javascript:;" class="btn btn-xs btn-primary add"  >添加</a>
+</div>
+<script>
+    seajs.use('app/panel/panel.base.js',function (api) {
+        $('.add').on('click',function () {
+            var type_name = window.prompt('请输入题库名字');
+            if(type_name !== null && type_name !== '')
+                api.requestApi('/panel/activity/classify',{type_name:type_name,operate:1},function (res) {
+                    if( res.result === 1 )
+                    {
+                        tip.showTip('ok','添加成功',1000,function () {
+                            window.location.reload();
+                        });
+                    }
+                })
+        });
+        $('.bank-name').on('mouseover',function () {
+            $('.save-name:visible').hide();
+            $(this).closest('td').find('.save-name').show();
+        });
+        $('.save-name').on('click',function () {
+            var $this = $(this);
+            var id = $this.siblings('input').data('id'),
+                type_name = $this.siblings('input').val(),
+                operate = $this.data('operate');
+            api.requestApi('/panel/activity/classify',{id:id,type_name:type_name,operate:operate},function (res) {
+                if( res.result === 1 )
+                {
+                    tip.showTip('ok','操作成功',1000)
+                }
+            });
+        });
+    });
+
+</script>
+

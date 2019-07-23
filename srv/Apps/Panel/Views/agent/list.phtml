@@ -1,0 +1,302 @@
+<style>
+    .anchorBL {
+        display: none
+    }
+</style>
+<form action="" method="get" style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px;">
+    <label for="name">邀请码</label>
+    <input name="code" type="text" id="code" placeholder="邀请码" value="<?php echo $code ? $code : ''; ?>">
+    &nbsp;
+    <label for="name">用户id</label>
+    <input name="user_id" type="text" id="user_id" placeholder="合伙人id" value="<?php echo $user_id ? $user_id : ''; ?>">
+    &nbsp;
+    <label for="name">真实姓名</label>
+    <input name="true_name" type="text" id="true_name" placeholder="真实姓名" value="<?php echo $true_name; ?>">
+    &nbsp;
+    <label for="name">成为合伙人时间:</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd hh:ii"/>
+    - <input type="text" id="end" value="<?php echo $end; ?>" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd hh:ii"/>
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+</form>
+<table id="article-list" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style='width:150px'>合伙人用户ID</th>
+        <th style='width:80px'>是否商家</th>
+        <th style='width:80px'>是否代理</th>
+        <th style='width:100px'>邀请码</th>
+        <th style='width:200px'>邀请开店数</th>
+        <th style='width:200px'>邀请合伙人数</th>
+        <!--        <th style="width: 100px">真实姓名</th>-->
+        <!--        <th style='width:80px'>手机</th>-->
+        <!--        <th style='width:100px'>QQ</th>-->
+        <!--        <th style='width:100px'>微信</th>-->
+        <!--        <th style='width:100px'>邮箱</th>-->
+        <!--    <th style='width:300px'>审核</th>-->
+
+        <!--        <th style='width:200px'>个人简介</th>-->
+        <th style='width:150px'>成为合伙人时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <th class='name'><?php echo $item['user_id']; ?></th>
+            <td><?php echo $item['is_merchant'] ? "是" : '否' ?></td>
+            <td><?php echo $item['is_partner'] ? "是" : '否' ?></td>
+
+            <td><span class="badge badge-success"><?php echo $item['code'] ?></span></td>
+            <td>
+                <?php if ($item['invite_shop_count'] > 0) { ?>
+                    <span class="badge badge-pink"><?php echo $item['invite_shop_count'] ?></span>
+                    <a href="JavaScript:;" class="relation btn btn-primary btn-sm"
+                       data-uid="<?php echo $item['user_id'] ?>"
+                       data-type= "1">
+                        查看关系链
+                    </a>
+                <?php } ?>
+
+            </td>
+            <td>
+                <?php if ($item['invite_agent_count'] > 0) { ?>
+                    <span class="badge badge-pink"><?php echo $item['invite_agent_count'] ?></span>
+                    <a href="JavaScript:;" class="relation btn btn-primary btn-sm"
+                       data-uid="<?php echo $item['user_id'] ?>"
+                       data-type= "3" >
+                        查看关系链
+                    </a>
+                <?php } ?>
+
+            </td>
+            <!--            <td>-->
+            <!--                --><?php //echo $item['true_name']; ?>
+            <!--            </td>-->
+            <!--            <td>-->
+            <!--                --><?php //echo $item['phone'] ?>
+            <!--            </td>-->
+            <!---->
+            <!--            <td>--><?php //echo $item['qq'] ?><!--</td>-->
+            <!--            <td>--><?php //echo $item['weixin'] ?><!--</td>-->
+            <!--            <td>--><?php //echo $item['email'] ?><!--</td>-->
+            <!---->
+            <!--            <td>--><?php //echo $item['brief'] ?><!--</td>-->
+
+            <td><?php echo date('Y-m-d H:i', $item['created']); ?></td>
+            <td>
+                <a href="JavaScript:;" class="newTarget btn btn-primary btn-sm"
+                   data-title="合伙人详情"
+                   data-href="/panel/agent/detail?user_id=<?php echo $item['user_id'] ?>">
+                    查看详情
+                </a>
+
+
+
+            </td>
+
+            <!--            <td>-->
+            <!---->
+            <!--            </td>-->
+        </tr>
+        <?php
+    }
+    }
+    else {
+        ?>
+        <tr>
+            <td colspan="9">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <!--  <tr class="showpage">
+          <th class="name">操作</th>
+          <td colspan="13">
+                  <span>
+                      [ <a href="javascript:;" class="selectAll">全选</a> ]
+                      [ <a href="javascript:;" class="selectNone">全不选</a> ]
+                      [ <a href="javascript:;" class="selectInvert">反选</a> ]
+                      <a class="btn-light delAllSelected" href="javascript:;">批量屏蔽</a>
+                  </span>
+          </td>
+      </tr>-->
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="13">
+            <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+        </td>
+    </tr>
+</table>
+<div class="modal fade" id="addressModal">
+    <div class="modal-dialog" style="width: 1000px;">
+        <div class="modal-content">
+            <!--   <div class="modal-header">
+                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                   <h4 class="modal-title"><i class="fa fa-music"></i> 申请位置</h4>
+               </div>-->
+            <div class="modal-body" style="overflow:hidden;position: relative">
+                <div id="mapWrap" style="width:100%;height: 500px;border: 1px solid #eee;"></div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="checkModal">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">封杀原因</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <div>
+                    <div class="form-group">
+                        <label for="form-field-11">封杀原因:</label>
+                        <select name="reason_list" class="reason_list">
+                            <option value="0">无</option>
+                            <option value="1">信誉炒作</option>
+                            <option value="2">虚假代理</option>
+                            <option value="3">卖高仿品牌货或品牌假货</option>
+                            <option value="4">重复开店</option>
+                            <option value="5">商品名有禁用的词或字</option>
+                            <option value="6">出售禁售品</option>
+                            <option value="7">盗用他店图片被投诉</option>
+                            <option value="8">商品和宝贝描述不符</option>
+
+                        </select>
+                    </div>
+                    <textarea id="reason" placeholder="请填写具体原因" class=" form-control"
+                              style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 100px;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" value="0" id="shop_id"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-type="user" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script src="/srv/static/panel/js/tools/Url.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=MWkGH8HcEfA5nbdkiYXp67VmxbgL4iGe"></script>
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script>
+    /*   seajs.use('app/users/users.bind', function (e) {
+     e.deleteUsers('.delBtn');
+     e.recoveryUsers('.recoveryBtn');
+     e.forbidUsers('.forbidBtn');
+     e.unForbidUsers('.unForbidBtn');
+
+     });*/
+    $('#start').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+    $('#end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+</script>
+
+
+<script type="text/javascript">
+    $(function () {
+        seajs.use('app/panel/shop/shop', function (api) {
+            api.del();
+            api.lngLat();
+            $(".reason_list").on('change', function () {
+                var r_value = $(this).val();
+                if (r_value != '0') {
+                    $("#reason").val($(".reason_list option[value='" + r_value + "']").html());
+                }
+            })
+        });
+    })
+
+</script>
+<script src="/srv/static/ace/js/jquery.colorbox-min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        var colorbox_params = {
+            reposition: true,
+            scalePhotos: true,
+            scrolling: false,
+            previous: '<i class="fa fa-arrow-left"></i>',
+            next: '<i class="fa fa-arrow-right"></i>',
+            close: '&times;',
+            current: '{current}/{total}',
+            maxWidth: '100%',
+            maxHeight: '100%',
+            onOpen: function () {
+                document.body.style.overflow = 'hidden';
+            },
+            onClosed: function () {
+                document.body.style.overflow = 'auto';
+            },
+            onComplete: function () {
+                $.colorbox.resize();
+            }
+        };
+        $('.ace-thumbnails').each(function () {
+            $('.ace-thumbnails [data-rel="' + $(this).attr('data-id') + '"]').colorbox(colorbox_params);
+        });
+        $("#cboxLoadingGraphic").append("<i class='fa fa-spinner orange'></i>");//let's add a custom loading icon
+    })
+</script>
+<!--关系链弹窗-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body" style="height:600px;overflow: hidden;">
+                <iframe frameborder="0"  src="" width="90%" height="550px" style="position:absolute" ></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<script>
+    $('.relation').on('click',function () {
+        var type = $(this).data('type');
+        var uid = $(this).data('uid');
+        var title = {1:'开店关系链',3:'合伙人关系链'}
+        var $modal = $('#myModal');
+        $modal.find('.modal-title').text(title[type]);
+        $modal.modal('show');
+        setTimeout(function(){
+            $modal.find('iframe').attr('src',"http://wap.klgwl.com/agent/relation?uid=" + uid + "&type=" + type);
+        },300);
+    });
+</script>

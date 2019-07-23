@@ -1,0 +1,312 @@
+<link rel="stylesheet" href="/static/panel/css/sweetalert.css">
+<script type="text/javascript" src="/static/panel/js/sweetalert/sweetalert.min.js"></script>
+<style>
+    .fa-times-circle-o:before {
+        content: "\f05c";
+        color:rgba(119, 119, 119, 0.88);
+    }
+</style>
+<div class="">
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4>活动基础配置：</h4>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+                <form id="config" action="">
+                    <!-- <legend>Form</legend> -->
+                    <fieldset>
+                        <table class="table table-striped table-bordered" style="border:1px solid #eee">
+                            <thead>
+                            <tr>
+                                <th width="17%" class="center">参数</th>
+                                <th width="22%" class="center"">值</th>
+                                <th  class="center"">说明</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+
+
+                            <tr>
+                                <td class="center" style="vertical-align: middle" >
+                                    活动预设值
+                                </td>
+                                <td  colspan="2" style="position:relative;padding: 0 100px" >
+                                    <div id="rangelist" style="padding:25px 20px 40px 20px; ">
+                                        <?php
+                                        $len = count($config['default_reward_num']);
+                                        for ( $i=0;$i<$len;$i++ ) {?>
+                                            <div style="padding-bottom:10px" class="range-item">
+<!--                                                <span class="blue">区间 --><?php //echo $i+1 ?><!--：</span>-->
+                                                <span class="blue">金额：</span><input type="text" name="default_reward_num[{{i}}][reward]"  value="<?php echo $config['default_reward_num'][$i]['reward'] / 100?>" size="5" style="height:20px;padding:0 5px 0"> <span class="red">元</span>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <span class="blue">份数：</span><input type="text" name="default_reward_num[{{i}}][num]"  value="<?php echo $config['default_reward_num'][$i]['num'] ?>" size="5" style="height:20px;padding:0 5px 0"><span class="red">份</span>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <span class="blue">次数限制：</span><input type="text" name="default_reward_num[{{i}}][limit]"  value="<?php echo $config['default_reward_num'][$i]['limit'] ?>" size="5" style="height:20px;padding:0 5px 0"><span class="red">次</span>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <span class="blue">消耗钻石：</span><input type="text" name="default_reward_num[{{i}}][diamond]"  value="<?php echo $config['default_reward_num'][$i]['diamond'] ?>" size="5" style="height:20px;padding:0 5px 0"><span class="red">个</span>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <span class="blue"> 发起该活动增加红包领取次数：</span><input type="text" name="default_reward_num[{{i}}][inc_num]"  disabled value="<?php echo $config['default_reward_num'][$i]['inc_num'] ?>" size="5" style="height:20px;padding:0 5px 0"><span class="red">个</span>
+                                                <i class="fa fa-times-circle-o hide dele" style="margin-left: 20px"></i>
+                                                <span style="color:red"; class="hide">区间不连续</span>
+                                            </div>
+                                        <?php }?>
+
+                                    </div>
+
+                                    <div class="" style="position:absolute;bottom:10px;right:20px" >
+                                        <a href="javascript:;" class="btn btn-xs addRange" data-part="seller_config" >添加区间</a>
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="center" style="vertical-align: middle;">游戏列表</td>
+                                <td colspan="2" class="center" style="position:relative">
+                                    <style>
+                                        #game_list input{
+                                            border:0;
+                                        }
+                                        #game_list td{
+                                            vertical-align: middle;
+                                        }
+                                    </style>
+                                    <table id="game_list" class="table  table-bordered " style="border:1px solid #ccc;width:80%;"  >
+                                        <tr>
+                                            <th>名称</th>
+                                            <th>logo</th>
+                                            <th>logo选中状态</th>
+                                            <th >类型</th>
+                                            <th >状态</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        <?php foreach( $config['game_list'] as $k => $v) : ?>
+                                            <tr class="game-item">
+                                                <td ><input type="text" name="game_list[{{k}}][game_name]" value="{{v['game_name']}}"></td>
+                                                <td>
+                                                    <img src="{{v['game_logo']}}??x-oss-process=image/resize,m_fill,h_50,w_50" alt="" style="width:50px;height:50px;margin-right:10px;border-radius:5px">
+                                                    <input type="hidden" name="game_list[{{k}}][game_logo]" value="{{v['game_logo']}}">
+                                                    <a class="btn btn-xs btn-primary choose-logo" href="javascript:;">上传</a>
+                                                    <input type="file" style="display:none">
+                                                </td>
+                                                <td>
+                                                    <img src="{{v['game_logo_select']}}??x-oss-process=image/resize,m_fill,h_50,w_50" alt="" style="width:50px;height:50px;margin-right:10px;border-radius:5px">
+                                                    <input type="hidden" name="game_list[{{k}}][game_logo_select]" value="{{v['game_logo_select']}}">
+                                                    <a class="btn btn-xs btn-primary choose-logo-select" href="javascript:;">上传</a>
+                                                    <input type="file" style="display:none">
+                                                </td>
+                                                <td><input type="text" name="game_list[{{k}}][game_type]" value="{{v['game_type']}}" style="width:50px"></td>
+                                                <td >
+                                                    <input type="text" name="game_list[{{k}}][game_status]" value="{{v['game_status']}}" style="width:50px">
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-xs btn-danger delGame" >删除</a>
+                                                </td>
+
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </table>
+                                    <div class="" style="position:absolute;bottom:10px;right:20px" >
+                                        <a href="javascript:;" class="btn btn-xs addGame" data-part="seller_config" >添加游戏</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2" class="center" style="vertical-align: middle">自定义活动</td>
+
+                                <td class="center">
+                                    金额：<input type="text" name="defined_reward_num[min_reward]"  value="<?php echo $config['defined_reward_num']['min_reward'] / 100?>" size="5" style="height:20px;padding:0 5px 0"><span style="color:red">元</span>
+                                </td>
+                                <td>自定义活动时，金额<span class="red">最小值</span></td>
+                            </tr>
+                            <tr>
+
+                                <td class="center">
+                                    份数：<input type="text" name="defined_reward_num[min_num]"  value="<?php echo $config['defined_reward_num']['min_num']?>" size="5" style="height:20px;padding:0 5px 0"><span style="color:red">份</span>
+                                </td>
+                                <td>自定义活动时，份数<span class="red">最小值</span></td>
+                            </tr>
+                            <tr>
+                                    <td >配置有效期</td>
+                                    <td colspan="2" class=""><input  name="expire" type="text"  value="{{config['expire']}}" size="8" style="height:20px;padding:0 5px 0"> 秒</td>
+                            </tr>
+                            <tr>
+                                <td >每日可获奖励次数</td>
+                                <td colspan="2" class=""><input  name="reward_limit" type="text"  value="{{config['reward_limit']}}" size="8" style="height:20px;padding:0 5px 0"> 次</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+
+                    <div class="form-actions center">
+                        <button type="button" class="btn btn-sm btn-success" id="save">
+                            保存
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<script>
+    seajs.use("app/panel/panel.base.js",function (api) {
+
+        $('#save').on('click',function(){
+            var canSave = true;
+            //非空验证
+            $('#config input[type != "file"]').each(function (i) {
+                if( $(this).val() === '' )
+                {
+                    console.log(this);
+                    tip.showTip('err','值不能为空',2000);
+                    canSave = false;
+                    return false;
+                }
+            });
+            //去除input框错误提示
+            $('#config input').each(function (i) {
+                $(this).on('focus',function () {
+                    $(this).css('border-color','#ccc');
+                })
+            });
+            //预定义每份最小值1分钱
+            $('#rangelist .range-item').each(function () {
+                var money = $(this).find('input:eq(0)').val();
+                var num = $(this).find('input:eq(1)').val();
+                if( money * 100 / num < 1)
+                {
+                    tip.showTip('err','每份最小值不能少于一分钱',2000);
+                    $(this).find('input:eq(1)').css('border-color','red');
+                    canSave = false;
+                    return false;
+                }
+            });
+            //自定义配置每份最小值1分钱
+            var money_defined = $('input[name="defined_reward_num[min_reward]"]').val();
+            var num_defined = $('input[name="defined_reward_num[min_num]"').val();
+            if( money_defined * 100 / num_defined < 1)
+            {
+                tip.showTip('err','每份最小值不能少于一分钱',2000);
+                $('input[name="defined_reward_num[min_num]"').css('border-color','red');
+                canSave = false;
+                return false;
+            }
+            if( canSave )
+            {
+                api.requestApi('/panel/activity/index',$('#config').serialize(),function (res) {
+                    if(res.result == 1)
+                    {
+                        tip.showTip('ok','保存成功',1500);
+                        setTimeout(function () {
+                            window.location.reload()
+                        },1500)
+                    }
+                });
+            }
+        })
+
+        $('.addRange').on('click',function () {
+            var ele = $(this).parent().prev().find('div:last-child').clone(),
+                num = $(this).closest('td').find('.range-item').length;
+            $(ele).find('input:first').attr('name',  'default_reward_num[' + Number(num) + '][reward]');
+            $(ele).find('input:eq(1)').attr('name',  'default_reward_num[' + Number(num) + '][num]');
+            $(ele).find('input:eq(2)').attr('name',  'default_reward_num[' + Number(num) + '][limit]');
+            $(ele).find('input:eq(3)').attr('name',  'default_reward_num[' + Number(num) + '][diamond]');
+            $(ele).find('input:eq(4)').attr('name',  'default_reward_num[' + Number(num) + '][inc_num]');
+            $(ele).find('input').val('');
+            $(this).parent().prev().append(ele);
+            $('.range-item').unbind('mouseenter').unbind('mouseleave');
+            $('.range-item:last').hover(function () {
+                $(this).find('i').toggleClass('hide');
+            });
+            $('.range-item:last').find('i').on('click',function () {
+                $(this).parent().remove();
+                $('.range-item:last').hover(function () {
+                    $(this).find('i').toggleClass('hide');
+                });
+            });
+            $(ele).find('input').on('focus',function () {
+                $("#rangelist div").each(function () {
+                    $(this).find('span:last').addClass('hide');
+                    $(this).find('input').css('color','');
+                })
+            })
+
+        });
+
+        $('.range-item:last').hover(function () {
+            $(this).find('i').toggleClass('hide');
+        });
+        $('.dele').on('click',function () {
+            $(this).parent().remove();
+            $('.range-item:last').hover(function () {
+                $(this).find('i').toggleClass('hide');
+            });
+        });
+
+        //更换游戏logo
+        $('#game_list').on('click','.choose-logo',function () {
+            var _this = this;
+            var $wrapper = $(_this).closest('td');
+            $wrapper.find('input[type="file"]').on('change',function () {
+                var file =  this.files[0];
+                var fr = new FileReader();
+                fr.readAsDataURL(file);
+                fr.onload = function () {
+                    $wrapper.find('img').attr('src',this.result);
+                    $wrapper.find('input[type="hidden"]').val(this.result);
+                }
+            }).get(0).click();
+
+
+        });
+        //更换游戏选中状态图片
+        $('#game_list').on('click','.choose-logo-select',function () {
+            var _this = this;
+            var $wrapper = $(_this).closest('td');
+            $wrapper.find('input[type="file"]').on('change',function () {
+                var file =  this.files[0];
+                var fr = new FileReader();
+                fr.readAsDataURL(file);
+                fr.onload = function () {
+                    $wrapper.find('img').attr('src',this.result);
+                    $wrapper.find('input[type="hidden"]').val(this.result);
+                }
+            }).get(0).click();
+
+
+        });
+        //添加游戏
+        $('.addGame').on('click',function () {
+            var _this = this;
+            var $ele = $(_this).closest('td').find('table tr:last-child').clone();
+            var num = $(_this).closest('td').find('.game-item').length;
+            $ele.find('img').attr('src','');
+            $ele.find('input').each(function () {
+                $(this).val('');
+            });
+            $ele.find('td:eq(0) input').attr('name','game_list[' + (num + 1) + '][game_name]');
+            $ele.find('td:eq(1) input[type="hidden"]').attr('name','game_list[' + (num + 1) + '][game_logo]');
+            $ele.find('td:eq(2) input').attr('name','game_list[' + (num + 1) + '][game_type]');
+            $ele.find('td:eq(3) input').attr('name','game_list[' + (num + 1) + '][game_status]');
+            $(_this).closest('td').find('table').append($ele);
+        });
+
+        //删除游戏
+        $('#game_list').on('click','.delGame',function () {
+            $(this).closest('tr').remove();
+        });
+
+    });
+
+</script>

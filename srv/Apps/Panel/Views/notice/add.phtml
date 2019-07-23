@@ -1,0 +1,41 @@
+<link rel="stylesheet" href="/static/panel/js/ueditor/themes/default/css/ueditor.css?v=1.0.0">
+<script src="/static/panel/js/ueditor/ueditor.config.js?v=1.0.2"></script>
+<script src="/static/panel/js/ueditor/ueditor.all.js?v=1.0.16"></script>
+<div style="width:760px;">
+    <div style="margin-bottom:10px;text-align: center;">
+        <i class="fa fa-bullhorn green " style="font-size:18px" aria-hidden="true">   </i>
+        <span style="font-weight:bold;margin-left:8px">  <span class="red">《<?php echo $this->request->get('type_name'); ?>》</span>公告</span>
+    </div>
+    <form id="article">
+        <input type="hidden" name="id" id="notice_id" value="{{item['id']}}">
+        <input type="hidden" name="type" id="notice_type" value="{{item['type']}}">
+        <div>
+            <label for="title" style="width:120px;height:20px;text-align: justify">标题：<span style="display: inline-block;padding-left: 100%;"></span></label>
+            <input type="text" name="title" id="title" placeholder="请输入标题" style="width:630px" value="{{item['title']}}">
+        </div>
+        <br>
+        <div>
+            <label for="thumb" style="width:120px;height:20px;text-align: justify">缩略图（<span class="red">选填</span>）：<span style="display: inline-block;padding-left: 100%;"></label>
+            <img  src="<?php echo empty($item['thumb']) ? '/static/panel/images/default-pic.png' : $item['thumb']; ?>" alt="" id="thumbPreview" style="-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px;height:85px">
+            <input type="hidden" name="thumb" id="thumb"  placeholder="请选择缩略图" style="display: inline-block;" value="<?php echo empty($item) ? '/static/panel/images/default-pic.png' : $item['thumb']; ?>">
+        </div>
+
+        <br>
+
+        <div id="myEditor" style="width:760px;height:600px"></div>
+        <div style="position: fixed;bottom:50px;left:50%;z-index:9999">
+
+            <a href="javascript:;" class="btn btn-sm btn-primary" id="save">保存</a>
+        </div>
+
+    </form>
+</div>
+
+
+<script>
+    var ue = UE.getEditor('myEditor');
+    ue.ready(function () {
+        UE.getEditor('myEditor').execCommand('inserthtml', '<?php echo empty($item) ? '' : $item['content'];?>');
+    });
+    seajs.use('app/panel/notice/notice.add.js?v=1.0.0');
+</script>

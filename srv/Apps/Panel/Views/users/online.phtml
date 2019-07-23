@@ -1,0 +1,115 @@
+<style>
+
+
+    .list td, .list th {
+        line-height: 30px;
+    }
+
+
+</style>
+<form action="" method="get" style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px;">
+    <label for="name">关键字</label>
+    <input name="user_id" type="text" id="user_id" placeholder="用户ID" value="<?php echo $user_id; ?>"/>
+    &nbsp;<label for="name">在线时间:</label>
+    <input type="text" id="online" value="<?php echo $online; ?>" placeholder="在线时间" name="online"
+           data-date-format="yyyy-mm-dd"/>
+    &nbsp;<label for="name">上线时间:</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd "/>
+    &nbsp;<label for="name">下线时间:</label>
+    <input type="text" id="end" value="<?php echo $end; ?>" placeholder="开始时间" name="end"
+           data-date-format="yyyy-mm-dd"/>
+
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+</form>
+<table class="list listData" style="width: 80%">
+    <thead>
+    <tr class="head">
+        <th colspan="4">用户<b class="blue">【<?php echo $user_id ?>】</b>的在线日志</th>
+    </tr>
+    </thead>
+    <thead>
+    <tr class="head">
+        <th style="width: 120px">上线时间</th>
+        <th style="width: 120px">离线时间</th>
+        <th style="width: 100px;">上线ip</th>
+        <th style="width: 150px;">离线ip</th>
+        <!-- <th>管理</th>-->
+    </tr>
+    </thead>
+    <tbody>
+    <?php
+    if ($list) {
+        foreach ($list as $k => $item) {
+            ?>
+            <tr class="item item_<?php echo $item['id'] ?>" data-id="<?php echo $item['id']; ?>">
+                <td><?php echo date('Y-m-d H:i', intval($item['login_time']/1000)); ?></td>
+                <td><?php echo  $item['logout_time'] ?  date('Y-m-d H:i', intval($item['logout_time']/1000)) :""; ?></td>
+                <td><?php if($item['login_address']){?>
+              <?php echo $item['login_address']['country']. $item['login_address']['province']. $item['login_address']['city'] ?>
+                <?php }?><?php echo $item['login_ip'] ?></td>
+                <td><?php echo $item['logout_ip'] ?></td>
+
+                <!--  <td>
+                    <a href="/panel/users/detail/?user_id=<?php /*echo $item['user_id']; */ ?>">用户详情</a> |
+                </td>-->
+            </tr>
+        <?php } ?>
+
+        <tr class="showpage">
+            <th class="name">分页</th>
+            <td colspan="16" id="dataTables-example_paginate">
+
+                <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+            </td>
+        </tr>
+        <?php
+    } else {
+        ?>
+        <tr class="even gradeC">
+            <td colspan="16">
+                <p class="noData">没有用户数据</p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+</table>
+
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script>
+    $('#start').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d H:i",
+        maxDate: 0,
+        /*   timepicker: false,*/
+        allowBlank: true,
+        onChangeDateTime: function () {
+        },
+
+    });
+    $('#end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d H:i",
+        maxDate: 0,
+        allowBlank: true,
+        /* timepicker: false,*/
+        onChangeDateTime: function () {
+        }
+    });
+    $('#online').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d H:i",
+        maxDate: 0,
+        allowBlank: true,
+        /* timepicker: false,*/
+        onChangeDateTime: function () {
+        }
+    });
+</script>
+
+
+

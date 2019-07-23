@@ -1,0 +1,257 @@
+<style>
+    .loading {
+        position:absolute;
+        top:50%;
+        left:50%;
+        text-align: center;
+    }
+</style>
+<link rel="stylesheet" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<label for="ac_type" style="font-weight:bold">请选择活动类型：</label>
+<select name="" id="ac_type">
+    <option value=0>全部</option>
+    <option value=1 >红包雨</option>
+    <option value=2 >知识问答</option>
+</select>
+
+<label for="ac_type" style="font-weight:bold;margin-left:20px">请选择统计时段：</label>
+<input type="text" id="begin" value="{{begin}}" style="width:100px"> - <input type="text" id="end" value="{{end}}" style="width:100px">
+<input type="button" class="btn btn-xs btn-primary" value="查询" style="margin-left:10px" id="query">
+<div class="hr hr8" ></div>
+<div class="clearfix" id="user_detail" style="margin:20px 0">
+    <div class="grid4">
+        <span class="bigger-175 pink"></span>
+
+        <br>
+        平台收益（<i style="color:#ccc">官方从用户回收 - 用户从官方领取</i>）元
+    </div>
+    <div class="grid4">
+        <span class="bigger-175 pink"></span>
+
+        <br>
+        参与用户数
+    </div>
+
+    <div class="grid4">
+        <span class="bigger-175 pink"></span>
+
+        <br>
+        获得奖励用户数
+    </div>
+    <div class="grid4">
+        <span class="bigger-175 pink"></span>
+
+        <br>
+        用户参与活动总次数
+    </div>
+</div>
+<div class="hr hr8" ></div>
+<div >
+    <div class="floors" style="height:300px">
+<!--        <div class='loading' style=""><img src='/static/panel/images/admin/loading2.gif' style="background-color: #fff;"/>&nbsp;&nbsp;数据加载中...</div>-->
+        <div style="height:300px;display:none" class="content">
+            <div id="chart1" style="width:400px;height:300px;float:left;"></div>
+            <div class="left" style="width:500px;height:300px;overflow-y: auto;"><!--详细列表-->
+                <div class="widget-box transparent">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="lighter">
+                            <i class="icon-star orange"></i>
+                            官方发起（<span class="red" style="font-weight: bold;" id="ac_count_official"></span>个，共<span class="red" style="font-weight: bold;" id="official_money"></span>元）
+                        </h4>
+
+
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main no-padding">
+                            <table class="table table-bordered table-striped">
+                                <thead class="thin-border-bottom">
+                                <tr>
+                                    <th width="50%">
+                                        <i class="icon-caret-right blue"></i>
+                                        金额
+                                    </th>
+
+                                    <th>
+                                        <i class="icon-caret-right blue"></i>
+                                        数量
+                                    </th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="left" style="width:0;border-left:1px dotted #eee;margin:0 10px;height:300px"></div>
+            <div class="left" style="width:500px;height:300px;overflow-y: auto;"><!--详细列表-->
+                <div class="widget-box transparent">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="lighter">
+                            <i class="icon-star orange"></i>
+                            用户发起（<span class="red" style="font-weight: bold;" id="ac_count_user"></span>个，共<span class="red" style="font-weight: bold;" id="user_money"></span>元）
+                        </h4>
+
+
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main no-padding">
+                            <table class="table table-bordered table-striped">
+                                <thead class="thin-border-bottom">
+                                <tr>
+                                    <th width="50%">
+                                        金额
+                                    </th>
+
+                                    <th>
+                                        数量
+                                    </th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="clearfix"></div>
+    <div class="hr hr8 hr-double hr-dotted" style="display:none"></div>
+    <div class="floors" style="width:100%;height:500px">
+        <div class='loading' style=""><img src='/srv/static/panel/images/admin/loading2.gif' style="background-color: #fff;"/>&nbsp;&nbsp;数据加载中...</div>
+        <div style="display:none;text-align: center;" class="content">
+            <div class="left" style="width:50%">
+                <div id="chart2" style="width:600px;height:300px;"></div>
+                <div class="left" style="width:90%;overflow-y: auto;"><!--详细列表-->
+                    <div class="widget-box transparent">
+                        <div class="widget-header widget-header-flat">
+                            <h4 class="lighter">
+                                <i class="icon-star orange"></i>
+                                官方发起
+                            </h4>
+
+
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main no-padding">
+                                <table class="table table-bordered table-striped">
+                                    <thead class="thin-border-bottom">
+                                    <tr >
+                                        <th  rowspan="2">
+                                            投放金额
+                                        </th>
+
+                                        <th rowspan="2">
+                                            退回金额
+                                        </th>
+                                        <th colspan="2" class="center">
+                                            消耗金额
+
+                                        </th>
+
+                                    </tr>
+                                    <tr>
+                                        <th >
+                                            用户领取
+                                        </th>
+                                        <th >
+                                            官方回收
+                                        </th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="left" style="width:0;border-left:1px dotted #eee;margin:0 10px;height:500px"></div>
+            <div class="left" style="width:47%;">
+                <div id="chart3" style="width:600px;height:300px;"></div>
+                <div class="" style="overflow-y: auto;"><!--详细列表-->
+                    <div class="widget-box transparent">
+                        <div class="widget-header widget-header-flat">
+                            <h4 class="lighter">
+                                <i class="icon-star orange"></i>
+                                用户发起
+                            </h4>
+
+
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main no-padding">
+                                <table class="table table-bordered table-striped">
+                                    <thead class="thin-border-bottom">
+                                    <tr >
+                                        <th  rowspan="2">
+                                            投放金额
+                                        </th>
+
+                                        <th rowspan="2">
+                                            退回金额
+                                        </th>
+                                        <th colspan="2" class="center">
+                                            消耗金额
+
+                                        </th>
+
+                                    </tr>
+                                    <tr>
+                                        <th >
+                                            用户领取
+                                        </th>
+                                        <th >
+                                            官方回收
+                                        </th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="hr hr8 hr-double hr-dotted"></div>
+
+</div>
+
+<script src="/srv/static/panel/js/echarts/echart-all.2.2.7.min.js"></script>
+<script src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script >
+    $('#begin,#end').datetimepicker({
+        format:'Y/m/d',
+        lang:'ch',
+        maxDate:'<?php echo $begin?>',
+        timepicker:false
+    });
+    seajs.use('app/panel/activity/summary.js?1.0.36',function (api) {
+        api.getData();
+    });
+
+</script>

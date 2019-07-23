@@ -1,0 +1,139 @@
+.rank_con {
+  height: 12rem;
+  width: 100%;
+  text-align: center;
+  background: #fff; }
+
+.rank_con .rank_box {
+  position: relative;
+  /*background: url(../images/person/dengji_1.png) no-repeat center;*/
+  background-size: 100%;
+  height: 9.6rem; }
+
+.rank_con .rank_box .rank_lv {
+  padding-top: 6.3rem;
+  font-size: 0.85rem;
+  color: #fff;
+  font-style: normal; }
+
+.rank_con .rank_box .rank_lv em {
+  font-style: normal; }
+
+.rank_con .rank_box .rank_article {
+  margin-top: 2.1rem; }
+
+.rank_con .rank_box .rank_article .progress_box {
+  width: 94%;
+  margin: 0 auto;
+  border: 1px solid #0bd1a0;
+  padding: 0;
+  border-radius: 0.75rem;
+  height: 0.65rem;
+  line-height: 0.65rem; }
+
+.rank_con .rank_box .rank_article .progress_box .progress {
+  height: 0.35rem;
+  line-height: 0.35rem;
+  background: #f0f0f0;
+  border-radius: 15px;
+  width: 98%;
+  margin: 0.125rem auto; }
+
+.rank_con .rank_box .rank_article .progress_box .progress span {
+  position: relative;
+  float: left;
+  margin: 0 -1px;
+  min-width: .75rem;
+  height: 0.35rem;
+  line-height: 0.35rem;
+  text-align: right;
+  background: #0bd1a0;
+  border: 1px solid #0bd1a0;
+  border-radius: 15px; }
+
+.rank_con .rank_box .rank_article .progress_box .progress span .blue {
+  background: #0bd1a0; }
+
+.rank_con .rank_box .rank_article .rank_level {
+  width: 94%;
+  margin: 0 auto;
+  padding-top: 0.2rem; }
+
+.rank_con .rank_box .rank_article .rank_level .rank_level_l {
+  float: left;
+  text-align: left;
+  font-size: 0.85rem;
+  color: #ffc237; }
+
+.rank_con .rank_box .rank_article .rank_level .rank_level_r {
+  float: right;
+  text-align: right;
+  font-size: 0.85rem;
+  color: #666; }
+
+.rank_rule {
+  margin-top: 0.4rem;
+  background-color: #fff;
+  min-height: 20.9rem; }
+
+.rank_rule .rank_rule_box {
+  padding: 0.7rem 0; }
+
+.rank_rule .rank_rule_box h1 {
+  font-size: 0.75rem;
+  color: #333; }
+
+.rank_rule .rank_rule_box ul {
+  margin-top: 1rem; }
+
+.rank_rule .rank_rule_box ul li.rank_rule_head {
+  background: #e0e0e0; }
+
+.rank_rule .rank_rule_box ul li.rank_rule_head span {
+  color: #666; }
+
+.rank_rule .rank_rule_box ul li {
+  width: 100%;
+  height: 2rem;
+  line-height: 2rem;
+  border: 1px solid #e0e0e0;
+  border-top: 0;
+  font-size: 0; }
+
+.rank_rule .rank_rule_box ul li span {
+  display: inline-block;
+  width: 49%;
+  text-align: center;
+  font-size: 0.7rem;
+  color: #999; }
+
+.rank_rule .rank_rule_box ul li span:nth-child(1) {
+  border-right: 1px solid #e0e0e0; }
+
+.rank_level_rule table {
+  border: 1px solid #e0e0e0; }
+  .rank_level_rule table thead {
+    background-color: #f0f0f0; }
+    .rank_level_rule table thead tr {
+      line-height: 2rem; }
+      .rank_level_rule table thead tr th {
+        font-size: 0.7rem;
+        color: #666;
+        font-weight: normal;
+        text-align: center;
+        }
+  .rank_level_rule table tbody tr {
+    line-height: 2rem; }
+    .rank_level_rule table tbody tr td {
+      font-size: 0.6rem;
+      color: #999;
+      text-align: center;
+      border:1px solid #eee}
+.rank_level_rule table tbody tr td:first-child {
+ vertical-align:middle }
+
+.rank_level_rule {
+  width: 100%;
+  margin-top: 0.75rem; }
+
+/*# sourceMappingURL=rank.css.map */

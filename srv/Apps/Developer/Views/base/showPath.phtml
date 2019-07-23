@@ -1,0 +1,35 @@
+<div class="inner-nav">
+    <?php
+    if ($curMenu) {
+        ?>
+        <em class="leftCore">
+            <?php echo $topMenuCat['title']; ?>
+            <i class="fa  fa-angle-right"></i>
+            <?php echo $curMenuCat['title']; ?>
+        </em>
+
+        <?php
+        foreach ($curMenus as $_menu) {
+            $uri = isset($_menu['uri']) ? $_menu['uri'] : '';
+
+            $innerUrl = isset($_menu['is_hide']) && $_menu['is_hide'] ? 'javascript:;' : '/' . $_menu['module'] . '/' . $_menu['controller'] . '/' . $_menu['action'] . $uri;
+            $dispay = isset($_menu['is_hide']) && $_menu['is_hide'] ? (($controller == $_menu['controller'] && $action == $_menu['action']) ? '' : 'display:none') : '';
+            $current = $_menu['controller'] . '/' . $_menu['action'] == $controller . '/' . $action ? 'active' : '';
+            ?>
+            <span class="<?php echo $current; ?>" style="<?php echo $dispay; ?>">
+                <a href="<?php echo $innerUrl; ?>">
+                    <?php echo $_menu['title']; ?>
+                </a>
+            </span>
+        <?php
+        }
+    } else {
+        ?>
+        <em class="leftCore">
+            控制面板
+        </em>
+    <?php } ?>
+    <em class="right" style="font-style: normal;margin:-5px 5px 0 0;">
+        <a href="javascript:history.go(-1);" class="miBtn"><i class="fa fa-arrow-left"></i> 返回</a>
+    </em>
+</div>

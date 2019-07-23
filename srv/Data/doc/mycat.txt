@@ -1,0 +1,1 @@
+指定节点读取数据：/*!mycat:dataNode=dn2*/

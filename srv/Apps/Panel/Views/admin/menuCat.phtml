@@ -1,0 +1,147 @@
+<style type="text/css" xmlns="http://www.w3.org/1999/html">
+    .expand {
+        text-decoration: none;
+        padding: 0 8px 0 0;
+        font-family: 'Courier New';
+    }
+
+    .operate {
+        text-align: right;
+    }
+
+    .operate .add {
+        cursor: pointer;
+        display: none;
+    }
+
+    .isHide, .sort {
+        width: 30px;
+    }
+
+    .level1 {
+        /*background: #FCFAFE;*//*font-weight: bold;*/
+    }
+
+    .level2 {
+        display: none;
+    }
+
+    .catUrl {
+        width: 300px;
+    }
+
+    .module, .controller, .action {
+        width: 120px;
+    }
+
+    .catLevel .current {
+        color: #ff0000;
+    }
+
+    .catLevel td {
+        padding: 6px;
+        line-height: 240%;
+        font-size: 14px;
+        font-family: 'Microsoft Yahei';
+    }
+
+    #menus .listData .row {
+        display: none;
+    }
+
+    #menus .listData .row.current {
+        display: table-row;
+    }
+</style>
+<script type="text/javascript">
+    seajs.use('app/admin/admin.manager', function (api) {
+        api.setMenusCat();
+    });
+</script>
+<section>
+    <form action="javascript:;">
+        <table class='list' id="menuCats">
+            <caption>
+                <b class="captitle">后台导航栏目</b>
+            </caption>
+
+            <tr class="head">
+                <th style='width:24px;'>ID</th>
+                <th style='width:80px;'>添加菜单</th>
+                <th style='width:60px;' title="显示顺序">排序</th>
+                <th style='width:46px;'>隐藏</th>
+                <th style='width:224px;'>标题</th>
+                <th>访问地址</th>
+                <th>icon图标</th>
+            </tr>
+            <tbody class="listData">
+            <?php
+            foreach ($menuCat as $cats1) {
+                if ($cats1['parent_id'] == 0) {
+                    ?>
+                    <tr class="row level1" data-id=<?php echo $cats1['id']; ?> data-pid="0">
+                        <th class='name'><?php echo $cats1['id']; ?></th>
+                        <td class="operate">
+                            <span class="add" data-pid=<?php echo $cats1['id']; ?>  title='添加子菜单'>添加</span>
+                            <a href="javascript:;" class="expand" data-status='hide' title='展开/隐藏'
+                               data-cid=<?php echo $cats1['id']; ?>>[+]</a>
+                        </td>
+                        <td><input class="txt sort" type="text" data-old-order="<?php echo $cats1['sort']; ?>"
+                                   value="<?php echo $cats1['sort']; ?>"></td>
+                        <td><input class="txt isHide" type="text" value="<?php echo $cats1['is_hide']; ?>"
+                                   data-old-isHide="<?php echo $cats1['is_hide']; ?>"/></td>
+                        <td><input class="txt catTitle" type="text" value="<?php echo $cats1['title']; ?>"
+                                   data-old-title="<?php echo $cats1['title']; ?>"/></td>
+                        <td><input class="txt catUrl" type="text" value="<?php echo $cats1['url']; ?>"
+                                   data-old-url="<?php echo $cats1['url']; ?>"/></td>
+                        <td><input class="txt catIcon" type="text" value="<?php echo $cats1['icon']; ?>"
+                                   data-old-icon="<?php echo $cats1['icon']; ?>"/></td>
+                    </tr>
+                    <?php
+                    foreach ($menuCat as $cats2) {
+                        if ($cats2['parent_id'] == $cats1['id']) {
+                            ?>
+                            <tr class="row level2" data-id="<?php echo $cats2['id']; ?>"
+                                data-pid="<?php echo $cats1['id']; ?>">
+                                <th class='name'><?php echo $cats2['id']; ?></th>
+                                <td class="operate">
+                                </td>
+                                <td><input class="txt sort" type="text"
+                                           data-old-order="<?php echo $cats2['sort']; ?>"
+                                           value="<?php echo $cats2['sort']; ?>"></td>
+                                <td><input class="txt isHide" type="text" value="<?php echo $cats2['is_hide']; ?>"
+                                           data-old-isHide="<?php echo $cats2['is_hide']; ?>"/></td>
+                                <td>|一一 <input class="txt catTitle" type="text" value="<?php echo $cats2['title']; ?>"
+                                               data-old-title="<?php echo $cats2['title']; ?>"/></td>
+                                <td><input class="txt catUrl" type="text" value="<?php echo $cats2['url']; ?>"
+                                           data-old-url="<?php echo $cats2['url']; ?>"/></td>
+                                <td><input class="txt catIcon" type="text" value="<?php echo $cats2['icon']; ?>"
+                                           data-old-icon="<?php echo $cats2['icon']; ?>"/></td>
+                            </tr>
+                        <?php }
+                    } ?>
+                <?php }
+            } ?>
+            </tbody>
+            <tr class="row level1" data-id="" data-pid="0">
+                <th class='name'></th>
+                <td class="operate">
+                </td>
+                <td><input class="txt sort" type="text" data-old-order=""
+                           value=""></td>
+                <td><input class="txt isHide" type="text" value=""
+                           data-old-isHide=""/></td>
+                <td><input class="txt catTitle" type="text" value=""
+                           data-old-title=""/></td>
+                <td><input class="txt catUrl" type="text" value=""
+                           data-old-url=""/></td>
+                <td><input class="txt catIcon" type="text" value=""
+                           data-old-icon=""/></td>
+            </tr>
+            <tr class="showpage">
+                <th class="name">操作</th>
+                <td colspan="6"><input type="submit" class="miBtn" value="设置" id="catDoBtn"/></td>
+            </tr>
+        </table>
+    </form>
+</section>

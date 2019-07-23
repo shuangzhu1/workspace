@@ -1,0 +1,45 @@
+<tr class="item" data-id="<?php echo $item['id']; ?>">
+    <th class='name'><?php echo $item['id']; ?></th>
+    <td><?php echo $item['name']; ?></td>
+    <td><?php if ($item['thumb']) { ?><a data-lightbox="roadtrip" href="<?php echo $item['thumb'] ?>"><img
+                style="border-radius: 100%"
+                src="<?php echo $item['thumb'] ?>?x-oss-process=image/resize,m_fill,h_60,w_60"/>
+            </a><?php } ?>
+    </td>
+    <td><?php if ($item['ncbl']) { ?><a data-lightbox="roadtrip" href="<?php echo $item['ncbl'] ?>"><img
+                    style="border-radius: 5px"
+                    src="<?php echo $item['ncbl'] ?>?x-oss-process=image/resize,m_fill,h_60,w_60"/>
+            </a><?php } ?>
+    </td>
+    <td><?php if ($item['icp']) { ?><a data-lightbox="roadtrip" href="<?php echo $item['icp'] ?>"><img
+                    style="border-radius: 5px"
+                    src="<?php echo $item['icp'] ?>?x-oss-process=image/resize,m_fill,h_60,w_60"/>
+            </a><?php } ?>
+    </td>
+    <td><?php if ($item['bp']) { ?><a data-lightbox="roadtrip" href="<?php echo $item['bp'] ?>"><img
+                    style="border-radius: 5px"
+                    src="<?php echo $item['bp'] ?>?x-oss-process=image/resize,m_fill,h_60,w_60"/>
+            </a><?php } ?>
+    </td>
+    <td><?php echo $item['status'] == 1 ? '正常' : '禁用' ?></td>
+    <td>
+        <a href="JavaScript:;"
+           data-id="<?php echo $item['id']; ?>"
+           data-name="<?php echo $item['name']; ?>"
+           data-status="<?php echo $item['status']; ?>"
+           data-thumb="<?php echo $item['thumb']; ?>"
+           data-ncbl="<?php echo $item['ncbl']; ?>"
+           data-icp="<?php echo $item['icp']; ?>"
+           data-bp="<?php echo $item['bp']; ?>"
+           class="btn btn-primary btn-sm editBtn"><i class="fa fa-edit"></i> 编辑</a>
+        <?php if ($item['status'] == 1) { ?>
+            <a href="JavaScript:;" data-id="<?php echo $item['id']; ?>"
+               class="btn btn-danger btn-sm lockBtn"><i class="fa fa-remove"></i> 禁用</a>
+        <?php } else if ($item['status'] == 2) { ?>
+            <a href="JavaScript:;" data-id="<?php echo $item['id']; ?>"
+               class="btn btn-purple btn-sm unLockBtn"><i class="fa fa-check"></i> 取消禁用</a>
+        <?php } ?>
+        <!--<a href="JavaScript:;" data-id="<?php /*echo $item['id']; */?>"
+           class="btn btn-danger btn-sm delBtn"><i class="fa fa-trash"></i> 删除</a>-->
+    </td>
+</tr>

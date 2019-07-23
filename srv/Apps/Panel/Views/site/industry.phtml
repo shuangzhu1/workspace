@@ -1,0 +1,163 @@
+<style>
+    #tableList {
+        padding: 5px;
+        border: 1px solid #e4e4e4;
+        border-radius: 5px;
+    }
+
+    #tableList ul:first-child {
+        margin: 0
+    }
+
+    #tableList .item {
+        line-height: 30px;
+    }
+
+    #tableList li {
+        border: none
+    }
+
+    #tableList .item-parent {
+        border: 1px solid #e4e4e4;
+        margin-bottom: 5px;
+        padding: 5px;
+        border-radius: 5px;;
+    }
+
+    #tableList .item-son:hover {
+        background: #e4e4e4;
+    }
+
+    #tableList .item-parent ul {
+        display: none;
+    }
+
+    .itemId {
+        background: #00a0c7;
+        display: inline-block;
+        padding: 0 5px;
+        line-height: 20px;
+        color: #fff;
+    }
+
+    .li_head {
+        border-bottom: 1px dotted #e4e4e4;
+    }
+
+    .btn-wrap {
+        cursor: pointer
+    }
+</style>
+<div class="page-header">
+    <h1><i class="fa fa-th-list"></i> 行业列表
+        <span class="pull-right">
+          <!--  <span class="btn-group">-->
+               <span class="btn btn-primary btn-sm btnAdd"><i class="fa fa-plus"></i> 添加行业</span>
+            <!--            </span>
+            -->        </span>
+    </h1>
+    <!-- /.col-lg-12 -->
+</div>
+<div id="tableList" class='tableList' style="width: 1000px;">
+    <?php
+    if ($list) {
+    ?>
+    <ul class="listDataer">
+        <?php
+        foreach ($list as $item) {
+        ?>
+        <li class="item item-parent" data-id="<?php echo $item['id']; ?>">
+            <section class="li_head"><span class='name'><label class="itemId"><?php echo $item['id']; ?></label></span>
+                <span class='name'><?php echo $item['name']; ?></span>
+                <span class='right btn-wrap'><i class="fa fa-chevron-down toggle " data-id="<?php echo $item['id']; ?>"
+                                                data-down-icon="fa-chevron-down"
+                                                data-up-icon="fa-chevron-up"></i></span>
+            </section>
+            <?php
+            $children = isset($item['children']) ? $item['children'] : [];
+            if ($children) { ?>
+                <ul class="item_<?php echo $item['id'] ?>">
+                    <?php foreach ($children as $son) { ?>
+                        <li class="item-son item-son-<?php echo $item['id']; ?>"
+                            data-id="<?php echo $son['id']; ?>">
+                            <span class='name'><?php echo $son['id']; ?></span>
+                                <span>
+                                    <?php echo $son['name']; ?>
+                                </span>
+                        </li>
+                    <?php } ?>
+                </ul>
+            <?php } ?>
+
+            <?php }
+
+            } else {
+                ?>
+            <?php } ?>
+    </ul>
+
+</div>
+<div class="modal fade" id="industryModal">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">添加行业</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">行业名称:</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name"
+                                   placeholder="行业名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">上级行业:</label>
+
+                        <div class="col-sm-10">
+                            <select name="parent_id" id="parent_id" class="form-control ">
+                                <option value="0">--最顶级--</option>
+                                <?php foreach ($list as $item) { ?>
+                                    <option value="<?php echo $item['id']; ?>"><?php echo $item['name']; ?></option>
+                                <?php } ?>
+                            </select>
+
+                        </div>
+                    </div>
+                    <p class="alert alert-danger error-widget" style="display: none"><i class="fa fa-warning"></i>
+                        <span class="error_msg"></span>
+                    </p>
+                    <p class="alert alert-success success-widget" style="display: none"><i class="fa fa-check"></i>
+                        <span class="success_msg"></span>
+                    </p>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-original="" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script type="text/javascript">
+    $(function () {
+        $(".toggle").on('click', function () {
+            var item = $(".item_" + $(this).data('id'));
+            if (item.is(':visible') == true) {
+                $(this).removeClass($(this).attr('data-up-icon')).addClass($(this).attr('data-down-icon'))
+            } else {
+                $(this).removeClass($(this).attr('data-down-icon')).addClass($(this).attr('data-up-icon'))
+            }
+            item.toggle();
+        })
+    })
+    seajs.use('app/panel/site/industry', function (api) {
+        api.edit();
+    });
+</script>

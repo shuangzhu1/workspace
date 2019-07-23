@@ -1,0 +1,88 @@
+<?php
+use Multiple\Wap\Helper\ShopData;
+
+$item = ShopData::init()->getItem();
+$option = ShopData::init()->getItemOption();
+?>
+<div class="qty-wrap">
+    <div class="tit">数量</div>
+    <div class="num">
+        <a href="javascript:;" class="minusBtn"><i class="icon icon-angle-left"></i></a>
+        <input type="text" value="1" name="qty"
+               class="item_quantity"
+               data-id="<?php echo $item['id']; ?>"
+               data-price="<?php echo $item['sell_price']; ?>"
+               style="width: 20px;height: 12px;text-align: center;"
+               data-inventory="<?php echo $item['quantity']; ?>"/>
+        <a href="javascript:;" class="plusBtn"><i class="icon icon-angle-right"></i></a>
+    </div>
+    <div class="inventory">库存
+        <?php echo $item['quantity']; ?>
+        件
+    </div>
+    <div class="clear"></div>
+</div>
+<?php
+if ($option && isset($option['option'])) {
+    $options = $option['option'];
+    $opt_name = $option['opt_name'];
+    $opt_val = $option['opt_val'];
+
+    foreach ($options as $key1 => $opt) {
+        $opt_temp = array();
+        foreach ($opt['values'] as $key2 => $optv) {
+            if ($optv['option_value_id']) {
+                $opt_temp[] = $optv;
+            }
+        }
+        $options[$key1]['values'] = $opt_temp;
+    }
+    ?>
+    <div class="product-options">
+        <?php
+        foreach ($options as $opt) {
+            if ($opt['values']) {
+                ?>
+                <dl class="product-opt" data-optID="<?php echo $opt['option_id']; ?>">
+                    <dt style="">
+                        <?php echo $opt_name[$opt['option_id']]; ?>：
+                    </dt>
+                    <dd>
+                        <?php
+                        if ($opt['values'])
+                            foreach ($opt['values'] as $k => $val) {
+                                ?>
+                                <a href="javascript:;"
+                                   class="opt_choose <?php echo $k == 0 ? 'current' : ''; ?>"
+                                   data-quantity="<?php echo $val['quantity']; ?>"
+                                   data-prefix="<?php echo $val['price_prefix']; ?>"
+                                   data-value="<?php echo $val['price']; ?>"
+                                   data-key="<?php echo $opt_name[$opt['option_id']]; ?>"
+                                   data-val="<?php echo isset($opt_val[$val['option_value_id']]) ? $opt_val[$val['option_value_id']] : ''; ?>"
+                                    ><?php echo isset($opt_val[$val['option_value_id']]) ? $opt_val[$val['option_value_id']] : ''; ?></a>
+                            <?php
+                            }
+                        ?>
+                    </dd>
+                </dl>
+            <?php }
+        } ?>
+    </div>
+<?php
+}
+?>
+<div class="" style="margin: 0 8px;">
+    <a href="javascript:;" class="btn btn-red btn-buy" data-id="<?php echo $item['id']; ?>">立即购买</a>
+
+    <a href="javascript:;" class="btn btn-orange btn-addToCart"
+       data-customer="<?php echo $item['id']; ?>"
+       data-id="<?php echo $item['id']; ?>"
+       data-inventory="<?php echo $item['quantity']; ?>"
+       data-price="<?php echo $item['sell_price']; ?>">加入购物车</a>
+</div>
+
+<script>
+    seajs.use('app/app.shop_cart', function (cart) {
+        cart.itemPageInit(true);
+    });
+</script>

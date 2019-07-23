@@ -1,0 +1,564 @@
+<!--<link href="/static/panel/js/tools/video/video-js.min.css" rel="stylesheet">
+<script src="/static/panel/js/tools/video/video.min.js"></script>-->
+<!-- Acorn Media Player specific -->
+<link href="/srv/static/panel/js/tools/acornmediaplayer/acornmediaplayer.base.css" rel="stylesheet" type="text/css">
+<!-- Themes -->
+<link href="/srv/static/panel/js/tools/acornmediaplayer/themes/access/acorn.access.css" rel="stylesheet" type="text/css">
+<link href="/srv/static/panel/js/tools/acornmediaplayer/themes/darkglass/acorn.darkglass.css" rel="stylesheet"
+      type="text/css">
+
+<script src="/srv/static/panel/js/tools/acornmediaplayer/jquery.acornmediaplayer.js"></script>
+<style>
+    .ui-slider .ui-slider-handle:before {
+        content: '' !important;
+    }
+
+    .ace-thumbnails > li {
+        border: none;
+    }
+
+    .gallerys img {
+        border-radius: 5px;
+    }
+
+    .gallerys li {
+        float: left;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+
+    .widget-cont .tr .acorn-player {
+        line-height: 20px;
+    }
+</style>
+<div style="float:left;width: 30%">
+    <section id="product-base" class="product-widget sm left" style="width: 100%">
+        <h3 class="widget-tit"><img
+                src="<?php echo $user_info['avatar']; ?>?x-oss-process=image/resize,m_lfit,h_100,w_100"
+                style="width: 35px;height:35px;border-radius: 100%;"
+                alt="">&nbsp;发布人信息<span class="right"></h3>
+
+        <article class="widget-cont">
+            <div class="tr " style="height: auto;">
+                <label class="lg">
+                    <span class="title">发布人ID:</span>
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><?php echo $item['user_id']; ?></span>
+                </label>
+            </div>
+            <div class="tr " style="height: auto;">
+                <label class="lg">
+                    <span class="title">发布人昵称: </span>
+                    <span class="content"><?php echo $user_info['username'] ?></span>
+                </label>
+            </div>
+            <div class="tr tr_json" style="height: auto;">
+                <label class="lg">
+                    <span class="title">是否已认证: </span>
+                        <span class="content json_content">
+
+                           <?php echo $user_info['is_auth'] == 1 ? '是' : '否'; ?></span>
+                </label>
+            </div>
+            <div class="tr">
+                <label class="sm">
+                    <span class="title">累计发动态数: </span>
+                        <span
+                            class="content"><?php echo $user_info['discuss_cnt'] ?></span>
+                </label>
+                <label class="sm">
+                    <span class="title">粉丝数: </span>
+                        <span
+                            class="content json_content"><?php echo $user_info['follower_cnt']; ?></span>
+
+                </label>
+                <label class="sm">
+                    <span class="title">关注数: </span>
+                        <span
+                            class="content"
+                            data-content=""><?php echo $user_info['attention_cnt']; ?></span>
+                </label>
+            </div>
+            <div class="tr">
+                <label class="md">
+                    <span class="title">被举报数: </span>
+                        <span
+                            class="content"
+                            data-content=""><?php echo $user_info['report_cnt']; ?></span>
+                </label>
+            </div>
+        </article>
+    </section>
+    <section id="product-base" class="product-widget sm left" style="width: 100%">
+        <h3 class="widget-tit">&nbsp;管理员操作日志<span class="right"></h3>
+
+        <article class="widget-cont">
+            <?php if ($logs) { ?>
+                <?php foreach ($logs as $log) { ?>
+                    <div class="tr " style="height: auto;">
+                        <label class="lg">
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><b><?php echo date('Y-m-d H:i', $log['created']); ?></b> &nbsp;-
+                            【<?php echo isset($log['admin_info']['name']) ? $log['admin_info']['name'] : $log['user_name']; ?>
+                            】-
+                            <?php echo $log['action']; ?></span>
+                        </label>
+                    </div>
+                <?php } ?>
+            <?php } ?>
+
+
+        </article>
+    </section>
+</div>
+<section id="product-base" class="product-widget sm right" style="width: 68%">
+    <h3 class="widget-tit">动态详情&nbsp;<b
+            class=" label-info arrowed-right">【<?php echo \Services\Discuss\DiscussManager::$status[$item['status']]; ?>
+            】</b><span
+            class="right">
+    </h3>
+
+    <article class="widget-cont">
+        <div class="tr " style="height: auto;">
+            <label class="sm">
+                <span class="title">发布时间:</span>
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><?php echo date('Y-m-d H:i', $item['created']); ?></span>
+            </label>
+            <label class="sm">
+                <span class="title">更新时间:</span>
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><?php echo $item['modify'] ? date('Y-m-d H:i', $item['modify']) : "暂无更新"; ?></span>
+            </label>
+            <label class="sm">
+                <span class="title">标签:</span>
+                <span class="btn btn-sm btn-primary tagBtn" data-val="{{ item['tags'] }}">修改</span>
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><?php echo $item['tags_name']; ?></span>
+
+            </label>
+        </div>
+        <div class="tr" style="height: auto;">
+            <label class="lg">
+                <span class="title">文本内容: </span>
+                <span class="content">
+                    <?php if ($item['share_original_type'] == \Services\Social\SocialManager::TYPE_NEWS) { ?>
+                        <a target="_blank" href="javascript:;" class="newTarget" data-title="资讯详情"
+                           data-href="/srv/panel/discuss/detail/31121">{{item['original_info']['title']}}</a>
+
+                    <?php } elseif ($item['share_original_type'] == \Services\Social\SocialManager::TYPE_SHARE) { ?>
+                        <span style="font-size:12px">来自App《{{item['original_info']['from']}}》的分享</span>
+                        <div>
+                            标题：{{item['original_info']['title']}} <br>
+                            内容：{{item['original_info']['content']}} <br>
+                            连接：<a href="{{item['original_info']['link']}}">网页链接</a>
+                        </div>
+
+                    <?php } elseif ($item['share_original_type'] == \Services\Social\SocialManager::TYPE_SHOP) { ?>
+                        分享店铺《未解析》
+                    <?php } elseif ($item['share_original_type'] == \Services\Social\SocialManager::TYPE_GOOD) { ?>
+                        分享
+                        <a href="javascript:;"
+                           data-href="/panel/users/detail/?user_id={{item['original_info']['shop_owner']['id']}}"
+                           data-id="user_detail_{{item['original_info']['shop_owner']['id']}}" data-title="用户详情"
+                           class="newTarget" target="_blank">{{item['original_info']['shop_owner']['username']}}</a>
+                        的商品
+
+
+
+
+
+
+                        <div style="border:1px solid #eee;border-radius:3px;padding:0 10px">
+                            <span style="font-weight: bold;font-size:15px">名称：</span>
+                            <a target="_blank" style="color:deeppink" href="javascript:;" class="newTarget"
+                               data-title="动态详情" data-id="good_id_<?php echo $item['original_info']['good_id'] ?>"
+                               data-href="/panel/good/list?good_id=<?php echo $item['original_info']['good_id'] ?>">
+                                {{item['original_info']['title']}}
+                            </a><br>
+                            <span style="font-weight: bold;font-size:15px">售价：</span>
+                            <span
+                                class="red">{{item['original_info']['price']}}/{{item['original_info']['unit']}}</span><br>
+
+                            <span style="font-weight: bold;font-size:15px">商品简介：</span>
+                            {{item['original_info']['brief']}}
+                        </div>
+
+                    <?php } else {
+                        if ($item['original_info']) {
+                            echo $item['content'] . ":【" . $item['original_info']['content'] . '】';
+                        } else {
+                            echo $item['content'];
+                        } ?>
+
+                    <?php } ?>
+                   </span>
+            </label>
+        </div>
+        <div class="tr " style="height: auto;">
+            <label class="lg">
+                <span class="title">图片/视频/语音:</span>
+                        <span class="content tr_json link_address_content">
+                            <?php if ($item['original_info']) {
+                                $media_type = $item['original_info']['media_type'];
+                                $media = $item['original_info']['media'];
+                                ?>
+                                <!--小视频-->
+                                <?php if ($media_type == 2) {
+                                    $media = explode('?', $media);
+                                    $thumb = "";
+                                    if (stripos($media[0], 'circleimg') >= 0) {
+                                        $thumb = $media[0];
+                                        $media = $media[1];
+                                    } else {
+                                        $thumb = !empty($media[1]) ? $media[1] : $thumb;
+                                        $media = $media[0];
+                                    }
+                                    ?>
+                                    <figure>
+                                        <video id="demo1" controls="controls" width="800" height="300"
+                                               poster="<?php echo $thumb; ?>?x-oss-process=image/resize,m_fill,h_300,w_300"
+                                               preload="metadata"
+                                               aria-describedby="full-descript">
+                                            <source type="video/mp4"
+                                                    src="<?php echo $media; ?>"/>
+
+                                        </video>
+                                    </figure>
+
+                                <?php } elseif ($media_type == 3) {
+                                    $imgs = explode(',', $media)
+                                    ?>
+
+                                    <ul class="gallerys">
+
+                                        <?php foreach ($imgs as $m) { ?>
+                                            <li style="width: 100px;height: 160px">
+                                                <img style="width: 100%;height: auto"
+                                                     data-src="<?php echo $m; ?>"
+                                                     src="<?php echo $m . '?x-oss-process=image/resize,m_fill,h_160,w_100'; ?>"
+                                                     class="gallery-pic" onclick="$.openPhotoGallery(this)"/>
+                                            </li>
+
+                                        <?php } ?>
+                                    </ul>
+
+                                <?php } ?>
+                            <?php } else { ?>
+                                <!--小视频-->
+                                <?php if ($item['media_type'] == 2) {
+                                    $media = explode('?', $item['media']);
+                                    $thumb = "";
+                                    if (stripos($media[0], 'circleimg') >= 0) {
+                                        $thumb = $media[0];
+                                        $media = $media[1];
+                                    } else {
+                                        $thumb = !empty($media[1]) ? $media[1] : $thumb;
+                                        $media = $media[0];
+                                    }
+                                    ?>
+                                    <figure>
+                                        <video id="demo1" controls="controls" width="800" height="300"
+                                               poster="<?php echo $thumb; ?>?x-oss-process=image/resize,m_fill,h_300,w_300"
+                                               preload="metadata"
+                                               aria-describedby="full-descript">
+                                            <source type="video/mp4"
+                                                    src="<?php echo $media; ?>"/>
+
+                                        </video>
+                                    </figure>
+
+                                <?php } elseif ($item['media_type'] == 3) {
+                                    $imgs = explode(',', $item['media'])
+                                    ?>
+
+                                    <ul class="gallerys">
+
+                                        <?php foreach ($imgs as $m) { ?>
+                                            <li style="width: 100px;height: 160px">
+                                                <img style="width: 100%;height: auto"
+                                                     data-src="<?php echo $m; ?>"
+                                                     src="<?php echo $m . '?x-oss-process=image/resize,m_fill,h_160,w_100'; ?>"
+                                                     class="gallery-pic" onclick="$.openPhotoGallery(this)"/>
+                                                </a>
+                                            </li>
+
+                                        <?php } ?>
+                                    </ul>
+
+                                <?php } else if ($item['media_type'] == '4') {
+                                    $audio = explode('?', $item['media']);
+                                    ?>
+
+                                    <figure>
+                                        <audio id="demo3-audio" aria-describedby="demo3-audio-descript">
+                                            <source type="audio/ogg" src="<?php echo $audio[1] ?>"/>
+                                            <source type="audio/mp3" src="<?php echo $audio[1] ?>"/>
+                                        </audio>
+                                    </figure>
+                                <?php } ?>
+                            <?php } ?>
+
+                        </span>
+
+            </label>
+        </div>
+        <div class="tr tr_json" style="height: auto;">
+            <label class="md">
+                <span class="title">是否属于转发: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['share_original_item_id'] > 0 ? '是' : '否'; ?></span>
+            </label>
+            <?php if ($item['share_original_item_id'] > 0) {
+                $original_url = "";
+                if ($item['share_original_type'] == \Services\Social\SocialManager::TYPE_DISCUSS) {
+                    $original_url = '/panel/discuss/detail/' . $item['share_original_item_id'];
+                } else {
+
+                }
+                ?>
+                <label class="md">
+                    <span class="title">原始转发类型: </span>
+                        <span class="content json_content">
+                           <?php echo \Services\Social\SocialManager::$_forward_type[$item['share_original_type']]; ?>
+
+                            &nbsp;
+
+                            <?php if ($original_url) { ?>
+                                <a href="<?php echo $original_url; ?>" class="btn btn-sm btn-primary">链接地址</a>
+                            <?php } ?>
+
+                        </span>
+
+                </label>
+
+            <?php } ?>
+
+        </div>
+
+
+        <div class="tr tr_json" style="height: auto;">
+            <label class="sm">
+                <span class="title">点赞数: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['like_cnt']; ?></span>
+            </label>
+            <label class="sm">
+                <span class="title">评论数: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['comment_cnt']; ?></span>
+            </label>
+            <label class="sm">
+                <span class="title">收藏数: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['fav_cnt']; ?></span>
+            </label>
+
+        </div>
+        <div class="tr tr_json" style="height: auto;">
+            <label class="sm">
+                <span class="title">举报数: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['report_cnt']; ?></span>
+            </label>
+            <label class="sm">
+                <span class="title">转发数: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['forward_cnt']; ?></span>
+            </label>
+            <label class="sm">
+                <span class="title">阅读数: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['view_cnt']; ?></span>
+            </label>
+
+        </div>
+        <div class="tr tr_json" style="height: auto;">
+            <label class="sm">
+                <span class="title">是否置顶: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['is_top'] == 1 ? '是' : '否'; ?></span>
+            </label>
+            <label class="sm">
+                <span class="title">置顶类型: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['top_type'] == 1 ? '经验值' : ($item['top_type'] == 2 ? "龙豆" : ($item['top_type'] == 3 ? '免费' : "无")); ?></span>
+            </label>
+        </div>
+        <div class="tr tr_json" style="height: auto;">
+            <label class="sm">
+                <span class="title">发动态时位置: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['address'] ?></span>
+            </label>
+        </div>
+        <div class="tr tr_json list" style="height: auto;">
+            <label class="lg">
+                <span class="title">操作: </span>
+                        <span class="content json_content">
+                        <?php if ($item['status'] == 0) { ?>
+                            <label class="btn btn-sm btn-success recoveryBtn"
+                                   data-id="<?php echo $item['id']; ?>">恢复正常</label>
+                        <?php } else if ($item['status'] == 1) { ?>
+                            <label class="btn btn-sm btn-danger delBtn"
+                                   data-id="<?php echo $item['id']; ?>">屏蔽该动态</label>
+                        <?php } ?>
+                            <?php if ($item['is_recommend'] != 1) { ?>
+                                <label class="btn btn-sm btn-primary recommendBtn"
+                                       data-id="<?php echo $item['id']; ?>"><i class="fa fa-thumbs-up"></i>设为推荐</label>
+                            <?php } else { ?>
+                                <label class="btn btn-sm  delRecommendBtnBtn"
+                                       data-id="<?php echo $item['id']; ?>"><i
+                                        class="fa fa-thumbs-o-up"></i>取消推荐</label>
+                            <?php } ?>
+                            <?php if ($item['is_filter'] == 1) { ?>
+                                <label class="btn btn-sm btn-primary showTag"
+                                       data-id="<?php echo $item['id']; ?>"><i
+                                        class="fa fa-eye"></i>在标签页显示</label>
+                            <?php } else { ?>
+                                <label class="btn btn-sm  hideTag"
+                                       data-id="<?php echo $item['id']; ?>"><i
+                                        class="fa fa-eye-slash"></i>禁止在标签页显示</label>
+                            <?php } ?>
+
+                            <?php if ($item['is_billboard'] != 1) { ?>
+                                <label class="btn btn-sm btn-purple btnBillboard"
+                                      data-id="<?php echo $item['id'] ?>"><i
+                                        class="fa fa-arrow-up"></i> 推荐至今日榜单</label>
+                            <?php } else { ?>
+                                <label class="btn btn-sm  btnBillboardRemove"
+                                       data-id="<?php echo $item['id']; ?>"><i
+                                        class="fa fa-arrow-down"></i>取消今日榜单</label>
+                            <?php } ?>
+
+                        </span>
+
+
+            </label>
+        </div>
+        <div class="tr tr_json list" style="height: auto;">
+            <label class="lg">
+
+                <?php if ($pre) { ?>
+                    <a href="/discuss/detail/<?php echo $pre . ($where ? '/' . $where : '') ?>"
+                       class="title btn btn-primary right">下一条 <i
+                            class="fa fa-arrow-right"></i></a>
+                <?php } else { ?>
+                    <a href="javascript:;" class="title btn btn-grey right">下一条 <i
+                            class="fa fa-arrow-right"></i></a>
+                <?php } ?>
+
+                <?php if ($next) { ?>
+                    <a href="/discuss/detail/<?php echo $next . ($where ? '/' . $where : '') ?>"
+                       class="title btn btn-primary right"
+                       style="margin-right: 5px;"><i
+                            class="fa fa-arrow-left"></i>上一条</a>
+                <?php } else { ?>
+                    <a href="javascript:;" class="title btn btn-grey right" style="margin-right: 5px;"><i
+                            class="fa fa-arrow-left"></i>上一条</a>
+                <?php } ?>
+            </label>
+        </div>
+    </article>
+</section>
+<div class="modal fade" id="tagModal">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">修改标签</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <?php foreach ($tags as $k => $t) {
+                    ?>
+                    <label style="margin-bottom: 10px">
+                        <input type="checkbox" data-val="<?php echo $t['id']; ?>" name="tag" class="ace tag"
+                               value="<?php echo $t['id']; ?>">
+                        <span class="lbl"> <?php echo $t['name']; ?></span>
+                    </label>
+                    &nbsp;
+                <?php } ?>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" value="{{ item['id'] }}" id="discuss_id"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!--<script type="text/javascript" src="/static/panel/js/jquery/jquery-3.0.2.min.js"></script>
+-->
+<link rel="stylesheet" href="/srv/srv/static/panel/js/jquery/gallery/photoGallery.css"/>
+<script src="/srv/static/panel/js/jquery/gallery/jquery.photo.gallery.js"></script>
+
+<!--<script src="/static/ace/js/jquery.colorbox-min.js"></script>
+-->
+<script src="/srv/static/panel/js/jquery/jquery-ui-1.10.0.custom.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        /*  var colorbox_params = {
+         reposition: true,
+         scalePhotos: true,
+         scrolling: false,
+         previous: '<i class="fa fa-arrow-left"></i>',
+         next: '<i class="fa fa-arrow-right"></i>',
+         close: '&times;',
+         current: '{current}/{total}',
+         maxWidth: '100%',
+         maxHeight: '100%',
+         onOpen: function () {
+         document.body.style.overflow = 'hidden';
+         },
+         onClosed: function () {
+         document.body.style.overflow = 'auto';
+         },
+         onComplete: function () {
+         $.colorbox.resize();
+         }
+         };
+
+         $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
+         $("#cboxLoadingGraphic").append("<i class='fa fa-spinner orange'></i>");//let's add a custom loading icon*/
+    })
+</script>
+<script>
+    seajs.use('app/panel/discuss/discuss.edit.js?v=1.2', function (api) {
+        api.del();
+        api.recommend();
+        api.hideTag();
+        api.edit();
+        api.btnBillboard();
+    });
+</script>
+<script type="text/javascript">
+    //打开自动播放
+    /* var myPlayer = videojs('my-player');
+     myPlayer.size(300, 480);*/
+    /*  videojs("my-player").ready(function () {
+     var myPlayer = this;
+     myPlayer.myPlayer.play();
+     });*/
+    $('video').acornMediaPlayer({
+        /*  themes: 'access accesslight'*/
+    });
+    jQuery('#demo3, #demo3-audio').acornMediaPlayer({
+        theme: 'darkglass',
+        volumeSlider: 'vertical'
+    });
+</script>
+
+

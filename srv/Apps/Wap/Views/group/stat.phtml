@@ -1,0 +1,181 @@
+<style>
+    body {
+        background-color: #f2f2f5;
+    }
+
+    .group_info {
+        border-bottom: 0.025rem solid #e0e0e0;
+        padding: 1rem 0.75rem 1rem 1.25rem;
+        overflow: hidden;
+        height: auto;
+        width: 100%;
+    }
+
+    .group_info .avatar {
+        width: 3rem;
+        height: 3rem;
+        float: left;
+    }
+
+    .group_info .wrap_name {
+        float: left;
+        margin-left: 0.5rem;
+        box-sizing: border-box;
+        width: 10rem;
+    }
+
+    .group_info .wrap_name .name {
+        font-size: 0.75rem;
+        color: #333;
+        font-weight: bold;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .group_info .wrap_name .admin_name, .group_info .wrap_name .created {
+        font-size: 0.55rem;
+        color: #999;
+    }
+
+    .group_info .wrap_name .admin_name {
+        line-height: 1rem;
+    }
+
+    .member_cnt, .speaker, .message_cnt {
+        padding: 0.75rem 0 1.25rem 0;
+        border-bottom: 0.05rem dotted #e0e0e0;
+    }
+
+    .speaker, .message_cnt {
+        padding: 0.75rem 0 1.25rem 0;
+        position: relative;
+    }
+
+    #myChart {
+        height: 5rem;
+        width: 100%;
+        padding:;
+    }
+
+    .chart_head {
+        font-size: 0.75rem;
+        font-weight: bold;
+        margin-bottom: 0;
+        padding-left: 1.25rem;
+    }
+
+    .no_data {
+        position: absolute;
+        top: 50%;
+        margin-top: -0.8rem;
+        left: 50%;
+        margin-left: -4.5875rem;
+        width: 9.175rem;
+        height: 2.4rem;
+        display: none;
+    }
+</style>
+<section style="background-color: #fff;border: 0.05rem solid #e0e0e0;margin: 0.75rem">
+    <div class="group_info">
+        <img class="avatar" src="<?php echo $group['avatar'] ?>?x-oss-process=image/resize,m_fill,h_160,w_160">
+        <div class="wrap_name">
+            <p class="name"><?php echo $group['name'] ?> </p>
+            <p class="admin_name">创建人:<?php echo $group['admin_name'] ?></p>
+            <p class="created">创建于:<?php echo date('Y-m-d', $group['created']) ?></p>
+        </div>
+    </div>
+    <div class="member_cnt wrap_1">
+        <p class="chart_head">群成员数:</p>
+        <canvas id="myChart"></canvas>
+    </div>
+    <div class="speaker wrap_2">
+        <p class="chart_head">发言人数:</p>
+        <canvas id="myChart2"></canvas>
+        <div class="no_data" style="">
+            <img src="/static/wap/images/no_stat_data.png">
+        </div>
+    </div>
+    <div class="message_cnt wrap_3">
+        <p class="chart_head">发言条数:</p>
+        <canvas id="myChart3"></canvas>
+        <div class="no_data" style="">
+            <img src="/static/wap/images/no_stat_data.png">
+        </div>
+    </div>
+    <style>
+        .top {
+            padding-top: 1rem;
+        }
+
+        .m_list {
+            padding: 1rem 0.75rem 1rem 1.25rem;
+        }
+
+        .top li {
+            line-height: 2rem;
+            height: 2rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #f3f3f3;
+            clear: both;
+            font-size: 0.7rem;
+        }
+
+        .top li img {
+            display: inline-block;
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 100%;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+
+
+        }
+
+        .top li span {
+            float: right;
+            font-size: 0.65rem;
+        }
+
+        .top li .count {
+            font-size: 1rem;
+            margin-right: 0.1rem;
+        }
+
+        .top .top_m .count {
+            color: #FC6B38;
+        }
+    </style>
+    <?php if ($data['member_m_top']) { ?>
+        <div class="top wrap_4">
+            <p class="chart_head">近7天发言排行榜:</p>
+            <ul class="m_list">
+                <?php foreach ($data['member_m_top'] as $k => $item) { ?>
+                    <li class="<?php echo $item['count'] > 0 && $k < 5 ? "top_m" : '' ?>">
+
+                        <img  onerror="this.src='http://avatorimg.klgwl.com/default/avatar.png'"
+                            src="<?php echo $item['avatar'] ?>?x-oss-process=image/resize,m_fill,h_160,w_160"><?php echo $item['username'] ?>
+                        <span><label class="count"><?php echo $item['count'] ?></label>条</span>
+
+                    </li>
+                <?php } ?>
+            </ul>
+        </div>
+    <?php } ?>
+
+</section>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<script src="/static/wap/js/tools/Chart.min.js"></script>
+<script>
+    seajs.use('/static/wap/js-dev/app/group.stat.js', function (api) {
+        api.init(eval("[<?php echo $days?>]"), {
+                'chart1': eval("[<?php echo $data['member_cnt']?>]"),
+                'chart2': eval("[<?php echo $data['speakers']?>]"),
+                'chart3': eval("[<?php echo $data['message_cnt']?>]"),
+                'chart2_no_data': "<?php echo $data['show_no_speaker_label'] ?>"
+            }
+        )
+    });
+
+</script>
+

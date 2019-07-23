@@ -1,0 +1,251 @@
+body, h1, h2, h3, h4, h5, h6, dl, dt, dd, ul, ol, li, form, fieldset, input, button, textarea, p, blockquote, th, td {
+    padding: 0;
+    margin: 0; }
+
+a {
+    text-decoration: none; }
+
+ul {
+    list-style: none; }
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal; }
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0; }
+
+input[type="text"], input[type="password"], input[type="tel"], input[type="number"], input[type="search"], textarea {
+    border: none;
+    outline: none;
+    -webkit-appearance: none; }
+
+img {
+    border: none;
+    vertical-align: middle; }
+
+.clearfix:before, .clearfix:after {
+    content: "";
+    display: table; }
+
+.clearfix:after {
+    clear: both; }
+
+input, textarea, button, a {
+    -webkit-tap-highlight-color: transparent; }
+
+input {
+    vertical-align: middle; }
+
+body {
+    background: #fff;
+    color: #323232;
+    font-family: 'Microsoft YaHei',Arial;
+    overflow: auto; }
+
+a {
+    color: #323232; }
+
+img {
+    max-width: 100%; }
+
+input {
+    color: #323232; }
+
+h1, h2, h3 {
+    font-size: 0.5rem; }
+
+.content {
+    width: 100%; }
+
+.rule {
+    width: 92%;
+    margin: 0 auto; }
+.rule .rule_list {
+    margin-bottom: 16px; }
+.rule .rule_list h2 {
+    font-size: 16px;
+    color: #333;
+    padding: 16px 0 12px 0;
+    border-bottom: 1px solid #E0E0E0;
+    font-weight: bold; }
+.rule .rule_list ul {
+    font-size: 0;
+    margin-top: 12px; }
+.rule .rule_list ul li {
+    font-size: 14px;
+    color: #666;
+    line-height: 24px;
+    margin-bottom: 12px; }
+.rule .rule_list ul li i {
+    display: inline-block;
+    width: px2rem(10);
+    height: px2rem(10);
+    background-color: #D0D0D0;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    margin-right: px2rem(10);
+    vertical-align: middle; }
+.rule .rule_list ul li span {
+    display: inline-block;
+    width: 96%;
+    vertical-align: top;
+    text-align: justify; }
+
+.wallet {
+    width: 100%; }
+.wallet .wallet_con {
+    width: 92%;
+    margin: 0 auto; }
+.wallet .wallet_con .wallet_head h1 {
+    padding-top: 12px;
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+    font-weight: bold;
+    padding-bottom: 12px;
+}
+.wallet .wallet_con .wallet_head h3 {
+    text-indent: 2em;
+    font-weight: bold;
+    color: #333;
+    font-size: 16px;
+    line-height: 28px;
+    margin: 50px 0;
+    text-align: justify; }
+.wallet .wallet_con .wallet_cent .wallet_list h2 {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 20px; }
+.wallet .wallet_con .wallet_cent .wallet_list ul {
+    font-size: 0; }
+.wallet .wallet_con .wallet_cent .wallet_list ul li {
+    font-size: 14px;
+    color: #666;
+    line-height: 24px;
+    margin-bottom: 16px; }
+.wallet .wallet_con .wallet_cent .wallet_list ul li em{
+    vertical-align: top;
+    font-style: normal;
+    padding-right: 2px;
+}
+.wallet .wallet_con .wallet_cent .wallet_list ul li i {
+    margin-right: 6px;
+    display: inline-block;
+    width: 10px;
+    font-size: 14px;
+    font-style: normal;
+    vertical-align: top; }
+.wallet .wallet_con .wallet_cent .wallet_list ul li span {
+    display: inline-block;
+    font-size: 14px;
+    width: 92%;
+    text-align: justify; }
+
+.user {
+    width: 92%;
+    margin: 0 auto; }
+.user .user_tips {
+    margin-bottom: 20px; }
+.user .user_tips h2 {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+    padding: 22px 0; }
+.user .user_tips p {
+    font-size: 14px;
+    color: #666;
+    line-height: 24px;
+    text-align: justify;
+    margin-bottom: 20px; }
+.user .user_con .user_con_list h2 {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+    padding: 22px 0; }
+.user .user_con .user_con_list ul li {
+    color: #666;
+    margin-bottom: 20px; }
+.user .user_con .user_con_list ul li em {
+    display: inline-block;
+    font-style: normal;
+    font-size: 14px;
+    vertical-align: top;
+    width: 6%;
+    margin-right: 6px;
+    vertical-align: middle; }
+.user .user_con .user_con_list ul li span {
+    display: inline-block;
+    width: 92%;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: justify;
+    vertical-align: top; }
+
+/*# sourceMappingURL=user.css.map */
+
+/*# 支付时遇到的问题 #*/
+.meeting{
+    width: 100%;
+}
+.meeting_content{
+    width: 92%;
+    margin: 0 auto;
+}
+.meeting_content h1{
+    padding-top: 16px;
+    padding-bottom: 20px;
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+    line-height: 26px;
+    counter-reset: cal;
+}
+.meeting_rule p em::before{
+    content: counters(cal, '-') '. ';
+    counter-increment: cal;
+    font-style: normal;
+    display: inline-block;
+    width: 6%;
+}
+.meeting_rule p,.meeting_rule p span{
+    font-size: 14px;
+    line-height: 26px;
+    color: #666;
+}
+.meeting_rule p span{
+    display: inline-block;
+    width: 94%;
+    vertical-align: top;
+    text-align: justify
+}
+.tel_button{
+    position: fixed;
+    bottom: 10px;
+    width: 92%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+}
+.tel_button a{
+    display: block;
+    height: 46px;
+    line-height: 46px;
+    background-color: #fc6b38;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    text-align: center;
+    color: #fff;
+    vertical-align: middle;
+    font-size: 16px;
+}
+.tel_button a em{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url(../images/service.png) no-repeat center;
+    background-size: cover;
+    vertical-align: middle;
+    margin-right: 16px;
+}

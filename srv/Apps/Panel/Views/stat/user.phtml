@@ -1,0 +1,395 @@
+<!--<script type="text/javascript" src="/static/panel/js/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="/static/panel/js/echarts/themes/macarons.js"></script>
+<script type="text/javascript" src="/static/panel/js/echarts/themes/shine.js"></script>
+<script type="text/javascript" src="/static/panel/js/echarts/themes/blue.js"></script>
+
+<div class="tabs">
+    <a href="<?php /*echo $this->uri->setUrl(['type' => 0], ['p']); */ ?>"
+       class="tab <?php /*echo $type == 0 ? 'active' : ''; */ ?>">时间</a>
+    <a href="<?php /*echo $this->uri->setUrl(['type' => 1], ['p']); */ ?>"
+       class="tab <?php /*echo $type == 1 ? 'active' : ''; */ ?>">设备</a>
+</div>
+<?php /*if ($type == 0) {
+    $this->partial('stat/user/time')
+    */ ?>
+<?php /*} else if ($type == 1) {
+    $this->partial('stat/user/device')
+    */ ?>
+--><?php /*} */ ?>
+<link rel="stylesheet" href="/srv/static/panel/css/stat.css"/>
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+
+<style>
+    .stat_component .filters {
+        padding-bottom: 10px;
+    }
+
+    .stat_component .filter {
+        margin-left: 15px;
+        display: inline-block;
+        overflow: hidden;
+    }
+
+    .stat_component .control-bar-wrapper {
+        position: relative;
+        padding-top: 20px;
+        padding-bottom: 15px;
+        color: #323437;
+        padding-left: 20px;
+    }
+
+    .stat_component .stat_label {
+        display: inline-block;
+        height: 26px;
+        padding-right: 5px;
+        line-height: 26px;
+        color: #787a7d;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar {
+        border: 1px solid #e1e3e4;
+        border-radius: 2px;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar a {
+        display: inline-block;
+        float: left;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 10px;
+        color: #323437;
+        background-color: #fff;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar a {
+        display: inline-block;
+        float: left;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 10px;
+        color: #323437;
+        background-color: #fff;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar a:last-child.cur {
+        border-radius: 0 2px 2px 0;
+        right: -1px;
+    }
+
+    .stat_component .control-bar-wrapper .control-bar .date-select-bar .cur {
+        position: relative;
+        bottom: -1px;
+        margin-top: -2px;
+        padding-top: 1px;
+        height: 25px;
+        background-color: #438eb9;
+        color: #fff;
+    }
+
+    .stat_component .filter .group {
+        float: left;
+        background-color: #fff;
+        border-radius: 2px;
+        margin: 0;
+    }
+
+    .stat_component .filter .group li:first-child {
+        margin-left: 0;
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+    }
+
+    .stat_component .filter .group .cur {
+        position: relative;
+        z-index: 1;
+        border: 1px solid #438eb9;
+        color: #fff;
+    }
+
+    .stat_component .filter .group li:hover {
+        background-color: #f3f4f4;
+    }
+
+    .stat_component .filter .group .cur, .filter .group li.cur:hover {
+        background-color: #438eb9;
+    }
+
+    .stat_component .filter .group li {
+        cursor: pointer;
+        padding: 0 12px;
+        border: 1px solid #e1e3e4;
+        margin-left: -1px;
+    }
+
+    .stat_component .filter .group li, .filter label {
+        height: 24px;
+        line-height: 24px;
+        float: left;
+    }
+
+    .stat_component .time {
+        width: 80px;
+        height: 24px;
+        line-height: 24px;
+        margin: 0 0 0 7px;
+        padding: 0 0 0 6px;
+        border: 1px solid #e1e3e4;
+        border-right: none;
+        text-indent: 0;
+        color: #323437;
+        cursor: pointer;
+        float: left;
+        border-top-left-radius: 2px !important;
+        border-bottom-left-radius: 2px !important;
+    }
+
+    .stat_component .time_picker {
+        width: 24px;
+        height: 24px;
+        display: inline-block;
+        float: left;
+        border: 1px solid #e4e4e4;
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+        text-align: center;
+        color: #666;
+        cursor: pointer;
+    }
+
+    .stat_component .split_line {
+        display: inline-block;
+        float: left;
+        margin-left: 7px;
+        font-size: 16px;
+        color: #666
+    }
+
+    .stat_component .control-bar-wrapper .select-bar-item {
+        position: relative;
+        margin-left: 5px;
+        height: 24px;
+        line-height: 24px;
+    }
+
+    .stat_component .filter .group li:last-child {
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+    }
+</style>
+<div class="stat_component">
+    <div class="header_bar">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">今日注册</b></div>
+        <table width="100%">
+            <tbody>
+            <tr class="title">
+                <th></th>
+                <th>用户总数</th>
+                <th>手机用户</th>
+                <th>QQ用户</th>
+                <th>微信用户</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr class="highlight">
+
+                <td class="normal">今日</td>
+                <?php foreach ($data['today'] as $i => $item) {
+                    if ($i == 'share_user') continue; ?>
+                    <td><?php echo $item ?></td>
+                <?php } ?>
+            </tr>
+            <tr class="">
+                <td class="normal">昨日</td>
+                <?php foreach ($data['yesterday'] as $i => $item) {
+                    if ($i == 'share_user') continue; ?>
+                    <td><?php echo $item ?></td>
+                <?php } ?>
+            </tr>
+            <tr class="expect_today">
+                <td class="normal">预计今日</td>
+                <?php foreach ($data['expect'] as $i => $item) {
+                    ?>
+                    <td><?php echo $item > $data['yesterday'][$i] ? '<i class="fa fa-arrow-up green"></i>' : ($item == $data['yesterday'][$i] ? '' : '<i class="fa fa-arrow-down red"></i>') ?><?php echo $item ?></td>
+                <?php } ?>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="content_wrap left" style="height: 450px;">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">总用户统计<span
+                    class="total_count total"></span></b></div>
+        <div id="filters" class="filters">
+            <div class="control-bar-wrapper clearfix" id="control-bar-wrapper">
+                <div class="control-bar bg-iframe l" id="control-bar">
+                    <span class="l stat_label">时间：</span>
+                    <div class="l date-select-bar" id="date-select-bar">
+                        <a href="javascript:;" data-id="today" data-type="total"
+                           class="trackable date-bar-single-day cur">今天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="yesterday" data-type="total"
+                           class="trackable date-bar-single-day">昨天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="before_yesterday" data-type="total"
+                           class="trackable date-bar-single-day">前天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="7" data-type="total" class="trackable ">最近7天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="30" data-type="total" class="trackable">最近30天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="custom" data-type="total" class="trackable">自定义</a>
+                    </div>
+                    <div class="select-bar-item l time_filter" style="display: none"><input type="text"
+                                                                                            class="time start"
+                                                                                            id="start" data-id="start"
+                                                                                            readonly
+                                                                                            style="border-radius: 10px;">
+                        <span class="time_picker" data-id="start"><i class="fa fa-calendar-check-o"></i></span>
+                        <span class="split_line">-</span>
+                        <input type="text" data-id="end" class="time end" id="end" readonly>
+                        <span class="time_picker" data-id="end"> <i class="fa fa-calendar-check-o"></i></span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main" id="total" style="width: 100%; height: 320px"></div>
+    </div>
+    <div class="content_wrap right" style="height: 450px">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">设备<span
+                    class="total_count device"></span></b>
+        </div>
+        <div id="filters" class="filters">
+            <div class="control-bar-wrapper clearfix" id="control-bar-wrapper">
+                <div class="control-bar bg-iframe l" id="control-bar">
+                    <span class="l stat_label">时间：</span>
+                    <div class="l date-select-bar" id="date-select-bar">
+                        <a href="javascript:;" data-id="today" data-type="device"
+                           class="trackable date-bar-single-day cur">今天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="yesterday" data-type="device"
+                           class="trackable date-bar-single-day">昨天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="before_yesterday" data-type="device"
+                           class="trackable date-bar-single-day">前天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="7" data-type="device" class="trackable ">最近7天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="30" data-type="device" class="trackable">最近30天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="all" data-type="device" class="trackable">全部</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="custom" data-type="device" class="trackable">自定义</a>
+
+                    </div>
+                    <div class="select-bar-item l time_filter" style="display: none"><input type="text"
+                                                                                            class="time start"
+                                                                                            id="start1" data-id="start1"
+                                                                                            readonly
+                                                                                            style="border-radius: 10px;">
+                        <span class="time_picker" data-id="start"><i class="fa fa-calendar-check-o"></i></span>
+                        <span class="split_line">-</span>
+                        <input type="text" data-id="end" class="time end" id="end1" readonly>
+                        <span class="time_picker" data-id="end"> <i class="fa fa-calendar-check-o"></i></span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main" id="device" style="width: 100%; height: 320px"></div>
+    </div>
+
+    <div class="content_wrap"
+         style="min-height: 450px;height: auto;width: 99%;max-width: 99%;clear: both;    margin-left: 0.5%;    margin-right: 0.5%;">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">注册区域<span
+                    class="area_count type"></span></b>
+        </div>
+        <div id="filters" class="filters">
+            <div class="control-bar-wrapper clearfix" id="control-bar-wrapper">
+                <div class="control-bar bg-iframe l" id="control-bar">
+                    <span class="l stat_label">时间：</span>
+                    <div class="l date-select-bar" id="date-select-bar">
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="yesterday" data-type="area"
+                           class="trackable date-bar-single-day cur">昨天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="before_yesterday" data-type="area"
+                           class="trackable date-bar-single-day">前天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="7" data-type="area" class="trackable ">最近7天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="30" data-type="area" class="trackable">最近30天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="all" data-type="area" class="trackable">全部</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="custom" data-type="area" class="trackable">自定义</a>
+
+                    </div>
+                    <div class="select-bar-item l time_filter" style="display: none"><input type="text"
+                                                                                            class="time start"
+                                                                                            id="start3" data-id="start3"
+                                                                                            readonly
+                                                                                            style="border-radius: 10px;">
+                        <span class="time_picker" data-id="start"><i class="fa fa-calendar-check-o"></i></span>
+                        <span class="split_line">-</span>
+                        <input type="text" data-id="end" class="time end" id="end3" readonly>
+                        <span class="time_picker" data-id="end"> <i class="fa fa-calendar-check-o"></i></span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main" id="area" style="width: 100%; height: 600px"></div>
+    </div>
+    <div class="content_wrap left" style="height: 450px">
+        <div class="page-header" style="margin-bottom: 2px"><b style="padding-left: 10px;">注册方式<span
+                    class="total_count type"></span></b>
+        </div>
+        <div id="filters" class="filters">
+            <div class="control-bar-wrapper clearfix" id="control-bar-wrapper">
+                <div class="control-bar bg-iframe l" id="control-bar">
+                    <span class="l stat_label">时间：</span>
+                    <div class="l date-select-bar" id="date-select-bar">
+                        <a href="javascript:;" data-id="today" data-type="type"
+                           class="trackable date-bar-single-day cur">今天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="yesterday" data-type="type"
+                           class="trackable date-bar-single-day">昨天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="before_yesterday" data-type="type"
+                           class="trackable date-bar-single-day">前天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="7" data-type="type" class="trackable ">最近7天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="30" data-type="type" class="trackable">最近30天</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="all" data-type="type" class="trackable">全部</a>
+                        <span class="seprator"></span>
+                        <a href="javascript:;" data-id="custom" data-type="type" class="trackable">自定义</a>
+
+                    </div>
+                    <div class="select-bar-item l time_filter" style="display: none"><input type="text"
+                                                                                            class="time start"
+                                                                                            id="start2" data-id="start2"
+                                                                                            readonly
+                                                                                            style="border-radius: 10px;">
+                        <span class="time_picker" data-id="start"><i class="fa fa-calendar-check-o"></i></span>
+                        <span class="split_line">-</span>
+                        <input type="text" data-id="end" class="time end" id="end2" readonly>
+                        <span class="time_picker" data-id="end"> <i class="fa fa-calendar-check-o"></i></span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main" id="type" style="width: 100%; height: 320px"></div>
+    </div>
+
+</div>
+<script type="text/javascript" src="/srv/static/panel/js/echarts/echarts.min.js?v=1.0"></script>
+
+<script type="text/javascript">
+    seajs.use('/srv/static/panel/js/app/panel/stat/panel.user.js?v=1.2.5', function (api) {
+        api.complex();
+    })
+</script>

@@ -1,0 +1,147 @@
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <title>
+        js调用java
+    </title>
+</head>
+
+<body>
+<p>
+    <xmp id="show">
+    </xmp>
+</p>
+<p>
+    <xmp id="init">
+    </xmp>
+</p>
+<p>
+    <input type="text" id="text1" value="用户名(username)" />
+</p>
+<p>
+    <input type="text" id="text2" value="password" />
+</p>
+<p>
+    <input type="button" id="enter" value="发消息给Native" onclick="testClick();"
+    />
+</p>
+<p>
+    <input type="button" id="enter1" value="调用Native方法" onclick="testClick1();"
+    />
+</p>
+<p>
+    <input type="button" id="enter2" value="显示html" onclick="testDiv();" />
+</p>
+<p>
+    <input type="file" value="打开文件" />
+</p>
+
+<a href="javascript:;" id="test" style="margin-top:50px;font-size:30px">测试通信</a>
+</body>
+<script>
+
+    function testDiv() {
+        document.getElementById("show").innerHTML = document.getElementsByTagName("html")[0].innerHTML;
+    }
+
+    function testClick() {
+        var str1 = document.getElementById("text1").value;
+        var str2 = document.getElementById("text2").value;
+
+        //send message to native
+        var data = {id: 1, content: "这是一个图片 <img src=\"a.png\"/> test\r\nhahaha"};
+        window.WebViewJavascriptBridge.send(
+            data
+            , function(responseData) {
+                document.getElementById("show").innerHTML = "repsonseData from java, data = " + responseData
+            }
+        );
+
+    }
+
+    function testClick1() {
+        var str1 = document.getElementById("text1").value;
+        var str2 = document.getElementById("text2").value;
+
+        //call native method
+        window.WebViewJavascriptBridge.callHandler(
+            "submitFromWeb"
+            , {"param": "中文测试"}
+            , function(responseData) {
+                document.getElementById("show").innerHTML = "send get responseData from java, data = " + responseData
+            }
+        );
+    }
+
+    function bridgeLog(logContent) {
+        document.getElementById("show").innerHTML = logContent;
+    }
+
+    function connectWebViewJavascriptBridge(callback) {
+        if (window.WebViewJavascriptBridge) {
+            callback(WebViewJavascriptBridge)
+        } else {
+            document.addEventListener(
+                "WebViewJavascriptBridgeReady"
+                , function() {
+                    callback(WebViewJavascriptBridge)
+                },
+                false
+            );
+        }
+    }
+
+    connectWebViewJavascriptBridge(function(bridge) {
+        bridge.init(function(message, responseCallback) {
+            console.log("JS got a message", message);
+            var data = {
+                "Javascript Responds": "测试中文!"
+            };
+
+            if (responseCallback) {
+                console.log("JS responding with", data);
+                responseCallback(data);
+            }
+        });
+
+        bridge.registerHandler("functionInJs", function(data, responseCallback) {
+            document.getElementById("show").innerHTML = ("data from Java: = " + data);
+            if (responseCallback) {
+                var responseData = "Javascript Says Right back aka!";
+                responseCallback(responseData);
+            }
+        });
+
+        bridge.registerHandler("onMenuShareAppMessage", function(data, responseCallback) {
+            bridge.callHandler("setShareAppMessage", {
+                "title":"龙鸟游戏",
+                "link" : "http://www.klgwl.cn",
+                "desc" : "龙鸟游戏简介",
+                "imgUrl" : "http://avatorimg.klgwl.com/13/13486_s_192x192.png?x-oss-process=image/resize,m_fill,h_60,w_60",
+                "appName" : "龙鸟游戏"
+            }, function(response) {
+                bridgeLog(response);
+            })
+            /*log("ObjC called testJavascriptHandler with", data)
+            var responseData = { "Javascript Says":"Right back atcha!" }
+            log("JS responding with", responseData)
+            responseCallback(responseData)*/
+        })
+
+
+        document.getElementById("test").onclick = function () {
+            bridge.callHandler("setShareAppMessage", {
+                "title":"龙鸟游戏",
+                "link" : "http://www.klgwl.cn",
+                "desc" : "龙鸟游戏简介",
+                "imgUrl" : "http://avatorimg.klgwl.com/13/13486_s_192x192.png?x-oss-process=image/resize,m_fill,h_60,w_60",
+                "appName" : "龙鸟游戏"
+            }, function(response) {
+                bridgeLog(1231);
+            })
+        };
+    })
+</script>
+
+</html>
+

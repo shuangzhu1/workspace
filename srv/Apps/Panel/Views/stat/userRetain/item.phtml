@@ -1,0 +1,63 @@
+<tr class="data-item">
+    <td><?php echo $day ?></td>
+    <td><?php echo $item['count'] ?></td>
+    <?php foreach ($item['list'] as $j) { ?>
+
+        <?php if ($j == -1) {
+            ?>
+            <td class="">
+            </td>
+        <?php } else if ($j == 0) { ?>
+            <td class="bg-teal-50">
+                <?php echo 0 ?> %
+            </td>
+        <?php } else {
+            $percent = sprintf('%.3f', $j / $item['count']);
+            $percent_100 = $percent * 100;
+            ?>
+            <?php if ($percent_100 >= 90) { ?>
+                <td class="bg-teal-900">
+                    <?php echo $percent_100 ?> %
+                </td>
+            <?php } else if ($percent_100 < 90 && $percent_100 >= 80) { ?>
+                <td class="bg-teal-800">
+                    <?php echo $percent_100 ?> %
+                </td>
+            <?php } else if ($percent_100 < 80 && $percent_100 >= 70) { ?>
+                <td class="bg-teal-700">
+                    <?php echo $percent_100 ?> %
+                </td>
+            <?php } else if ($percent_100 < 70 && $percent_100 >= 60) { ?>
+                <td class="bg-teal-600">
+                    <?php echo $percent_100 ?> %
+                </td>
+            <?php } else if ($percent_100 < 60 && $percent_100 >= 50) { ?>
+                <td class="bg-teal-500">
+                    <?php echo $percent_100 ?> %
+                </td>
+            <?php } else if ($percent_100 < 50 && $percent_100 >= 40) { ?>
+                <td class="bg-teal-400">
+                    <?php echo $percent_100 ?> %
+                </td>
+            <?php } else if ($percent_100 < 40 && $percent_100 >= 30) { ?>
+                <td class="bg-teal-300">
+                    <?php echo $percent_100 ?> %
+                </td>
+            <?php } else if ($percent_100 < 30 && $percent_100 >= 20) { ?>
+                <td class="bg-teal-200">
+                    <?php echo $percent_100 ?> %
+                </td>
+            <?php } else if ($percent_100 < 20 && $percent_100 >= 10) { ?>
+                <td class="bg-teal-100">
+                    <?php echo $percent_100 ?> %
+                </td>
+            <?php } else if ($percent_100 < 10 && $percent_100 > 0) { ?>
+                <td class="bg-teal-50">
+                    <?php echo $percent_100 ?> %
+                </td>
+            <?php } ?>
+
+        <?php } ?>
+
+    <?php } ?>
+</tr>

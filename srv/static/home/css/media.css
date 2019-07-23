@@ -1,0 +1,705 @@
+/*媒体查询的样式*/
+/*
+	133-15.6  1366*768
+	13  1280*800
+	14 1440*900
+*/
+/*13.3-15.6  480、600、840、960、1280、1440*/
+@media screen and (min-width: 1280px) and (max-width: 1440px){
+    .swiper-slide-one .download{
+        left: 69%;
+    }
+    .solar-system{
+        width: 550px;
+        height: 550px;
+    }
+    .solar-system{
+        margin-left: 160px;
+    }
+    .two-track div.icon-1{
+        top: 74px;
+        left: -120px;
+    }
+    .two-track div.icon-2{
+        top: -117px;
+        left: 111px;
+    }
+    .two-track div.icon-3{
+        top: 200px;
+        left: 272px;
+    }
+    .show-left{
+        margin-top: 18%
+    }
+    .swiper-slide-there .show-right{
+        width: 600px;
+        height: 600px;
+    }
+    .chat-bg{
+        width: 460px;
+        height: 426px;
+        left:74px;
+    }
+    .swiper-slide.swiper-slide-active .chat-bg img.s-bj{
+        width: 460px;
+        height: 426px;
+    }
+    @-webkit-keyframes oneShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-210px,80px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes twoShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-245px,0px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes thereShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-228px,-88px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes fourShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-180px,-183px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes fiveShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-80px,-249px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes sixShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(38px,-247px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes sevenShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(114px,-210px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes eightShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(190px,-150px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes nineShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(210px,-50px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes tenShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(203px,33px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes elevenShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(160px,116px);
+            opacity: 1;
+        }
+    }
+    .people-icon{
+        width: 400px;
+        height: 400px;
+    }
+    .celebrity_block{
+        width: 400px;
+        height: 400px;
+    }
+    .img-center img{
+        top: 140px;
+        left: 140px;
+        width: 120px;
+        height: 120px;
+    }
+    .celebrity_block img{
+        width: 80px;
+        height: 80px;
+    }
+    @-webkit-keyframes therepeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(140px,-100px);
+            opacity: 1;
+        }
+    }
+    @-moz-keyframes therepeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(140px,-100px);
+            opacity: 1;
+        }
+    }
+    @-o-keyframes therepeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(140px,-100px);
+            opacity: 1;
+        }
+    }
+    @keyframes therepeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(140px,-100px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes fourpeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(110px,106px);
+            opacity: 1;
+        }
+    }
+    @-moz-keyframes fourpeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(110px,106px);
+            opacity: 1;
+        }
+    }
+    @-o-keyframes fourpeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(110px,106px);
+            opacity: 1;
+        }
+    }
+    @keyframes fourpeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(110px,106px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes fivepeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-60px,160px);
+            opacity: 1;
+        }
+    }
+    @-moz-keyframes fivepeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-60px,160px);
+            opacity: 1;
+        }
+    }
+    @-o-keyframes fivepeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-60px,160px);
+            opacity: 1;
+        }
+    }
+    @keyframes fivepeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-60px,160px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes sixpeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-200px,66px);
+            opacity: 1;
+        }
+    }
+    @-o-keyframes sixpeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-200px,66px);
+            opacity: 1;
+        }
+    }
+    @-moz-keyframes sixpeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-200px,66px);
+            opacity: 1;
+        }
+    }
+    @keyframes sixpeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-200px,66px);
+            opacity: 1;
+        }
+    }
+    .five-img{
+        width: 500px;
+        height: 582px;
+    }
+    .swiper-slide-six .pic-show-block img{
+        width: 296px;
+        height: 526px;
+    }
+    .swiper-slide-active .eleven-img-block img{
+        width: 276px;
+        height: 506px;
+    }
+    .swiper-slide-active .pic-show-block img.s-one{
+        top:254px;
+    }
+    .swiper-slide-active .eleven-img-block img.s-there{
+        top:409px;
+    }
+}
+@media screen and (min-width: 1024px) and (max-width: 1280px){
+    .container{
+        width: 1000px;
+    }
+    .swiper-slide-one .download{
+        left: 69%;
+    }
+    .solar-system {
+        width: 450px;
+        height: 450px;
+    }
+    .solar-system {
+        margin-left: 76px;
+    }
+    .two-track div.icon-1{
+        top: 27px;
+        left: -150px;
+    }
+    .two-track div.icon-2{
+        top: -133px;
+        left: 54px;
+    }
+    .two-track div.icon-3{
+        top: 185px;
+        left: 138px;
+    }
+    .show-left{
+        margin-top: 18%
+    }
+    .swiper-slide-there .show-right{
+        width: 500px;
+        height: 500px;
+    }
+    .chat-bg{
+        width: 380px;
+        height: 336px;
+        left:74px;
+    }
+    .swiper-slide.swiper-slide-active .chat-bg img.s-bj{
+        width: 360px;
+        height: 326px;
+    }
+    .swiper-slide.swiper-slide-active .chat-bg img{
+        width:36px;
+        height:36px;
+    }
+    @-webkit-keyframes oneShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-214px,0px);
+            opacity: 1;
+        }
+    }
+    @-moz-keyframes oneShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-214px,0px);
+            opacity: 1;
+        }
+    }
+    @-o-keyframes oneShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-214px,0px);
+            opacity: 1;
+        }
+    }
+    @keyframes oneShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-214px,0px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes twoShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-245px,-60px);
+            opacity: 1;
+        }
+    }
+    @-moz-keyframes twoShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-245px,-60px);
+            opacity: 1;
+        }
+    }
+    @-o-keyframes twoShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-245px,-60px);
+            opacity: 1;
+        }
+    }
+
+    @-webkit-keyframes thereShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-238px,-128px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes fourShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-210px,-208px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes fiveShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-120px,-249px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes sixShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-26px,-250px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes sevenShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(56px,-226px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes eightShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(100px,-160px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes nineShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(117px,-100px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes tenShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(107px,-26px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes elevenShow {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(70px,31px);
+            opacity: 1;
+        }
+    }
+    .people-icon{
+        width: 400px;
+        height: 400px;
+    }
+    .celebrity_block{
+        width: 400px;
+        height: 400px;
+    }
+    .img-center img{
+        top: 140px;
+        left: 140px;
+        width: 120px;
+        height: 120px;
+    }
+    .celebrity_block img{
+        width: 80px;
+        height: 80px;
+    }
+    @-webkit-keyframes therepeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(140px,-100px);
+            opacity: 1;
+        }
+    }
+    @-moz-keyframes therepeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(140px,-100px);
+            opacity: 1;
+        }
+    }
+    @-o-keyframes therepeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(140px,-100px);
+            opacity: 1;
+        }
+    }
+    @keyframes therepeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(140px,-100px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes fourpeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(110px,106px);
+            opacity: 1;
+        }
+    }
+    @-moz-keyframes fourpeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(110px,106px);
+            opacity: 1;
+        }
+    }
+    @-o-keyframes fourpeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(110px,106px);
+            opacity: 1;
+        }
+    }
+    @keyframes fourpeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(110px,106px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes fivepeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-60px,160px);
+            opacity: 1;
+        }
+    }
+    @-moz-keyframes fivepeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-60px,160px);
+            opacity: 1;
+        }
+    }
+    @-o-keyframes fivepeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-60px,160px);
+            opacity: 1;
+        }
+    }
+    @keyframes fivepeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-60px,160px);
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes sixpeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-200px,66px);
+            opacity: 1;
+        }
+    }
+    @-o-keyframes sixpeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-200px,66px);
+            opacity: 1;
+        }
+    }
+    @-moz-keyframes sixpeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-200px,66px);
+            opacity: 1;
+        }
+    }
+    @keyframes sixpeople {
+        0% {
+            transform: scale(0.01);
+        }
+        100% {
+            transform: scale(1) translate(-200px,66px);
+            opacity: 1;
+        }
+    }
+    .five-img{
+        width: 450px;
+        height: 532px;
+    }
+    .swiper-slide-six .pic-show-block img{
+        width: 296px;
+        height: 526px;
+    }
+    .swiper-slide-active .eleven-img-block img{
+        width: 276px;
+        height: 506px;
+    }
+    .swiper-slide-active .pic-show-block img.s-one{
+        top:254px;
+    }
+    .swiper-slide-active .eleven-img-block img.s-there{
+        top:409px;
+    }
+    .swiper-slide-active .five-img .five-img-b{
+        top: 249px;
+        left: -47px;
+    }
+    .swiper-slide-active .five-img .five-img-t{
+        left: 334px;
+    }
+}

@@ -1,0 +1,213 @@
+<style>
+    #picturesPreview {
+        padding: 12px;
+        border: 1px solid #e4e4e4;
+        color: #888;
+        margin: 0 0 0 127px;
+        width: 1000px;
+    }
+
+    #picturesPreview .pic {
+        float: left;
+        margin: 4px;
+        text-align: center;
+        position: relative;
+    }
+
+    #picturesPreview .pic img {
+        height: 60px;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        padding: 1px;
+        display: block;
+    }
+
+    #picturesPreview .pic .rmBtn {
+        text-align: center;
+        height: 24px;
+        line-height: 24px;
+        display: block;
+    }
+
+    #picturesPreview .pic .setMainPic {
+        background: #f6f6f6;
+        display: block;
+        height: 24px;
+        line-height: 24px;
+        text-align: center;
+    }
+
+    .img-select {
+        min-height: 120px;
+        margin-left: 120px;
+        border-radius: 5px;;
+        overflow: hidden;
+    }
+
+    .img-select li {
+        width: 80px;
+        min-height: 80px;
+        margin-right: 8px;
+        float: left;
+        margin-bottom: 5px;
+        position: relative;
+        /*
+                overflow: hidden;
+        */
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .img-select li .removeBtn {
+        border-radius: 100%;
+        background-color: #fff;
+        border: 1px solid #e4e4e4;
+        padding: 2px 3px;
+    }
+
+    .img-select li .removeBtn:hover {
+        background-color: grey;
+        border: 1px solid gray;
+        color: white;
+    }
+
+    .img-select li .upImg {
+        position: absolute;
+        top: -10px;
+        right: -5px;
+        z-index: 1000;
+        display: inline-block;
+    }
+
+    .moxie-shim-html5 {
+        display: none;
+    }
+
+    .topic-send .send-box {
+        width: 100%;
+        height: 100px;
+        padding: 5px 10px;
+        margin: 0;
+        outline: none;
+        resize: none;
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+        overflow: hidden;
+    }
+</style>
+<div class="page-header">
+    <h1><i class="fa fa-clock-o"></i> <?php echo !empty($id) ? "编辑假日红包" : "添加假日红包" ?></h1>
+</div>
+<section id="product-base" class="product-widget form"
+         style="border: 1px solid #efefef;border-radius: 5px;padding: 20px 10px">
+    <article class="widget-cont">
+        <div class="field base-field textComponent" style="min-height:40px;height: auto;overflow: visible">
+            <label for="ruleName" class="col-sm-1 field-label">发布时间:</label>
+            <div class="col-sm-5">
+                <div class="topic-send">
+                    <input type="text" id="send_time"
+                           value="<?php echo $item ? date('Y-m-d H:i:s', $item['send_time']) : ''; ?>"
+                           placeholder="发布时间" name="send_time"
+                           data-date-format="yyyy-mm-dd "/>
+                </div>
+            </div>
+        </div>
+        <div class="field base-field textComponent" style="min-height:40px;height: auto;overflow: visible">
+            <label for="ruleName" class="col-sm-1 field-label">红包金额:</label>
+            <div class="col-sm-5">
+                <div class="topic-send">
+                    <input type="number" min="0" max="10000000" id="money"
+                           value="<?php echo $item ? $item['money'] / 100 : ''; ?>"
+                           placeholder="红包金额" name="money"
+                    /> (元)
+                </div>
+            </div>
+        </div>
+        <div class="field base-field textComponent" style="min-height:40px;height: auto;overflow: visible">
+            <label for="ruleName" class="col-sm-1 field-label">红包个数:</label>
+            <div class="col-sm-5">
+                <div class="topic-send">
+                    <input type="number" id="num" min="1" max="10000000"
+                           value="<?php echo $item ? $item['num'] : 1; ?>"
+                           placeholder="红包个数" name="num"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="field base-field textComponent" style="min-height:140px;height: auto;overflow: visible">
+            <label for="ruleName" class="col-sm-1 field-label">文字内容:</label>
+            <div class="col-sm-5">
+                <div class="topic-send">
+                <textarea contenteditable="true" placeholder="说点什么吧" name="content" id="content"
+                          class="send-box content"><?php echo !empty($item) ? $item['content'] : '' ?></textarea>
+                </div>
+            </div>
+
+            <!--  <textarea name="content" id="content" style="width: 500px;height: 100px;" placeholder="文字内容"></textarea>-->
+            <!--   <span class="tip"><b class="red normal"></b></span>-->
+        </div>
+        <div class="field base-field picComponent" style="border-bottom: 1px dotted #f5f5f5">
+            <section>
+                <article>
+                    <div class="field set-field">
+                        <label for="" class="field-label" style="float:left;">图片:</label>
+                        <ul class="pub-all-pic img-select" id="picturesPreview">
+                            <?php if (!empty($item)) { ?>
+                                <?php
+                                $media = explode(',', $item['media']);
+                                foreach ($media as $k => $m) {
+                                    ?>
+                                    <li class="img_list"><img class="imgReady" data-id="<?php echo $k ?>"
+                                                              data-width="0" data-height="0" src="<?php echo $m ?>"
+                                                              style="max-width:80px;" alt=""><span class="upImg"><label
+                                                class="fa fa-remove red removeBtn"></label></span></li>
+                                <?php } ?>
+                            <?php } else { ?>
+
+                            <?php } ?>
+                            <li class="add-more browse-button pic" id="uploadProductPictures" href="javascript:;"
+                                style="width: 80px;display: inline-block;text-align: center; height: 80px; border:3px  dotted #e4e4e4;line-height: 80px;vertical-align: middle"><span
+                                    class="fa grey fa-plus fa-2x"
+                                ></span></li>
+
+                        </ul>
+
+                        <span class="tip"></span>
+                    </div>
+                    <p style="margin: 8px 0 8px 126px;color: #888;">请上传1-9张图片以内图片</p>
+
+
+                </article>
+            </section>
+        </div>
+        <div class="field base-field" style="height: auto;overflow: hidden">
+            <?php $this->view->partial('package/partial/user-item'); ?>
+        </div>
+        <hr/>
+        <div class="save-area" style="margin-left: 100px;margin-bottom: 10px;margin-top: 50px">
+            <?php if (!empty($id)) { ?>
+                <input type="button" value="确认修改" class="btn btn-success saveBtn btn-sm" data-id="<?php echo $id ?>"/>
+            <?php } else { ?>
+                <input type="button" value="确认发布" class="btn btn-success saveBtn btn-sm" data-id="0"/>
+            <?php } ?>
+        </div>
+    </article>
+</section>
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script>
+    seajs.use('app/panel/system/package.ads.js?v=1.0.4', function (api) {
+        api.addFestivalPackage();
+        api.removeFestivalPackage();
+    });
+    $('#send_time').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d H:i:s",
+        minDate: 0,
+        timepicker: true,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+</script>

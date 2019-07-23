@@ -1,0 +1,258 @@
+<link rel="stylesheet" href="/srv/static/panel/css/lightbox/lightbox.css"/>
+<link rel="stylesheet" href="/srv/static/panel/css/sweetalert.css">
+<script src="/srv/static/panel/js/jquery/lightbox/lightbox.js"></script>
+<script src="/srv/static/panel/js/sweetalert/sweetalert.min.js"></script>
+<script src="/srv/static/panel/js/tools/Url.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        lightbox.option({
+            albumLabel: '%1/%2',
+            'resizeDuration': 200,
+            "fadeDuration":0,
+            "imageFadeDuration":0
+        });
+    })
+
+</script>
+<style>
+    td{
+        vertical-align: middle !important;
+    }
+    .active{
+        background:#428bca !important;
+        border:1px solid #428bca !important;
+    }
+    a:hover{
+        text-decoration:none;
+    }
+</style>
+<div>
+    <form action="" method="get" style="padding-left:13px;float:left"  >
+        搜索：<input type="text" name="uid" placeholder="请输入用户id" value="{{uid}}">
+        <button class="btn btn-primary btn-xs">搜索</button>
+    </form>
+    <div class="tabs pull-right" style="height:0;border:0;margin-right:13px" >
+        <a data-recommend=1 href="javascript:;" class="tab <?php echo $recommend ? 'active' : ''?>" >已推荐</a>
+        <a data-recommend=0 href="javascript:;" class="tab <?php echo $recommend ? '' : 'active'?>" style="margin-left:-4px">未推荐</a>
+    </div>
+
+</div>
+<div class="clearfix" style="height:30px"></div>
+<hr class="  hr-10">
+
+<div class="col-xs-12">
+    <div class="table-responsive">
+        <table id="sample-table-1" class="table table-striped table-bordered table-hover">
+            <thead>
+            <tr>
+
+                <th class="center" style="width:180px">头像</th>
+                <th class="center" style="width:250px">用户</th>
+                <th class="center">挂单</th>
+                <th class="center">城市</th>
+                <!--<th class="center">芝麻分</th>-->
+                <th class="center">技能</th>
+                <!--<th class="center">服务</th>-->
+                <th class="center">成为卖家</th>
+
+                <!--<th class="center">响应时长</th>-->
+                <!--<th class="center">实名认证</th>-->
+                <th class="center">其他信息</th>
+                <th class="center">
+                    操作
+                    <?php if( $recommend ) {?>
+                        <button class="btn btn-xs btn-danger unRecommendAll" style="margin-left:10px">全部取消</button>
+                    <?php }?>
+                </th>
+
+
+            </tr>
+            </thead>
+
+            <tbody >
+            <?php if( !empty($sellers) ) {?>
+            <?php foreach ( $sellers as $seller ) :?>
+                <tr style="height:167px">
+                    <td class="center">
+                        <a href="<?php echo $seller['userInfo']['avatar']?>" data-lightbox="roadtrip<?php echo $seller['uid']?>">
+                            <img class="" alt="" src="<?php echo $seller['userInfo']['avatar']?>?x-oss-process=image/resize,m_fill,h_200,w_200" style="border: 2px solid #c9d6e5;border-radius:5px;height: 150px;margin-right: 10px;margin-left: 0;box-shadow: none;"><!--?x-oss-process=image/resize,m_fill,h_200,w_200-->
+                        </a>
+
+                        <!--<a href="javascript:;" data-href="/panel/users/detail/?user_id={{seller['uid']}}" data-id="user_detail_{{seller['uid']}}" data-title="用户详情" class="newTarget" target="_blank" title="查看用户详情">
+                            {{seller['uid']}}
+                        </a>-->
+
+                    </td>
+                    <td>
+                        <span style="">
+                                <a href="javascript:;"
+                                   data-href="/panel/users/detail/?user_id=<?php echo $seller['uid']?>"
+                                   title="<?php echo $seller['uid']?>"
+                                   data-id="user_detail_<?php echo $seller['uid']?>"
+                                   data-title="用户详情" class="newTarget"
+                                   target="_blank" title="查看用户详情"
+                                   style="color:deeppink;padding-left:5px">
+                                    <?php echo $seller['userInfo']['username'] ;?>
+                                </a>
+                            <span class="blue">【<?php echo $seller['uid']?>】</span>
+                            </span>
+                    </td>
+
+
+
+                    <td class="center">
+                        <?php if( $seller['status'] ) {?>
+                            <span style="color:#3cc73c">是</span> <span style="border-radius:10px;background:#3cc73c;padding:1px 2px;color:white"><i class="fa fa-check"  aria-hidden="true"></i></span>
+                        <?php }else{?>
+                            <span style="color:#FEA356">否</span> <span style="border-radius:10px;background:#FEA356;padding:1px 5px;color:white;font-weight:bold">=</span>
+                        <?php }?>
+
+                    </td>
+                    <td class="center">
+                        {{seller['city']}}
+                    </td>
+
+                    <td class="center">
+                        <?php if( $seller['skill'] == '' || $seller['skill'] == '[]' ) {?>
+                            无
+                        <?php }else{?>
+                            <a href="javaScript:;" class="skill" data-uid=<?php echo $seller['uid']?> >技能</a>
+                        <?php }?>
+                    </td>
+
+                    <td class="center">
+                        <?php echo date('Y/m/d H:i:s',$seller['registration']);?>
+
+                    </td>
+
+                    <td class="center">
+                        <a href="javascript:;" class="show-detail" data-html="true" title="<?php
+                        $income  = sprintf("%.2f",$seller['total_income'] / 100);
+                        $str = <<<eof
+                        
+                            订单总数： {$seller['order_num']}<br>
+                            确认订单数： {$seller['confirm_num']} <br>
+                            拒绝订单数：  {$seller['refuse_num']}<br>
+                            总收益： $income 元
+                    
+eof;
+                        echo "<p align='left'>" . $str . "</p>";
+                    ?>">查看</a>
+                    </td>
+
+                    <td class="center">
+                        <?php if($seller['recommend']) { ?>
+                            <button class="btn btn-xs btn-danger unRecommend" data-uid="<?php echo  $seller['uid']?>" data-cmd="0" >取消推荐</button>
+                        <?php }else{ ?>
+                            <button class="btn btn-xs btn-success recommend" data-uid="<?php echo  $seller['uid']?>" data-cmd="1">设为推荐</button>
+                        <?php }?>
+                    </td>
+                </tr>
+            <?php endforeach;?>
+<?php }else{?>
+                <tr>无数据</tr>
+            <?php }?>
+            </tbody>
+        </table>
+         <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+    </div>
+</div>
+
+
+<!--modal 技能-->
+<div class="modal fade"  id="skill" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog" style="width:70%">
+        <div class="modal-content" style="border-radius: 5px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="fa fa-times-circle-o" aria-hidden="true" style="font-size:30px"></i>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">技能详情—<span id="userInfo" class="blue" style="font-size:16px;font-weight:bold" ></span></h4>
+
+            </div>
+            <div class="modal-body" id="content">
+
+            </div>
+
+
+            <div class="modal-footer" style="border-radius: 0 0 5px 5px">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+
+<script>
+    seajs.use('app/panel/panel.base',function(api){
+        //查看及技能
+        $(".skill").on('click',function () {
+            var uid = $(this).data('uid');
+            api.requestApi('/api/rent/getSkill',{uid:uid},function(res){
+                if( res.result == 1 )
+                {
+                    $('#content').html(res.data);
+                    $('#skill').modal('show');
+
+                }
+            });
+        });
+        //设为首页推荐
+        $('.recommend,.unRecommend').on('click',function () {
+            var uid = $(this).data('uid'),
+                cmd = $(this).data('cmd'),
+                _this = $(this);
+            api.requestApi("/api/rent/recommend",{uid:uid,cmd:cmd},function(res){
+                if(res.result == 1)
+                {
+                    if( !cmd )
+                        $(_this).removeClass('btn-danger').addClass('btn-success').html('设为推荐').data('cmd',1);
+                    else
+                        $(_this).removeClass('btn-success').addClass('btn-danger').html('取消推荐').data('cmd',0);
+                    tip.showTip('ok','操作成功',1000);
+                }
+            },true)
+        });
+
+        //取消所有用户推荐
+        $('.unRecommendAll').on('click',function () {
+            api.requestApi("/api/rent/unRecommendAll",{},function(res){
+                if(res.result == 1)
+                {
+                    tip.showTip('ok','操作成功',1000,function(){
+                        window.location.reload();
+                    });
+
+                }
+            })
+        });
+
+    });
+
+    //tab
+    $('.tab').on('click',function () {
+        var _this = this;
+        if( !$(_this).hasClass('active') )
+        {
+            //切换按钮状态
+            $('.tab').each(function () {
+                if( $(this).hasClass('active') )
+                {
+                    $(this).removeClass('active');
+                    return false;
+                }
+            });
+            $(_this).addClass('active');
+            //get方式提交数据
+            var url = new Url();
+            url.setArgs({recommend:$(_this).data('recommend')})
+
+            window.location.href = url.getUrl();
+        }
+
+    });
+    $('.show-detail').tooltip();
+
+
+</script>

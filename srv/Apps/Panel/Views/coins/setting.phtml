@@ -1,0 +1,56 @@
+<div class="page-header">
+    <h1>龙币设置</h1>
+</div>
+
+<div class="form-group" style="width: 100%;height: auto;overflow: hidden;margin-bottom: 10px">
+    <p class="alert alert-info info-widget">
+        <b class="red">1</b>.龙豆和人民币的关系是：<b class="red">“1”</b>个龙豆价值<b class="red">“1”</b>分钱<br/><br/>
+        <b class="red">2</b>.龙豆和龙币的关系是：<b class="red">“1”</b>个龙豆价值一个<b class="red">“1”</b>龙币<br/><br/>
+        <b class="red">3</b>.接收到礼物时,假设礼物购买价值为<b class="red">“100”</b>龙豆，我们设置用户转化比例为<b class="red">“50%”</b> ，那么用户可以得到<b
+            class="red">“50”</b>龙币，即<b class="red">“5”</b>毛钱
+    </p>
+    <label for="name" class="col-sm-2 control-label">收到龙豆转龙币比例:</label>
+
+    <div class="col-sm-10">
+        <input type="number" value="<?php echo $setting && $setting['rate'] ? $setting['rate'] : '' ?>"
+               placeholder="转化比例" class="coins"/> %
+
+        <!--        <input type="number" value="-->
+        <?php //echo $setting && $setting['rate'] ? $setting['rate'] : '' ?><!--"-->
+        <!--               placeholder="转化比例" class="coins"/> %-->
+    </div>
+</div>
+<div class="form-group" style="margin-bottom: 10px;overflow: hidden">
+    <label for="logo" class="col-sm-2 control-label">允许兑换的币种:</label>
+    <div class="col-sm-9">
+        <label> <input type="checkbox"
+                       class="chk ace" <?php echo $setting['change_type'] && in_array(2, $setting['change_type']) ? 'checked' : '' ?>
+                       name="change_type" value="2"
+                       data-id="2"/><span class="lbl"></span></label> 现金&nbsp;
+        <label> <input type="checkbox"
+                       class="chk ace" <?php echo $setting['change_type'] && in_array(3, $setting['change_type']) ? 'checked' : '' ?>
+                       name="change_type" value="3"
+                       data-id="3"/><span class="lbl"></span></label> 龙钻&nbsp;
+        <label> <input type="checkbox"
+                       class="chk ace" <?php echo $setting['change_type'] && in_array(4, $setting['change_type']) ? 'checked' : '' ?>
+                       name="change_type" value="4"
+                       data-id="4"/><span class="lbl"></span></label> 龙豆
+    </div>
+</div>
+<div class="form-group" style="margin-bottom: 10px;overflow: hidden">
+    <label for="logo" class="col-sm-2 control-label">龙币:龙钻 </label>
+    <div class="col-sm-9">
+        <input type="number" value="<?php echo $setting && $setting['diamond_rate'] ? $setting['diamond_rate'] : '' ?>"
+               placeholder="多少龙币价值一个龙钻" style="width: 80px" class="diamond_rate"/>：1
+    </div>
+</div>
+<div class="form-group" style="margin-bottom: 10px;overflow: hidden">
+    <div class="col-sm-12" style="margin-top: 10px;padding: 10px;border-top: 1px solid #e4e4e4">
+        <span class="btn btn-sm btn-primary btnSetting"><i class="fa fa-paper-plane"></i> 保存</span>
+    </div>
+</div>
+<script>
+    seajs.use('app/panel/coins/panel.coins.js?v=1.2', function (api) {
+        api.setCoinSetting();
+    });
+</script>

@@ -1,0 +1,36 @@
+<div class="activity-content center">
+    <div>
+        <div class="article-head">
+            <h1 class="article-title">
+                <?php echo $item['title']; ?>
+            </h1>
+
+            <div class="article-info clearfix" style="text-align:center;height:28px;">
+                <div class="left">
+                    <?php echo date('Y-m-d', $item['created']); ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="article-content">
+            <div class="images-content">
+                <?php $medias = @json_decode($item['media_json'], true);
+                if($medias && count($medias) > 0) {
+                    $imgs = $medias['imgs'];
+                    if(count($imgs)) {
+                        foreach($imgs as $img) {
+                            ?>
+                <div class="img-item"><img src="<?php echo $img;?>"></div>
+                <?php
+                        }
+                    }
+                }
+                ?>
+            </div>
+            <div class="clear"></div>
+            <div class="word-content">
+                <?php echo $item['brief'] ?>
+            </div>
+        </div>
+    </div>
+</div>

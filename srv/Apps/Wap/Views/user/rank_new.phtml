@@ -1,0 +1,166 @@
+<link rel="stylesheet" type="text/css" href="/static/wap/css/share.css"/>
+<link rel="stylesheet" type="text/css" href="/static/wap/css/rank.css"/>
+
+<section>
+    <div class="rank">
+        <div class="rank_con" style="height: auto;">
+
+            <div class="rank_box" style="height: auto;padding-bottom: 2em;overflow: hidden;">
+                <div class="rank_com" style="width: 100%;height: auto;overflow: hidden;position: relative;text-align: center">
+                    <img src="/static/wap/images/person/dengji_1.png" style="width: 100%;height: auto;max-width: 100%;"/>
+                    <div class="rank_label"
+                         style="position: absolute;vertical-align:middle;left: 0;height: auto;width: 100%;text-align: center;color:#fff;font-size: 0.85rem;">经验值：899
+                    </div>
+                </div>
+                <div class="rank_article">
+                    <div class="progress_box">
+                        <div class="progress">
+                            <!--还未达到顶级-->
+                            <?php if ($user->grade < $grade[count($grade) - 1]['grade']) { ?>
+                                <span class="blue"
+                                      style="width:<?php echo ($user->points - $grade[count($grade) - 1]['amount_start']) / ($grade[count($grade) - 1]['amount_end'] - $grade[count($grade) - 1]['amount_start']) ?>%"></span>
+                                <!--已经达到顶级-->
+                            <?php } else { ?>
+                                <span class="blue" style="width:100%"></span>
+                            <?php } ?>
+
+                        </div>
+                    </div>
+                    <div class="rank_level clearfix">
+                        <div class="rank_level_l">V<?php echo $user->grade ?></div>
+                        <?php if ($user->grade < $grade[count($grade) - 1]['grade']) { ?>
+                            <div class="rank_level_r">V<?php echo $user->grade + 1 ?></div>
+                        <?php } ?>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="rank_rule">
+            <div class="container">
+                <div class="rank_rule_box">
+					<h1>等级规则说明</h1>
+						<div class="rank_level_rule">
+							<table width="100%" cellpadding="0" cellspacing="0" border="1">
+                                <thead>
+                                    <tr>
+                                        <th>加分项目</th>
+                                        <th>加分行为</th>
+                                        <th>经验值</th>
+                                        <th>每日上限</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>恐龙谷认证</td>
+                                    <td>名人认证</td>
+                                    <td>+1000</td>
+                                    <td>一次性</td>
+                                 
+                                  </tr>
+                                  <tr>
+                                    <td>朋友圈</td>
+                                    <td>发布动态</td>
+                                    <td>+3</td>
+                                    <td>5</td>
+                              
+                                 
+                                  </tr>
+                                  <tr>
+									<td rowspan="5">常用操作</td>
+                                    <td>点赞</td>
+                                    <td>+2</td>
+                                    <td>5</td>
+                                 
+                                  </tr>
+                                  <tr>
+                                    <td>评论</td>
+                                    <td>+2</td>
+                                    <td>5</td>
+                                  </tr>
+                                  <tr>
+                                    <td>收藏</td>
+                                    <td>+2</td>
+                                    <td>5</td>
+                                 
+                                  </tr>
+                                  <tr>
+                                    <td>分享</td>
+                                    <td>+2</td>
+                                    <td>5</td>
+                                  </tr>
+                                  <tr>
+                                    <td>转发</td>
+                                    <td>+2</td>
+                                    <td>5</td>
+                                 
+                                  </tr>
+                                  <tr>
+                                    <td>账号绑定</td>
+                                    <td>绑定手机</td>
+                                    <td>+100</td>
+                                    <td>一次性</td>
+                                  </tr>
+                                  <tr>
+									<td rowspan="5">完善个人信息</td>
+                                    <td>照片墙</td>
+                                    <td>+20</td>
+                                    <td>一次性</td>
+                                 
+                                  </tr>
+                                  <tr>
+                                    <td>语音介绍</td>
+                                    <td>+20</td>
+                                    <td>一次性</td>
+                                  </tr>
+                                  <tr>
+                                    <td>生日</td>
+                                    <td>+20</td>
+                                    <td>一次性</td>
+                                 
+                                  </tr>
+                                  <tr>
+                                    <td>地区</td>
+                                    <td>+20</td>
+                                    <td>一次性</td>
+                                  </tr><tr>
+                                    <td>个性签名</td>
+                                    <td>+20</td>
+                                    <td>一次性</td>
+                                 
+                                  </tr>
+                                  <tr>
+									<td rowspan="2">其他操作</td>
+                                    <td>添加好友</td>
+                                    <td>+2</td>
+                                    <td>3</td>
+                                  </tr><tr>
+                                    <td>举报成功</td>
+                                    <td>+5</td>
+                                    <td>3</td>
+                                  </tr>
+                                 </tbody>
+						  </table>
+						</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(function () {
+        var height = $(".rank_com").height();
+        var line_height = $(".rank_com").height() * 0.16;
+        var width = $(window).width();
+
+        $(".rank_label").css({
+            'top': (height * 0.63) + 'px',
+            'height': line_height + 'px',
+            'line-height': line_height + 'px',
+            'width':width*0.407+'px',
+            'left':width*0.32+'px'
+        })
+    })
+</script>

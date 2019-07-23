@@ -1,0 +1,81 @@
+.msg_sender {
+    border-left: 1px solid #d3d3d3;
+    border-right: 1px solid #d3d3d3;
+    border-bottom: 1px solid #d3d3d3;
+    border-radius: 3px;
+    -moz-border-radius: 0 0 3px;
+    -webkit-border-radius: 0 0 3px;
+}
+
+li {
+display: list-item;
+text-align: -webkit-match-parent;
+}
+.msg_sender.small .tab_nav a {
+padding-left: 10px;
+padding-right: 10px;
+}
+
+.msg_sender .tab_content {
+padding: 0;
+}
+.msg_sender .tab_content .inner {
+border-width: 0;
+}
+.tab_content .inner.no_extra {
+padding: 0;
+border-width: 0;
+}
+.tab_content .inner {
+border: 1px solid #c6c6c6;
+border-radius: 3px;
+-moz-border-radius: 3px;
+-webkit-border-radius: 3px;
+padding: 14px 20px;
+}
+.emotion_editor .edit_area {
+padding: 14px 20px;
+outline: 0;
+word-wrap: break-word;
+word-break: break-all;
+border-top-left-radius: 3px;
+-moz-border-radius-topleft: 3px;
+-webkit-border-top-left-radius: 3px;
+border-top-right-radius: 3px;
+-moz-border-radius-topright: 3px;
+-webkit-border-top-right-radius: 3px;
+background-color: #fff;
+height: 80px;
+}
+
+.right_navbar .nav{
+    border-left: 1px solid #dddddd;
+}
+
+#resourceListBox tr, #resourceListBox td {
+	height: 25px;
+}
+
+#resourceListBox li img {
+	width: 50px;
+	height: 50px;
+	margin: 4px 5px;
+}
+
+.edit_area img, .edit_area video {
+	width: 50px;
+	height: 50px;
+}
+
+#resourceViewern list {
+
+}
+
+#imageList li {
+    margin: 5px;
+}
+#imageList img {
+    width: 80px;
+    height: 60px;
+    margin: 3px 10px;
+}

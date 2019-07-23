@@ -1,0 +1,341 @@
+<link rel="stylesheet" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<link rel="stylesheet" href="/srv/static/panel/css/lightbox/lightbox.css"/>
+<script src="/srv/static/panel/js/jquery/lightbox/lightbox.js"></script>
+<script src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script src="/srv/static/panel/js/tools/Url.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        lightbox.option({
+            albumLabel: '%1/%2',
+            'resizeDuration': 200,
+            "fadeDuration":0,
+            "imageFadeDuration":0
+        });
+    })
+
+</script>
+<label for="name">
+    <span style="">名称：</span>
+</label>
+<input type="text" id="name" value="{{name}}" placeholder="请输入广告主题">
+<label for="name">
+    <span style="">推送日期：</span>
+</label>
+<input type="text" id="start" value="{{start}}" placeholder="请输入起始日期"> -
+<input type="text" id="end" value="{{end}}" placeholder="请输入终止日期">
+<input type="button" value="搜索" style="margin-left:10px" class="btn btn-xs btn-primary" id="search">
+<input type="button" value="添加广告" style="margin-left:10px" class="btn btn-xs btn-success" id="add-ads">
+
+<label for="" style="margin-left:80px">
+    <span style="">广告弹出间隔：</span>
+</label>
+<input type="text" id="interval" value="{{interval/60}}" style="width:80px"> 分钟
+<input type="button" value="保存" style="margin-left:10px" class="btn btn-xs btn-success" id="save-interval">
+<hr class="hr-10">
+<div class="" style="width:900px">
+    <style>
+        table tbody tr th,table tbody tr td{
+            vertical-align: middle;
+        }
+    </style>
+    <table id="article-list" class=" list">
+        <thead>
+        <tr class="head">
+            <th class="center" style="width:36px">ID</th>
+            <th class="center" style="width:80px;">主题</th>
+            <th class="center" style="width:80px;">按钮文字</th>
+            <th class="center" style="width:50px">封面</th>
+            <th class="center" style="width:30px">分享内容</th>
+            <th class="center" style="width:30px">投放日期</th>
+            <th class="center" style="width:100px">操作</th>
+
+        </tr>
+        </thead>
+        <tbody class="listData">
+        <?php if(!empty($list)) {?>
+            <?php foreach($list as $item) :?>
+                <tr class="item" data-id="{{item['id']}}">
+                    <th class="name center">
+                        {{item['id']}}
+                    </th>
+                    <td>
+                        {{item['name']}}
+                    </td>
+                    <td>
+                        {{item['btn_name']}}
+                    </td>
+                    <td>
+                        <a href="{{item['cover']}}" data-lightbox="roadtrip{{item['id']}}">
+                            <img src="{{item['cover']}}" alt="" style="height:60px;max-width:50px">
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{item['content_img']}}" data-lightbox="roadtrip{{item['id']}}">
+                            <img src="{{item['content_img']}}" alt="" style="height:60px;max-width:50px">
+                        </a>
+                    </td>
+                    <td class="center">
+                        <?php echo date('Y/m/d',$item['period_start']) . ' - ' . date('Y/m/d',$item['period_end'])?>
+                    </td>
+                    <td class="center btns">
+                        <a href="javascript:;" class="btn btn-xs btn-primary edit" data-action="edit" style="margin-left:10px">
+                            编辑
+                        </a>
+                        <a href="javascript:;" class="btn btn-xs btn-danger del" data-action="del" style="">
+                            删除
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php }else{?>
+            <tr>
+                <td colspan="5" class="center red">暂无数据</td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+</div>
+<div class="clearfix"></div>
+<?php \Util\Pagination::instance($this->view)->display($this->view) ?>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">添加弹窗广告</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-xs-10" >
+                    <form class="form-horizontal" role="form">
+                        <input type="hidden" id="action" >
+                        <input type="hidden" id="edit-id" >
+                        <div class="form-group">
+                            <label for="new-name" class="col-sm-3 control-label">游戏名称：</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="new-name" placeholder="广告主题，例如：春节红包广告；">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-btn-name" class="col-sm-3 control-label">按钮文字：</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="new-btn-name" placeholder="分享按钮文字，如：邀请好友一起抢">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-3 control-label">投放日期：</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="add-start"  placeholder="请输入起始日期" style="width:149px"> -
+                                <input type="text" id="add-end"  placeholder="请输入终止日期" style="width:149px">
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-cover" class="col-sm-3 control-label" style="height:50px;line-height: 50px;">广告封面：</label>
+                            <div class="col-sm-9" style="height:50px;line-height: 50px;">
+                                <img id="new-cover" src="" alt="" style="width:50px;height:50px">
+                                <a href="javascript:;" class="btn btn-xs btn-primary" style="" id="select-cover">选择封面</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-content" class="col-sm-3 control-label" style="height:50px;line-height: 50px;">分享内容：</label>
+                            <div class="col-sm-9" style="height:50px;line-height: 50px;">
+                                <img id="new-content" src="" alt="" style="width:50px;height:50px">
+                                <a href="javascript:;" class="btn btn-xs btn-primary" style="" id="select-content">选择图片</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary save">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script>
+    $('#start,#end,#add-start,#add-end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        minDate:0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+    seajs.use('app/panel/panel.base',function (api) {
+        //搜索
+        $('#search').on('click',function () {
+            var name = $.trim($('#name').val());
+            var start = $.trim($('#start').val());
+            var end = $.trim($('#end').val());
+            var url = new Url();
+            url.rmArgs(['p']);
+            url.setArgs({'name':name,'start':start,'end':end});
+            window.location.href = url.getUrl();
+        });
+        //操作按钮
+        $('.btns').on('click',function () {
+            var target = event.target;
+            if (target.tagName === 'TD')
+                return;
+            if( $(target).data('action') === 'edit' )
+                return;
+            var id = $(target).closest('tr').data('id');
+            var action = $(target).data('action');
+            api.requestApi('/api/ads/operate',{id:id,action:action},function (res) {
+                if(res.result === 1)
+                {
+                    tip.showTip('ok','操作成功',1000,function () {
+                        window.location.reload();
+                    })
+                }else
+                {
+                    tip.showTip('err','操作失败',2000)
+                }
+
+            })
+        });
+
+        //显示添加新广告
+        $('#add-ads').on('click',function () {
+            console.log($('#new-name').val());
+            $('#new-name').val('');
+            $('#new-btn-name').val('');
+            $('#add-start').val('');
+            $('#add-end').val('');
+            $('#new-cover').attr('src','');
+            $('#new-content').attr('src','');
+            $('#action').val('add');
+            $('#myModal').modal('show');
+        });
+        //添加图片
+        $('#select-cover,#select-content').on('click',function () {
+            var _this = this;
+            $node_file = $('<input type="file" style="display:none">');
+            $node_file.on('change',function () {
+                var file = this.files[0]; //获取file对象
+                //判断file的类型是不是图片类型。
+                if(!/image\/\w+/.test(file.type)){
+                    alert("文件必须为图片！");
+                    return false;
+                }
+
+                var reader = new FileReader(); //声明一个FileReader实例
+                reader.readAsDataURL(file); //调用readAsDataURL方法来读取选中的图像文件
+                //最后在onload事件中，获取到成功读取的文件内容，并以插入一个img节点的方式显示选中的图片
+                reader.onload = function(e){
+                    $(_this).prev().attr('src',this.result);
+                }
+            });
+            $node_file.get(0).click();
+        });
+        //保存
+        $('.save').on('click',function () {
+            var id = $('#edit-id').val();
+            var name = $.trim($('#new-name').val());
+            var btn_name = $.trim($('#new-btn-name').val());
+            var add_start = $.trim($('#add-start').val());
+            var add_end = $.trim($('#add-end').val());
+            var cover = $.trim($('#new-cover').attr('src'));
+            var content = $.trim($('#new-content').attr('src'));
+            var action = $.trim($('#action').val());
+            var arr = {
+                name:name,
+                btn_name:btn_name,
+                add_start:add_start,
+                add_end:add_end,
+                cover:cover,
+                content:content
+            };
+            var isOk = true;
+            //验证字段
+            $.each(arr,function (index,value) {
+                if(value === '')
+                {
+                    switch (index)
+                    {
+                        case 'name':
+                            tip.showTip('err','请输入广告主题',2000);
+                            $('#new-name').focus();
+                            break;
+                        case 'btn_name':
+                            tip.showTip('err','请输入按钮文字',2000);
+                            $('#new-btn-name').focus();
+                            break;
+                        case 'add_start':
+                            tip.showTip('err','请选择广告开始日期',2000);
+                            $('#add-start').focus();
+                            break;
+                        case 'add_end':
+                            tip.showTip('err','请选择广告结束日期',2000);
+                            $('#add-end').focus();
+                            break;
+                        case 'cover':
+                            tip.showTip('err','请选择广告封面',2000);
+                            break;
+                        case 'content':
+                            tip.showTip('err','请选择分享内容',2000);
+                            break;
+                    }
+                    isOk = false;
+                    return false;
+                }
+            });
+            if(isOk)
+            {
+                api.requestApi('/api/ads/operate',{id:id,name:name,btn_name:btn_name,start:add_start,end:add_end,cover:cover,content:content,action:action},function (res) {
+                    if( res.result === 1 )
+                    {
+                        $('#myModal').modal('hide');
+                        tip.showTip('ok','保存成功','1000',function () {
+                            location.reload();
+                        })
+                    }
+
+                })
+            }
+        });
+
+        //编辑
+        $('.edit').on('click',function () {
+            var id = $(this).closest('tr').data('id');
+            var name = $.trim($(this).closest('tr').find('td:eq(0)').text());
+            var btn_name = $.trim($(this).closest('tr').find('td:eq(1)').text());
+            var add_start = $.trim($(this).closest('tr').find('td:eq(4)').text()).split('-')[0];
+            var add_end = $.trim($(this).closest('tr').find('td:eq(4)').text()).split('-')[1];
+            var cover = $.trim($(this).closest('tr').find('td:eq(2) img').attr('src'));
+            var content = $.trim($(this).closest('tr').find('td:eq(3) img').attr('src'));
+            console.log(cover,content);
+            $('#action').val('edit');
+            $('#edit-id').val(id);
+            $('#new-name').val(name);
+            $('#new-btn-name').val(btn_name);
+            $('#add-start').val(add_start);
+            $('#add-end').val(add_end);
+            $('#new-cover').attr('src',cover);
+            $('#new-content').attr('src',content);
+
+            $('#myModal').modal('show');
+        });
+
+        //设置广告弹出间隔
+        $('#save-interval').on('click',function () {
+            var interval = $('#interval').val() * 60;//
+            api.requestApi('/api/ads/operate',{action:'set_interval','interval':interval},function (res) {
+                if(res.result === 1)
+                {
+                    tip.showTip('ok','操作成功',1000,function () {
+                        location.reload();
+                    })
+                }
+            })
+        });
+
+
+
+    });
+
+</script>

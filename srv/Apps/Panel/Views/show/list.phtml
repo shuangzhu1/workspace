@@ -1,0 +1,273 @@
+<link rel="stylesheet" type="text/css" href="/static/panel/js/tools/datetimepicker/bootstrap-datetimepicker.min.css">
+
+<form action="" method="get"
+      style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px; line-height: 50px;">
+    <label for="name">关键字</label>
+    <input name="key" type="text" id="key" placeholder="用户昵称/手机/用户ID" value="<?php echo $key; ?>">
+    <!--  &nbsp;
+    <label for="name">状态</label>
+    <select name="status">
+        <option value="-1" <?php /*echo $status == -1 ? 'selected' : ''; */ ?>>全部</option>
+        <option value="0" <?php /*echo $status == 0 ? 'selected' : ''; */ ?>>关闭</option>
+        <option value="1" <?php /*echo $status == 1 ? 'selected' : ''; */ ?>>正常</option>
+    </select>-->
+    &nbsp;<label for="name">最后发布时间:</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd"/>
+    - <input type="text" id="end" value="<?php echo $end; ?>" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd"/>
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+</form>
+<div class="tabs">
+    <a data-key="type" data-val="-1" href="javascript:;"
+       class="tab <?php echo $type == '-1' ? 'active' : '' ?>">全部</a>
+    <a data-key="type" data-val="1" href="javascript:;"
+       class="tab <?php echo $type == 1 ? 'active' : '' ?>">普通用户</a>
+    <!--  <a data-key="type" data-val="2" href="javascript:;"
+       class="tab <?php /*echo $type == 2 ? 'active' : '' */ ?>">机器人</a>-->
+</div>
+<table id="article-list" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style='width:80px'>用户ID</th>
+        <th style='width:80px'>用户头像</th>
+        <!--  <th style='width:60px'>批量</th>-->
+        <th style='width:150px'>用户名</th>
+        <th style='width:80px'>作品数</th>
+        <!--  <th style='width:150px'>图片</th>-->
+        <!--    <th style='width:300px'>审核</th>-->
+        <!--   <th style='width:50px'>状态</th>-->
+        <!-- <th style="width: 100px" class="arrow" data-sort="" data-order="like_cnt">
+             <span class="text">总点赞数</span>
+             <span class="arrow_wrap">
+                 <i class="fa fa-caret-down arrow-down"></i>
+                 <i class="fa fa-caret-up arrow-up "></i>
+             </span></th>
+         <th style="width: 80px" class="arrow" data-sort="" data-order="charm">
+             <span class="text">魅力值</span>
+             <span class="arrow_wrap">
+                 <i class="fa fa-caret-down arrow-down"></i>
+                 <i class="fa fa-caret-up arrow-up "></i>
+             </span></th>
+         <th style="width: 80px" class="arrow" data-sort="" data-order="dislike_cnt">
+             <span class="text">总踩数</span>
+             <span class="arrow_wrap">
+                 <i class="fa fa-caret-down arrow-down"></i>
+                 <i class="fa fa-caret-up arrow-up "></i>
+             </span>
+         </th>
+         <th style="width: 120px" class="arrow" data-sort="" data-order="current_month_charm">
+             <span class="text">本期魅力值</span>
+             <span class="arrow_wrap">
+                 <i class="fa fa-caret-down arrow-down"></i>
+                 <i class="fa fa-caret-up arrow-up "></i>
+             </span></th>
+         <th style="width: 120px" class="arrow" data-sort="" data-order="current_month_like">
+             <span class="text">本期点赞数</span>
+             <span class="arrow_wrap">
+                 <i class="fa fa-caret-down arrow-down"></i>
+                 <i class="fa fa-caret-up arrow-up "></i>
+             </span></th>
+         <th style="width: 100px" class="arrow" data-sort="" data-order="current_month_dislike">
+             <span class="text">本期踩数</span>
+             <span class="arrow_wrap">
+                 <i class="fa fa-caret-down arrow-down"></i>
+                 <i class="fa fa-caret-up arrow-up "></i>
+             </span></th>
+         <th style="width: 100px" class="arrow" data-sort="" data-order="score">
+             <span class="text">当前得分</span>
+             <span class="arrow_wrap">
+                 <i class="fa fa-caret-down arrow-down"></i>
+                 <i class="fa fa-caret-up arrow-up "></i>
+             </span></th>
+         <th style="width: 100px" class="arrow" data-sort="" data-order="rank">
+             <span class="text">当前排名</span>
+             <span class="arrow_wrap">
+                 <i class="fa fa-caret-down arrow-down"></i>
+                 <i class="fa fa-caret-up arrow-up "></i>
+             </span></th>-->
+        <th style="width: 150px" class="arrow" data-sort="" data-order="created">
+            <span class="text">最后发布时间</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span></th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        $content = \Util\FilterUtil::unPackageContentTag($item['content'], 0, "/panel/users/detail?user_id=");
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <th class='name'><?php echo $item['user_id']; ?></th>
+            <!--  <td class="center"><label>
+                    <input type="checkbox" class="chk ace" data-id="<?php /*echo $item['id']; */ ?>"/>
+                    <span class="lbl"></span>
+                </label>
+            </td>-->
+
+            <td><a href="<?php echo $item['avatar']; ?>" data-lightbox="roadtrip"><img
+                        src="<?php echo $item['avatar']; ?>?x-oss-process=image/resize,m_fill,h_160,w_160"
+                        style="width: 40px; height: 40px;"/></a></td>
+            <td>
+                <a data-title="用户详情" class="newTarget" href="javascript:;"
+                   data-href="/panel/users/detail?user_id=<?php echo $item['user_id'] ?>"><?php echo $item['username']; ?></a>
+            </td>
+            <td><?php echo $item['video_count'] ?></td>
+            <!--     <td>
+                <?php /*$images = explode(',', $item['images']);
+                foreach ($images as $i) {
+                    */ ?>
+                    <a href="<?php /*echo $i; */ ?>" data-lightbox="roadtrip"><img
+                            src="<?php /*echo $i; */ ?>?x-oss-process=image/resize,m_fill,h_160,w_160"
+                            style="width: 40px; height: 40px;"/></a>
+                <?php /*} */ ?>
+            </td>
+            <td>
+                <?php /*if ($item['enable'] == 0) {
+                    echo "<label class='badge badge-danger'>已关闭</label>";
+                } else if ($item['enable'] == 1) {
+                    echo "<label class='badge badge-success'>正常</label>";
+                } */ ?>
+            </td>
+            <td>
+                <?php /*echo $item['like_cnt']; */ ?>
+            </td>
+            <td>
+                <?php /*echo $item['charm']; */ ?>
+            </td>
+            <td>
+                <?php /*echo $item['dislike_cnt']; */ ?>
+            </td>
+            <td>
+                <?php /*echo $item['current_month_charm']; */ ?>
+            </td>
+            <td>
+                <?php /*echo $item['current_month_like']; */ ?>
+            </td>
+            <td>
+                <?php /*echo $item['current_month_dislike']; */ ?>
+            </td>
+            <td>
+                <?php /*echo $item['score']; */ ?>
+            </td>
+            <td>
+                <?php /*echo $item['rank'] ? $item['rank'] : '无'; */ ?>
+            </td>-->
+            <td><?php echo date('Y-m-d H:i', $item['created']); ?></td>
+            <td>
+                <a data-title="秀场详情" data-href="/show/detail?user_id=<?php echo $item['user_id'] ?>"
+                   class="btn btn-sm btn-primary newTarget">详情</a>
+
+            </td>
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="17">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <!--   <tr class="showpage">
+           <th class="name">操作</th>
+           <td colspan="17">
+                   <span>
+                       [ <a href="javascript:;" class="selectAll">全选</a> ]
+                       [ <a href="javascript:;" class="selectNone">全不选</a> ]
+                       [ <a href="javascript:;" class="selectInvert">反选</a> ]
+                       <a class="btn-light delAllSelected" href="javascript:;">批量屏蔽</a>
+                   </span>
+           </td>
+       </tr>-->
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+        </td>
+    </tr>
+</table>
+
+
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script src="/srv/static/panel/js/tools/Url.js"></script>
+<link rel="stylesheet" href="/srv/static/panel/css/lightbox/lightbox.css"/>
+
+<script src="/srv/static/panel/js/jquery/lightbox/lightbox.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        lightbox.option({
+            albumLabel: '%1/%2',
+            'resizeDuration': 200,
+            "fadeDuration":0,
+            "imageFadeDuration":0
+        });
+    })
+
+</script>
+<script>
+    $('[data-rel=tooltip]').tooltip();
+    seajs.use('app/panel/discuss/discuss.edit', function (api) {
+        api.del();
+        api.recommend();
+        var order = '<?php echo $order ?>'
+        var sort_order = '<?php echo $sort_order ?>'
+        if (order != '' && sort_order != '') {
+            var current = $(".arrow[data-order='" + order + "']");
+            current.addClass("active");
+            current.attr('data-sort', sort_order);
+            if (sort_order == 'desc') {
+                current.find('.arrow-down').addClass('active');
+                current.find('.arrow-up').addClass('disabled');
+            } else {
+                current.find('.arrow-down').addClass('disabled');
+                current.find('.arrow-up').addClass('active');
+            }
+        }
+        var url = new Url();
+        $(".arrow").on('click', function () {
+            var order = $(this).attr('data-order');
+            var sort = $(this).attr('data-sort');
+            sort = sort == 'desc' ? 'asc' : 'desc';
+            url.setArgs({order: order, sort: sort, p: 1});
+            window.location.href = url.getUrl();
+        });
+        $(".tabs a[data-key='type']").on('click', function () {
+            url.setArgs({type: $(this).attr('data-val'), p: 1});
+            window.location.href = url.getUrl();
+        })
+
+    });
+    //  var receive_start_val;
+    $('#start').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+    $('#end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+</script>
+

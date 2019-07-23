@@ -1,0 +1,95 @@
+.vipcard {
+	margin: 0 auto;
+	position: relative;
+	height: 159px;
+	text-align: left;
+	width: 267px;
+}
+
+#cardbg {
+	height: 159px;
+	width: 267px;
+	position: absolute;
+	border-radius: 8px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+	-moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+	-webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+	top: 0;
+	left: 0;
+	z-index: 1;
+}
+
+.vipcard .logo {
+	max-height: 70px;
+	position: absolute;
+	top: 16px;
+	left: 20px;
+	z-index: 2;
+}
+
+.vipcard .verify {
+	display: inline-block;
+	position:absolute;
+	height: 40px;
+	top: 105px;
+	right: 12px;
+	text-align: right;
+	line-height: 24px;
+	color: #000;
+	font-size: 20px;
+	text-shadow: 0 1px rgba(255, 255, 255, 0.2);
+	z-index: 2;
+}
+
+.vipcard h1 {
+	position: absolute;
+	font-size:20px;
+	font-weight:bold;
+	right: 25px;
+	top: 12px;
+	text-shadow: 0 1px rgba(255, 255, 255, 0.2);
+	color: #000;
+	line-height: 25px;
+	text-align: right;
+	font-weight: normal;
+	z-index: 2;
+	margin:0;
+}
+.vipcard .verify span {
+	display: inline-block;
+	text-align: left;
+}
+
+.vipcard .verify em {
+	display: block;
+	line-height: 20px;
+	font-size: 13px;
+	font-weight: normal;
+	font-style: normal;
+}
+
+.numbercolor{
+	margin-top: 15px;
+	padding-bottom:15px;
+	text-align: center;
+}
+
+/*文件上传样式*/
+.ace-file-input .file-label:before{
+	display:none;
+}
+
+.ace-file-multiple .file-label .file-name [class*="icon-"]{
+	margin:0;
+	padding:0;
+}
+
+.ace-file-multiple .file-label .file-name [class*="icon-"]{
+	line-height:48px;
+	font-size:48px;
+}
+
+select.form-control { font-size: 12px; }
+input.date-picker { height: 32px; line-height: 32px; }

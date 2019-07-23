@@ -1,0 +1,217 @@
+<div class="page-header">
+    <h1>
+        <i class="fa fa-database"></i> 数据库备份与还原
+        <span class="btn btn-primary btn-sm btnAdd right"><i class="fa fa-hdd-o"></i> 立即备份</span>
+
+    </h1>
+
+</div>
+<div id="accordion" class="accordion-style1 panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                   style="padding: 15px 10px">
+                    <i class="fa fa-angle-down bigger-110" data-icon-hide="fa fa-angle-down"
+                       data-icon-show="fa fa-angle-right"></i>
+                    &nbsp;配置信息
+                </a>
+            </h4>
+        </div>
+
+        <div class="panel-collapse collapse out" id="collapseOne">
+            <div class="panel-body">
+                <form class="form-horizontal" role="form" style="width: 50%">
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">备份任务:</label>
+
+                        <div class="col-sm-10">
+                            <a href="/task/list" class="btn btn-sm btn-primary" target="_blank">添加/编辑/停止</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">主机地址:</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="host"
+                                   value="<?php echo !empty($conf['db']['host']) ? $conf['db']['host'] : '' ?>"
+                                   placeholder="主机地址">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">用户名:</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="user" placeholder="用户名"
+                                   value="<?php echo !empty($conf['db']['user']) ? $conf['db']['user'] : '' ?>"
+                            >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">密码:</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="password" placeholder="密码"
+                                   value="<?php echo !empty($conf['db']['password']) ? $conf['db']['password'] : '' ?>"
+
+                            >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">需要备份的数据库:</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="databases" placeholder="需要备份的数据库"
+                                   value="<?php echo !empty($conf['db']['databases']) ? $conf['db']['databases'] : '' ?>"
+                            > <span class="bold red">【多个数据库以空格分开】</span>
+                        </div>
+                    </div>
+                    <div class="form-group" style="border-top: 1px solid #f4f4f4;padding-top: 10px;padding-left: 100px">
+                        <button type="button" class="btn btn-success" data-original="" id="sureBtn">立即保存</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<p class="alert alert-success success-widget">-->
+<!--    数据备份为主库dvalley，db2,db3的备份-->
+<!--</p>-->
+<table class="list ">
+    <thead>
+    <tr class="head">
+        <th style="width: 180px;">日期</th>
+        <!--        <th>批量</th>
+        -->
+        <th style="width: 400px;">文件名</th>
+        <th style="width: 200px;">文件大小</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody class="listData">
+    <?php if ($list) { ?>
+        <?php foreach ($list as $item) { ?>
+            <tr data-id="<?php echo md5($item['name']) ?>" data-file="<?php echo $item['name'] ?>">
+                <td><?php echo date('Y-m-d H:i:s', $item['time']) ?></td>
+                <td><span class="bold"><?php echo $item['name'] ?></span></td>
+                <td><span class="bold green"><?php echo $item['size'] ?></span></td>
+                <td>
+                    <a class="btn btn-sm btn-success btnDownload" target="_blank" href="/backup/<?php echo $item['name'] ?>"><i
+                            class="fa fa-download"></i> 下载</a>
+                    <a class="btn btn-sm btn-primary btnRecovery" href="javascript:;"><i class="fa fa-history"></i>
+                        还原到该版本</a>
+                    <a class="btn btn-sm btn-danger btnRemove" href="javascript:;"> <i class="fa fa-remove"></i>
+                        永久删除</a>
+                </td>
+            </tr>
+        <?php } ?>
+    <?php } ?>
+    </tbody>
+
+</table>
+<script>
+    seajs.use('app/panel/panel.base', function (api) {
+        //编辑配置信息
+        $("#sureBtn").on('click', function () {
+            var host = $("#host").val().trim();
+            var user = $("#user").val().trim();
+            var password = $("#password").val().trim();
+            var databases = $("#databases").val().trim();
+            if (host == '') {
+                tip.showTip("err", '请编辑主机名', 1000);
+                $("#host").focus();
+                return;
+            }
+            if (user == '') {
+                tip.showTip("err", '请编辑用户名', 1000);
+                $("#user").focus();
+                return;
+            }
+            if (password == '') {
+                tip.showTip("err", '请编辑密码', 1000);
+                $("#password").focus();
+                return;
+            }
+            if (databases == '') {
+                tip.showTip("err", '请编辑需要备份的数据库', 1000);
+                $("#databases").focus();
+                return;
+            }
+            api.requestApi('/api/db/setting', {
+                host: host,
+                user: user,
+                password: password,
+                databases: databases
+            }, function (res) {
+                if (res.result == 1) {
+                    tip.showTip("ok", '编辑成功', 1000, function () {
+                        window.location.reload();
+                    })
+                }
+            })
+        });
+        //永久删除
+        $(".btnRemove").on('click', function () {
+            var file = $(this).closest("tr").data('file');
+            $(this).confirm("确定要删除吗？不可恢复", {
+                ok: function () {
+                    api.requestApi('/api/db/remove', {
+                        file: file
+                    }, function (res) {
+                        if (res.result == 1) {
+                            tip.showTip("ok", '删除成功', 1000, function () {
+                                window.location.reload();
+                            })
+                        }
+                    })
+                },
+                cancel: function () {
+                    return false;
+                }
+            });
+        });
+        //数据库还原
+        $(".btnRecovery").on('click', function () {
+            var file = $(this).closest("tr").data('file');
+            $(this).confirm("确定要还原吗？可能需要一定时间", {
+                ok: function () {
+                    api.requestApi('/api/db/recovery', {
+                        file: file
+                    }, function (res) {
+                        if (res.result == 1) {
+                            tip.showTip("ok", '恢复成功', 1000, function () {
+                                window.location.reload();
+                            })
+                        }
+                    })
+                },
+                cancel: function () {
+                    return false;
+                }
+            });
+        });
+        //生成备份
+        $(".btnAdd").on('click', function () {
+            var file = $(this).closest("tr").data('file');
+            $(this).confirm("确定要生成备份吗？可能需要一定时间", {
+                ok: function () {
+                    api.requestApi('/api/db/backup', {
+                        file: file
+                    }, function (res) {
+                        if (res.result == 1) {
+                            tip.showTip("ok", '提交成功', 1000, function () {
+                                window.location.reload();
+                            })
+                        }
+                    })
+                },
+                cancel: function () {
+                    return false;
+                }
+            });
+        });
+    });
+</script>

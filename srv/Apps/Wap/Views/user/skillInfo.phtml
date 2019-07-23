@@ -1,0 +1,179 @@
+<link rel="stylesheet" href="/static/wap/js/swiper/swiper.css"/>
+<script src="/static/wap/js/swiper/swiper.js"></script>
+<style>
+    .swiper-slide img {
+        width: 100%;
+    }
+
+    .swiper-pagination-bullet {
+        width: 0.4rem;
+        height: 0.4rem;
+    }
+
+    .swiper-pagination-bullet-active {
+        background-color: #000;
+    }
+
+    .swiper-pagination {
+        line-height: 1rem;
+    }
+
+    @keyframes playing {
+        0% {
+            opacity: 1;
+        }
+        25% {
+            opacity: 0.5;
+        }
+        50% {
+            opacity: 0.1;
+        }
+        75% {
+            opacity: 0.5;
+        }
+        100% {
+            opacity: 1;
+        }
+
+    }
+</style>
+<?php if ($skill['pictures']) {
+    $images = explode(',', $skill['pictures']);
+    ?>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <?php foreach ($images as $i) { ?>
+                <div class="swiper-slide">
+                    <div
+                        style="width: 100%;height:18rem;background-size:cover;background-position:center;background-image: url(<?php echo $i ?>); background-repeat: no-repeat;"></div>
+                </div>
+            <?php } ?>
+        </div>
+        <div class="swiper-pagination"></div>
+
+        <!--   <div class="swiper-button-prev"></div>
+           <div class="swiper-button-next"></div>-->
+    </div>
+    <script>
+        $(document).ready(function () {
+
+            var mySwiper = new Swiper('.swiper-container', {
+
+                direction: 'horizontal',  //轮播方向
+
+                autoplay: 2000,  //自动轮播
+
+                loop: false,   //循环
+                pagination: '.swiper-pagination',
+                autoplayDisableOnInteraction: false  //用户操作后不停止
+
+            });
+
+        });
+    </script>
+
+<?php } ?>
+<div class="user_info"
+     style="width: 100%;height: auto;overflow: hidden;padding: 0.5rem;border-bottom: 1px solid #d4d4d4">
+    <div style="float: left;">
+        <img style="width: 3rem;height:auto;border-radius: 100%;"
+             src="<?php echo $info['avatar'] ?>?x-oss-process=image/resize,m_fill,h_160,w_160">
+    </div>
+    <div style="float: left;font-size: 0.6rem;line-height: 1rem;padding:0.5rem 1rem">
+        <p><?php echo $info['username'] ?></p>
+        <p style="font-size: 0.8rem;color: #444">
+            <?php
+            $score = sprintf('%.1f', $info['score'] / 20);
+            $full = intval($score);//满星
+            if ($score != $full) {
+                $percent = $score - $full;//百分星
+                $empty = intval(5 - $score);
+            } else {
+                $percent=0;
+                $empty = intval(5 - $score);
+            }
+            ?>
+            <?php if ($full) {
+                for ($i = $full; $i > 0; $i--) { ?>
+                    <img style="width: 0.8rem;height: auto" src="/static/wap/images/person/star_full.png"/>
+                <?php }
+            } ?>
+            <?php if ($percent) { ?>
+                <a style="position: relative;display: inline-block;width: 0.8rem;height: 0.8rem">
+                    <span
+                        style="position: absolute;display: inline-block;top:0;left:0;width: <?php echo $percent * 0.725 + 0.033 ?>rem;height: 0.8rem;overflow: hidden;z-index: 2;">
+                        <label
+                            style="width: 0.8rem;height: 0.8rem;display: inline-block;background-image:url(/static/wap/images/person/star_full.png);background-size: cover">
+                        </label>
+                    </span>
+                    <img style="width: 0.8rem;height: auto;position: absolute;z-index: 1;left: 0;top: 0"
+                         src="/static/wap/images/person/star_empty.png"/>
+                </a>
+            <?php } ?>
+            <?php if ($empty) {
+                for ($i = $empty; $i > 0; $i--) { ?>
+                    <img style="width: 0.8rem;height: auto" src="/static/wap/images/person/star_empty.png"/>
+                <?php }
+            } ?>
+            <?php echo $score ?>
+        </p>
+    </div>
+    <div style="clear: both"></div>
+    <p>
+    <div
+        style="width: 5.25rem;height: 2.5rem;background: url(/static/wap/images/person/voice_wrap.png) no-repeat left center;background-size: 5.25rem">
+        <img src="/static/wap/images/person/voice_horn.png"
+             style="width:0.75rem;position:relative;top:1rem;left:0.5rem;/*animation: playing 1s infinite*/" alt=""
+             id="btn_play">
+            <span style="float:right;color:white;font-size:0.55rem;margin-right: 0.75rem;line-height: 2.8rem;"
+                  id="audio_time">
+                <?php
+                preg_match('/\S*_t_(\d+)./', $skill['audio'], $match);
+                echo date('i:s', $match[1]);
+                ?>
+            </span>
+    </div>
+    </p>
+</div>
+<p class="skill_price" style="font-size: 0.65rem;line-height: 2rem;padding: 0.5rem">
+    主题：<?php echo $skill['title']; ?>
+    <span class="right"><?php echo sprintf('%.2f', $skill['money'] / 100) ?>元/次(小时)</span>
+</p>
+<p style="width: 90%;margin: auto;background-color: #e4e4e4;font-size: 0.6rem;line-height: 1rem;padding: 0.5rem;color: #444">
+    <span style="color: #111;font-size: 0.65rem;line-height: 1.2rem">服务说明：</span><br/>
+    <?php echo str_replace('\n', '<br/>', $skill['desc']) ?>
+</p>
+
+
+<audio src="<?php echo $skill['audio'] ?>" id="intro" preload="auto">
+    Your browser does not support the audio element.
+</audio>
+<script>
+    $('#btn_play').on('click', function () {
+        var obj_audio = document.getElementById('intro');
+        if ($(obj_audio).hasClass('playing')) {
+            obj_audio.pause();
+            $('#intro').removeClass('playing');
+            $('#btn_play').css('animation', '');
+        }
+        else {
+            $('#audio_time').attr('data-duration', $('#audio_time').html());
+            obj_audio.play();
+            $('#intro').addClass('playing');
+            $('#btn_play').css('animation', 'playing 1s infinite');
+        }
+        obj_audio.ontimeupdate = function (event) {
+            var t = event.target.currentTime.toFixed(0);
+            if (t < 10)
+                t = '00:0' + t;
+            else
+                t = '00:' + t;
+            $('#audio_time').html(t);
+
+        }
+        obj_audio.onended = function () {
+            $('#btn_play').css('animation', '');
+        }
+    });
+
+</script>

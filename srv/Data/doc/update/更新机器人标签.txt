@@ -1,0 +1,36 @@
+  $line = count(file(ROOT . "/Data/test/signature.txt"));
+        //  $uids = UserTags::getColumn(["columns" => 'user_id'], 'user_id');
+
+        $tags1 = SiteTags::getColumn(["type=2 and extra=1", 'columns' => 'name'], 'name');
+        $tags2 = SiteTags::getColumn(["type=2 and extra=2", 'columns' => 'name'], 'name');
+        $tags1_count = count($tags1);
+        $tags2_count = count($tags2);
+
+
+        $robot = Users::getColumn(['user_type=' . UserStatus::USER_TYPE_ROBOT . " and (id<71041 or id>71078) and id not in (" . implode(',', $uids) . ")", 'columns' => 'id', 'limit' => $line], 'id');
+
+        //$uids = UserTags::getColumn(["brief REGEXP '^[a-zA-Z].*'", 'columns' => 'user_id'], 'user_id');
+//        var_dump($list);
+//        exit;
+        $fp = fopen(ROOT . "/Data/test/signature.txt", 'r') or die("open file failure!");
+        $i = 0;
+        while (!feof($fp)) {
+            $buffer = fgets($fp, 4096);
+            $buffer = str_replace(["　", "\n", "\r", "\t"], "", $buffer);
+            $signature = trim($buffer);
+            echo $signature;
+            $tag = $tags1[mt_rand(0, $tags1_count - 1)] . "," . $tags2[mt_rand(0, $tags2_count - 1)];
+            $uid = $robot[$i];
+            $data = [];
+            $data['user_id'] = $uid;
+            $data['created'] = time();
+            $data['modify'] = $data['created'];
+            $data['tags_name'] = $tag;
+            $data['brief'] = $signature;
+            $res = UserTags::updateOne($data, 'user_id=' . $uid);
+            $i++;
+            //
+        }
+        echo "完成";
+        fclose($fp);
+        exit;

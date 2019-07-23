@@ -1,0 +1,286 @@
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=MWkGH8HcEfA5nbdkiYXp67VmxbgL4iGe"></script>
+
+<style>
+    .anchorBL {
+        display: none
+    }
+
+    /*帖子列表页*/
+    .topic-send {
+        border: 1px solid #ddd;
+        background: #fcfcfc;
+        margin-bottom: 10px;
+        border-radius: 2px;
+        position: relative;
+        min-height: 130px;
+    }
+
+    .topic-send .send-box {
+        width: 100%;
+        height: 100px;
+        padding: 5px 10px;
+        margin: 0;
+        outline: none;
+        resize: none;
+        border: none;
+        border-bottom: 1px solid #f7f7f7;
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+        overflow: hidden;
+    }
+
+    .topic-send .send-left {
+        width: 82%;
+        float: left;
+        line-height: 28px;
+        position: relative;
+    }
+
+    .topic-send .send-left .send-select {
+        height: 30px;
+        margin: 0 10px;
+        float: left;
+        position: relative;
+        line-height: 27px;
+    }
+
+    .topic-send .send-left .send-select .icons:hover {
+        color: #edae49
+    }
+
+    .topic-send .send-left .send-select .file {
+        opacity: 0;
+        filter: alpha(opacity=0);
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        cursor: pointer
+    }
+
+    .topic-send .send-left em {
+        font-style: normal;
+        color: #999;
+        cursor: pointer;
+        vertical-align: middle;
+        margin-right: 10px;
+    }
+
+    .topic-send .send-left em.icon-tupian {
+        font-size: 20px;
+        vertical-align: sub
+    }
+
+    .topic-send .send-left .moxie-shim-html5 {
+        display: none;
+    }
+
+    .face-box {
+        width: 400px;
+        height: 161px;
+        border: 1px solid #ddd;
+        background: #fff;
+        position: absolute;
+        left: 0;
+        top: 88px;
+        padding: 10px;
+        display: none;
+        z-index: 100000000
+    }
+
+    #ds-reset .face-box {
+        box-sizing: border-box
+    }
+
+    .face-box.reply-face-box {
+        left: 37px;
+    }
+
+    .face-box.top {
+        top: 118px;
+    }
+
+    .face-box:after {
+        content: '';
+        display: block;
+        width: 10px;
+        height: 10px;
+        background: #fff;
+        border-left: 1px solid #ddd;
+        border-top: 1px solid #ddd;
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        position: absolute;
+        left: 10px;
+        top: -7px;
+    }
+
+    .face-box .face-img {
+        border-top: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+        overflow-y: auto;
+        height: 150px;
+        box-sizing: border-box
+    }
+
+    #ds-reset span.items {
+        box-sizing: border-box;
+        cursor: pointer;
+        display: block;
+        width: 30px;
+        height: 30px;
+        float: left;
+        text-align: center;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        line-height: 44px;
+    }
+
+    #ds-reset span.items img {
+        width: 22px
+    }
+
+    #ds-reset span.items:hover {
+        background: #d7fff8;
+    }
+
+    #ds-reset span.items:hover img {
+        width: 25px;
+    }
+
+    .face-box .face-img span.items {
+        box-sizing: border-box;
+        cursor: pointer;
+        display: block;
+        width: 35px;
+        height: 35px;
+        float: left;
+        text-align: center;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .face-box .face-img span.items img {
+        width: 25px
+    }
+
+    .face-box .face-img span.items:hover {
+        background: #d7fff8;
+    }
+
+    .face-box .face-img span.items:hover img {
+        width: 28px;
+    }
+</style>
+<div class="page-header">
+    <h1>添加动态</h1>
+</div>
+
+<section id="product-base" class="product-widget form" style="border: 1px solid #efefef;border-radius: 5px;">
+    <article class="widget-cont">
+        <div class="field base-field">
+            <label for="" class="field-label">标签:</label>
+            <?php foreach ($tags as $k => $t) {
+                if ($t['name'] == '声控') {
+                    continue;
+                }
+                ?>
+                <label>
+                    <input type="checkbox" name="tag" <?php echo $k == 1 ? 'checked' : ''; ?> class="ace tag"
+                           value="<?php echo $t['id']; ?>">
+                    <span class="lbl"><?php echo $t['name']; ?></span>
+                </label>
+                &nbsp;
+            <?php } ?>
+            <span class="tip"></span>
+        </div>
+        <!--  <input type="file" id="fileTest" name="file" multiple="multiple">-->
+        <div class="field base-field">
+            <label for="" class="field-label">类型:</label>
+            <label>
+                <input type="radio" name="media_type" class="ace media_type " value="1">
+                <span class="lbl"><b>纯文本</b></span>
+            </label>
+            <label>
+                <input type="radio" name="media_type" class="ace media_type" value="3">
+                <span class="lbl"><b>图片</b></span>
+            </label>
+            <label>
+                <input type="radio" name="media_type" class="ace media_type" checked value="2">
+                <span class="lbl"><b>小视频</b></span>
+            </label>
+            <span class="tip"></span>
+        </div>
+        <div class="field base-field textComponent" style="min-height:140px;height: auto;overflow: visible">
+            <label for="ruleName" class="col-sm-1 field-label">文字内容:</label>
+            <div class="col-sm-5">
+                <div class="topic-send">
+                <textarea contenteditable="true" placeholder="说点什么吧" name="content" id="content"
+                          class="send-box content"></textarea>
+                    <div class="send-left">
+                        <div class="send-select">
+                            <em class="fa fa-smile-o icon-xiaolian" style="font-size: 20px" title="插入表情"></em>
+                        </div>
+                        <!--表情框-->
+                        <section class="face-box" style="top: 40px;">
+                            <div class="face-img"></div>
+                        </section>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <!--  <textarea name="content" id="content" style="width: 500px;height: 100px;" placeholder="文字内容"></textarea>-->
+            <!--   <span class="tip"><b class="red normal"></b></span>-->
+        </div>
+        <br/>
+        <div class="field base-field picComponent" style="display: none">
+            <?php $this->view->partial('virtual/discuss/pic'); ?>
+        </div>
+        <div class="field base-field videoComponent">
+            <?php $this->view->partial('virtual/discuss/video'); ?>
+        </div>
+        <div class="form-group field base-field" style="display: none">
+            <label for="ruleName" class="col-sm-2 control-label">公开位置</label>
+            <div class="col-sm-10">
+                <input id="id-pills-stacked" checked="checked" type="checkbox"
+                       class="ace ace-switch ace-switch-5"/>
+                <span class="lbl"></span>
+                <span class="help-inline red">如果云片已经添加了模板,可以不用提交至云片</span>
+            </div>
+
+        </div>
+
+        <div class="field base-field">
+            <?php $this->view->partial('virtual/discuss/address'); ?>
+        </div>
+        <hr/>
+        <div class="field base-field" style="height: auto;overflow: hidden">
+            <?php $this->view->partial('virtual/discuss/user'); ?>
+        </div>
+        <hr/>
+        <div class="save-area" style="margin-left: 100px;margin-bottom: 10px">
+            <input type="button" value="确认发布" class="btn btn-success saveBtn btn-sm"/>
+        </div>
+    </article>
+
+
+</section>
+<div class="modal fade" id="msgModal" style="top:300px">
+    <div class="modal-dialog" style="width: 300px;">
+        <div class="modal-content" style="padding: 10px; border-radius: 5px !important;">
+            <p><img src="/srv/static/panel/images/admin/loading.gif"/>&nbsp;正在提交数据 <span class="percent"></span></p>
+        </div>
+    </div>
+</div>
+<script>
+    $(".modal-dialog").css({"margin-top": ($(window).height() / 2 - $("#modal").height() / 2) + 'px'});
+    seajs.use('app/panel/virtual/virtual.discuss.js?v=1.1.3', function (api) {
+        api.addDiscuss();
+        api.emoj();
+        /*   api.toLatLng();*/
+    });
+
+
+</script>

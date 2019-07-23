@@ -1,0 +1,227 @@
+<script type="text/javascript" src="/static/panel/js/tools/jsonView/google-analytics-urchin.js"></script>
+<script type="text/javascript" src="/static/panel/js/tools/jsonView/c.js"></script>
+<script type="text/javascript" src="/static/panel/js/tools/jsonView/m.js"></script>
+<form action="" method="get" style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px;">
+  <!--  <label for="name">关键字</label>
+    <input name="key" type="text" id="key" placeholder="用户昵称/手机/用户ID" value="<?php /*echo $key; */?>">
+    &nbsp;-->
+    <label for="name">状态</label>
+    <select name="status">
+        <option value="-1" <?php echo $status == -1 ? 'selected' : ''; ?>>全部</option>
+        <option value="1" <?php echo $status == 1 ? 'selected' : ''; ?>>全部发送成功</option>
+        <option value="3" <?php echo $status == 3 ? 'selected' : ''; ?>>部分发送成功</option>
+        <option value="2" <?php echo $status == 2 ? 'selected' : ''; ?>>发送失败</option>
+    </select>
+    &nbsp;<label for="name">时间:</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd"/>
+    - <input type="text" id="end" value="<?php echo $end; ?>" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd"/>
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+    <a class="btn btn-primary btn-sm btnAdd right" href="/panel/message/pushMessage"><i class="fa fa-plus"></i> 发送消息</a>
+
+</form>
+<div class="tabs">
+    <a href="<?php echo $this->uri->setUrl(['type' => 0], ['p']); ?>"
+       class="tab <?php echo $type == 0 ? 'active' : ''; ?>">全部</a>
+    <a href="<?php echo $this->uri->setUrl(['type' => 1], ['p']); ?>"
+       class="tab <?php echo $type == 1 ? 'active' : ''; ?>">纯文字链接</a>
+    <a href="<?php echo $this->uri->setUrl(['type' => 2], ['p']); ?>"
+       class="tab <?php echo $type == 2 ? 'active' : ''; ?>">单图单标题</a>
+    <a href="<?php echo $this->uri->setUrl(['type' => 3], ['p']); ?>"
+       class="tab <?php echo $type == 3 ? 'active' : ''; ?>">多图多标题</a>
+</div>
+<table id="article-list" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style='width:36px'>ID</th>
+        <th style='width:150px'>管理员ID</th>
+        <th style='width:150px'> 发送时间</th>
+        <th>消息类型</th>
+        <th style='width:200px'>消息内容</th>
+        <th>推送内容</th>
+        <th style='width:200px'>需要接收用户</th>
+        <th style='width:200px'>已成功接的用户</th>
+        <!--    <th style='width:300px'>审核</th>-->
+        <th style='width:50px'>状态</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        $content = \Util\FilterUtil::unPackageContentTag($item['content'], 0, "/panel/users/detail?user_id=");
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <th class='name'><?php echo $item['id']; ?></th>
+            <td class=""><?php echo $item['admin_ids'] ?></td>
+            <td><?php echo date('Y-m-d H:i', $item['created']); ?></td>
+            <td>
+                <?php echo $item['tpl_type'] == 1 ? '纯文字链接' : ($item['tpl_type'] == 2 ? '单图单标题' : '多图多标题'); ?>
+            </td>
+
+            <td>
+                <button class="btn btn-sm btn-success btnScan" data-type="<?php echo $item['tpl_type'] ?>"
+                        data-content='<?php echo base64_encode($item['content']) ?>'><i class="fa fa-eye"></i> 查看
+                </button>
+                <!-- --><?php /*echo $item['content'] */ ?>
+            </td>
+            <td>
+                <?php echo $item['message'] ? $item['message'] : "图文消息"; ?>
+            </td>
+            <td>
+                <?php echo $item['user_type'] == 1 ? "全部用户" : '部分用户' ?>
+                <a href="javascript:;" class="show_json">点击查看</a><span
+                    class="json_content"
+                    style="display: none"
+                    data-content="<?php echo base64_encode($item['need_uids']); ?>"></span>
+                <!--   --><?php /*echo $item['user_type'] == 1 ? "全部用户" : $item['need_uids'] */ ?>
+            </td>
+            <td style="max-width: 500px;">
+                <a href="javascript:;" class="show_json">点击查看</a><span
+                    class="json_content"
+                    style="display: none"
+                    data-content="<?php echo base64_encode($item['success_uids']); ?>"></span>
+            </td>
+            <td>
+                <?php echo $item['status'] == 1 ? '发送成功' : ($item['status'] == 2 ? '部分发送' : '未发送') ?>
+            </td>
+            <td>
+                <?php if ($item['status'] != 1) { ?>
+                    <button class="btn btn-sm btn-primary">重新发送</button>
+                <?php } ?>
+            </td>
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="17">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="17">
+            <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+        </td>
+    </tr>
+</table>
+<div class="modal fade" id="viewModal">
+    <div class="modal-dialog" style="width: 400px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">消息内容</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;padding: 20px 0">
+
+            </div>
+            <!-- <div class="modal-footer">
+                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                 <button type="button" class="btn btn-primary" id="updateSureBtn">确定</button>
+             </div>-->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<select id="TabSize" style="display: none;">
+    <option value="2" selected="true">2</option>
+</select>
+
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script>
+
+    $('[data-rel=tooltip]').tooltip();
+    seajs.use('app/panel/discuss/discuss.edit', function (api) {
+        api.del();
+        api.recommend();
+        $(function () {
+            $(".json_content").each(function () {
+                SetTab();
+                var data = $(this).attr('data-content');
+                data = (base64.decode(data));
+                html = ProcessObject(data, 0, false, false, false);
+                $(this).html("<PRE class='CodeContainer'>" + html + "</PRE>");
+            });
+            $(".show_json").on('click', function () {
+                if ($(this).siblings(".json_content").is(":visible")) {
+                    $(this).siblings(".json_content").hide();
+                    $(this).html("点击查看")
+                } else {
+                    $(this).siblings(".json_content").show();
+                    $(this).html("点击收起")
+                }
+
+
+            })
+        })
+    });
+    $('#start').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+    $('#end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+    $(".listData").on("click", ".btnScan", function () {
+        var type = $(this).data('type');
+        var content = $(this).data('content');
+        var body = "";
+        if (type == 1) {
+            body = "<div style='padding: 5px;'>" + base64.decode(content) + "</div>";
+        } else if (type == 2) {
+            content = JSON.parse(base64.decode(content));
+            body = "<div style='width: 90%;margin: auto;border: 1px solid #e4e4e4;border-radius: 5px; background-color: #ddd;padding-bottom: 10px;'>" +
+                "<h6 style='padding-left: 10px;font-weight: bold'>" + content.title + "</h6>" +
+                "<div><img src='" + content.thumb + "?x-oss-process=image/resize,m_fill,h_120,w_339'/></div>" +
+                "<p style='padding: 5px  10px 0; font-weight: bold'><a href='" + content.link + "' target='_blank'>点击查看<label class='right fa fa-angle-right' style='font-weight: bold'></label></a></p>"
+            "</div>"
+        }
+        else if (type == 3) {
+            content = JSON.parse(base64.decode(content));
+            if (content.data_list !== undefined) {
+                content = content.data_list;
+            }
+            body = "<div style='width: 90%;margin: auto;border: 1px solid #e4e4e4;border-radius: 5px; background-color: #ddd;padding-bottom: 10px;'>" +
+                "<div style='width:100%;position:relative;border-top-left-radius: 5px;border-top-right-radius: 5px;height: 150px;background: url(" + content[0]['thumb'] + "?x-oss-process=image/resize,m_fill,h_150,w_339)'>" +
+                "<p style='position: absolute;bottom: 5px;font-weight: bold;padding-left: 5px;'><a  target='_blank'  style='color: #ddd' href='" + content[0]['link'] + "'>" + content[0]['title'] + "</a></p>" +
+                "</div>";
+            if (content.length > 1) {
+                body += "<ul style='margin-top: 5px;margin-left: 5px;'>";
+                for (var i = 1; i < content.length; i++) {
+                    body += "<li style='margin-bottom: 5px;overflow: hidden; font-weight: bold;clear: both;'><img style='width: 50px; height: 50px;float: left;' src='" + content[i]['thumb'] + "?x-oss-process=image/resize,m_fill,h_200,w_200'/><a target='_blank' href='" + content[i]['link'] + "' style='float: left;margin-left: 5px;font-weight: bold'>" + content[i]['title'] + "</a></li>";
+                }
+                body += "</ul>";
+            }
+            body += "</div>";
+
+        }
+        $("#viewModal").find(".modal-body").html(body);
+        $("#viewModal").modal("show");
+
+    })
+</script>

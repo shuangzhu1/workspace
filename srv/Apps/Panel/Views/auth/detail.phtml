@@ -1,0 +1,211 @@
+<section id="product-base" class="product-widget sm">
+    <h3 class="widget-tit">认证详情&nbsp;<b
+            class=" label-info arrowed-right">【<?php echo \Services\User\AuthManager::$status[$item['status']]; ?>
+            】</b><span
+            class="right">
+
+
+    </h3>
+
+    <article class="widget-cont">
+        <div class="tr " style="height: auto;">
+            <label class="sm">
+                <span class="title">提交时间:</span>
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><?php echo date('Y-m-d H:i', $item['created']); ?></span>
+            </label>
+            <label class="sm">
+                <span class="title">处理时间:</span>
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><?php echo $item['modify'] ? date('Y-m-d H:i', $item['modify']) : "暂无处理"; ?></span>
+            </label>
+        </div>
+        <div class="tr">
+            <label class="md">
+                <span class="title">真实姓名: </span>
+                <span class="content"><?php echo $item['true_name'] ?></span>
+            </label>
+            <label class="md">
+                <span class="title">身份证号: </span>
+                <span class="content"><?php echo $item['id_card'] ?></span>
+            </label>
+        </div>
+        <div class="tr " style="height: auto;">
+            <label class="lg">
+                <span class="title">身份证正反面:</span>
+                        <span class="content tr_json link_address_content">
+                           <ul class="ace-thumbnails">
+                               <li>
+                                   <a href="<?php echo $item['card_front']; ?>" data-rel="colorbox">
+                                       <img alt="150x150" style="width: 200px; height: auto"
+                                            src="<?php echo $item['card_front']; ?>"/>
+                                       <div class="text">
+                                           <div class="inner">点击查看大图</div>
+                                       </div>
+                                   </a>
+                               </li>
+                               <li>
+                                   <a href="<?php echo $item['card_back']; ?>" data-rel="colorbox">
+                                       <img alt="150x150" style="width: 200px; height: auto"
+                                            src="<?php echo $item['card_back']; ?>"/>
+                                       <div class="text">
+                                           <div class="inner">点击查看大图</div>
+                                       </div>
+                                   </a>
+                               </li>
+                           </ul>
+                        </span>
+
+            </label>
+        </div>
+        <div class="tr tr_json" style="height: auto;">
+            <label class="md">
+                <span class="title">个人网址: </span>
+                        <span class="content json_content">
+                                       <?php echo $item['website'] ? "<a class='btn btn-minier  btn-purple' target='_black' href=" . $item['website'] . "><i class='fa fa-link'></i>" . $item['website'] . "</a>" : '没有填写'; ?>
+</span>
+            </label>
+            <!--  <label class="md">
+                <span class="title">手机号: </span>
+                        <span class="content json_content">
+                                    <?php /*echo $item['phone']; */ ?>
+</span>
+            </label>-->
+        </div>
+
+
+        <div class="tr tr_json" style="height: auto;">
+            <label class="lg">
+                <span class="title">人物介绍: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['introduce']; ?></span>
+            </label>
+
+        </div>
+        <div class="tr tr_json" style="height: auto;">
+            <label class="md">
+                <span class="title">行业: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['industry']; ?></span>
+            </label>
+            <label class="md">
+                <span class="title">职业/职位: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['job']; ?></span>
+            </label>
+
+        </div>
+        <div class="tr tr_json" style="height: auto;">
+            <label class="lg">
+                <span class="title">公司/经纪公司/所在运动队/组织机构: </span>
+                        <span
+                            class="content json_content">
+                           <?php echo $item['company']; ?></span>
+            </label>
+        </div>
+        <div class="tr tr_json listData " style="height: auto;">
+            <label class="sm">
+                <span class="title">操作: </span>
+                        <span class="content json_content">
+                        <?php if ($item['status'] == 2) { ?>
+                            <a href="JavaScript:;" data-id="<?php echo $item['id']; ?>"
+                               class="btn btn-success btn-sm   checkBtn">审核通过</a>
+                            <a href="JavaScript:;" data-id="<?php echo $item['id']; ?>"
+                               class="btn btn-danger btn-sm  failBtn">审核不通过</a>
+                        <?php } else if ($item['status'] == 1) { ?>
+
+                        <?php } ?>
+                        </span>
+
+
+            </label>
+        </div>
+    </article>
+</section>
+<section id="product-base" class="product-widget sm">
+    <h3 class="widget-tit">&nbsp;管理员操作日志<span class="right"></h3>
+
+    <article class="widget-cont">
+        <?php if ($logs) { ?>
+            <?php foreach ($logs as $log) { ?>
+                <div class="tr " style="height: auto;">
+                    <label class="lg">
+                        <span class="content tr_json link_address_content"
+                              style="word-break: break-all"><b><?php echo date('Y-m-d H:i', $log['created']); ?></b> &nbsp;-
+                            【<?php echo isset($log['admin_info']['name']) ? $log['admin_info']['name'] : $log['user_name']; ?>
+                            】-
+                            <?php echo $log['action']; ?></span>
+                    </label>
+                </div>
+            <?php } ?>
+        <?php } ?>
+
+
+    </article>
+</section>
+
+
+<script src="/srv/static/ace/js/jquery.colorbox-min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        var colorbox_params = {
+            reposition: true,
+            scalePhotos: true,
+            scrolling: false,
+            previous: '<i class="fa fa-arrow-left"></i>',
+            next: '<i class="fa fa-arrow-right"></i>',
+            close: '&times;',
+            current: '{current}/{total}',
+            maxWidth: '100%',
+            maxHeight: '100%',
+            onOpen: function () {
+                document.body.style.overflow = 'hidden';
+            },
+            onClosed: function () {
+                document.body.style.overflow = 'auto';
+            },
+            onComplete: function () {
+                $.colorbox.resize();
+            }
+        };
+
+        $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
+        $("#cboxLoadingGraphic").append("<i class='fa fa-spinner orange'></i>");//let's add a custom loading icon
+    })
+</script>
+<script>
+    seajs.use('app/users/user.auth', function (api) {
+        api.checkUser('.checkBtn');
+        api.failCheck();
+    });
+</script>
+<div class="modal fade" id="checkModal">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">审核不通过</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <div>
+                    <!-- <label for="form-field-11">审核失败原因</label>-->
+
+                    <textarea id="reason" placeholder="请填写原因" class=" form-control"
+                              style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 100px;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" value="0" id="apply_id"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+

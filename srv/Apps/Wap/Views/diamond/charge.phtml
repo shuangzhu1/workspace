@@ -1,0 +1,411 @@
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<style>
+    body {
+        background-color: #eee !important;
+        padding: 0 0 10px 0 !important;
+    }
+
+    .user_info {
+        height: auto;
+        width: 100%;
+        background-color: #fff;
+        padding: 10px 20px 5px 20px;
+        overflow: hidden;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .user_info .avatar {
+        width: 60px;
+        height: 60px;
+        float: left;
+    }
+
+    .user_info .avatar img {
+        border-radius: 100%;
+        width: 60px
+    }
+
+    .user_info .info_right {
+        float: left;
+        padding-left: 1rem
+    }
+
+    .user_info .info_right p {
+        line-height: 1.2rem;
+        vertical-align: middle;
+    }
+
+    .user_info .icon {
+        width: 1.2rem;
+        vertical-align: middle;
+        margin-right: 0.2rem;
+        margin-left: 1rem;
+    }
+
+    .user_info .username {
+        font-size: 18px;
+        color: #333;
+        line-height: 30px !important;
+        height: 30px;
+    }
+
+    /*.user_info .icon:last-child {*/
+    /*width: 0.85rem;*/
+    /*}*/
+
+    .user_info .uid {
+        color: #999 !important;
+    }
+
+    .user_info .uid {
+        font-size: 14px;
+        color: #999;
+        line-height: 40px !important;
+        height: 40px;
+    }
+
+    .price {
+        width: 100%;
+        height: auto;
+        /*padding: 1rem;*/
+        padding: 1rem 0;
+        margin-top: 0.5rem;
+        background-color: #fff;
+        overflow: hidden;
+        font-size: 0.75rem;
+    }
+
+    .price ul li {
+        padding: 0.2rem 0.2rem;
+        /*border: 1px solid #FFAC2D;*/
+        border-radius: 10px;
+        width: 43%;
+        text-align: center;
+        float: left;
+        margin-left: 5%;
+        box-sizing: border-box;
+        margin-bottom: 0.5rem;
+        border: 2px solid #ffac2d;
+        position: relative;
+        /*box-shadow: 2px 2px 3px #e4e4e4;*/
+    }
+
+    .price ul li.active {
+        /*border-color: #fc6b38;*/
+        /*box-shadow: 2px 2px 2px #fc6b38;*/
+        background-color: #ffac2d;
+    }
+
+    .price ul li.active .money {
+        color: #ae6a03;
+    }
+
+    .price .money {
+        color: #FFAC2D;
+        text-align: center;
+        font-weight: bold;
+        font-size: 16px;
+        width: 50%;
+    }
+
+    .price .money.center {
+        width: 100%;
+    }
+
+    .price .donate_label {
+        color: #fff;
+        font-size: 13px;
+        text-align: right;
+        padding-left: 5px;
+    }
+
+    .price .discount {
+        width: 50%;
+        height: 25px;
+        line-height: 25px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: url("/static/wap/images/discount2.png") no-repeat;
+        background-size: cover;
+        border-bottom-right-radius: 8px;
+        box-sizing: border-box;
+    }
+
+    .description {
+        line-height: 1.2rem;
+        color: #666;
+        margin-top: 0.5rem;
+        padding: 0.5rem 1rem;
+        overflow: hidden;
+        height: auto;
+        /*margin-bottom: 200px;*/
+    }
+
+    .charge_box {
+        position: absolute;
+        /*bottom: 30px;*/
+        left: 20px;
+        right: 20px;
+        height: 80px;
+
+    }
+
+    .charge_box .charge {
+        height: 40px;
+        line-height: 40px;
+        background-color: #fc6b38;
+        border: 0;
+        text-align: center;
+        color: #fff;
+        font-size: 16px;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    .charge_account {
+        padding: 15px 26px;
+        font-size: 16px;
+        height: auto;
+        overflow: hidden;
+    }
+
+    .charge_account .uid {
+        float: left;
+        font-size: 18px;
+        line-height: 26px;
+        height: 26px;
+        margin-left: 4px;
+    }
+
+    .charge_account .label {
+        color: #757575;
+        float: left;
+        line-height: 26px;
+        height: 26px;
+    }
+
+    .charge_account .account {
+        color: #333;
+        font-size: 18px;
+        width: 150px;
+        float: left;
+        /*border: none;*/
+        /*outline: none;*/
+        /*padding: 0;*/
+        /*line-height: 26px;*/
+        /*height: 26px;*/
+        vertical-align: middle;
+    }
+
+    /*.charge_account .account:focus {*/
+    /*outline: none;*/
+    /*border: none;*/
+    /*background-color: #fff;*/
+    /*box-shadow: none;*/
+    /*}*/
+
+    .charge_title {
+        font-size: 15px;
+        color: #333;
+        margin-top: 10px;
+        margin-bottom: 5px;
+        padding-left: 26px;
+    }
+
+    .coin {
+        line-height: 20px;
+        height: 20px;
+        font-size: 16px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
+
+    .diamond2 {
+        width: 30px;
+        float: left;
+        margin-left: 20px;
+    }
+
+    .diamond_count {
+        float: left;
+        margin-left: 9px;
+    }
+
+    .current_money {
+        background-color: #fff;
+        margin-top: 10px;
+        padding: 0 26px;
+        font-size: 16px;
+        overflow: hidden;
+        line-height: 50px;
+        height: 50px;
+    }
+
+    .current_money .label {
+        color: #999;
+        float: left;
+    }
+
+    .current_money .money {
+        float: right;
+        font-size: 17px;
+        font-weight: bold;
+    }
+
+    .change {
+        /*background-color: #fc6b38;*/
+        color: #444;
+        font-size: 14px;
+        border-radius: 5px;
+        padding: 2px 5px;
+        float: right;
+        border: 1px solid #e4e4e4;
+    }
+</style>
+<!--<div class="user_info" style="">-->
+<!--    <div class="avatar" style="">-->
+<!--        <img src="--><?php //echo $user_info['avatar'] ?><!--?x-oss-process=image/resize,m_fill,h_120,w_120" style=""/>-->
+<!--    </div>-->
+<!--    <div class="info_right" style="">-->
+<!--        <p class="username">--><?php //echo $user_info['username'] ?><!--</p>-->
+<!--        <p class="uid">ID:--><?php //echo $user_info['user_id'] ?>
+<!--            <img class="icon" src="/static/wap/images/diamond.png"/>龙钻--><?php //echo $user_info['diamond'] ?>
+<!--        </p>-->
+<!--    </div>-->
+<!--</div>-->
+<div class="charge_account" style="background-color: #fff">
+    <span class="label">充值用户ID:&nbsp;</span>
+    <!--<span class="uid"><?php /*echo $uid */ ?></span>-->
+    <input class="account" type="text" value="">
+    <!--    <span class="change">更改账户</span>-->
+</div>
+<p class="charge_title">
+    选择充值金额
+</p>
+<div class="price">
+    <ul style="height: auto;width: 100%;overflow: hidden;padding-bottom: 0.5rem">
+        <?php $i = 0;
+        $current_price = 0;
+        foreach ($price_list as $item) {
+            if ($i == 0) $current_price = sprintf("%.2f", $item['money']);
+            ?>
+            <li class="<?php echo $i == 0 ? 'active' : '' ?>" data-money="<?php echo $item['money'] ?>"
+                data-show-money="<?php echo sprintf("%.2f", $item['money']); ?>">
+                <p class="coin"><img class="diamond2"
+                                     src="/static/wap/images/diamond2.png"/><span
+                        class="diamond_count"><?php echo $item['coin'] ?>
+                        钻 <?php echo $item['donate'] > 0 ? '' : '' ?></span></p>
+                <p class="money <?php echo $item['donate'] == 0 ? 'center' : '' ?>">￥<?php echo $item['money'] ?></p>
+                <?php if ($item['donate'] > 0) { ?>
+                    <span class="discount" style=""><label class="donate_label">送<?php echo $item['donate'] ?>钻</label></span>
+                <?php } ?>
+
+            </li>
+            <?php $i++;
+        } ?>
+    </ul>
+
+</div>
+<div class="current_money">
+    <span class="label">当前价格</span>
+    <span class="money"><?php echo $current_price ?>元</span>
+</div>
+
+
+<div class="description" style="">
+    <div style="width:8%;float: left;"><img src="/static/wap/images/diamond.png" style="width: 1rem"></div>
+    <div style="float: left;width: 90%;margin-left:1%">
+        <p>
+            1.龙钻说明：龙钻可用于恐龙谷发起小游戏，钻数越高的游戏平台赠送奖金越大
+            <!--            <br style="margin-top: 0.5rem"/>-->
+            <!--            2.龙钻与龙豆的区别：龙钻用于发起小游戏，龙豆用来于送礼物-->
+        </p>
+    </div>
+</div>
+<div class="charge_box">
+    <div class="charge" style=" ">立即充值
+    </div>
+</div>
+<script>
+    $(".price ul li").on('click', function (e) {
+        $(this).siblings().removeClass('active');
+        $(this).addClass("active");
+        e.stopPropagation();
+        e.preventDefault();
+        $(".current_money .money").html($(this).data('show-money') + "元")
+    })
+</script>
+<script type="text/javascript">
+    //调用微信JS api 支付
+    function jsApiCall(params) {
+        WeixinJSBridge.invoke(
+            'getBrandWCPayRequest',
+            params,
+            function (res) {
+                if (res.err_msg && res.err_msg == "get_brand_wcpay_request:ok") {
+                    alert("充值成功，即将跳转到充值记录页");
+                    setTimeout(function () {
+                        window.location.href = '/diamond/history';
+                    }, 2000);
+                }
+                else if (res.err_msg == "get_brand_wxpay_request:cancel") {
+                    alert("您选择了取消支付");
+                } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                    alert("您选择了取消支付");
+                }
+                else {
+                    alert("支付失败，请跟客服联系，或者选择其他支付方式！微信支付返回信息：" + res.err_msg);
+                    history.back();
+                }
+            }
+        );
+    }
+
+    function callpay() {
+        if (typeof WeixinJSBridge == "undefined") {
+            if (document.addEventListener) {
+                document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+            } else if (document.attachEvent) {
+                document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+            }
+        } else {
+            jsApiCall();
+        }
+    }
+    seajs.use('/static/wap/js-dev/base.js', function (base) {
+        $(".charge").on('click', function () {
+            var to_uid = $.trim($(".charge_account .account").val());
+            var money = $("li.active").data('money');
+
+            if (to_uid == '' || isNaN(to_uid)) {
+                alert("请填写需要充值的账号");
+                return;
+            }
+            if (isNaN(money)) {
+                alert("请选择需要充值的金额");
+                return;
+            }
+            base.requestApi("/api/wxpay/pay", {to_uid: to_uid, money: money * 100}, function (res) {
+                if (res.result == 1) {
+                    //$(".result").html(eval("(" + res.data + ")"));
+                    jsApiCall(eval("(" + res.data + ")"));
+                } else {
+                    alert(res.error.msg);
+                }
+
+            }, true, true)
+        });
+
+
+        $(".change").on('click', function () {
+            $(".account").focus();
+        })
+        //聚焦到最后
+        //  $(".account").val($(".account").val()).focus()
+
+    })
+</script>

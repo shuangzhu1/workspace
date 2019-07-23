@@ -1,0 +1,115 @@
+<style>
+    a:hover{
+        text-decoration : none;
+    }
+</style>
+<div class="space-10"></div>
+<div>
+    <form action="" method="post" style="margin-left: 10px">
+        用户ID：
+        <input type="text" name="uid" value="{{val}}" placeholder="请输入用户ID">
+        <input type="submit" value="查询" class="btn btn-primary btn-sm" style="margin-left:15px;padding:2px 9px">
+    </form>
+</div>
+<div class="space-10"></div>
+<div class="">
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <!--<th style="width:6%" class="center">用户ID</th>-->
+            <th style="width:250px" class="center">用户</th>
+            <th style="width:100px" class="center">邀请者</th>
+            <th class="center">推广成绩</th>
+            <th class="center">推广收益</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <?php if($list) {?>
+            <?php foreach ($list as $item) : ?>
+                <tr>
+                    <!--<td class="center" style="vertical-align:middle">
+                        <a href="javascript:;" data-href="/panel/users/detail/?user_id={{item['uid']}}" data-id="user_detail_{{item['uid']}}" data-title="用户详情" class="newTarget" target="_blank" title="查看用户详情">{{item['uid']}}</a>
+                    </td>-->
+
+                    <td style="vertical-align: middle;">
+                        <img class="pull-left" alt="" src="{{item['avatar']}}?x-oss-process=image/resize,m_fill,h_200,w_200" style="border: 2px solid #c9d6e5;border-radius: 100%;max-width: 40px;margin-right: 10px;margin-left: 0;box-shadow: none;">
+                        <span style="height:41px;line-height:41px;">
+                            <a href="javascript:;" data-href="/panel/users/detail/?user_id={{item['uid']}}" data-id="user_detail_{{item['uid']}}" data-title="用户详情" class="newTarget" target="_blank" title="查看用户详情" style="color:deeppink">
+                                {{item['username']}}
+                                <span class="blue">({{item['uid']}})</span>
+                            </a>
+                        </span>
+                    </td>
+
+                    <td class="center" style="vertical-align: middle">
+                        <?php if ( !empty($item['superior']) ) {?>
+                        <a href="javascript:;" data-href="/panel/users/detail/?user_id={{item['superior']}}" data-id="user_detail_{{item['superior']}}" data-title="用户详情" class="newTarget" target="_blank" title="查看用户详情"><?php echo $item['superior']?></a>
+                        <?php }else{?>
+                            无
+                        <?php }?>
+
+                    </td>
+                    <td class="">
+                        <a href="javascript:;" class="btn btn-pink btn-app radius-4" style="font-size:15px">
+                            <i class="icon-cog "></i>
+                            总人数
+                            <span class="badge badge-warning" style="top:-8px;right:-9px"> <span style="padding:0 5px"><?php echo array_sum($item['num'])?></span> </span>
+                        </a>
+                        <span style="padding:0 10px"></span>
+                        <span class="label label-xlg label-info arrowed-right arrowed-in" style="width:130px;position:relative">
+                            <a href="javascript:;" data-href="/panel/promote/somelevellist?uid={{item['uid']}}&level=1" data-id="user_detail_{{item['uid']}}" data-title="一级列表-{{item['uid']}}" class="newTarget" target="_blank" title="查看一级列表" style="color:white;" >
+                                一级 <span style="padding:0 5px;font-weight: bolder">{{item['num'][0]}}</span> 人
+                            </a>
+
+
+                        </span>
+                        <span class="label label-xlg label-primary arrowed-right arrowed-in" style="width:110px">
+                            <a href="javascript:;" data-href="/panel/promote/somelevellist?uid={{item['uid']}}&level=2" data-id="user_detail_{{item['uid']}}" data-title="二级列表-{{item['uid']}}" class="newTarget" target="_blank" title="查看二级列表" style="color:white" >
+                            二级 <span style="padding:0 5px;font-weight: bolder">{{item['num'][1]}}</span> 人
+                            </a>
+                        </span>
+                        <span class="label label-xlg label-default arrowed-right arrowed-in" style="width:100px">
+                            <a href="javascript:;" data-href="/panel/promote/somelevellist?uid={{item['uid']}}&level=3" data-id="user_detail_{{item['uid']}}" data-title="三级列表-{{item['uid']}}" class="newTarget" target="_blank" title="查看三级列表" style="color:white" >
+                                三级 <span style="padding:0 5px;font-weight: bolder">{{item['num'][2]}}</span> 人
+                            </a>
+                        </span>
+                    </td>
+                    <td style="vertical-align: middle;">
+                        <span style="font-weight:bold">总收益:</span>
+                        <span class="badge badge-pink" style="font-size:14px">
+
+                             <?php echo sprintf("%.2f",array_sum($item['income']) / 100  )?> 元
+                        </span>
+                         |
+                        <span style="font-weight:bold">1级:</span>
+                        <span class="badge badge-info" style="font-size:14px">
+
+                            <?php echo sprintf("%.2f",$item['income'][0] / 100  )?> 元
+                        </span>
+                        |
+                        <span style="font-weight:bold">2级:</span>
+                        <span class="badge badge-primary" style="font-size:14px">
+                            <?php echo sprintf("%.2f",$item['income'][1] / 100  )?> 元
+                        </span>
+                        |
+                        <span style="font-weight:bold">3级:</span>
+                        <span class="badge " style="font-size:14px">
+                            <?php echo sprintf("%.2f",$item['income'][2] / 100  )?> 元
+                        </span>
+                    </td>
+                </tr>
+            <?php endforeach;?>
+        <?php }else {?>
+            <tr>
+                暂无数据
+            </tr>
+        <?php }?>
+        </tbody>
+    </table>
+    <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+</div>
+<script>
+    seajs.use('app/panel/panel.base.js?v=1.0.1');
+
+</script>

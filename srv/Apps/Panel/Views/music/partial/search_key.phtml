@@ -1,0 +1,53 @@
+<li>
+    <span class="s_type"><i class="iconfont icon-music"></i> <label>单曲</label></span>
+    <ul class="s_list">
+        <?php if ($item['song']['list']) { ?>
+            <?php foreach ($item['song']['list'] as $k1 => $song) {
+                if ($k1 >= 4) break;
+                $label_song = $song['song_name'];
+                $label_singer = $song['singer'];
+
+                $label_song = preg_replace("/(" . $key . ")/", "<span class='red green'>$1</span>", $label_song);
+                $label_singer = preg_replace("/(" . $key . ")/", "<span class='red green'>$1</span>", $label_singer);
+
+                ?>
+                <li data-key="<?php echo $song['song_name'] ?>">
+                    <span><?php echo $label_song ?></span>-<span><?php echo $label_singer ?></span></li>
+            <?php } ?>
+        <?php } ?>
+    </ul>
+</li>
+<li>
+    <span class="s_type"><i class="iconfont icon-singer"></i>  <label>歌手</label></span>
+    <ul class="s_list">
+        <?php if ($item['singer']['list']) { ?>
+            <?php foreach ($item['singer']['list'] as $k2 => $singer) {
+                if ($k2 >= 4) break;
+                $label_singer = $singer['singer'];
+
+                $label_singer = preg_replace("/(" . $key . ")/", "<span class='red green'>$1</span>", $label_singer);
+                ?>
+                <li data-key="<?php echo $singer['singer'] ?>"><span><?php echo $label_singer ?></span></li>
+            <?php } ?>
+        <?php } ?>
+    </ul>
+</li>
+<li>
+    <span class="s_type"><i class="iconfont icon-album"></i>  <label>专辑</label></span>
+    <ul class="s_list">
+        <?php if ($item['album']['list']) { ?>
+            <?php foreach ($item['album']['list'] as $k3 => $album) {
+                if ($k3 >= 4) break;
+                $label_singer = $album['singer'];
+                $label_album = $album['album_name'];
+
+                $label_singer = preg_replace("/(" . $key . ")/", "<span class='red green'>$1</span>", $label_singer);
+                $label_album = preg_replace("/(" . $key . ")/", "<span class='red green'>$1</span>", $label_album);
+
+                ?>
+                <li data-key="<?php echo $album['album_name'] ?>">
+                    <span><?php echo $label_album ?></span>-<span><?php echo $label_singer ?></span></li>
+            <?php } ?>
+        <?php } ?>
+    </ul>
+</li>

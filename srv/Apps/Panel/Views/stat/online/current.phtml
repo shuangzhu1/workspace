@@ -1,0 +1,107 @@
+<script type="text/javascript" src="/srv/static/panel/js/echarts/themes/blue.js"></script>
+<script src="/srv/static/panel/js/echarts/echart-all.2.2.7.min.js"></script>
+
+<div class="tabbable">
+    <div id="main" class="col-sm-6" style="height:500px;"></div>
+    <div id="list" class="col-sm-5">
+        <div class="widget-box ">
+            <div class="widget-header">
+                <h4 class="lighter smaller">
+                    <i class="icon-comment blue"></i>
+                    用户列表【<?php echo count($user_list); ?>】
+                    <a  href="" class="right" style="margin-right: 10px;"><label class="btn btn-sm btn-primary">刷新</label></a>
+                </h4>
+            </div>
+
+            <div class="widget-body">
+                <div class="widget-main no-padding">
+                    <div class="slimScrollDiv"
+                         style="position: relative; overflow: hidden; width: auto; height: 500px;">
+                        <div class="dialogs" style="overflow-y: scroll; width: auto; height: 500px;">
+
+                            <?php foreach ($user_list as $item) {
+                                $user = json_decode($online_list[$item['user_id']], true);
+                                ?>
+                                <div class="itemdiv dialogdiv">
+                                    <div class="user">
+                                        <img alt="Alexa's Avatar"
+                                             src="<?php echo $item['avatar']; ?>?x-oss-process=image/resize,m_fill,h_160,w_160">
+                                    </div>
+
+                                    <div class="body">
+                                        <div class="time">
+
+                                            <span  class="green"><?php echo \Util\Time::formatHumaneTime(intval($user['time']/1000)); ?>  <i class="fa fa-clock-o"></i>-<?php echo $user['province']; ?></span>
+
+                                        </div>
+
+                                        <div class="name">
+                                            <a target="_blank" href="javascript:;" data-title="用户详情" class="newTarget" data-href="/users/detail/?user_id=<?php echo $item['user_id'] ?>"><?php echo $item['username']; ?></a>
+                                        </div>
+                                        <div class="text"><?php echo $item['last_phone_model'] ;?></div>
+
+                                        <div class="tools">
+                                            <a href="#" class="btn btn-minier btn-info">
+                                                <i class="icon-only icon-share-alt"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            <?php } ?>
+
+                    </div>
+
+                </div><!-- /widget-main -->
+            </div><!-- /widget-body -->
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    console.log(<?php echo $json_data?>)
+    option_map = {
+        title : {
+            text: '当前用户列表',
+            x:'center'
+        },
+        tooltip : {
+            trigger: 'item'
+        },
+        legend: {
+            orient: 'vertical',
+            x:'left',
+            data:['在线人数']
+        },
+        dataRange: {
+            min: 0,
+            max:100,
+            x: 'left',
+            y: 'bottom',
+            text:['高','低'],           // 文本，默认为数值文本
+            calculable : true
+        },
+        /*toolbox: {
+         show: true,
+         feature : {
+         saveAsImage : {show: true}
+         }
+         },*/
+        series : [
+            {
+                name: '在线人数',
+                type: 'map',
+                mapType: 'china',
+                roam: false,
+                itemStyle:{
+                    normal:{label:{show:true}},
+                    emphasis:{label:{show:true}}
+                },
+                data:<?php echo $json_data?>
+            }
+        ]
+    };
+
+    echarts.init(document.getElementById('main'),'blue').setOption(option_map,true);
+
+</script>

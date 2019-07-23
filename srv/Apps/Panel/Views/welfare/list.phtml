@@ -1,0 +1,192 @@
+<style>
+    .anchorBL {
+        display: none
+    }
+</style>
+<form action="" method="get" style="border-bottom: 1px solid #e4e4e4;padding: 8px;margin: 0 0 8px;">
+    <label for="name">用户id</label>
+    <input name="user_id" type="text" id="user_id" placeholder="用户id" value="<?php echo $user_id ? $user_id : ''; ?>">
+    &nbsp;
+    <label for="name">时间:</label>
+    <input type="text" id="start" value="<?php echo $start; ?>" placeholder="开始时间" name="start"
+           data-date-format="yyyy-mm-dd hh:ii"/>
+    - <input type="text" id="end" value="<?php echo $end; ?>" placeholder="结束时间" name="end"
+             data-date-format="yyyy-mm-dd hh:ii"/>
+    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+</form>
+
+<table id="article-list" class=' list'>
+    <thead>
+    <tr class="head">
+        <th style='width:80px'>用户id</th>
+        <th style='width:150px'>用户名</th>
+        <th style='width:80px'>用户头像</th>
+        <th style='width:150px' class="arrow" data-sort="" data-order="total_val">
+            <span class="text">总爱心值</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span>
+        </th>
+        <th style='width:150px' class="arrow" data-sort="" data-order="current_val">
+            <span class="text">当前爱心值</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span>
+        </th>
+        <th style='width:150px' class="arrow" data-sort="" data-order="changeed_val">
+            <span class="text">已兑换爱心值</span>
+            <span class="arrow_wrap">
+                <i class="fa fa-caret-down arrow-down"></i>
+                <i class="fa fa-caret-up arrow-up "></i>
+            </span>
+        </th>
+        <th style='width:100px'>当前等级</th>
+        <th style='width:150px'>创建时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <?php
+    if ($list) {
+    ?>
+    <tbody class="listData">
+    <?php
+    foreach ($list as $item) {
+        ?>
+        <tr class="item" data-id="<?php echo $item['id']; ?>">
+            <!--    <th class='name'><?php /*echo $item['yx_gid']; */ ?></th>-->
+            <!--     <td class="center"><input type="checkbox" class="chk" data-id="<?php /*echo $item['id']; */ ?>"/></td>-->
+            <td><a href="javascript:;" class="newTarget" data-title="用户详情"
+                   data-href="/panel/users/detail/?user_id=<?php echo $item['user_id'] ?>"><?php echo $item['user_id']; ?></a>
+            </td>
+
+            <td><?php echo $users[$item['user_id']]['username'] ?></td>
+            <td><a href="<?php echo $users[$item['user_id']]['avatar']; ?>" data-lightbox="roadtrip"><img
+                        src="<?php echo $users[$item['user_id']]['avatar']; ?>?x-oss-process=image/resize,m_fill,h_160,w_160"
+                        style="width: 40px; height: 40px;"/></a></td>
+            <td>
+                <?php echo $item['total_val'] ?>
+            </td>
+            <td>
+                <?php echo $item['current_val'] ?>
+            </td>
+            <td>
+                <?php echo $item['total_val'] - $item['current_val'] ?>
+            </td>
+            <td>
+                <?php echo $item['level'] ?>
+            </td>
+            <td><?php echo date('Y-m-d H:i', $item['created']); ?></td>
+
+            <td>
+                <a href="javascript:;" data-href="/panel/welfare/inviteRecord?inviter=<?php echo $item['user_id'] ?>"
+                   class="btn btn-sm btn-primary newTarget" data-title="邀请记录">
+                    他的邀请记录
+                </a>
+            </td>
+        </tr>
+        <?php
+    }
+    } else {
+        ?>
+        <tr>
+            <td colspan="9">
+                <p style="margin: 20px;color:#f00;"> 暂无内容 </p>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <!--  <tr class="showpage">
+          <th class="name">操作</th>
+          <td colspan="13">
+                  <span>
+                      [ <a href="javascript:;" class="selectAll">全选</a> ]
+                      [ <a href="javascript:;" class="selectNone">全不选</a> ]
+                      [ <a href="javascript:;" class="selectInvert">反选</a> ]
+                      <a class="btn-light delAllSelected" href="javascript:;">批量屏蔽</a>
+                  </span>
+          </td>
+      </tr>-->
+    <tr class="showpage">
+        <th class="name">分页</th>
+        <td colspan="13">
+            <?php \Util\Pagination::instance($this->view)->display($this->view); ?>
+        </td>
+    </tr>
+</table>
+
+<script src="/srv/static/panel/js/tools/Url.js"></script>
+<link rel="stylesheet" type="text/css" href="/srv/static/panel/css/plugins/jquery/jquery.datetimepicker.css">
+<script type="text/javascript" src="/srv/static/panel/js/jquery/jquery.datetimepicker.js"></script>
+<script>
+    /*   seajs.use('app/users/users.bind', function (e) {
+     e.deleteUsers('.delBtn');
+     e.recoveryUsers('.recoveryBtn');
+     e.forbidUsers('.forbidBtn');
+     e.unForbidUsers('.unForbidBtn');
+
+     });*/
+    $('#start').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+    $('#end').datetimepicker({
+        lang: "ch",
+        step: 5,
+        format: "Y-m-d",
+        maxDate: 0,
+        timepicker: false,
+        allowBlank: true,
+        onChangeDateTime: function () {
+        }
+    });
+</script>
+
+<link rel="stylesheet" href="/srv/static/panel/css/lightbox/lightbox.css"/>
+
+<script src="/srv/static/panel/js/jquery/lightbox/lightbox.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        lightbox.option({
+            albumLabel: '%1/%2',
+            'resizeDuration': 200,
+            "fadeDuration":0,
+            "imageFadeDuration":0
+        });
+    })
+
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        var order = '<?php echo $sort ?>'
+        var sort_order = '<?php echo $sort_order ?>'
+        if (order != '' && sort_order != '') {
+            var current = $(".arrow[data-order='" + order + "']");
+            current.addClass("active");
+            current.attr('data-sort', sort_order);
+            if (sort_order == 'desc') {
+                current.find('.arrow-down').addClass('active');
+                current.find('.arrow-up').addClass('disabled');
+            } else {
+                current.find('.arrow-down').addClass('disabled');
+                current.find('.arrow-up').addClass('active');
+            }
+        }
+        var url = new Url();
+        $(".arrow").on('click', function () {
+            var order = $(this).attr('data-order');
+            var sort = $(this).attr('data-sort');
+            sort = sort == 'desc' ? 'asc' : 'desc';
+            url.setArgs({order: sort, sort: order, p: 1});
+            window.location.href = url.getUrl();
+        });
+    })
+</script>

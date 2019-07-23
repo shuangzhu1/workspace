@@ -1,0 +1,34 @@
+<?php if ($list) { ?>
+    <?php foreach ($list as $item) { ?>
+        <tr>
+            <td class="center"><img style="width: 36px;border-radius: 100%"
+                                    src="<?php echo $item['avatar'] ? $item['avatar'] : $item['default_avatar'] ?>?x-oss-process=image/resize,m_fill,h_160,w_160"/>
+            </td>
+            <td><span class="left"><?php echo $item['user_id'] ?></span></td>
+            <td><span class="left"><?php echo $item['username'] ?></span></td>
+            <?php if ($type == 'platform') {
+
+                ?>
+                <td class="center"><?php echo $item['platform'] ?></td>
+            <?php } ?>
+            <td class="center"><?php echo $item['reward_type']==1 ? "￥" . $item['money'] / 100 : $item['money'] . '龙豆' ?></td>
+            <td class="center"><?php echo $item['type'] == 1 ? '动态推荐' : '分享' ?></td>
+            <td class="center"><?php echo date('Y-m-d H:i', $item['created']) ?></td>
+
+            <td class="center"><a data-title="用户详情" href="javascript:;" class="newTarget"
+                                  data-href="/panel/users/detail/?user_id=<?php echo $item['user_id'] ?>"
+                                  target="_blank">用户详情</a></td>
+        </tr>
+    <?php } ?>
+<?php } else { ?>
+    <tr>
+        <td colspan='12'><span class="left">暂无数据</span></td>
+    </tr>
+<?php } ?>
+
+<tr class="showpage">
+    <th class="name">分页</th>
+    <td colspan="<?php echo $type == 'platform' ? '7' : '6' ?>">
+        <div class="pageBar"><?php echo $bar ?></div>
+    </td>
+</tr>

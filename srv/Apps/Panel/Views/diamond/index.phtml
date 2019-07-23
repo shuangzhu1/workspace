@@ -1,0 +1,159 @@
+<div style="width:60%">
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4>龙钻充值配置：</h4>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+                <form id="config" action="">
+                    <!-- <legend>Form</legend> -->
+                    <fieldset>
+                        <table class="table table-striped table-bordered" style="border:1px solid #eee">
+                            <thead>
+                            <tr>
+                                <th width="17%" class="center">参数</th>
+                                <th width="22%" class="center"">值</th>
+                                <th  class="center"">说明</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+
+
+                            <tr>
+                                <td class="center" style="vertical-align: middle" >
+                                    充值列表
+                                </td>
+                                <td  colspan="2" style="position:relative;padding: 0 20px" >
+                                    <div id="rangelist" style="padding:25px 20px 40px 20px; ">
+                                        <?php
+                                        $len = count($list);
+                                        for ( $i=0;$i<$len;$i++ ) {?>
+                                            <div style="padding-bottom:10px" class="range-item">
+                                                <!--                                                <span class="blue">区间 --><?php //echo $i+1 ?><!--：</span>-->
+                                                <span class="blue">金额：</span>
+                                                <input type="text"
+                                                       name="money_coin[{{i}}][money]"
+                                                       value="<?php echo $list[$i]['money'] / 100?>"
+                                                       size="5" style="height:20px;padding:0 5px 0">
+                                                <span class="red">元</span>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <span class="blue">购买龙钻个数：</span>
+                                                <input type="text"
+                                                       name="money_coin[{{i}}][coin]"
+                                                       value="<?php echo $list[$i]['coin'] ?>"
+                                                       size="5" style="height:20px;padding:0 5px 0">
+                                                <span class="red">个</span>
+                                                &nbsp;&nbsp;&nbsp;
+                                                <span class="blue">iOS商品id：</span>
+                                                <input type="text"
+                                                       name="money_coin[{{i}}][ios_id]"
+                                                       value="<?php echo $list[$i]['ios_id'] ?>"
+                                                       size="5" style="width:250px;height:20px;padding:0 5px 0">
+                                                <span class="red"></span>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <i class="fa fa-times-circle-o hide dele" style="margin-left: 20px"></i>
+                                                <span style="color:red"; class="hide">区间不连续</span>
+                                            </div>
+                                        <?php }?>
+
+                                    </div>
+
+                                    <div class="" style="position:absolute;bottom:10px;right:20px" >
+                                        <a href="javascript:;" class="btn btn-xs addRange" data-part="seller_config" >添加区间</a>
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+
+                    <div class="form-actions center">
+                        <button type="button" class="btn btn-sm btn-success" id="save">
+                            保存
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    seajs.use("app/panel/panel.base.js",function (api) {
+
+        $('#save').on('click',function(){
+            var canSave = true;
+            //非空验证
+            $('#config input').each(function (i) {
+                if( $(this).val() === '' )
+                {
+                    tip.showTip('err','值不能为空',2000);
+                    canSave = false;
+                    return false;
+                }
+            });
+            //去除input框错误提示
+            $('#config input').each(function (i) {
+                $(this).on('focus',function () {
+                    $(this).css('border-color','#ccc');
+                })
+            });
+
+            if( canSave )
+            {
+                api.requestApi('/panel/diamond/index',$('#config').serialize(),function (res) {
+                    if(res.result == 1)
+                    {
+                        tip.showTip('ok','保存成功',1500);
+                        setTimeout(function () {
+                            window.location.reload()
+                        },1500)
+                    }
+                });
+            }
+        })
+
+        $('.addRange').on('click',function () {
+            var ele = $(this).parent().prev().find('div:last-child').clone(),
+                num = $(this).closest('td').find('.range-item').length;
+            $(ele).find('input:first').attr('name',  'money_coin[' + Number(num) + '][money]');
+            $(ele).find('input:eq(1)').attr('name',  'money_coin[' + Number(num) + '][coin]');
+            $(ele).find('input:eq(2)').attr('name',  'money_coin[' + Number(num) + '][ios_id]');
+            $(ele).find('input').val('');
+            $(this).parent().prev().append(ele);
+            $('.range-item').unbind('mouseenter').unbind('mouseleave');
+            $('.range-item:last').hover(function () {
+                $(this).find('i').toggleClass('hide');
+            });
+            $('.range-item:last').find('i').on('click',function () {
+                $(this).parent().remove();
+                $('.range-item:last').hover(function () {
+                    $(this).find('i').toggleClass('hide');
+                });
+            });
+            $(ele).find('input').on('focus',function () {
+                $("#rangelist div").each(function () {
+                    $(this).find('span:last').addClass('hide');
+                    $(this).find('input').css('color','');
+                })
+            })
+
+        });
+
+        $('.range-item:last').hover(function () {
+            $(this).find('i').toggleClass('hide');
+        });
+        $('.dele').on('click',function () {
+            $(this).parent().remove();
+            $('.range-item:last').hover(function () {
+                $(this).find('i').toggleClass('hide');
+            });
+        });
+
+    });
+</script>
+

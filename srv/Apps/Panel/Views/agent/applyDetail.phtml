@@ -1,0 +1,149 @@
+<link rel="stylesheet" href="/static/panel/css/badge.css?v=1.0.0">
+<style>
+    .infoList tr td:first-child {
+        width: 150px;
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    .infoList tr td {
+        line-height: 28px;
+        height: 28px;
+        border: 1px solid #efefef;
+    }
+</style>
+<table id="info-list" class=' list'>
+
+    <tbody class="infoList">
+    <tr>
+        <td>用户ID</td>
+        <td><?php echo $item['user_id'] ?></td>
+    </tr>
+    <tr>
+        <td>用户名</td>
+        <td><?php echo $item['user_info']['username'] ?></td>
+    </tr>
+    <tr>
+        <td>真实姓名</td>
+        <td><?php echo $item['user_info']['true_name'] ?></td>
+    </tr>
+    <tr>
+        <td>手机号码</td>
+        <td><?php echo $item['phone'] ?></td>
+    </tr>
+    <tr>
+        <td>qq</td>
+        <td><?php echo $item['qq'] ?></td>
+    </tr>
+    <tr>
+        <td>邮箱</td>
+        <td><?php echo $item['qq'] ?></td>
+    </tr>
+    <tr>
+        <td>微信</td>
+        <td><?php echo $item['qq'] ?></td>
+    </tr>
+    <tr>
+        <td>详细地址</td>
+        <td><?php echo $item['address'] ?></td>
+    </tr>
+    <tr>
+        <td>描述</td>
+        <td><?php echo $item['brief'] ?></td>
+    </tr>
+    <tr>
+        <td>下单时间</td>
+        <td><?php echo date('Y-m-d H:i:s', $item['created']) ?></td>
+    </tr>
+    <tr>
+        <td>过期时间</td>
+        <td><?php echo date('Y-m-d H:i:s', $item['deadline']) ?></td>
+    </tr>
+    <tr>
+        <td>支付时间</td>
+        <td> <?php echo $item['paid_time'] ? date('Y-m-d H:i:s', $item['paid_time']) : ''; ?></td>
+    </tr>
+    <tr>
+        <td>需支付金额</td>
+        <td><?php echo "￥" . sprintf('%.2f', $item['money'] / 100) ?></td>
+    </tr>
+    <tr>
+        <td>优惠金额</td>
+        <td> ￥<?php echo sprintf("%.2f", $item['favorable_money'] / 100) ?></td>
+    </tr>
+    <tr>
+        <td>订单状态</td>
+        <td>  <?php if ($item['status'] == \Services\Agent\AgentManager::STATUS_WAIT_PAY) { ?>
+                <span class="badge-mine bg-blue-grey-600"> <i class='fa fa-circle-o-notch fa-spin'></i> 待支付</span>
+            <?php } elseif ($item['status'] == \Services\Agent\AgentManager::STATUS_HAS_CANCELED) { ?>
+                <span class="badge badge-gray"> 支付超时-已取消</span>
+            <?php } elseif ($item['status'] == \Services\Agent\AgentManager::STATUS_WAIT_CHECK) { ?>
+                <span class="badge-mine bg-green-600">  <i class='fa fa-circle-o-notch fa-spin'></i> 待审核</span>
+            <?php } elseif ($item['status'] == \Services\Agent\AgentManager::STATUS_CHECK_SUCCESS) { ?>
+                <span class="badge-mine bg-light-green-700">审核通过</span>
+            <?php } elseif ($item['status'] == \Services\Agent\AgentManager::STATUS_CHECK_FAIL) { ?>
+                <span class="badge-mine bg-red-600">审核失败</span>
+            <?php } ?></td>
+    </tr>
+    <tr>
+        <td>操作</td>
+        <td>
+            <?php if ($item['status'] == 1) { ?>
+                <a href="JavaScript:;" data-id="<?php echo $item['id']; ?>"
+                   class="btn btn-success btn-sm checkBtn"><i class="fa fa-check"></i>通过</a>
+                <a href="JavaScript:;" data-id="<?php echo $item['id']; ?>"
+                   class="btn btn-error btn-sm failBtn"><i class="fa fa-remove"></i> 不通过</a>
+            <?php } ?>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="modal fade" id="checkModal">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">合伙人审核</h4>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <div>
+                    <div class="form-group">
+                        <label for="form-field-11">失败原因:</label>
+                        <select name="reason_list" class="reason_list">
+                            <option value="0">无</option>
+                            <option value="1">信息不全</option>
+                            <option value="9">信息包含禁用敏感词语</option>
+                            <option value="10">其他</option>
+                        </select>
+                    </div>
+                    <textarea id="reason" placeholder="请填写具体原因" class=" form-control"
+                              style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 100px;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" value="0" id="apply_id"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-type="user" id="sureBtn">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript">
+    $(function () {
+        seajs.use('app/panel/shop/agent.js', function (api) {
+            api.successCheck(".checkBtn");
+            api.failCheck();
+//            $(".reason_list").on('change', function () {
+//                var r_value = $(this).val();
+//                if (r_value != '0') {
+//                    $("#reason").val($(".reason_list option[value='" + r_value + "']").html());
+//                }
+//            })
+        });
+    })
+
+</script>

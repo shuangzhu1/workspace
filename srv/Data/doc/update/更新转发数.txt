@@ -1,0 +1,11 @@
+
+ set_time_limit(0);
+        $i = 1;
+        while ($res = SocialDiscuss::findList(['status=1', 'offset' => ($i - 1) * 50, 'limit' => 50])) {
+            foreach ($res as $item) {
+                $count = SocialDiscuss::dataCount("(((parent_item_id=" . $item['id'] . ") or (share_original_type='discuss' and share_original_item_id=" . $item['id'] . ")) and status=1)");
+                SocialDiscuss::updateOne(['forward_cnt' => $count], ['id' => $item['id']]);
+            }
+            $i++;
+        }
+echo "更新完成";

@@ -1,0 +1,103 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+    <script src="/static/wap/js/jquery/jquery-1.11.0.min.js"></script>
+    <title>Document</title>
+</head>
+<style >
+</style>
+<body>
+<div class="center-block" style="width:100%">
+    <div id="ua"></div>
+    <br>
+    <h3>target</h3>
+    <br>
+    <a href="javascript:;" class="btn btn-success btn-block yyb" target="_blank" >应用宝</a>
+
+
+
+    <h3>Android测试用</h3>
+    <br>
+    <a href="/static/wap/js-dev/test.zip" class="btn btn-success btn-block" >文件下载</a>
+    <br>
+    <a href="javascript:;" class="btn btn-success btn-block download" >10次文件下载</a>
+    <br>
+    <br>
+    <a href="klg://klg.com?type=dynamic&id=31037" class="btn btn-success btn-block" >动态</a>
+    <br>
+    <br>
+    <a href="klg://klg.com?type=video&id=427" class="btn btn-success btn-block" >视频</a>
+    <br>
+    <br>
+    <a href="klg://klg.com?type=shop&shop_id=27&uid=62212" class="btn btn-success btn-block" >店铺</a>
+    <br>
+    <br>
+    <a href="klg://klg.com?type=goods&id=126" class="btn btn-success btn-block" >商品</a>
+    <br>
+    <br>
+    <!--<a href="mqqwpa://" class="btn btn-success btn-block" >打开qq</a>
+    <br><br>
+    <a href="DValleyNew://" class="btn btn-success btn-block">打开恐龙谷</a>
+    <br><br>
+    <a href="alipay://alipayclient/" class="btn btn-success btn-block">打开支付宝</a>
+    <br><br>
+    <a href="//www.baidu.com" class="btn btn-success btn-block" >打开网页（no schame）</a>
+    <br><br>
+    <a href="http://www.baidu.com" class="btn btn-success btn-block">打开网页  </a>
+
+    <br><br>
+    <a href="https://itunes.apple.com/cn/app/keynote/id1290026771?mt=8" class="btn btn-success btn-block">https星球棋牌</a>
+
+    <br><br>
+    <a href="itms://itunes.apple.com/cn/app/keynote/id1290026771?mt=8" class="btn btn-success btn-block">itms星球棋牌</a>
+
+    <br><br>
+    <a href="itms-appss://itunes.apple.com/cn/app/keynote/id1290026771?mt=8" class="btn btn-success btn-block">itms-apps星球棋牌</a>
+
+
+    <br><br>
+    <a href="xingqiuqp://" class="btn btn-success btn-block">星球棋牌</a>
+
+    <br><br>
+    <a href="xingqiuqp://" class="btn btn-success btn-block" target="_blank">星球棋牌blank</a>
+
+    <br><br>
+    <a href="//www.baidu.com" class="btn btn-success btn-block" target="_blank">百度(新窗口)</a>
+
+    <br><br>
+    <a href="//www.baidu.com" class="btn btn-success btn-block" >百度</a>
+
+    <br><br>
+    <a href="//www.baidu.com" class="btn btn-success btn-block" target="_blank">百度(新窗口)</a>
+
+    <br><br>
+    <a href="http://api.klgwl.com/download/android/klg.apk" class="btn btn-success btn-block" >恐龙谷(直接)</a>
+
+    <br><br>
+    <a onclick="down(this)" class="btn btn-success btn-block" >恐龙谷(动态地址)</a>-->
+
+
+</div>
+<!--<iframe src="" frameborder="0" id="ifa"></iframe>-->
+<script>
+    /*$(function () {
+        //$('#ifa').attr("src", "xingqiuqp://")
+        window.location.href = "xingqiuqp://";
+    })*/
+    $('.download').on('click',function(){
+        var a = $('<a ></a>').attr('href',"http://wap.klgwl.com/static/wap/js-dev/test.zip").get(0);
+        /*for( var i = 1;i<=10;i++)
+        {
+
+
+            console.log();
+        }*/
+        setInterval(function () { a.click(); },1000);
+    });
+</script>
+</body>
+</html>
